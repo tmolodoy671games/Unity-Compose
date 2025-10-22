@@ -1,0 +1,7 @@
+﻿{
+  "name": "UnityCompose.Samples",
+  "references": [
+    "UnityCompose",
+    "UnityCompose.Editor"
+  ]
+}

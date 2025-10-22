@@ -1,0 +1,96 @@
+using System;
+using UnityEngine.UIElements;
+using static UnityCompose.ComposeFunctions;
+
+namespace UnityCompose.Samples.Behaviors
+{
+    internal partial class ReordarableListSample
+    {
+        [Composable]
+        [Compiled]
+        private static void __Layout()
+        {
+            if (CurrentComposer.BeginComposeGroup(null))
+                return;
+            try
+            {
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: ComposeStyle.Empty, content: RememberComposable<global::System.Action>(null, () =>
+                {
+                    Column(alignHorizontally: Align.Center, style: ComposeStyle.Empty.Name("reordarable-list-sample").PaddingTop(100).Height(100.Percent()).Width(800), content: RememberComposable<global::System.Action>(null, () =>
+                    {
+                        var items = Remember(() => MutableStateListOf(1, 2));
+                        Label(text: "Add Item", textColor: Color.white, fontSize: 40, style: ComposeStyle.Empty.Name("add-item-button").AlignSelf(Align.FlexEnd).BackgroundColor(Color.blue).Padding(32, 16).BorderRadius(16).OnClick(Remember<global::System.Action>(items, () =>
+                        {
+                            for (var i = 1; i <= items.Count + 1; i++)
+                            {
+                                if (!items.Contains(i))
+                                {
+                                    items.Add(i);
+                                    return;
+                                }
+                            }
+                        })));
+                        Column(alignHorizontally: Align.Center, style: ComposeStyle.Empty.Name("nested-column").Width(100.Percent()), content: RememberComposable<global::System.Action>(items, () =>
+                        {
+                            foreach (var item in items)
+                            {
+                                Key(key: item, content: RememberComposable<global::System.Action>((items, item), () =>
+                                {
+                                    Item(state: item, onMoveUpClick: Remember<global::System.Action>((items, item), () =>
+                                    {
+                                        var oldIndex = items.IndexOf(item);
+                                        if (oldIndex == 0)
+                                            return;
+                                        var newIndex = oldIndex - 1;
+                                        items.RemoveAt(oldIndex);
+                                        items.Insert(newIndex, item);
+                                    }), onMoveDownClick: Remember<global::System.Action>((items, item), () =>
+                                    {
+                                        var oldIndex = items.IndexOf(item);
+                                        if (oldIndex == items.Count - 1)
+                                            return;
+                                        var newIndex = oldIndex + 1;
+                                        items.RemoveAt(oldIndex);
+                                        items.Insert(newIndex, item);
+                                    }), onRemoveClick: Remember<global::System.Action>((items, item), () =>
+                                    {
+                                        items.Remove(item);
+                                    }));
+                                }));
+                            }
+                        }));
+                    }));
+                }));
+            }
+            finally
+            {
+                CurrentComposer.EndComposeGroup(() => __Layout());
+            }
+        }
+
+        [Composable]
+        [Compiled]
+        private static void __Item(int state, Action onMoveUpClick, Action onMoveDownClick, Action onRemoveClick)
+        {
+            if (CurrentComposer.BeginComposeGroup((state, onMoveUpClick, onMoveDownClick, onRemoveClick)))
+                return;
+            try
+            {
+                Row(alignVertically: Align.Center, style: ComposeStyle.Empty.Name("item-row").BackgroundColor(Color.cyan).Width(100.Percent()).Padding(4).BorderRadius(12).MarginVertical(4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
+                {
+                    Label(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: ComposeStyle.Empty.Name("item-name-label").FlexGrow(1).MarginLeft(32));
+                    Column(content: RememberComposable<global::System.Action>((onMoveUpClick, onMoveDownClick), () =>
+                    {
+                        Label(text: "↑", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: ComposeStyle.Empty.Name("up-arrow-button").BackgroundColor(Color.green).Padding(6, 4).BorderRadius(16).OnClick(onMoveUpClick));
+                        Label(text: "↓", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: ComposeStyle.Empty.Name("down-arrow-button").BackgroundColor(Color.green).Padding(6, 4).BorderRadius(16).OnClick(onMoveDownClick));
+                    }));
+                    Label(text: "X", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: ComposeStyle.Empty.Name("remove-button").BackgroundColor(Color.red).Padding(16, 4).BorderRadius(16).OnClick(onRemoveClick));
+                }));
+            }
+            finally
+            {
+                CurrentComposer.EndComposeGroup(() => __Item(state, onMoveUpClick, onMoveDownClick, onRemoveClick));
+            }
+        }
+    }
+}

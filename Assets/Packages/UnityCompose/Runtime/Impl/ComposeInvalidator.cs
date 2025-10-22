@@ -85,17 +85,19 @@ namespace UnityCompose
 
         public static void RequestInvalidate(ComposeGroup group)
         {
-            // if (!forceInEditor && !ApplicationUtils.IsPlaying) return;
+            if (!ApplicationUtils.IsPlaying) return;
             Instance._invalidatedGroups.Add(group);
         }
 
         public static void RequestInstantInvalidate(ComposeGroup group)
         {
+            if (!ApplicationUtils.IsPlaying) return;
             Instance._instantInvalidatedGroups.Add(group);
         }
 
         public static void InstantInvalidate()
         {
+            if (!ApplicationUtils.IsPlaying) return;
             if (Instance._instantInvalidatedGroups.Count == 0) return;
             var groupsToInvalidate = Instance._instantInvalidatedGroups.ToImmutableStableList();
             Instance._instantInvalidatedGroups.Clear();
