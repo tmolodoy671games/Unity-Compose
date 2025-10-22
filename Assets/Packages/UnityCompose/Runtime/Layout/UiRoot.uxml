@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ComposeView name="compose-view" style="flex-grow: 1" />
+</ui:UXML>

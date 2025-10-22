@@ -1,0 +1,7 @@
+﻿{
+  "name": "UnityCompose.Editor",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}
