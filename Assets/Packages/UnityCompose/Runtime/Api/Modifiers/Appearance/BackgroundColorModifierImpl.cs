@@ -15,10 +15,7 @@ public static partial class ModifierExtensions
         this IModifier modifier,
         Color color,
         Optional<ComposeTransition> transition = default
-    )
-    {
-        return modifier + new BackgroundColorModifierImpl(color, transition);
-    }
+    ) => modifier + new BackgroundColorModifierImpl(color, transition);
 }
 
 internal class BackgroundColorModifierImpl : BaseModifier<BackgroundColorModifierImpl>
