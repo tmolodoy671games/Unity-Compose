@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                         content: SampleReader
                     );
 
-                    Label(
+                    Text(
                         text: "Switch",
                         textColor: Color.white,
                         fontSize: 32,

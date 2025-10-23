@@ -27,7 +27,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = Remember(() => MutableStateOf(false));
-                    Label(text: $"DisposableEffect is {onOrOff}", textColor: Color.white, fontSize: 40, style: Modifier.Name("test-button").Background(isHovered.Value ? Color.cyan : Color.blue, Transition()).NewPadding(vertical: 20).NewPadding(horizontal: isHovered.Value ? 40 : 20, transition: Transition()).Border(radius: 16).Margin(top: 32).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>(isHovered, () => isHovered.Value = false)).OnClick(Remember<global::System.Action>(isEffectRunning, () => isEffectRunning.Value = !isEffectRunning.Value)));
+                    Text(text: $"DisposableEffect is {onOrOff}", textColor: Color.white, fontSize: 40, style: Modifier.Name("test-button").Background(isHovered.Value ? Color.cyan : Color.blue, Transition()).NewPadding(vertical: 20).NewPadding(horizontal: isHovered.Value ? 40 : 20, transition: Transition()).Border(radius: 16).Margin(top: 32).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>(isHovered, () => isHovered.Value = false)).OnClick(Remember<global::System.Action>(isEffectRunning, () => isEffectRunning.Value = !isEffectRunning.Value)));
                 }));
             }
             finally

@@ -35,7 +35,7 @@ namespace UnityCompose.Samples.Behaviors
                             .OnMouseLeave(() => isHovered.Value = false),
                         content: () =>
                         {
-                            Label(
+                            Text(
                                 text: "Click me",
                                 fontSize: 24
                             );

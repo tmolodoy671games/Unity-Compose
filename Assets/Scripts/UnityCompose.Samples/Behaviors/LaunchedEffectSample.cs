@@ -27,7 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     var count = Remember(() => MutableStateOf(0));
-                    Label(
+                    Text(
                         text: count.Value.ToString(),
                         textColor: Color.white,
                         fontSize: 40,
@@ -56,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = Remember(() => MutableStateOf(false));
-                    Label(
+                    Text(
                         text: $"Launched Effect is {onOrOff}",
                         textColor: Color.white,
                         fontSize: 40,

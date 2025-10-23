@@ -31,16 +31,16 @@ namespace UnityCompose.Samples.Behaviors
                             .NewPadding(top: 100)
                             .FillMaxHeight()
                             .Width(800),
-                        content: () =>
+                        content: scope =>
                         {
                             var items = Remember(() => MutableStateListOf(1, 2));
-                            Label(
+                            Text(
                                 text: "Add Item",
                                 textColor: Color.white,
                                 fontSize: 40,
                                 style: Modifier
                                     .Name("add-item-button")
-                                    .AlignSelf(Align.FlexEnd)
+                                    .Then(scope.Align(HorizontalAlign.Right))
                                     .Background(Color.blue)
                                     .NewPadding(horizontal: 32, vertical: 16)
                                     .Border(radius: 16)
@@ -119,21 +119,21 @@ namespace UnityCompose.Samples.Behaviors
                     .Border(radius: 12)
                     .Margin(vertical: 4)
                     .Name(state.ToString()),
-                content: () =>
+                content: scope =>
                 {
-                    Label(
+                    Text(
                         text: $"Item no. {state}",
                         textColor: Color.black,
                         fontSize: 40,
                         style: Modifier
                             .Name("item-name-label")
-                            .FlexGrow(1)
+                            .Then(scope.Weight(1))
                             .Margin(left: 32)
                     );
                     Column(
                         content: () =>
                         {
-                            Label(
+                            Text(
                                 text: "↑",
                                 textColor: Color.white,
                                 fontSize: 40,
@@ -146,7 +146,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Border(radius: 16)
                                     .OnClick(onMoveUpClick)
                             );
-                            Label(
+                            Text(
                                 text: "↓",
                                 textColor: Color.white,
                                 fontSize: 40,
@@ -161,7 +161,7 @@ namespace UnityCompose.Samples.Behaviors
                             );
                         }
                     );
-                    Label(
+                    Text(
                         text: "X",
                         textColor: Color.white,
                         fontSize: 40,

@@ -31,8 +31,6 @@ public static partial class ComposeFunctions
             var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
             var currentStyle = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
             var currentProperties = Remember(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
-            // if (!Equals(currentStyle.Value, resolvedStyle))
-            // {
             var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
             resolvedStyle?.Apply(newProperties);
             var propertiesToRevert = currentProperties.Value.Where(Remember<global::System.Func<global::UnityCompose.ComposeModifiedProperty, bool>>(newProperties, it => !newProperties.Contains(it)));
@@ -48,7 +46,6 @@ public static partial class ComposeFunctions
             visualElement.pickingMode = PickingMode.Ignore;
             visualElement.style.overflow = Overflow.Visible;
             resolvedStyle?.Apply(visualElement);
-            // }
             if (initializer != null)
             {
                 var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
@@ -72,7 +69,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Column([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Column([Composable] Action<IColumnScope> content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -84,7 +81,11 @@ public static partial class ComposeFunctions
                 StyleEnum<Justify> alignVerticallyEnum = alignVertically;
                 it.style.alignItems = alignHorizontallyEnum;
                 it.style.justifyContent = alignVerticallyEnum;
-            }), content: content);
+            }), content: RememberComposable<global::System.Action>(content, () =>
+            {
+                var scope = Remember(() => new ColumnScopeImpl());
+                content(scope);
+            }));
         }
         finally
         {
@@ -94,7 +95,23 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Row([Composable] Action content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
+    private static void __Column([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    {
+        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+            return;
+        try
+        {
+            Column(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(content, _ => content()));
+        }
+        finally
+        {
+            CurrentComposer.EndComposeGroup(() => __Column(content, style, alignHorizontally, alignVertically));
+        }
+    }
+
+    [Composable]
+    [Compiled]
+    private static void __Row([Composable] Action<IRowScope> content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -107,7 +124,11 @@ public static partial class ComposeFunctions
                 StyleEnum<Align> alignVerticallyEnum = alignVertically;
                 it.style.alignItems = alignVerticallyEnum;
                 it.style.justifyContent = alignHorizontallyEnum;
-            }), content: content);
+            }), content: RememberComposable<global::System.Action>(content, () =>
+            {
+                var scope = Remember(() => new RowScopeImpl());
+                content(scope);
+            }));
         }
         finally
         {
@@ -117,7 +138,23 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Box([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Row([Composable] Action content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
+    {
+        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+            return;
+        try
+        {
+            Row(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action>(content, () => content()));
+        }
+        finally
+        {
+            CurrentComposer.EndComposeGroup(() => __Row(content, style, alignHorizontally, alignVertically));
+        }
+    }
+
+    [Composable]
+    [Compiled]
+    private static void __Box([Composable] Action<IBoxScope> content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -129,7 +166,27 @@ public static partial class ComposeFunctions
                 StyleEnum<Justify> alignVerticallyEnum = alignVertically;
                 it.style.alignItems = alignHorizontallyEnum;
                 it.style.justifyContent = alignVerticallyEnum;
-            }), content: content);
+            }), content: RememberComposable<global::System.Action>(content, () =>
+            {
+                var scope = Remember(() => new BoxScopeImpl());
+                content(scope);
+            }));
+        }
+        finally
+        {
+            CurrentComposer.EndComposeGroup(() => __Box(content, style, alignHorizontally, alignVertically));
+        }
+    }
+
+    [Composable]
+    [Compiled]
+    private static void __Box([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    {
+        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+            return;
+        try
+        {
+            Box(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
         }
         finally
         {
@@ -155,13 +212,13 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Label(string text, Optional<TextStyle> textStyle = default, Optional<float> fontSize = default, Optional<FontStyle> fontStyle = default, Optional<Color> textColor = default, WhiteSpace whiteSpace = WhiteSpace.Normal, TextAnchor align = TextAnchor.UpperLeft, IModifier? style = null)
+    private static void __Text(string text, Optional<TextStyle> textStyle = default, Optional<float> fontSize = default, Optional<FontStyle> fontStyle = default, Optional<Color> textColor = default, WhiteSpace whiteSpace = WhiteSpace.Normal, TextAnchor align = TextAnchor.UpperLeft, IModifier? style = null)
     {
         if (CurrentComposer.BeginComposeGroup((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, style)))
             return;
         try
         {
-            ReusableComposeView<Label>(style: style, initializer: Remember<global::System.Action<global::UnityEngine.UIElements.Label>>((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align), it =>
+            ReusableComposeView<Text>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align), it =>
             {
                 it.text = text;
                 it.style.whiteSpace = whiteSpace;
@@ -173,7 +230,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Label(text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, style));
+            CurrentComposer.EndComposeGroup(() => __Text(text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, style));
         }
     }
 

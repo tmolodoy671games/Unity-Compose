@@ -16,10 +16,10 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier, content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(alignHorizontally: Align.Center, style: Modifier.Name("reordarable-list-sample").NewPadding(top: 100).FillMaxHeight().Width(800), content: RememberComposable<global::System.Action>(null, () =>
+                    Column(alignHorizontally: Align.Center, style: Modifier.Name("reordarable-list-sample").NewPadding(top: 100).FillMaxHeight().Width(800), content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(null, scope =>
                     {
                         var items = Remember(() => MutableStateListOf(1, 2));
-                        Label(text: "Add Item", textColor: Color.white, fontSize: 40, style: Modifier.Name("add-item-button").AlignSelf(Align.FlexEnd).Background(Color.blue).NewPadding(horizontal: 32, vertical: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(items, () =>
+                        Text(text: "Add Item", textColor: Color.white, fontSize: 40, style: Modifier.Name("add-item-button").Then(scope.Align(HorizontalAlign.Right)).Background(Color.blue).NewPadding(horizontal: 32, vertical: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(items, () =>
                         {
                             for (var i = 1; i <= items.Count + 1; i++)
                             {
@@ -76,15 +76,15 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().NewPadding(all: 4).Border(radius: 12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
+                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().NewPadding(all: 4).Border(radius: 12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action<global::UnityCompose.IRowScope>>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), scope =>
                 {
-                    Label(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: Modifier.Name("item-name-label").FlexGrow(1).Margin(left: 32));
+                    Text(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: Modifier.Name("item-name-label").Then(scope.Weight(1)).Margin(left: 32));
                     Column(content: RememberComposable<global::System.Action>((onMoveUpClick, onMoveDownClick), () =>
                     {
-                        Label(text: "↑", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("up-arrow-button").Background(Color.green).NewPadding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveUpClick));
-                        Label(text: "↓", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("down-arrow-button").Background(Color.green).NewPadding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveDownClick));
+                        Text(text: "↑", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("up-arrow-button").Background(Color.green).NewPadding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveUpClick));
+                        Text(text: "↓", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("down-arrow-button").Background(Color.green).NewPadding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveDownClick));
                     }));
-                    Label(text: "X", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("remove-button").Background(Color.red).NewPadding(horizontal: 16, vertical: 4).Border(radius: 16).OnClick(onRemoveClick));
+                    Text(text: "X", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("remove-button").Background(Color.red).NewPadding(horizontal: 16, vertical: 4).Border(radius: 16).OnClick(onRemoveClick));
                 }));
             }
             finally

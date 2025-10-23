@@ -90,7 +90,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Column(
-        [Composable] Action content,
+        [Composable] Action<IColumnScope> content,
         IModifier? style = null,
         Align alignHorizontally = Align.FlexStart,
         Justify alignVertically = Justify.FlexStart
@@ -105,13 +105,33 @@ public static partial class ComposeFunctions
                 it.style.alignItems = alignHorizontallyEnum;
                 it.style.justifyContent = alignVerticallyEnum;
             },
-            content: content
+            content: () =>
+            {
+                var scope = Remember(() => new ColumnScopeImpl());
+                content(scope);
+            }
+        );
+    }
+
+    [Composable]
+    public static void Column(
+        [Composable] Action content,
+        IModifier? style = null,
+        Align alignHorizontally = Align.FlexStart,
+        Justify alignVertically = Justify.FlexStart
+    )
+    {
+        Column(
+            style: style,
+            alignHorizontally: alignHorizontally,
+            alignVertically: alignVertically,
+            content: _ => content()
         );
     }
 
     [Composable]
     public static void Row(
-        [Composable] Action content,
+        [Composable] Action<IRowScope> content,
         IModifier? style = null,
         Justify alignHorizontally = Justify.FlexStart,
         Align alignVertically = Align.FlexStart
@@ -127,13 +147,33 @@ public static partial class ComposeFunctions
                 it.style.alignItems = alignVerticallyEnum;
                 it.style.justifyContent = alignHorizontallyEnum;
             },
-            content: content
+            content: () =>
+            {
+                var scope = Remember(() => new RowScopeImpl());
+                content(scope);
+            }
+        );
+    }
+
+    [Composable]
+    public static void Row(
+        [Composable] Action content,
+        IModifier? style = null,
+        Justify alignHorizontally = Justify.FlexStart,
+        Align alignVertically = Align.FlexStart
+    )
+    {
+        Row(
+            style: style,
+            alignHorizontally: alignHorizontally,
+            alignVertically: alignVertically,
+            content: () => content()
         );
     }
 
     [Composable]
     public static void Box(
-        [Composable] Action content,
+        [Composable] Action<IBoxScope> content,
         IModifier? style = null,
         Align alignHorizontally = Align.FlexStart,
         Justify alignVertically = Justify.FlexStart
@@ -148,7 +188,27 @@ public static partial class ComposeFunctions
                 it.style.alignItems = alignHorizontallyEnum;
                 it.style.justifyContent = alignVerticallyEnum;
             },
-            content: content
+            content: () =>
+            {
+                var scope = Remember(() => new BoxScopeImpl());
+                content(scope);
+            }
+        );
+    }
+
+    [Composable]
+    public static void Box(
+        [Composable] Action content,
+        IModifier? style = null,
+        Align alignHorizontally = Align.FlexStart,
+        Justify alignVertically = Justify.FlexStart
+    )
+    {
+        Box(
+            style: style,
+            alignHorizontally: alignHorizontally,
+            alignVertically: alignVertically,
+            content: _ => content()
         );
     }
 
@@ -163,7 +223,7 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    public static void Label(
+    public static void Text(
         string text,
         Optional<TextStyle> textStyle = default,
         Optional<float> fontSize = default,
@@ -174,7 +234,7 @@ public static partial class ComposeFunctions
         IModifier? style = null
     )
     {
-        ReusableComposeView<Label>(
+        ReusableComposeView<Text>(
             style: style,
             initializer: it =>
             {

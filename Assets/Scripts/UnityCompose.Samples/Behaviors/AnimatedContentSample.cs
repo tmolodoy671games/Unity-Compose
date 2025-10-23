@@ -56,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors
                                     ),
                                 content: state =>
                                 {
-                                    Label(
+                                    Text(
                                         text: state.ToString(),
                                         textColor: Color.white,
                                         fontSize: 64
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                                 }
                             );
 
-                            Label(
+                            Text(
                                 text: "Switch",
                                 textColor: Color.white,
                                 fontSize: 64,

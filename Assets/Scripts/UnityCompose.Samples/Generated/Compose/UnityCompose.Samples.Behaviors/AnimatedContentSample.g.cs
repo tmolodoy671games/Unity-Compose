@@ -53,9 +53,9 @@ namespace UnityCompose.Samples.Behaviors
                         var isSwitched = Remember(() => MutableStateOf(false));
                         AnimatedContent(value: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transition: Remember<global::System.Func<string, string, global::UnityCompose.ContentTransform>>(isSwitched, (_, _) => isSwitched.Value ? ContentTransform(enter: SlideIn(SlideDirection.Up) + FadeIn(), exit: SlideOut(SlideDirection.Up) + FadeOut()) : ContentTransform(enter: SlideIn(SlideDirection.Down) + FadeIn(), exit: SlideOut(SlideDirection.Down) + FadeOut())), animateSize: true, transitionDuration: Duration, style: Modifier.Name("animated-content").Background(isSwitched.Value ? Color.green : Color.red, Transition(Duration)), content: RememberComposable<global::System.Action<string>>(null, state =>
                         {
-                            Label(text: state.ToString(), textColor: Color.white, fontSize: 64);
+                            Text(text: state.ToString(), textColor: Color.white, fontSize: 64);
                         }));
-                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.NewPadding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Text(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.NewPadding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

@@ -21,24 +21,29 @@ namespace UnityCompose.Samples.Behaviors
         {
             var isHovered = Remember(() => MutableStateOf(false));
             var isPressed = Remember(() => MutableStateOf(false));
-            Spacer(
+            Box(
                 style: Modifier
-                    .Size(100)
-                    .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
-                    .AlignSelf(Align.Center)
-                    .Border(radius: 32)
-                    .Top(50.Percent())
-                    .Bottom(50.Percent())
-                    .TransformOrigin(0, 0.5f)
-                    .Scale(isHovered.Value ? 2 : 1, Transition())
-                    .OnMouseEnter(() => isHovered.Value = true)
-                    .OnMouseLeave(() =>
-                    {
-                        isPressed.Value = false;
-                        isHovered.Value = false;
-                    })
-                    .OnMouseDown(() => isPressed.Value = true)
-                    .OnMouseUp(() => isPressed.Value = false)
+                    .FillMaxSize(),
+                alignHorizontally: Align.Center,
+                alignVertically: Justify.Center,
+                content: () =>
+                {
+                    Spacer(
+                        style: Modifier
+                            .Size(100)
+                            .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
+                            .Border(radius: 32)
+                            .Scale(isHovered.Value ? 2 : 1, Transition())
+                            .OnMouseEnter(() => isHovered.Value = true)
+                            .OnMouseLeave(() =>
+                            {
+                                isPressed.Value = false;
+                                isHovered.Value = false;
+                            })
+                            .OnMouseDown(() => isPressed.Value = true)
+                            .OnMouseUp(() => isPressed.Value = false)
+                    );
+                }
             );
         }
     }

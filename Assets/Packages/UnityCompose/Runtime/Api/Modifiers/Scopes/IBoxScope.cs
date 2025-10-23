@@ -63,9 +63,9 @@ internal class HorizontalAlignModifierImpl : BaseModifier<HorizontalAlignModifie
     {
         element.style.alignSelf = _align switch
         {
-            HorizontalAlign.Start => Align.FlexStart,
+            HorizontalAlign.Left => Align.FlexStart,
             HorizontalAlign.Center => Align.Center,
-            HorizontalAlign.End => Align.FlexEnd,
+            HorizontalAlign.Right => Align.FlexEnd,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

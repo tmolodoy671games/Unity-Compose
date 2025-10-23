@@ -4,7 +4,7 @@ namespace UnityCompose;
 
 public enum HorizontalAlign
 {
-    Start,
+    Left,
     Center,
-    End,
+    Right,
 }

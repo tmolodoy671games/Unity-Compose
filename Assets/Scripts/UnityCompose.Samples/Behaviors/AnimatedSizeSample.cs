@@ -43,7 +43,7 @@ namespace UnityCompose.Samples.Behaviors
                                 duration: 5,
                                 content: () =>
                                 {
-                                    Label(
+                                    Text(
                                         text: text,
                                         textColor: Color.white,
                                         fontSize: 64,
@@ -54,7 +54,7 @@ namespace UnityCompose.Samples.Behaviors
                                 }
                             );
 
-                            Label(
+                            Text(
                                 text: "Switch",
                                 textColor: Color.white,
                                 fontSize: 64,

@@ -21,12 +21,12 @@ namespace UnityCompose.Samples.Behaviors
                         if (showFirst.Value)
                         {
                             var firstCount = Remember(() => MutableStateOf(0));
-                            Label(text: $"Clicked {firstCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.red).NewPadding(all: 20).Border(radius: 16).OnClick(Remember<global::System.Action>(firstCount, () => firstCount.Value++)).Name("first-button"));
+                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.red).NewPadding(all: 20).Border(radius: 16).OnClick(Remember<global::System.Action>(firstCount, () => firstCount.Value++)).Name("first-button"));
                         }
 
                         var secondCount = Remember(() => MutableStateOf(0));
-                        Label(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.green).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
-                        Label(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.blue).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.green).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
+                        Text(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.blue).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
                     }));
                 }));
             }

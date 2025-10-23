@@ -7,70 +7,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    private class AlignSelfImpl : BaseModifier<AlignSelfImpl>
-    {
-        private readonly StyleEnum<Align> _alignSelf;
-
-        public AlignSelfImpl(StyleEnum<Align> alignSelf)
-        {
-            _alignSelf = alignSelf;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.alignSelf = _alignSelf;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.AlignSelf);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.alignSelf = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(AlignSelfImpl other)
-        {
-            return _alignSelf == other._alignSelf;
-        }
-    }
-
-    private class FlexGrowImpl : BaseModifier<FlexGrowImpl>
-    {
-        private readonly StyleFloat _flexGrow;
-        private readonly ComposeTransition _transition;
-
-        public FlexGrowImpl(StyleFloat flexGrow, ComposeTransition transition)
-        {
-            _flexGrow = flexGrow;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.flexGrow = _flexGrow;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "flex-grow");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.FlexGrow);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.flexGrow = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(FlexGrowImpl other)
-        {
-            return _flexGrow == other._flexGrow;
-        }
-    }
-
     private class TopImpl : BaseModifier<TopImpl>
     {
         private readonly StyleLength _top;
@@ -206,20 +142,6 @@ public static partial class ModifierExtensions
             return _right == other._right && Equals(_transition, other._transition);
             ;
         }
-    }
-
-    public static IModifier AlignSelf(this IModifier style, StyleEnum<Align> alignSelf)
-    {
-        return style.Then(new AlignSelfImpl(alignSelf));
-    }
-
-    public static IModifier FlexGrow(
-        this IModifier style,
-        StyleFloat flexGrow,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new FlexGrowImpl(flexGrow, transition));
     }
 
     public static IModifier Top(

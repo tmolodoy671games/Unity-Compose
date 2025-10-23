@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
                             if (showFirst.Value)
                             {
                                 var firstCount = Remember(() => MutableStateOf(0));
-                                Label(
+                                Text(
                                     text: $"Clicked {firstCount.Value} times",
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
                             }
 
                             var secondCount = Remember(() => MutableStateOf(0));
-                            Label(
+                            Text(
                                 text: $"Clicked {secondCount.Value} times",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
@@ -60,7 +60,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("second-button")
                             );
 
-                            Label(
+                            Text(
                                 text: "Switch",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,

@@ -40,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = Remember(() => MutableStateOf(false));
-                    Label(
+                    Text(
                         text: $"DisposableEffect is {onOrOff}",
                         textColor: Color.white,
                         fontSize: 40,
