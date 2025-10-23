@@ -194,21 +194,6 @@ public static partial class ModifierExtensions
             return style;
         return style.Then(new OnMouseLeaveImpl(onMouseLeave));
     }
-
-    public static IModifier OnMouseDown(this IModifier style, Action onMouseDown, bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseDownImpl(_ => onMouseDown()));
-    }
-
-    public static IModifier OnMouseDown(this IModifier style, Action<MouseDownEvent> onMouseDown,
-        bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseDownImpl(onMouseDown));
-    }
     
     public static IModifier OnLmbDown(this IModifier style, Action onLmbDown, bool enabled = true)
     {
