@@ -14,30 +14,6 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseDown(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(onMouseDown);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMouseDown(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(_ => onMouseDown());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMouseDown(
-        this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
         bool enabled = true
     )
@@ -62,38 +38,6 @@ public static partial class ModifierExtensions
     #endregion
 
     #region OnLmbDown
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnLmbDown(
-        this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown(it);
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnLmbDown(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown();
-        });
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbDown(
@@ -130,38 +74,6 @@ public static partial class ModifierExtensions
     #endregion
     
     #region OnRmbDown
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnRmbDown(
-        this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown(it);
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnRmbDown(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown();
-        });
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbDown(

@@ -101,36 +101,6 @@ public static partial class ModifierExtensions
         {
             return _onMouseMove == other._onMouseMove;
         }
-    } 
-
-    public static IModifier OnMouseEnter(this IModifier style, Action onMouseEnter, bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseEnterImpl(_ => onMouseEnter()));
-    }
-
-    public static IModifier OnMouseEnter(this IModifier style, Action<MouseEnterEvent> onMouseEnter,
-        bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseEnterImpl(onMouseEnter));
-    }
-
-    public static IModifier OnMouseLeave(this IModifier style, Action onMouseLeave, bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseLeaveImpl(_ => onMouseLeave()));
-    }
-
-    public static IModifier OnMouseLeave(this IModifier style, Action<MouseLeaveEvent> onMouseLeave,
-        bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnMouseLeaveImpl(onMouseLeave));
     }
 
     public static IModifier OnMouseMove(this IModifier style, Action onMouseMove, bool enabled = true)
