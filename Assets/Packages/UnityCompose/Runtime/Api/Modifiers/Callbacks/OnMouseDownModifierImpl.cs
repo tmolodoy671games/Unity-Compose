@@ -63,7 +63,205 @@ public static partial class ModifierExtensions
 
     #region OnLmbDown
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnLmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action<MouseClickInfo> onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 0)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnLmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 0)
+                onMouseDown();
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnLmbDown(
+        this IModifier modifier,
+        Action<MouseClickInfo> onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 0)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnLmbDown(
+        this IModifier modifier,
+        Action onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 0)
+                onMouseDown();
+        });
+    }
+
+    #endregion
     
+    #region OnRmbDown
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnRmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action<MouseClickInfo> onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 1)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnRmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 1)
+                onMouseDown();
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnRmbDown(
+        this IModifier modifier,
+        Action<MouseClickInfo> onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 1)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnRmbDown(
+        this IModifier modifier,
+        Action onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 1)
+                onMouseDown();
+        });
+    }
+
+    #endregion
+    
+    #region OnMmbDown
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnMmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action<MouseClickInfo> onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 2)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnMmbDown(
+        this IModifier modifier,
+        bool enabled,
+        Action onMouseDown
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 2)
+                onMouseDown();
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnMmbDown(
+        this IModifier modifier,
+        Action<MouseClickInfo> onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 2)
+                onMouseDown(it);
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OnMmbDown(
+        this IModifier modifier,
+        Action onMouseDown,
+        bool enabled = true
+    )
+    {
+        if (enabled)
+            return modifier;
+        return modifier + new OnMouseDownModifierImpl(it =>
+        {
+            if (it.Button == 2)
+                onMouseDown();
+        });
+    }
 
     #endregion
 }
