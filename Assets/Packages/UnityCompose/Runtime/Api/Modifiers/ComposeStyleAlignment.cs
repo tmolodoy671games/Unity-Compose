@@ -21,7 +21,7 @@ public static partial class ComposeStyleExtensions
             element.style.alignSelf = _alignSelf;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.AlignSelf);
         }
@@ -55,7 +55,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "flex-grow");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.FlexGrow);
         }
@@ -89,7 +89,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "flex-shrink");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.FlexShrink);
         }
@@ -118,7 +118,7 @@ public static partial class ComposeStyleExtensions
             element.style.position = _position;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Position);
         }
@@ -152,7 +152,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "top");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Top);
         }
@@ -186,7 +186,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "bottom");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Bottom);
         }
@@ -220,7 +220,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "left");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Left);
         }
@@ -254,7 +254,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "right");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Right);
         }
@@ -289,7 +289,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "translate");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Translate);
         }
@@ -323,7 +323,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "transform-origin");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.TransformOrigin);
         }

@@ -24,7 +24,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "padding-top");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.PaddingTop);
         }
@@ -58,7 +58,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "padding-bottom");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.PaddingBottom);
         }
@@ -92,7 +92,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "padding-left");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.PaddingLeft);
         }
@@ -126,7 +126,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "padding-right");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.PaddingRight);
         }

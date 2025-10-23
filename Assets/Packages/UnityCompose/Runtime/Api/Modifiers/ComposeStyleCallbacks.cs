@@ -27,7 +27,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<ClickEvent>().Add(_onClick);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -58,7 +58,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<MouseEnterEvent>().Add(_onMouseEnter);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -89,7 +89,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -120,7 +120,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<MouseDownEvent>().Add(_onMouseDown);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -151,7 +151,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<MouseUpEvent>().Add(_onMouseUp);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -182,7 +182,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 
@@ -210,7 +210,7 @@ public static partial class ComposeStyleExtensions
             element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
         }
 

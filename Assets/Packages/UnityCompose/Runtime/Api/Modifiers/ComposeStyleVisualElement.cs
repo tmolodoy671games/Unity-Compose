@@ -20,7 +20,7 @@ public static partial class ComposeStyleExtensions
             element.pickingMode = _pickingMode;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.PickingMode);
         }

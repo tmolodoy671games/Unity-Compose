@@ -24,7 +24,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-bottom-left-radius");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderBottomLeftRadius);
         }
@@ -59,7 +59,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-bottom-right-radius");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderBottomRightRadius);
         }
@@ -94,7 +94,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-top-left-radius");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderTopLeftRadius);
         }
@@ -129,7 +129,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-top-right-radius");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderTopRightRadius);
         }
@@ -164,7 +164,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-top-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderTopWidth);
         }
@@ -198,7 +198,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-bottom-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderBottomWidth);
         }
@@ -233,7 +233,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-left-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderLeftWidth);
         }
@@ -268,7 +268,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-right-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderRightWidth);
         }
@@ -303,7 +303,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-top-color");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderTopColor);
         }
@@ -338,7 +338,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-bottom-color");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderBottomColor);
         }
@@ -374,7 +374,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-left-color");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderLeftColor);
         }
@@ -409,7 +409,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "border-right-color");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BorderRightColor);
         }

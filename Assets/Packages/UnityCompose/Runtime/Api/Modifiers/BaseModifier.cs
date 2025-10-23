@@ -12,7 +12,7 @@ public interface IModifier
     void Apply(VisualElement element);
 
     [Composable]
-    void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
+    void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties);
 
     [Composable]
     void Revert(VisualElement element);
@@ -38,7 +38,7 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
 {
     public abstract void Apply(VisualElement element);
 
-    public abstract void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
+    public abstract void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties);
 
     public abstract void Revert(VisualElement element);
     
@@ -76,7 +76,7 @@ internal class EmptyModifierImpl : BaseModifier<EmptyModifierImpl>
     {
     }
 
-    public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
     }
 
@@ -110,7 +110,7 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         _second.Apply(element);
     }
 
-    public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
         _first.Apply(modifiedProperties);
         _second.Apply(modifiedProperties);

@@ -24,7 +24,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "margin-top");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MarginTop);
         }
@@ -58,7 +58,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "margin-bottom");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MarginBottom);
         }
@@ -92,7 +92,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "margin-left");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MarginLeft);
         }
@@ -126,7 +126,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "margin-right");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MarginRight);
         }

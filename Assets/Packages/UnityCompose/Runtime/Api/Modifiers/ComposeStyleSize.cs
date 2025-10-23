@@ -24,7 +24,7 @@ public static partial class ComposeStyleExtensions
             style.width = ResolveWidth(style);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Width);
         }
@@ -75,7 +75,7 @@ public static partial class ComposeStyleExtensions
             style.height = ResolveHeight(style);
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Height);
         }
@@ -123,7 +123,7 @@ public static partial class ComposeStyleExtensions
             element.style.maxWidth = _maxWidth;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MaxWidth);
         }
@@ -153,7 +153,7 @@ public static partial class ComposeStyleExtensions
             element.style.maxHeight = _maxHeight;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MaxHeight);
         }
@@ -187,7 +187,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "min-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MinWidth);
         }
@@ -220,7 +220,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "min-width");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.MinWidth);
         }

@@ -25,7 +25,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "background-color");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BackgroundColor);
         }
@@ -55,7 +55,7 @@ public static partial class ComposeStyleExtensions
             element.style.backgroundImage = _backgroundImage;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.BackgroundImage);
         }
@@ -85,7 +85,7 @@ public static partial class ComposeStyleExtensions
             element.style.visibility = _visibility;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Visibility);
         }
@@ -115,7 +115,7 @@ public static partial class ComposeStyleExtensions
             element.style.display = _display;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Display);
         }
@@ -149,7 +149,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "opacity");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Opacity);
         }
@@ -183,7 +183,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "scale");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Scale);
         }
@@ -217,7 +217,7 @@ public static partial class ComposeStyleExtensions
                 element.AddTransition(_transition, "rotate");
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Rotate);
         }
@@ -247,7 +247,7 @@ public static partial class ComposeStyleExtensions
             element.style.overflow = _overflow;
         }
 
-        public override void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties)
+        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
         {
             modifiedProperties.Add(ComposeModifiedProperty.Overflow);
         }
