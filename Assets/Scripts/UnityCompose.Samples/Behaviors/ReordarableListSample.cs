@@ -43,7 +43,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .AlignSelf(Align.FlexEnd)
                                     .Background(Color.blue)
                                     .NewPadding(horizontal: 32, vertical: 16)
-                                    .BorderRadius(16)
+                                    .Border(radius: 16)
                                     .OnClick(() =>
                                     {
                                         for (var i = 1; i <= items.Count + 1; i++)
@@ -116,7 +116,7 @@ namespace UnityCompose.Samples.Behaviors
                     .Background(Color.cyan)
                     .FillMaxWidth()
                     .NewPadding(all: 4)
-                    .BorderRadius(12)
+                    .Border(radius: 12)
                     .Margin(vertical: 4)
                     .Name(state.ToString()),
                 content: () =>
@@ -143,7 +143,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("up-arrow-button")
                                     .Background(Color.green)
                                     .NewPadding(horizontal: 6, vertical: 4)
-                                    .BorderRadius(16)
+                                    .Border(radius: 16)
                                     .OnClick(onMoveUpClick)
                             );
                             Label(
@@ -156,7 +156,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("down-arrow-button")
                                     .Background(Color.green)
                                     .NewPadding(horizontal: 6, vertical: 4)
-                                    .BorderRadius(16)
+                                    .Border(radius: 16)
                                     .OnClick(onMoveDownClick)
                             );
                         }
@@ -171,7 +171,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Name("remove-button")
                             .Background(Color.red)
                             .NewPadding(horizontal: 16, vertical: 4)
-                            .BorderRadius(16)
+                            .Border(radius: 16)
                             .OnClick(onRemoveClick)
                     );
                 }

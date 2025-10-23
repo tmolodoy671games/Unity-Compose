@@ -55,7 +55,7 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             Label(text: state.ToString(), textColor: Color.white, fontSize: 64);
                         }));
-                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.NewPadding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).BorderRadius(16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.NewPadding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

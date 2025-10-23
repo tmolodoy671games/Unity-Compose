@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors
                     .Size(100)
                     .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
                     .AlignSelf(Align.Center)
-                    .BorderRadius(32)
+                    .Border(radius: 32)
                     .Top(50.Percent())
                     .Bottom(50.Percent())
                     .TransformOrigin(0, 0.5f)

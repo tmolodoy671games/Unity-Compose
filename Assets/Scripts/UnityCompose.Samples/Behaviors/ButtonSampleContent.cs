@@ -30,7 +30,7 @@ namespace UnityCompose.Samples.Behaviors
                         style: Modifier
                             .NewPadding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition())
                             .Background(Color.blue)
-                            .BorderRadius(16)
+                            .Border(radius: 16)
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false),
                         content: () =>

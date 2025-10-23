@@ -40,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
                                     style: Modifier
                                         .Background(Color.red)
                                         .NewPadding(all: 20)
-                                        .BorderRadius(16)
+                                        .Border(radius: 16)
                                         .OnClick(() => firstCount.Value++)
                                         .Name("first-button")
                                 );
@@ -54,7 +54,7 @@ namespace UnityCompose.Samples.Behaviors
                                 style: Modifier
                                     .Background(Color.green)
                                     .NewPadding(all: 20)
-                                    .BorderRadius(16)
+                                    .Border(radius: 16)
                                     .Margin(top: 16)
                                     .OnClick(() => secondCount.Value++)
                                     .Name("second-button")
@@ -67,7 +67,7 @@ namespace UnityCompose.Samples.Behaviors
                                 style: Modifier
                                     .Background(Color.blue)
                                     .NewPadding(all: 20)
-                                    .BorderRadius(16)
+                                    .Border(radius: 16)
                                     .Margin(top: 16)
                                     .OnClick(() => showFirst.Value = !showFirst.Value)
                                     .Name("switch-button")

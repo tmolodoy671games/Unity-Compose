@@ -14,7 +14,7 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Border(
         this IModifier modifier,
-        float allRadius = -1,
+        float radius = -1,
         float verticalRadius = -1,
         float horizontalRadius = -1,
         float topLeftRadius = -1,
@@ -39,10 +39,10 @@ public static partial class ModifierExtensions
     )
     {
         return modifier + new BorderModifierImpl(
-            topLeftRadius: ParamUtils.Resolve(topLeftRadius, verticalRadius, horizontalRadius, allRadius),
-            topRightRadius: ParamUtils.Resolve(topRightRadius, verticalRadius, horizontalRadius, allRadius),
-            bottomLeftRadius: ParamUtils.Resolve(bottomLeftRadius, verticalRadius, horizontalRadius, allRadius),
-            bottomRightRadius: ParamUtils.Resolve(bottomRightRadius, verticalRadius, horizontalRadius, allRadius),
+            topLeftRadius: ParamUtils.Resolve(topLeftRadius, verticalRadius, horizontalRadius, radius),
+            topRightRadius: ParamUtils.Resolve(topRightRadius, verticalRadius, horizontalRadius, radius),
+            bottomLeftRadius: ParamUtils.Resolve(bottomLeftRadius, verticalRadius, horizontalRadius, radius),
+            bottomRightRadius: ParamUtils.Resolve(bottomRightRadius, verticalRadius, horizontalRadius, radius),
             topWidth: ParamUtils.Resolve(topWidth, verticalWidth, allWidth),
             bottomWidth: ParamUtils.Resolve(bottomWidth, verticalWidth, allWidth),
             leftWidth: ParamUtils.Resolve(leftWidth, horizontalWidth, allWidth),

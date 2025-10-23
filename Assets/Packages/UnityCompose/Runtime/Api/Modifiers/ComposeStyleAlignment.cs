@@ -70,39 +70,6 @@ public static partial class ModifierExtensions
             return _flexGrow == other._flexGrow;
         }
     }
-        
-    private class FlexShrinkImpl : BaseModifier<FlexShrinkImpl>
-    {
-        private readonly StyleFloat _flexShrink;
-        private readonly ComposeTransition _transition;
-
-        public FlexShrinkImpl(StyleFloat flexShrink, ComposeTransition transition)
-        {
-            _flexShrink = flexShrink;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.flexShrink = _flexShrink;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "flex-shrink");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.FlexShrink);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-        }
-
-        protected override bool Equals(FlexShrinkImpl other)
-        {
-            return _flexShrink.Equals(other._flexShrink) && Equals(_transition, other._transition);
-        }
-    }
 
     private class PositionImpl : BaseModifier<PositionImpl>
     {
@@ -283,15 +250,6 @@ public static partial class ModifierExtensions
     )
     {
         return style.Then(new FlexGrowImpl(flexGrow, transition));
-    }
-
-    public static IModifier FlexShrink(
-        this IModifier style,
-        StyleFloat flexShrink,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new FlexShrinkImpl(flexShrink, transition));
     }
 
     public static IModifier Position(this IModifier style, StyleEnum<Position> position)
