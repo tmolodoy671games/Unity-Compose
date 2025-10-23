@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(style: Modifier.Background(Color.red).Size(400), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Spacer(style: Modifier.Size(100).Position(Position.Absolute).Background(Color.yellow).Top(5));
+                        Spacer(style: Modifier.Size(100).Float().Background(Color.yellow).Top(5));
                     }));
                 }));
             // Box(

@@ -77,7 +77,7 @@ public static partial class ComposeFunctions
                 containerStyle = containerStyle
                     .Size(animatedSize);
                 contentStyle = contentStyle
-                    .Position(Position.Absolute);
+                    .Float();
             }
         }
 

@@ -37,7 +37,7 @@ public static partial class ComposeFunctions
             {
                 var parent = LocalVisualElement.Current;
                 var nextStyle = resolvedTransition.Enter.Get(resolvedProgress, parent).Then(contentStyle);
-                var previousStyle = resolvedTransition.Exit.Get(resolvedProgress, parent).Position(Position.Absolute);
+                var previousStyle = resolvedTransition.Exit.Get(resolvedProgress, parent).Float();
                 var isAnimationRunning = resolvedProgress is> 0 and < 1;
                 var next = (Value: value, Style: nextStyle, Progress: resolvedProgress);
                 var previous = (Value: previousValue.Value, Style: previousStyle, Progress: 1 - resolvedProgress);

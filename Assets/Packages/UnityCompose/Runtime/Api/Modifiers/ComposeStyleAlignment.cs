@@ -71,36 +71,6 @@ public static partial class ModifierExtensions
         }
     }
 
-    private class PositionImpl : BaseModifier<PositionImpl>
-    {
-        private readonly StyleEnum<Position> _position;
-
-        public PositionImpl(StyleEnum<Position> position)
-        {
-            _position = position;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.position = _position;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Position);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.position = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(PositionImpl other)
-        {
-            return _position == other._position;
-        }
-    }
-
     private class TopImpl : BaseModifier<TopImpl>
     {
         private readonly StyleLength _top;
@@ -250,11 +220,6 @@ public static partial class ModifierExtensions
     )
     {
         return style.Then(new FlexGrowImpl(flexGrow, transition));
-    }
-
-    public static IModifier Position(this IModifier style, StyleEnum<Position> position)
-    {
-        return style.Then(new PositionImpl(position));
     }
 
     public static IModifier Top(

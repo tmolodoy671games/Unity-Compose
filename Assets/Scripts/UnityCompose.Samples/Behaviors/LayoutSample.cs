@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
                             Spacer(
                                 style: Modifier
                                     .Size(100)
-                                    .Position(Position.Absolute)
+                                    .Float()
                                     .Background(Color.yellow)
                                     .Top(5)
                             );

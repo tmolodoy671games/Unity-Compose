@@ -70,7 +70,7 @@ public static partial class ComposeFunctions
         );
         LaunchedEffect(currentBackStack, () =>
         {
-            if (!Equals(currentBackStack, previousBackStack.Value)) 
+            if (!Equals(currentBackStack, previousBackStack.Value))
                 isSwitched.Value = !isSwitched.Value;
         });
 
@@ -138,13 +138,13 @@ public static partial class ComposeFunctions
                                     var contentStyle = screenState switch
                                     {
                                         ScreenState.Idle => Modifier
-                                            .Position(isCurrentScreen ? Position.Relative : Position.Absolute),
+                                            .Float(!isCurrentScreen),
                                         ScreenState.Appearing => resolvedTransition.Enter
                                             .Get(resolvedProgress, parent)
-                                            .Position(isCurrentScreen ? Position.Relative : Position.Absolute),
+                                            .Float(!isCurrentScreen),
                                         ScreenState.Disappearing => resolvedTransition.Exit
                                             .Get(resolvedProgress, parent)
-                                            .Position(Position.Absolute),
+                                            .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };
                                     CompositionLocalProvider(
