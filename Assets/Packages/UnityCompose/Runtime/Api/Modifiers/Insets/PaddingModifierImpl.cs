@@ -11,7 +11,7 @@ namespace UnityCompose;
 public static partial class ModifierExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Padding(
+    public static IModifier NewPadding(
         this IModifier modifier,
         float all = -1,
         float horizontal = -1,

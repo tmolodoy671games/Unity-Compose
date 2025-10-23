@@ -71,7 +71,7 @@ namespace UnityCompose.Samples.Behaviors
                                 textColor: Color.white,
                                 fontSize: 64,
                                 style: Modifier
-                                    .Padding(100, 32)
+                                    .NewPadding(horizontal: 100, vertical: 32)
                                     .Background(Color.blue)
                                     .Margin(top: 16)
                                     .BorderRadius(16)

@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                                 style: Modifier
                                     .Name("animated-size")
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(5))
-                                    .Padding(16),
+                                    .NewPadding(all: 16),
                                 duration: 5,
                                 content: () =>
                                 {
@@ -62,7 +62,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 64,
                                 style: Modifier
                                     .Name("switch-button")
-                                    .Padding(32)
+                                    .NewPadding(all: 32)
                                     .Background(Color.blue)
                                     .Margin(top: 16)
                                     .BorderRadius(16)

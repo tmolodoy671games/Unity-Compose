@@ -39,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors
                                     align: TextAnchor.MiddleCenter,
                                     style: Modifier
                                         .Background(Color.red)
-                                        .Padding(20)
+                                        .NewPadding(all: 20)
                                         .BorderRadius(16)
                                         .OnClick(() => firstCount.Value++)
                                         .Name("first-button")
@@ -53,7 +53,7 @@ namespace UnityCompose.Samples.Behaviors
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
                                     .Background(Color.green)
-                                    .Padding(20)
+                                    .NewPadding(all: 20)
                                     .BorderRadius(16)
                                     .Margin(top: 16)
                                     .OnClick(() => secondCount.Value++)
@@ -66,7 +66,7 @@ namespace UnityCompose.Samples.Behaviors
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
                                     .Background(Color.blue)
-                                    .Padding(20)
+                                    .NewPadding(all: 20)
                                     .BorderRadius(16)
                                     .Margin(top: 16)
                                     .OnClick(() => showFirst.Value = !showFirst.Value)
