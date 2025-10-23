@@ -54,6 +54,6 @@ internal class TransformOriginModifierImpl : BaseModifier<TransformOriginModifie
 
     protected override bool Equals(TransformOriginModifierImpl other)
     {
-        throw new System.NotImplementedException();
+        return _origin == other._origin;
     }
 }
