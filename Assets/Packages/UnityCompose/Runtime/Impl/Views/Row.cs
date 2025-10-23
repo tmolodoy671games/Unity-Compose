@@ -2,10 +2,6 @@
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 
-internal class Row : ComposeVisualElement
+internal class Row : VisualElement
 {
-    public Row()
-    {
-        style.flexDirection = FlexDirection.Row;
-    }
 }

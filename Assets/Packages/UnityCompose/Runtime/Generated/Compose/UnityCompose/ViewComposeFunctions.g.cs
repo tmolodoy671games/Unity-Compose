@@ -46,6 +46,7 @@ public static partial class ComposeFunctions
             visualElement.style.transitionProperty.value?.Clear();
             visualElement.style.transitionTimingFunction.value?.Clear();
             visualElement.pickingMode = PickingMode.Ignore;
+            visualElement.style.overflow = Overflow.Visible;
             resolvedStyle?.Apply(visualElement);
             // }
             if (initializer != null)

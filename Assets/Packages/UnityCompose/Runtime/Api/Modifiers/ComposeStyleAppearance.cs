@@ -41,79 +41,6 @@ public static partial class ModifierExtensions
         }
     }
 
-    private class RotateImpl : BaseModifier<RotateImpl>
-    {
-        private readonly StyleRotate _rotate;
-        private readonly ComposeTransition _transition;
-
-        public RotateImpl(StyleRotate rotate, ComposeTransition transition)
-        {
-            _rotate = rotate;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.rotate = _rotate;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "rotate");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Rotate);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.rotate = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(RotateImpl other)
-        {
-            return _rotate == other._rotate && Equals(_transition, other._transition);
-        }
-    }
-
-    private class OverflowImpl : BaseModifier<OverflowImpl>
-    {
-        private readonly StyleEnum<Overflow> _overflow;
-
-        public OverflowImpl(StyleEnum<Overflow> overflow)
-        {
-            _overflow = overflow;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.overflow = _overflow;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Overflow);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.overflow = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(OverflowImpl other)
-        {
-            return _overflow == other._overflow;
-        }
-    }
-
-    public static IModifier Scale(
-        this IModifier style,
-        StyleScale scale,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new ScaleImpl(scale, transition));
-    }
-
     public static IModifier Scale(
         this IModifier style,
         float scale,
@@ -121,19 +48,5 @@ public static partial class ModifierExtensions
     )
     {
         return style.Then(new ScaleImpl(Vector2.one * scale, transition));
-    }
-
-    public static IModifier Rotate(
-        this IModifier style,
-        StyleRotate rotate,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new RotateImpl(rotate, transition));
-    }
-
-    public static IModifier Overflow(this IModifier style, StyleEnum<Overflow> overflow)
-    {
-        return style.Then(new OverflowImpl(overflow));
     }
 }

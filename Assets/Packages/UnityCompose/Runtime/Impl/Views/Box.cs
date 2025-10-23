@@ -2,10 +2,6 @@
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 
-internal class Box : ComposeVisualElement
+internal class Box : VisualElement
 {
-    public Box()
-    {
-        style.overflow = Overflow.Hidden;
-    }
 }

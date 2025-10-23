@@ -1,5 +1,7 @@
-﻿namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+﻿using UnityEngine.UIElements;
 
-internal class AnimatedContent : ComposeVisualElement
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+
+internal class AnimatedContent : VisualElement
 {
 }

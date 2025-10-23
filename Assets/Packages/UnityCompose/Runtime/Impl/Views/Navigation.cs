@@ -1,5 +1,7 @@
-﻿namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+﻿using UnityEngine.UIElements;
 
-internal class Navigation : ComposeVisualElement
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+
+internal class Navigation : VisualElement
 {
 }

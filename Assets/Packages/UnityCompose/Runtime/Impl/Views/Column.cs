@@ -2,10 +2,6 @@
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 
-internal class Column : ComposeVisualElement
+internal class Column : VisualElement
 {
-    public Column()
-    {
-        style.overflow = Overflow.Hidden;
-    }
 }
