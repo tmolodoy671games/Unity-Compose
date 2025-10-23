@@ -49,8 +49,6 @@ public static partial class ComposeFunctions
                 IImmutableStableSet.Empty<ComposeModifiedProperty>()
             )
         );
-        // if (!Equals(currentStyle.Value, resolvedStyle))
-        // {
         var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
         resolvedStyle?.Apply(newProperties);
         var propertiesToRevert = currentProperties.Value
@@ -67,7 +65,6 @@ public static partial class ComposeFunctions
         visualElement.pickingMode = PickingMode.Ignore;
         visualElement.style.overflow = Overflow.Visible;
         resolvedStyle?.Apply(visualElement);
-        // }
 
         if (initializer != null)
         {
