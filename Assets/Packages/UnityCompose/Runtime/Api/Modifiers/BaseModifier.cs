@@ -6,18 +6,16 @@ using static UnityCompose.ComposeFunctions;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-public abstract class IModifier
+public interface IModifier
 {
     [Composable]
-    public abstract void Apply(VisualElement element);
+    void Apply(VisualElement element);
 
     [Composable]
-    public abstract void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
+    void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
 
     [Composable]
-    public abstract void Revert(VisualElement element);
-
-    public abstract bool Compare(IModifier other);
+    void Revert(VisualElement element);
 
     public IModifier Then(IModifier? composeStyle)
     {
@@ -34,13 +32,24 @@ public abstract class IModifier
     {
         return style1.Then(style2);
     }
+}
+
+public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
+{
+    public abstract void Apply(VisualElement element);
+
+    public abstract void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
+
+    public abstract void Revert(VisualElement element);
+    
+    protected abstract bool Equals(T other);
 
     public override bool Equals(object? obj)
     {
         if (obj == null) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Compare((IModifier)obj);
+        return Equals((T)obj);
     }
 
     [SuppressMessage("ReSharper", "BaseObjectGetHashCodeCallInGetHashCode")]
@@ -50,22 +59,12 @@ public abstract class IModifier
     }
 }
 
-public abstract class IModifier<T> : IModifier where T : IModifier<T>
-{
-    public sealed override bool Compare(IModifier other)
-    {
-        return other is T otherStyle && Compare(otherStyle);
-    }
-
-    protected abstract bool Compare(T other);
-}
-
 public static partial class ComposeStyleExtensions
 {
     public static IModifier OrEmpty(this IModifier? style) => style ?? Modifier;
 }
 
-internal class EmptyModifierImpl : IModifier<EmptyModifierImpl>
+internal class EmptyModifierImpl : BaseModifier<EmptyModifierImpl>
 {
     public static readonly EmptyModifierImpl Instance = new();
 
@@ -85,13 +84,13 @@ internal class EmptyModifierImpl : IModifier<EmptyModifierImpl>
     {
     }
 
-    protected override bool Compare(EmptyModifierImpl other)
+    protected override bool Equals(EmptyModifierImpl other)
     {
         return true;
     }
 }
 
-internal class CompositeModifierImpl : IModifier<CompositeModifierImpl>
+internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
 {
     private readonly IModifier _first;
     private readonly IModifier _second;
@@ -123,10 +122,10 @@ internal class CompositeModifierImpl : IModifier<CompositeModifierImpl>
         _second.Revert(element);
     }
 
-    protected override bool Compare(CompositeModifierImpl other)
+    protected override bool Equals(CompositeModifierImpl other)
     {
         return _depth == other._depth &&
-               _first.Compare(other._first) &&
-               _second.Compare(other._second);
+               _first.Equals(other._first) &&
+               _second.Equals(other._second);
     }
 }

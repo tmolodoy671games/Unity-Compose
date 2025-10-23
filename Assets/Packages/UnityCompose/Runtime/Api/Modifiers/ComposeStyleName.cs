@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class NameImpl : IModifier<NameImpl>
+    private class NameImpl : BaseModifier<NameImpl>
     {
         private readonly string _name;
 
@@ -37,7 +37,7 @@ public static partial class ComposeStyleExtensions
             element.name = null;
         }
 
-        protected override bool Compare(NameImpl other)
+        protected override bool Equals(NameImpl other)
         {
             return _name == other._name;
         }

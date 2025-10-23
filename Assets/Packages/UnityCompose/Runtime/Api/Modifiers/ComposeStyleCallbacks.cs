@@ -10,7 +10,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class OnClickImpl : IModifier<OnClickImpl>
+    private class OnClickImpl : BaseModifier<OnClickImpl>
     {
         private readonly Action<ClickEvent> _onClick;
 
@@ -35,13 +35,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnClickImpl other)
+        protected override bool Equals(OnClickImpl other)
         {
             return _onClick == other._onClick;
         }
     }
 
-    private class OnMouseEnterImpl : IModifier<OnMouseEnterImpl>
+    private class OnMouseEnterImpl : BaseModifier<OnMouseEnterImpl>
     {
         private readonly Action<MouseEnterEvent> _onMouseEnter;
 
@@ -66,13 +66,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnMouseEnterImpl other)
+        protected override bool Equals(OnMouseEnterImpl other)
         {
             return _onMouseEnter == other._onMouseEnter;
         }
     }
 
-    private class OnMouseLeaveImpl : IModifier<OnMouseLeaveImpl>
+    private class OnMouseLeaveImpl : BaseModifier<OnMouseLeaveImpl>
     {
         private readonly Action<MouseLeaveEvent> _onMouseLeave;
 
@@ -97,13 +97,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnMouseLeaveImpl other)
+        protected override bool Equals(OnMouseLeaveImpl other)
         {
             return _onMouseLeave == other._onMouseLeave;
         }
     }
 
-    private class OnMouseDownImpl : IModifier<OnMouseDownImpl>
+    private class OnMouseDownImpl : BaseModifier<OnMouseDownImpl>
     {
         private readonly Action<MouseDownEvent> _onMouseDown;
 
@@ -128,13 +128,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnMouseDownImpl other)
+        protected override bool Equals(OnMouseDownImpl other)
         {
             return _onMouseDown == other._onMouseDown;
         }
     }
 
-    private class OnMouseUpImpl : IModifier<OnMouseUpImpl>
+    private class OnMouseUpImpl : BaseModifier<OnMouseUpImpl>
     {
         private readonly Action<MouseUpEvent> _onMouseUp;
 
@@ -159,13 +159,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnMouseUpImpl other)
+        protected override bool Equals(OnMouseUpImpl other)
         {
             return _onMouseUp == other._onMouseUp;
         }
     }
 
-    private class OnMouseMoveImpl : IModifier<OnMouseMoveImpl>
+    private class OnMouseMoveImpl : BaseModifier<OnMouseMoveImpl>
     {
         private readonly Action<MouseMoveEvent> _onMouseMove;
 
@@ -190,13 +190,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnMouseMoveImpl other)
+        protected override bool Equals(OnMouseMoveImpl other)
         {
             return _onMouseMove == other._onMouseMove;
         }
     }
 
-    private class OnGeometryChangedImpl : IModifier<OnGeometryChangedImpl>
+    private class OnGeometryChangedImpl : BaseModifier<OnGeometryChangedImpl>
     {
         private readonly Action<GeometryChangedEvent> _onGeometryChanged;
 
@@ -218,7 +218,7 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(OnGeometryChangedImpl other)
+        protected override bool Equals(OnGeometryChangedImpl other)
         {
             return _onGeometryChanged == other._onGeometryChanged;
         }

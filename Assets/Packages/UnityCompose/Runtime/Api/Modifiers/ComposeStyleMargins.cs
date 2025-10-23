@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class MarginTopImpl : IModifier<MarginTopImpl>
+    private class MarginTopImpl : BaseModifier<MarginTopImpl>
     {
         private readonly StyleLength _marginTop;
         private readonly ComposeTransition _transition;
@@ -34,13 +34,13 @@ public static partial class ComposeStyleExtensions
             element.style.marginTop = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MarginTopImpl other)
+        protected override bool Equals(MarginTopImpl other)
         {
             return _marginTop == other._marginTop && Equals(_transition, other._transition);
         }
     }
 
-    private class MarginBottomImpl : IModifier<MarginBottomImpl>
+    private class MarginBottomImpl : BaseModifier<MarginBottomImpl>
     {
         private readonly StyleLength _marginBottom;
         private readonly ComposeTransition _transition;
@@ -68,13 +68,13 @@ public static partial class ComposeStyleExtensions
             element.style.marginBottom = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MarginBottomImpl other)
+        protected override bool Equals(MarginBottomImpl other)
         {
             return _marginBottom == other._marginBottom && Equals(_transition, other._transition);
         }
     }
 
-    private class MarginLeftImpl : IModifier<MarginLeftImpl>
+    private class MarginLeftImpl : BaseModifier<MarginLeftImpl>
     {
         private readonly StyleLength _marginLeft;
         private readonly ComposeTransition _transition;
@@ -102,13 +102,13 @@ public static partial class ComposeStyleExtensions
             element.style.marginLeft = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MarginLeftImpl other)
+        protected override bool Equals(MarginLeftImpl other)
         {
             return _marginLeft == other._marginLeft && Equals(_transition, other._transition);
         }
     }
 
-    private class MarginRightImpl : IModifier<MarginRightImpl>
+    private class MarginRightImpl : BaseModifier<MarginRightImpl>
     {
         private readonly StyleLength _marginRight;
         private readonly ComposeTransition _transition;
@@ -136,7 +136,7 @@ public static partial class ComposeStyleExtensions
             element.style.marginRight = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MarginRightImpl other)
+        protected override bool Equals(MarginRightImpl other)
         {
             return _marginRight == other._marginRight && Equals(_transition, other._transition);
         }

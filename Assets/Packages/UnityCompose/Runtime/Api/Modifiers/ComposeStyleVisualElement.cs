@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class PickingModeImpl : IModifier<PickingModeImpl>
+    private class PickingModeImpl : BaseModifier<PickingModeImpl>
     {
         private readonly PickingMode _pickingMode;
 
@@ -30,7 +30,7 @@ public static partial class ComposeStyleExtensions
             element.pickingMode = UnityEngine.UIElements.PickingMode.Position;
         }
 
-        protected override bool Compare(PickingModeImpl other)
+        protected override bool Equals(PickingModeImpl other)
         {
             return _pickingMode == other._pickingMode;
         }

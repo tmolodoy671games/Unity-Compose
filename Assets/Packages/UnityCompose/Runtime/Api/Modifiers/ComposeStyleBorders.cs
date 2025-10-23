@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class BorderBottomLeftRadiusImpl : IModifier<BorderBottomLeftRadiusImpl>
+    private class BorderBottomLeftRadiusImpl : BaseModifier<BorderBottomLeftRadiusImpl>
     {
         private readonly StyleLength _borderBottomLeftRadius;
         private readonly ComposeTransition _transition;
@@ -34,14 +34,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderBottomLeftRadius = _borderBottomLeftRadius;
         }
 
-        protected override bool Compare(BorderBottomLeftRadiusImpl other)
+        protected override bool Equals(BorderBottomLeftRadiusImpl other)
         {
             return other._borderBottomLeftRadius == _borderBottomLeftRadius &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderBottomRightRadiusImpl : IModifier<BorderBottomRightRadiusImpl>
+    private class BorderBottomRightRadiusImpl : BaseModifier<BorderBottomRightRadiusImpl>
     {
         private readonly StyleLength _borderBottomRightRadius;
         private readonly ComposeTransition _transition;
@@ -69,14 +69,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderBottomRightRadius = _borderBottomRightRadius;
         }
 
-        protected override bool Compare(BorderBottomRightRadiusImpl other)
+        protected override bool Equals(BorderBottomRightRadiusImpl other)
         {
             return _borderBottomRightRadius == other._borderBottomRightRadius &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderTopLeftRadiusImpl : IModifier<BorderTopLeftRadiusImpl>
+    private class BorderTopLeftRadiusImpl : BaseModifier<BorderTopLeftRadiusImpl>
     {
         private readonly StyleLength _borderTopLeftRadius;
         private readonly ComposeTransition _transition;
@@ -104,14 +104,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderTopLeftRadius = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderTopLeftRadiusImpl other)
+        protected override bool Equals(BorderTopLeftRadiusImpl other)
         {
             return _borderTopLeftRadius == other._borderTopLeftRadius &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderTopRightRadiusImpl : IModifier<BorderTopRightRadiusImpl>
+    private class BorderTopRightRadiusImpl : BaseModifier<BorderTopRightRadiusImpl>
     {
         private readonly StyleLength _borderTopRightRadius;
         private readonly ComposeTransition _transition;
@@ -139,14 +139,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderTopRightRadius = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderTopRightRadiusImpl other)
+        protected override bool Equals(BorderTopRightRadiusImpl other)
         {
             return _borderTopRightRadius == other._borderTopRightRadius &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderTopWidthImpl : IModifier<BorderTopWidthImpl>
+    private class BorderTopWidthImpl : BaseModifier<BorderTopWidthImpl>
     {
         private readonly StyleFloat _borderTopWidth;
         private readonly ComposeTransition _transition;
@@ -174,13 +174,13 @@ public static partial class ComposeStyleExtensions
             element.style.borderTopWidth = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderTopWidthImpl other)
+        protected override bool Equals(BorderTopWidthImpl other)
         {
             return _borderTopWidth == other._borderTopWidth && Equals(_transition, other._transition);
         }
     }
 
-    private class BorderBottomWidthImpl : IModifier<BorderBottomWidthImpl>
+    private class BorderBottomWidthImpl : BaseModifier<BorderBottomWidthImpl>
     {
         private readonly StyleFloat _borderBottomWidth;
         private readonly ComposeTransition _transition;
@@ -208,14 +208,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderBottomWidth = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderBottomWidthImpl other)
+        protected override bool Equals(BorderBottomWidthImpl other)
         {
             return _borderBottomWidth == other._borderBottomWidth &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderLeftWidthImpl : IModifier<BorderLeftWidthImpl>
+    private class BorderLeftWidthImpl : BaseModifier<BorderLeftWidthImpl>
     {
         private readonly StyleFloat _borderLeftWidth;
         private readonly ComposeTransition _transition;
@@ -243,14 +243,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderLeftWidth = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderLeftWidthImpl other)
+        protected override bool Equals(BorderLeftWidthImpl other)
         {
             return _borderLeftWidth == other._borderLeftWidth &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderRightWidthImpl : IModifier<BorderRightWidthImpl>
+    private class BorderRightWidthImpl : BaseModifier<BorderRightWidthImpl>
     {
         private readonly StyleFloat _borderRightWidth;
         private readonly ComposeTransition _transition;
@@ -278,14 +278,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderRightWidth = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderRightWidthImpl other)
+        protected override bool Equals(BorderRightWidthImpl other)
         {
             return _borderRightWidth == other._borderRightWidth &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderTopColorImpl : IModifier<BorderTopColorImpl>
+    private class BorderTopColorImpl : BaseModifier<BorderTopColorImpl>
     {
         private readonly StyleColor _borderTopColor;
         private readonly ComposeTransition _transition;
@@ -313,14 +313,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderTopColor = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderTopColorImpl other)
+        protected override bool Equals(BorderTopColorImpl other)
         {
             return _borderTopColor == other._borderTopColor &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderBottomColorImpl : IModifier<BorderBottomColorImpl>
+    private class BorderBottomColorImpl : BaseModifier<BorderBottomColorImpl>
     {
         private readonly StyleColor _borderBottomColor;
         private readonly ComposeTransition _transition;
@@ -348,7 +348,7 @@ public static partial class ComposeStyleExtensions
             element.style.borderBottomColor = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderBottomColorImpl other)
+        protected override bool Equals(BorderBottomColorImpl other)
         {
             return _borderBottomColor == other._borderBottomColor &&
                    Equals(_transition, other._transition);
@@ -356,7 +356,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderLeftColorImpl : IModifier<BorderLeftColorImpl>
+    private class BorderLeftColorImpl : BaseModifier<BorderLeftColorImpl>
     {
         private readonly StyleColor _borderLeftColor;
         private readonly ComposeTransition _transition;
@@ -384,14 +384,14 @@ public static partial class ComposeStyleExtensions
             element.style.borderLeftColor = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderLeftColorImpl other)
+        protected override bool Equals(BorderLeftColorImpl other)
         {
             return _borderLeftColor == other._borderLeftColor &&
                    Equals(_transition, other._transition);
         }
     }
 
-    private class BorderRightColorImpl : IModifier<BorderRightColorImpl>
+    private class BorderRightColorImpl : BaseModifier<BorderRightColorImpl>
     {
         private readonly StyleColor _borderRightColor;
         private readonly ComposeTransition _transition;
@@ -419,7 +419,7 @@ public static partial class ComposeStyleExtensions
             element.style.borderRightColor = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BorderRightColorImpl other)
+        protected override bool Equals(BorderRightColorImpl other)
         {
             return _borderRightColor == other._borderRightColor &&
                    Equals(_transition, other._transition);

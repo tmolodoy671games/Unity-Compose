@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class WidthImpl : IModifier<WidthImpl>
+    private class WidthImpl : BaseModifier<WidthImpl>
     {
         private readonly StyleLength _width;
         private readonly bool _respectPadding;
@@ -34,7 +34,7 @@ public static partial class ComposeStyleExtensions
             element.style.width = StyleKeyword.Null;
         }
 
-        protected override bool Compare(WidthImpl other)
+        protected override bool Equals(WidthImpl other)
         {
             return _width == other._width;
         }
@@ -58,7 +58,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class HeightImpl : IModifier<HeightImpl>
+    private class HeightImpl : BaseModifier<HeightImpl>
     {
         private readonly StyleLength _height;
         private readonly bool _respectPadding;
@@ -85,7 +85,7 @@ public static partial class ComposeStyleExtensions
             element.style.height = StyleKeyword.Null;
         }
 
-        protected override bool Compare(HeightImpl other)
+        protected override bool Equals(HeightImpl other)
         {
             return _height == other._height;
         }
@@ -109,7 +109,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MaxWidthImpl : IModifier<MaxWidthImpl>
+    private class MaxWidthImpl : BaseModifier<MaxWidthImpl>
     {
         private readonly StyleLength _maxWidth;
 
@@ -133,13 +133,13 @@ public static partial class ComposeStyleExtensions
             element.style.maxWidth = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MaxWidthImpl other)
+        protected override bool Equals(MaxWidthImpl other)
         {
             return _maxWidth == other._maxWidth;
         }
     }
 
-    private class MaxHeightImpl : IModifier<MaxHeightImpl>
+    private class MaxHeightImpl : BaseModifier<MaxHeightImpl>
     {
         private readonly StyleLength _maxHeight;
 
@@ -163,13 +163,13 @@ public static partial class ComposeStyleExtensions
             element.style.maxHeight = StyleKeyword.Null;
         }
 
-        protected override bool Compare(MaxHeightImpl other)
+        protected override bool Equals(MaxHeightImpl other)
         {
             return _maxHeight == other._maxHeight;
         }
     }
 
-    private class MinWidthImpl : IModifier<MinWidthImpl>
+    private class MinWidthImpl : BaseModifier<MinWidthImpl>
     {
         private readonly StyleLength _width;
         private readonly ComposeTransition _transition;
@@ -196,13 +196,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(MinWidthImpl other)
+        protected override bool Equals(MinWidthImpl other)
         {
             return _width.Equals(other._width) && Equals(_transition, other._transition);
         }
     }
 
-    private class MinHeightImpl : IModifier<MinHeightImpl>
+    private class MinHeightImpl : BaseModifier<MinHeightImpl>
     {
         private readonly StyleLength _height;
         private readonly ComposeTransition _transition;
@@ -229,7 +229,7 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(MinHeightImpl other)
+        protected override bool Equals(MinHeightImpl other)
         {
             return _height.Equals(other._height) && Equals(_transition, other._transition);
         }

@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class PaddingTopImpl : IModifier<PaddingTopImpl>
+    private class PaddingTopImpl : BaseModifier<PaddingTopImpl>
     {
         private readonly StyleLength _paddingTop;
         private readonly ComposeTransition _transition;
@@ -34,13 +34,13 @@ public static partial class ComposeStyleExtensions
             element.style.paddingTop = StyleKeyword.Null;
         }
 
-        protected override bool Compare(PaddingTopImpl other)
+        protected override bool Equals(PaddingTopImpl other)
         {
             return _paddingTop == other._paddingTop && Equals(_transition, other._transition);
         }
     }
 
-    private class PaddingBottomImpl : IModifier<PaddingBottomImpl>
+    private class PaddingBottomImpl : BaseModifier<PaddingBottomImpl>
     {
         private readonly StyleLength _paddingBottom;
         private readonly ComposeTransition _transition;
@@ -68,13 +68,13 @@ public static partial class ComposeStyleExtensions
             element.style.paddingBottom = StyleKeyword.Null;
         }
 
-        protected override bool Compare(PaddingBottomImpl other)
+        protected override bool Equals(PaddingBottomImpl other)
         {
             return _paddingBottom == other._paddingBottom && Equals(_transition, other._transition);
         }
     }
 
-    private class PaddingLeftImpl : IModifier<PaddingLeftImpl>
+    private class PaddingLeftImpl : BaseModifier<PaddingLeftImpl>
     {
         private readonly StyleLength _paddingLeft;
         private readonly ComposeTransition _transition;
@@ -102,13 +102,13 @@ public static partial class ComposeStyleExtensions
             element.style.paddingLeft = StyleKeyword.Null;
         }
 
-        protected override bool Compare(PaddingLeftImpl other)
+        protected override bool Equals(PaddingLeftImpl other)
         {
             return _paddingLeft == other._paddingLeft && Equals(_transition, other._transition);
         }
     }
 
-    private class PaddingRightImpl : IModifier<PaddingRightImpl>
+    private class PaddingRightImpl : BaseModifier<PaddingRightImpl>
     {
         private readonly StyleLength _paddingRight;
         private readonly ComposeTransition _transition;
@@ -136,7 +136,7 @@ public static partial class ComposeStyleExtensions
             element.style.paddingRight = StyleKeyword.Null;
         }
 
-        protected override bool Compare(PaddingRightImpl other)
+        protected override bool Equals(PaddingRightImpl other)
         {
             return _paddingRight == other._paddingRight;
         }

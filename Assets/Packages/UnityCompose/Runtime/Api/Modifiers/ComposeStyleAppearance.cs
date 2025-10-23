@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class BackgroundColorImpl : IModifier<BackgroundColorImpl>
+    private class BackgroundColorImpl : BaseModifier<BackgroundColorImpl>
     {
         private readonly StyleColor _backgroundColor;
         private readonly ComposeTransition _transition;
@@ -35,13 +35,13 @@ public static partial class ComposeStyleExtensions
             element.style.backgroundColor = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BackgroundColorImpl other)
+        protected override bool Equals(BackgroundColorImpl other)
         {
             return _backgroundColor == other._backgroundColor && Equals(_transition, other._transition);
         }
     }
 
-    private class BackgroundImageImpl : IModifier<BackgroundImageImpl>
+    private class BackgroundImageImpl : BaseModifier<BackgroundImageImpl>
     {
         private readonly StyleBackground _backgroundImage;
 
@@ -65,13 +65,13 @@ public static partial class ComposeStyleExtensions
             element.style.backgroundImage = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BackgroundImageImpl other)
+        protected override bool Equals(BackgroundImageImpl other)
         {
             return _backgroundImage == other._backgroundImage;
         }
     }
 
-    private class VisibilityImpl : IModifier<VisibilityImpl>
+    private class VisibilityImpl : BaseModifier<VisibilityImpl>
     {
         private readonly StyleEnum<Visibility> _visibility;
 
@@ -95,13 +95,13 @@ public static partial class ComposeStyleExtensions
             element.style.visibility = StyleKeyword.Null;
         }
 
-        protected override bool Compare(VisibilityImpl other)
+        protected override bool Equals(VisibilityImpl other)
         {
             return _visibility == other._visibility;
         }
     }
 
-    private class DisplayImpl : IModifier<DisplayImpl>
+    private class DisplayImpl : BaseModifier<DisplayImpl>
     {
         private readonly StyleEnum<DisplayStyle> _display;
 
@@ -125,13 +125,13 @@ public static partial class ComposeStyleExtensions
             element.style.display = StyleKeyword.Null;
         }
 
-        protected override bool Compare(DisplayImpl other)
+        protected override bool Equals(DisplayImpl other)
         {
             return _display == other._display;
         }
     }
 
-    private class OpacityImpl : IModifier<OpacityImpl>
+    private class OpacityImpl : BaseModifier<OpacityImpl>
     {
         private readonly StyleFloat _opacity;
         private readonly ComposeTransition _transition;
@@ -159,13 +159,13 @@ public static partial class ComposeStyleExtensions
             element.style.opacity = StyleKeyword.Null;
         }
 
-        protected override bool Compare(OpacityImpl other)
+        protected override bool Equals(OpacityImpl other)
         {
             return other._opacity == _opacity && Equals(_transition, other._transition);
         }
     }
 
-    private class ScaleImpl : IModifier<ScaleImpl>
+    private class ScaleImpl : BaseModifier<ScaleImpl>
     {
         private readonly StyleScale _scale;
         private readonly ComposeTransition _transition;
@@ -193,13 +193,13 @@ public static partial class ComposeStyleExtensions
             element.style.scale = StyleKeyword.Null;
         }
 
-        protected override bool Compare(ScaleImpl other)
+        protected override bool Equals(ScaleImpl other)
         {
             return other._scale == _scale && Equals(_transition, other._transition);
         }
     }
 
-    private class RotateImpl : IModifier<RotateImpl>
+    private class RotateImpl : BaseModifier<RotateImpl>
     {
         private readonly StyleRotate _rotate;
         private readonly ComposeTransition _transition;
@@ -227,13 +227,13 @@ public static partial class ComposeStyleExtensions
             element.style.rotate = StyleKeyword.Null;
         }
 
-        protected override bool Compare(RotateImpl other)
+        protected override bool Equals(RotateImpl other)
         {
             return _rotate == other._rotate && Equals(_transition, other._transition);
         }
     }
 
-    private class OverflowImpl : IModifier<OverflowImpl>
+    private class OverflowImpl : BaseModifier<OverflowImpl>
     {
         private readonly StyleEnum<Overflow> _overflow;
 
@@ -257,7 +257,7 @@ public static partial class ComposeStyleExtensions
             element.style.overflow = StyleKeyword.Null;
         }
 
-        protected override bool Compare(OverflowImpl other)
+        protected override bool Equals(OverflowImpl other)
         {
             return _overflow == other._overflow;
         }

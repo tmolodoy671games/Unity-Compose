@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class AlignSelfImpl : IModifier<AlignSelfImpl>
+    private class AlignSelfImpl : BaseModifier<AlignSelfImpl>
     {
         private readonly StyleEnum<Align> _alignSelf;
 
@@ -31,13 +31,13 @@ public static partial class ComposeStyleExtensions
             element.style.alignSelf = StyleKeyword.Null;
         }
 
-        protected override bool Compare(AlignSelfImpl other)
+        protected override bool Equals(AlignSelfImpl other)
         {
             return _alignSelf == other._alignSelf;
         }
     }
 
-    private class FlexGrowImpl : IModifier<FlexGrowImpl>
+    private class FlexGrowImpl : BaseModifier<FlexGrowImpl>
     {
         private readonly StyleFloat _flexGrow;
         private readonly ComposeTransition _transition;
@@ -65,13 +65,13 @@ public static partial class ComposeStyleExtensions
             element.style.flexGrow = StyleKeyword.Null;
         }
 
-        protected override bool Compare(FlexGrowImpl other)
+        protected override bool Equals(FlexGrowImpl other)
         {
             return _flexGrow == other._flexGrow;
         }
     }
         
-    private class FlexShrinkImpl : IModifier<FlexShrinkImpl>
+    private class FlexShrinkImpl : BaseModifier<FlexShrinkImpl>
     {
         private readonly StyleFloat _flexShrink;
         private readonly ComposeTransition _transition;
@@ -98,13 +98,13 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(FlexShrinkImpl other)
+        protected override bool Equals(FlexShrinkImpl other)
         {
             return _flexShrink.Equals(other._flexShrink) && Equals(_transition, other._transition);
         }
     }
 
-    private class PositionImpl : IModifier<PositionImpl>
+    private class PositionImpl : BaseModifier<PositionImpl>
     {
         private readonly StyleEnum<Position> _position;
 
@@ -128,13 +128,13 @@ public static partial class ComposeStyleExtensions
             element.style.position = StyleKeyword.Null;
         }
 
-        protected override bool Compare(PositionImpl other)
+        protected override bool Equals(PositionImpl other)
         {
             return _position == other._position;
         }
     }
 
-    private class TopImpl : IModifier<TopImpl>
+    private class TopImpl : BaseModifier<TopImpl>
     {
         private readonly StyleLength _top;
         private readonly ComposeTransition _transition;
@@ -162,13 +162,13 @@ public static partial class ComposeStyleExtensions
             element.style.top = StyleKeyword.Null;
         }
 
-        protected override bool Compare(TopImpl other)
+        protected override bool Equals(TopImpl other)
         {
             return _top == other._top && Equals(_transition, other._transition);
         }
     }
 
-    private class BottomImpl : IModifier<BottomImpl>
+    private class BottomImpl : BaseModifier<BottomImpl>
     {
         private readonly StyleLength _bottom;
         private readonly ComposeTransition _transition;
@@ -196,13 +196,13 @@ public static partial class ComposeStyleExtensions
             element.style.bottom = StyleKeyword.Null;
         }
 
-        protected override bool Compare(BottomImpl other)
+        protected override bool Equals(BottomImpl other)
         {
             return _bottom == other._bottom && Equals(_transition, other._transition);
         }
     }
 
-    private class LeftImpl : IModifier<LeftImpl>
+    private class LeftImpl : BaseModifier<LeftImpl>
     {
         private readonly StyleLength _left;
         private readonly ComposeTransition _transition;
@@ -230,13 +230,13 @@ public static partial class ComposeStyleExtensions
             element.style.left = StyleKeyword.Null;
         }
 
-        protected override bool Compare(LeftImpl other)
+        protected override bool Equals(LeftImpl other)
         {
             return _left == other._left && Equals(_transition, other._transition);
         }
     }
 
-    private class RightImpl : IModifier<RightImpl>
+    private class RightImpl : BaseModifier<RightImpl>
     {
         private readonly StyleLength _right;
         private readonly ComposeTransition _transition;
@@ -264,14 +264,14 @@ public static partial class ComposeStyleExtensions
             element.style.right = StyleKeyword.Null;
         }
 
-        protected override bool Compare(RightImpl other)
+        protected override bool Equals(RightImpl other)
         {
             return _right == other._right && Equals(_transition, other._transition);
             ;
         }
     }
 
-    private class TranslateImpl : IModifier<TranslateImpl>
+    private class TranslateImpl : BaseModifier<TranslateImpl>
     {
         private readonly StyleTranslate _translate;
         private readonly ComposeTransition _transition;
@@ -299,13 +299,13 @@ public static partial class ComposeStyleExtensions
             element.style.translate = StyleKeyword.Null;
         }
 
-        protected override bool Compare(TranslateImpl other)
+        protected override bool Equals(TranslateImpl other)
         {
             return _translate == other._translate && Equals(_transition, other._transition);
         }
     }
 
-    private class TransformOriginImpl : IModifier<TransformOriginImpl>
+    private class TransformOriginImpl : BaseModifier<TransformOriginImpl>
     {
         private readonly TransformOrigin _origin;
         private readonly ComposeTransition _transition;
@@ -332,7 +332,7 @@ public static partial class ComposeStyleExtensions
         {
         }
 
-        protected override bool Compare(TransformOriginImpl other)
+        protected override bool Equals(TransformOriginImpl other)
         {
             return _origin.Equals(other._origin) && Equals(_transition, other._transition);
         }
