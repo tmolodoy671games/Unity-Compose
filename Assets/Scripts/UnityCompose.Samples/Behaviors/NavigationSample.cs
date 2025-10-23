@@ -2,7 +2,6 @@
 
 using System.Collections;
 using StableCollections;
-using UnityEngine.UIElements;
 using static UnityCompose.Samples.Behaviors.InputFunctions;
 using Action = System.Action;
 

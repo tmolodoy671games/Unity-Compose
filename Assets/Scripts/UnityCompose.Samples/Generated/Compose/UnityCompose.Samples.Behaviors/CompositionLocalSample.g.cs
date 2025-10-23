@@ -1,7 +1,7 @@
 using StableCollections;
-using UnityEngine.UIElements;
 using static UnityCompose.ComposeFunctions;
 
+// ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class CompositionLocalSample
