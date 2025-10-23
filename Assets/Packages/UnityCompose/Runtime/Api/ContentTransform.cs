@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine.UIElements;
+using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -37,13 +38,13 @@ public abstract class EnterTransition
         {
             return _direction switch
             {
-                SlideDirection.Up => IModifier.Empty
+                SlideDirection.Up => Modifier
                     .Top((1 - progress) * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Down => IModifier.Empty
+                SlideDirection.Down => Modifier
                     .Top((progress - 1) * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Left => IModifier.Empty
+                SlideDirection.Left => Modifier
                     .Left((1 - progress) * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
-                SlideDirection.Right => IModifier.Empty
+                SlideDirection.Right => Modifier
                     .Left((progress - 1) * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -54,7 +55,7 @@ public abstract class EnterTransition
     {
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return IModifier.Empty
+            return Modifier
                 .Opacity(progress);
         }
     }
@@ -69,7 +70,7 @@ public abstract class EnterTransition
 
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return IModifier.Empty;
+            return Modifier;
         }
     }
 
@@ -131,13 +132,13 @@ public abstract class ExitTransition
         {
             return _direction switch
             {
-                SlideDirection.Up => IModifier.Empty
+                SlideDirection.Up => Modifier
                     .Top(-progress * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Down => IModifier.Empty
+                SlideDirection.Down => Modifier
                     .Top(progress * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Left => IModifier.Empty
+                SlideDirection.Left => Modifier
                     .Left(-progress * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
-                SlideDirection.Right => IModifier.Empty
+                SlideDirection.Right => Modifier
                     .Left(progress * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -148,7 +149,7 @@ public abstract class ExitTransition
     {
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return IModifier.Empty
+            return Modifier
                 .Opacity(1 - progress);
         }
     }
@@ -163,7 +164,7 @@ public abstract class ExitTransition
 
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return IModifier.Empty
+            return Modifier
                 .Opacity(0f);
         }
     }
@@ -191,7 +192,7 @@ public abstract class ExitTransition
         
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return IModifier.Empty
+            return Modifier
                 .Opacity(0f);
         }
     }

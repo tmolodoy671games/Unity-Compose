@@ -46,7 +46,7 @@ public static partial class ComposeFunctions
         // Animating size:
         var (containerStyle, contentStyle) = animateSize
             ? AnimateSizeStyles(transitionDuration)
-            : (IModifier.Empty, IModifier.Empty);
+            : (Modifier, Modifier);
 
         // Layout:
         var resolvedTransition = Remember(

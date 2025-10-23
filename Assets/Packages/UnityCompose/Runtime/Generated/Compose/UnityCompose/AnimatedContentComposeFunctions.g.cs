@@ -30,7 +30,7 @@ public static partial class ComposeFunctions
                 targetValue.Value = value;
             }));
             // Animating size:
-            var(containerStyle, contentStyle) = animateSize ? AnimateSizeStyles(transitionDuration) : (IModifier.Empty, IModifier.Empty);
+            var(containerStyle, contentStyle) = animateSize ? AnimateSizeStyles(transitionDuration) : (Modifier, Modifier);
             // Layout:
             var resolvedTransition = Remember(value!, () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value));
             ReusableComposeView<AnimatedContent>(style: style.OrEmpty().Then(containerStyle), content: RememberComposable<global::System.Action>((value, content, isSwitched, resolvedProgress, previousValue, contentStyle, resolvedTransition), () =>

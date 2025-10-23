@@ -44,8 +44,8 @@ public static partial class ComposeFunctions
     {
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
-        var contentStyle = IModifier.Empty;
-        var containerStyle = IModifier.Empty
+        var contentStyle = Modifier;
+        var containerStyle = Modifier
             .OnGeometryChanged(it =>
             {
                 var layout = it.currentTarget.CastTo<VisualElement>().resolvedStyle;

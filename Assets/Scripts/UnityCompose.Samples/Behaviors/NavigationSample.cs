@@ -26,12 +26,12 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                style: IModifier.Empty
+                style: Modifier
                     .Size(100.Percent()),
                 content: () =>
                 {
                     Box(
-                        style: IModifier.Empty
+                        style: Modifier
                             .Size(100.Percent()),
                         content: () =>
                         {
@@ -44,7 +44,7 @@ namespace UnityCompose.Samples.Behaviors
                                 transitionDuration: 5,
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
-                                style: IModifier.Empty
+                                style: Modifier
                                     .Size(100.Percent())
                             );
                         }
@@ -83,13 +83,13 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .Size(100.Percent())
                     .BackgroundColor(Color.green),
                 content: () =>
                 {
                     Spacer(
-                        style: IModifier.Empty
+                        style: Modifier
                             .Size(100)
                             .BackgroundColor(Color.blue)
                             .Scale(1 + 2 * LocalTransitionProgress.Current)
@@ -107,7 +107,7 @@ namespace UnityCompose.Samples.Behaviors
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowFirstScreen());
             Spacer(
-                style: IModifier.Empty
+                style: Modifier
                     .Size(100.Percent())
                     .BackgroundColor(Color.red)
             );

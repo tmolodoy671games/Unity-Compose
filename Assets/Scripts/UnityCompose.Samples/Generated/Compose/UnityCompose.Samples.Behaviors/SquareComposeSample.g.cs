@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var isHovered = Remember(() => MutableStateOf(false));
                 var isPressed = Remember(() => MutableStateOf(false));
-                Spacer(style: IModifier.Empty.Size(100).BackgroundColor(isPressed.Value ? Color.cyan : Color.blue, Transition()).AlignSelf(Align.Center).BorderRadius(32).Top(50.Percent()).Bottom(50.Percent()).Pivot(0, 0.5f).Scale(isHovered.Value ? 2 : 1, Transition()).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>((isHovered, isPressed), () =>
+                Spacer(style: Modifier.Size(100).BackgroundColor(isPressed.Value ? Color.cyan : Color.blue, Transition()).AlignSelf(Align.Center).BorderRadius(32).Top(50.Percent()).Bottom(50.Percent()).Pivot(0, 0.5f).Scale(isHovered.Value ? 2 : 1, Transition()).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>((isHovered, isPressed), () =>
                 {
                     isPressed.Value = false;
                     isHovered.Value = false;

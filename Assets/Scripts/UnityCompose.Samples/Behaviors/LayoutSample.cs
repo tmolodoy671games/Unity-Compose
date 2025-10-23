@@ -20,19 +20,19 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .Width(100.Percent())
                     .Height(100.Percent()),
                 content: () =>
                 {
                     Box(
-                        style: IModifier.Empty
+                        style: Modifier
                             .BackgroundColor(Color.red)
                             .Size(400),
                         content: () =>
                         {
                             Spacer(
-                                style: IModifier.Empty
+                                style: Modifier
                                     .Size(100)
                                     .Position(Position.Absolute)
                                     .BackgroundColor(Color.yellow)

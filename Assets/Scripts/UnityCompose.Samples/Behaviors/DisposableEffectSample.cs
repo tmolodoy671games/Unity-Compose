@@ -20,7 +20,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .Name("launched-effect-disposal")
                     .FlexGrow(1),
                 content: () =>
@@ -44,7 +44,7 @@ namespace UnityCompose.Samples.Behaviors
                         text: $"DisposableEffect is {onOrOff}",
                         textColor: Color.white,
                         fontSize: 40,
-                        style: IModifier.Empty
+                        style: Modifier
                             .Name("test-button")
                             .BackgroundColor(isHovered.Value ? Color.cyan : Color.blue, Transition())
                             .PaddingVertical(20)

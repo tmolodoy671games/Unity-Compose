@@ -20,7 +20,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .Width(100.Percent())
                     .Height(100.Percent())
                     .BackgroundColor(Color.white),
@@ -28,7 +28,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
-                        style: IModifier.Empty
+                        style: Modifier
                             .Padding(isHovered.Value ? 80 : 40, 16, Transition())
                             .BackgroundColor(Color.blue)
                             .BorderRadius(16)

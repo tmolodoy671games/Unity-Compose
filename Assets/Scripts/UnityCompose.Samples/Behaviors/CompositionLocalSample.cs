@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .Name("composition-local-sample")
                     .FlexGrow(1),
                 content: () =>
@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                         text: "Switch",
                         textColor: Color.white,
                         fontSize: 32,
-                        style: IModifier.Empty
+                        style: Modifier
                             .BackgroundColor(Color.blue)
                             .Padding(32)
                             .BorderRadius(16)
@@ -60,7 +60,7 @@ namespace UnityCompose.Samples.Behaviors
                 Box(() =>
                 {
                     Spacer(
-                        style: IModifier.Empty
+                        style: Modifier
                             .BackgroundColor(
                                 LocalIsSwitched.Current ? Color.green : Color.red, Transition()
                             )

@@ -20,13 +20,13 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: IModifier.Empty
+                style: Modifier
                     .FlexGrow(1),
                 content: () =>
                 {
                     Column(
                         alignHorizontally: Align.Stretch,
-                        style: IModifier.Empty,
+                        style: Modifier,
                         content: () =>
                         {
                             var showFirst = Remember(() => MutableStateOf(false));
@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                                     text: $"Clicked {firstCount.Value} times",
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
-                                    style: IModifier.Empty
+                                    style: Modifier
                                         .BackgroundColor(Color.red)
                                         .Padding(20)
                                         .BorderRadius(16)
@@ -51,7 +51,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: $"Clicked {secondCount.Value} times",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: IModifier.Empty
+                                style: Modifier
                                     .BackgroundColor(Color.green)
                                     .Padding(20)
                                     .BorderRadius(16)
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Switch",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: IModifier.Empty
+                                style: Modifier
                                     .BackgroundColor(Color.blue)
                                     .Padding(20)
                                     .BorderRadius(16)

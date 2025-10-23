@@ -62,7 +62,7 @@ public static partial class ComposeFunctions
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentStyle = screenState switch
                             {
-                                ScreenState.Idle => IModifier.Empty.Position(isCurrentScreen ? Position.Relative : Position.Absolute),
+                                ScreenState.Idle => Modifier.Position(isCurrentScreen ? Position.Relative : Position.Absolute),
                                 ScreenState.Appearing => resolvedTransition.Enter.Get(resolvedProgress, parent).Position(isCurrentScreen ? Position.Relative : Position.Absolute),
                                 ScreenState.Disappearing => resolvedTransition.Exit.Get(resolvedProgress, parent).Position(Position.Absolute),
                                 _ => throw new ArgumentOutOfRangeException()};
