@@ -76,9 +76,9 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Row(verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().NewPadding(all: 4).Border(radius: 12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action<global::UnityCompose.IRowScope>>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), scope =>
+                Row(verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().NewPadding(all: 4).Border(radius: 12).NewMargin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action<global::UnityCompose.IRowScope>>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), scope =>
                 {
-                    Text(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Then(scope.Weight(1)).Margin(left: 32));
+                    Text(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Then(scope.Weight(1)).NewMargin(left: 32));
                     Column(content: RememberComposable<global::System.Action>((onMoveUpClick, onMoveDownClick), () =>
                     {
                         Text(text: "↑", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, modifier: Modifier.Name("up-arrow-button").Background(Color.green).NewPadding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveUpClick));

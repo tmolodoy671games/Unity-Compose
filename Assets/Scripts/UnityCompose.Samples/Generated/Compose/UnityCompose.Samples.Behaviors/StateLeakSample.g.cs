@@ -25,8 +25,8 @@ namespace UnityCompose.Samples.Behaviors
                         }
 
                         var secondCount = Remember(() => MutableStateOf(0));
-                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, modifier: Modifier.Then(scope.FillMaxWidth()).Background(Color.green).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
-                        Text(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, modifier: Modifier.Then(scope.FillMaxWidth()).Background(Color.blue).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, modifier: Modifier.Then(scope.FillMaxWidth()).Background(Color.green).NewPadding(all: 20).Border(radius: 16).NewMargin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
+                        Text(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, modifier: Modifier.Then(scope.FillMaxWidth()).Background(Color.blue).NewPadding(all: 20).Border(radius: 16).NewMargin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
                     }));
                 }));
             }

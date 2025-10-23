@@ -71,7 +71,7 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .NewPadding(horizontal: 100, vertical: 32)
                                     .Background(Color.blue)
-                                    .Margin(top: 16)
+                                    .NewMargin(top: 16)
                                     .Border(radius: 16)
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );

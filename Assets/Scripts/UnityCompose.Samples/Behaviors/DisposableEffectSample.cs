@@ -50,7 +50,7 @@ namespace UnityCompose.Samples.Behaviors
                             .NewPadding(vertical: 20)
                             .NewPadding(horizontal: isHovered.Value ? 40 : 20, transition: Transition())
                             .Border(radius: 16)
-                            .Margin(top: 32)
+                            .NewMargin(top: 32)
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .OnClick(() => isEffectRunning.Value = !isEffectRunning.Value)

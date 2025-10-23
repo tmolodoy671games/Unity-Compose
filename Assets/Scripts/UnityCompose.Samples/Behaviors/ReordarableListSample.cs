@@ -118,7 +118,7 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxWidth()
                     .NewPadding(all: 4)
                     .Border(radius: 12)
-                    .Margin(vertical: 4)
+                    .NewMargin(vertical: 4)
                     .Name(state.ToString()),
                 content: scope =>
                 {
@@ -129,7 +129,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Name("item-name-label")
                             .Then(scope.Weight(1))
-                            .Margin(left: 32)
+                            .NewMargin(left: 32)
                     );
                     Column(
                         content: () =>
