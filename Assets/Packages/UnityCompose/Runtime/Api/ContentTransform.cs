@@ -56,7 +56,7 @@ public abstract class EnterTransition
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return Modifier
-                .Opacity(progress);
+                .Alpha(progress);
         }
     }
 
@@ -150,7 +150,7 @@ public abstract class ExitTransition
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return Modifier
-                .Opacity(1 - progress);
+                .Alpha(1 - progress);
         }
     }
 
@@ -165,7 +165,7 @@ public abstract class ExitTransition
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return Modifier
-                .Opacity(0f);
+                .Alpha(0f);
         }
     }
     
@@ -193,7 +193,7 @@ public abstract class ExitTransition
         public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return Modifier
-                .Opacity(0f);
+                .Alpha(0f);
         }
     }
     

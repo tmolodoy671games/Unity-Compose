@@ -7,40 +7,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    private class OpacityImpl : BaseModifier<OpacityImpl>
-    {
-        private readonly StyleFloat _opacity;
-        private readonly ComposeTransition _transition;
-
-        public OpacityImpl(StyleFloat opacity, ComposeTransition transition)
-        {
-            _opacity = opacity;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.opacity = _opacity;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "opacity");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Opacity);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.opacity = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(OpacityImpl other)
-        {
-            return other._opacity == _opacity && Equals(_transition, other._transition);
-        }
-    }
-
     private class ScaleImpl : BaseModifier<ScaleImpl>
     {
         private readonly StyleScale _scale;
@@ -139,15 +105,6 @@ public static partial class ModifierExtensions
         }
     }
 
-    public static IModifier Opacity(
-        this IModifier style,
-        StyleFloat opacity,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new OpacityImpl(opacity, transition));
-    }
-
     public static IModifier Scale(
         this IModifier style,
         StyleScale scale,
@@ -156,7 +113,7 @@ public static partial class ModifierExtensions
     {
         return style.Then(new ScaleImpl(scale, transition));
     }
-        
+
     public static IModifier Scale(
         this IModifier style,
         float scale,
