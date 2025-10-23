@@ -1,8 +1,6 @@
 using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -54,15 +52,15 @@ public static partial class ComposeFunctions
             () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value)
         );
 
-        Box<AnimatedContent>(
+        ReusableComposeView<AnimatedContent>(
             modifier: modifier.OrEmpty()
                 .Then(containerModifier),
-            content: scope =>
+            content: () =>
             {
                 var parent = LocalParentLayout.Current;
-                var nextModifier = resolvedTransition.Enter.Get(scope, resolvedProgress, parent)
+                var nextModifier = resolvedTransition.Enter.Get(resolvedProgress, parent)
                     .Then(contentModifier);
-                var previousModifier = resolvedTransition.Exit.Get(scope, resolvedProgress, parent)
+                var previousModifier = resolvedTransition.Exit.Get(resolvedProgress, parent)
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
 

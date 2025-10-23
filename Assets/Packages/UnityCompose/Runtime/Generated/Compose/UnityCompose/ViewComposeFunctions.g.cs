@@ -69,7 +69,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Column([Composable] Action<IColumnScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    private static void __Column([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
             return;
@@ -79,56 +79,11 @@ public static partial class ComposeFunctions
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
-            }), content: RememberComposable<global::System.Action>(content, () =>
-            {
-                var scope = Remember(() => new ColumnScopeImpl());
-                content(scope);
-            }));
+            }), content: content);
         }
         finally
         {
             CurrentComposer.EndComposeGroup(() => __Column(content, modifier, horizontalAlignment, verticalAlignment));
-        }
-    }
-
-    [Composable]
-    [Compiled]
-    private static void __Column([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
-    {
-        if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
-            return;
-        try
-        {
-            Column(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(content, _ => content()));
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => __Column(content, modifier, horizontalAlignment, verticalAlignment));
-        }
-    }
-
-    [Composable]
-    [Compiled]
-    private static void __Row([Composable] Action<IRowScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
-    {
-        if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
-            return;
-        try
-        {
-            ReusableComposeView<Row>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>((horizontalAlignment, verticalAlignment), it =>
-            {
-                it.style.flexDirection = FlexDirection.Row;
-                it.style.alignItems = verticalAlignment.ToAlign();
-                it.style.justifyContent = horizontalAlignment.ToJustify();
-            }), content: RememberComposable<global::System.Action>(content, () =>
-            {
-                var scope = Remember(() => new RowScopeImpl());
-                content(scope);
-            }));
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => __Row(content, modifier, horizontalAlignment, verticalAlignment));
         }
     }
 
@@ -140,52 +95,16 @@ public static partial class ComposeFunctions
             return;
         try
         {
-            Row(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IRowScope>>(content, _ => content()));
+            ReusableComposeView<Row>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>((horizontalAlignment, verticalAlignment), it =>
+            {
+                it.style.flexDirection = FlexDirection.Row;
+                it.style.alignItems = verticalAlignment.ToAlign();
+                it.style.justifyContent = horizontalAlignment.ToJustify();
+            }), content: content);
         }
         finally
         {
             CurrentComposer.EndComposeGroup(() => __Row(content, modifier, horizontalAlignment, verticalAlignment));
-        }
-    }
-
-    [Composable]
-    [Compiled]
-    private static void __Box<T>([Composable] Action<IBoxScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
-        where T : VisualElement, new()
-    {
-        if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
-            return;
-        try
-        {
-            ReusableComposeView<T>(modifier: modifier, initializer: Remember<global::System.Action<T>>((horizontalAlignment, verticalAlignment), it =>
-            {
-                it.style.alignItems = horizontalAlignment.ToAlign();
-                it.style.justifyContent = verticalAlignment.ToJustify();
-            }), content: RememberComposable<global::System.Action>(content, () =>
-            {
-                var scope = Remember(() => new BoxScopeImpl());
-                content(scope);
-            }));
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => __Box<T>(content, modifier, horizontalAlignment, verticalAlignment));
-        }
-    }
-
-    [Composable]
-    [Compiled]
-    private static void __Box([Composable] Action<IBoxScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
-    {
-        if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
-            return;
-        try
-        {
-            Box<Box>(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: content);
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => __Box(content, modifier, horizontalAlignment, verticalAlignment));
         }
     }
 
@@ -197,7 +116,11 @@ public static partial class ComposeFunctions
             return;
         try
         {
-            Box<Box>(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
+            ReusableComposeView<Box>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>((horizontalAlignment, verticalAlignment), it =>
+            {
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
+            }), content: content);
         }
         finally
         {

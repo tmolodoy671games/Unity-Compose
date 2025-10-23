@@ -8,7 +8,7 @@ internal class HideExitTransitionImpl : IExitTransition
     
     private HideExitTransitionImpl() {}
     
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
         return Modifier
             .Alpha(0f);

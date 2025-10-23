@@ -4,7 +4,6 @@ using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace
@@ -105,9 +104,9 @@ public static partial class ComposeFunctions
         );
         var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
 
-        Box<Navigation>(
+        ReusableComposeView<Navigation>(
             modifier: modifier,
-            content: scope =>
+            content: () =>
             {
                 CompositionLocalProvider(
                     provides: Remember(() => IImmutableStableList.Create(
@@ -140,10 +139,10 @@ public static partial class ComposeFunctions
                                         ScreenState.Idle => Modifier
                                             .Float(!isCurrentScreen),
                                         ScreenState.Appearing => resolvedTransition.Enter
-                                            .Get(scope, resolvedProgress, parent)
+                                            .Get(resolvedProgress, parent)
                                             .Float(!isCurrentScreen),
                                         ScreenState.Disappearing => resolvedTransition.Exit
-                                            .Get(scope, resolvedProgress, parent)
+                                            .Get(resolvedProgress, parent)
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };

@@ -1,5 +1,4 @@
 ﻿using StableCollections;
-using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;

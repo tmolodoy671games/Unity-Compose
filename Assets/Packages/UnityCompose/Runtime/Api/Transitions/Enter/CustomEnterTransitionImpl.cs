@@ -8,7 +8,7 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnterTransition Enter(Func<IBoxScope, float, LayoutInfo, IModifier> transition)
+    public static IEnterTransition Enter(Func<float, LayoutInfo, IModifier> transition)
     {
         return new CustomEnterTransitionImpl(transition);
     }
@@ -16,15 +16,15 @@ public static partial class ComposeFunctions
 
 internal class CustomEnterTransitionImpl : IEnterTransition
 {
-    private readonly Func<IBoxScope, float, LayoutInfo, IModifier> _transition;
+    private readonly Func<float, LayoutInfo, IModifier> _transition;
 
-    public CustomEnterTransitionImpl(Func<IBoxScope, float, LayoutInfo, IModifier> transition)
+    public CustomEnterTransitionImpl(Func<float, LayoutInfo, IModifier> transition)
     {
         _transition = transition;
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
-        return _transition(scope, progress, parent);
+        return _transition(progress, parent);
     }
 }

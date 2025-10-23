@@ -23,7 +23,7 @@ internal class FadeOutExitTransitionImpl : IExitTransition
         _curve = curve ?? ComposeDefaults.DefaultCurve;
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier

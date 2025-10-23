@@ -32,8 +32,8 @@ internal class RemapEnterTransitionImpl : IEnterTransition
         _endOffset = endOffset;
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
-        return _original.Get(scope, progress.Remap(_startOffset, _speed, _endOffset), parent);
+        return _original.Get(progress.Remap(_startOffset, _speed, _endOffset), parent);
     }
 }

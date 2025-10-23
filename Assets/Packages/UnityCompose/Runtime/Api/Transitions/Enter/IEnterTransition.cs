@@ -9,7 +9,7 @@ public static partial class ComposeFunctions
 
 public interface IEnterTransition
 {
-    IModifier Get(IBoxScope scope, float progress, LayoutInfo parent);
+    IModifier Get(float progress, LayoutInfo parent);
 
     public static IEnterTransition operator +(IEnterTransition first, IEnterTransition second)
     {
@@ -25,7 +25,7 @@ internal class EmptyEnterTransitionImpl : IEnterTransition
     {
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
         return Modifier;
     }
@@ -42,9 +42,9 @@ internal class CompositeEnterTransitionImpl : IEnterTransition
         _right = right;
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
-        return _left.Get(scope, progress, parent)
-            .Then(_right.Get(scope, progress, parent));
+        return _left.Get(progress, parent)
+            .Then(_right.Get(progress, parent));
     }
 }

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using StableCollections;
 using UnityEngine.UIElements;
-using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;

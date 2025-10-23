@@ -21,6 +21,14 @@ public static class Alignment
         Center,
         Bottom,
     }
+
+    public static Horizontal Left => Horizontal.Left;
+    public static Horizontal CenterHorizontally => Horizontal.Center;
+    public static Horizontal Right => Horizontal.Right;
+
+    public static Vertical Top => Vertical.Top;
+    public static Vertical CenterVertically => Vertical.Center;
+    public static Vertical Bottom => Vertical.Bottom;
 }
 
 internal static class AlignmentHorizontalExtensions
@@ -36,8 +44,8 @@ internal static class AlignmentHorizontalExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
         };
     }
-    
-    
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Justify ToJustify(this Alignment.Horizontal alignment)
     {
@@ -64,8 +72,8 @@ internal static class AlignmentVerticalExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
         };
     }
-    
-    
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Justify ToJustify(this Alignment.Vertical alignment)
     {

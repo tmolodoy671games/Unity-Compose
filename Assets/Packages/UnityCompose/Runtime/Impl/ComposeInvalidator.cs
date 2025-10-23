@@ -7,7 +7,6 @@ using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
-using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose
 {

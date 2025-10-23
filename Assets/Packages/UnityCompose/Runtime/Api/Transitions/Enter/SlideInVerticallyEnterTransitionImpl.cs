@@ -27,17 +27,15 @@ internal class SlideInVerticallyEnterTransitionImpl : IEnterTransition
         _curve = curve ?? ComposeDefaults.DefaultCurve;
     }
 
-    public IModifier Get(IBoxScope scope, float progress, LayoutInfo parent)
+    public IModifier Get(float progress, LayoutInfo parent)
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier
-            .Then(
-                scope.Position(
-                    top: Mathf.Lerp(
-                        a: _initialOffsetY(parent.Height + parent.PaddingTop),
-                        b: 0,
-                        t: resolvedProgress
-                    )
+            .Position(
+                top: Mathf.Lerp(
+                    a: _initialOffsetY(parent.Height + parent.PaddingTop),
+                    b: 0,
+                    t: resolvedProgress
                 )
             );
     }

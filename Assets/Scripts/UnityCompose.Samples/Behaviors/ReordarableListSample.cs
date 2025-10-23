@@ -32,7 +32,7 @@ namespace UnityCompose.Samples.Behaviors
                             .NewPadding(top: 100)
                             .FillMaxHeight()
                             .Width(800),
-                        content: scope =>
+                        content: () =>
                         {
                             var items = Remember(() => MutableStateListOf(1, 2));
                             Text(
@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 40,
                                 modifier: Modifier
                                     .Name("add-item-button")
-                                    .Then(scope.Align(Alignment.Horizontal.Right))
+                                    .Align(Alignment.Right)
                                     .Background(Color.blue)
                                     .NewPadding(horizontal: 32, vertical: 16)
                                     .Border(radius: 16)
@@ -120,7 +120,7 @@ namespace UnityCompose.Samples.Behaviors
                     .Border(radius: 12)
                     .NewMargin(vertical: 4)
                     .Name(state.ToString()),
-                content: scope =>
+                content: () =>
                 {
                     Text(
                         text: $"Item no. {state}",
@@ -128,7 +128,7 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40,
                         modifier: Modifier
                             .Name("item-name-label")
-                            .Then(scope.Weight(1))
+                            .Weight(1)
                             .NewMargin(left: 32)
                     );
                     Column(

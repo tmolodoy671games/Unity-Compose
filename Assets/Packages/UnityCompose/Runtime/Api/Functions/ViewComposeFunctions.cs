@@ -16,7 +16,7 @@ public static partial class ComposeFunctions
     private static readonly ICompositionLocal<(IModifier? Before, IModifier? After)> LocalModifier =
         CompositionLocalOf<(IModifier? Before, IModifier? After)>(() => (null, null));
 
-    private static readonly ICompositionLocal<VisualElement> LocalVisualElement =
+    public static readonly ICompositionLocal<VisualElement> LocalVisualElement =
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("No LocalVisualElement provided!"));
 
     public static ICompositionLocal<LayoutInfo> LocalParentLayout =>
@@ -93,7 +93,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Column(
-        [Composable] Action<IColumnScope> content,
+        [Composable] Action content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
@@ -106,33 +106,13 @@ public static partial class ComposeFunctions
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
             },
-            content: () =>
-            {
-                var scope = Remember(() => new ColumnScopeImpl());
-                content(scope);
-            }
-        );
-    }
-
-    [Composable]
-    public static void Column(
-        [Composable] Action content,
-        IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
-    )
-    {
-        Column(
-            modifier: modifier,
-            horizontalAlignment: horizontalAlignment,
-            verticalAlignment: verticalAlignment,
-            content: _ => content()
+            content: content
         );
     }
 
     [Composable]
     public static void Row(
-        [Composable] Action<IRowScope> content,
+        [Composable] Action content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
@@ -146,65 +126,6 @@ public static partial class ComposeFunctions
                 it.style.alignItems = verticalAlignment.ToAlign();
                 it.style.justifyContent = horizontalAlignment.ToJustify();
             },
-            content: () =>
-            {
-                var scope = Remember(() => new RowScopeImpl());
-                content(scope);
-            }
-        );
-    }
-
-    [Composable]
-    public static void Row(
-        [Composable] Action content,
-        IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
-    )
-    {
-        Row(
-            modifier: modifier,
-            horizontalAlignment: horizontalAlignment,
-            verticalAlignment: verticalAlignment,
-            content: _ => content()
-        );
-    }
-    
-    [Composable]
-    internal static void Box<T>(
-        [Composable] Action<IBoxScope> content,
-        IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
-    ) where T : VisualElement, new()
-    {
-        ReusableComposeView<T>(
-            modifier: modifier,
-            initializer: it =>
-            {
-                it.style.alignItems = horizontalAlignment.ToAlign();
-                it.style.justifyContent = verticalAlignment.ToJustify();
-            },
-            content: () =>
-            {
-                var scope = Remember(() => new BoxScopeImpl());
-                content(scope);
-            }
-        );
-    }
-
-    [Composable]
-    public static void Box(
-        [Composable] Action<IBoxScope> content,
-        IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
-    )
-    {
-        Box<Box>(
-            modifier: modifier,
-            horizontalAlignment: horizontalAlignment,
-            verticalAlignment: verticalAlignment,
             content: content
         );
     }
@@ -217,11 +138,14 @@ public static partial class ComposeFunctions
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
-        Box<Box>(
+        ReusableComposeView<Box>(
             modifier: modifier,
-            horizontalAlignment: horizontalAlignment,
-            verticalAlignment: verticalAlignment,
-            content: _ => content()
+            initializer: it =>
+            {
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
+            },
+            content: content
         );
     }
 

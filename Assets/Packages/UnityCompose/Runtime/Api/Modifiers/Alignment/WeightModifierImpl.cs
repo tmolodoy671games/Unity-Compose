@@ -6,29 +6,11 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IColumnScope
+public static partial class ModifierExtensions
 {
-    IModifier Align(Alignment.Horizontal align);
-
-    IModifier FillMaxWidth();
-    IModifier Weight(float fraction);
-}
-
-internal class ColumnScopeImpl : IColumnScope
-{
-    public IModifier Align(Alignment.Horizontal align)
+    public static IModifier Weight(this IModifier modifier, int weight)
     {
-        return Modifier + new HorizontalAlignModifierImpl(align);
-    }
-
-    public IModifier FillMaxWidth()
-    {
-        return Modifier + FillMaxWidthModifierImpl.Instance;
-    }
-
-    public IModifier Weight(float fraction)
-    {
-        return Modifier + new WeightModifierImpl(fraction);
+        return modifier + new WeightModifierImpl(weight);
     }
 }
 

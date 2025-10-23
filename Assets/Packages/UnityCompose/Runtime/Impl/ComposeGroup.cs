@@ -2,7 +2,6 @@
 using System.Text;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;

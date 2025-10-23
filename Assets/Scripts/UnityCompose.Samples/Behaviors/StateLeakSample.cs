@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(
                         modifier: Modifier,
-                        content: scope =>
+                        content: () =>
                         {
                             var showFirst = Remember(() => MutableStateOf(false));
                             if (showFirst.Value)
@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
                                     modifier: Modifier
-                                        .Then(scope.FillMaxWidth())
+                                        .FillMaxWidth()
                                         .Background(Color.red)
                                         .NewPadding(all: 20)
                                         .Border(radius: 16)
@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 modifier: Modifier
-                                    .Then(scope.FillMaxWidth())
+                                    .FillMaxWidth()
                                     .Background(Color.green)
                                     .NewPadding(all: 20)
                                     .Border(radius: 16)
@@ -66,7 +66,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 modifier: Modifier
-                                    .Then(scope.FillMaxWidth())
+                                    .FillMaxWidth()
                                     .Background(Color.blue)
                                     .NewPadding(all: 20)
                                     .Border(radius: 16)

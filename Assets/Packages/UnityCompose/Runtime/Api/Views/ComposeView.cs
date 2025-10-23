@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityEngine.UIElements;
-using static UnityCompose.ComposeFunctions;
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
 public partial class ComposeView : VisualElement
