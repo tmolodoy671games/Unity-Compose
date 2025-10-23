@@ -15,10 +15,10 @@ public interface IBoxScope
     IModifier FillMaxHeight();
 
     IModifier Position(
-        Optional<float> top,
-        Optional<float> bottom,
-        Optional<float> left,
-        Optional<float> right
+        Optional<float> top = default,
+        Optional<float> bottom = default,
+        Optional<float> left = default,
+        Optional<float> right = default
     );
 }
 

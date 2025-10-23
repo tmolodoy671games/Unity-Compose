@@ -31,11 +31,13 @@ internal class SlideInVerticallyEnterTransitionImpl : IEnterTransition
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier
-            .Top(
-                Mathf.Lerp(
-                    a: _initialOffsetY(parent.Height + parent.PaddingTop),
-                    b: 0,
-                    t: resolvedProgress
+            .Then(
+                scope.Position(
+                    top: Mathf.Lerp(
+                        a: _initialOffsetY(parent.Height + parent.PaddingTop),
+                        b: 0,
+                        t: resolvedProgress
+                    )
                 )
             );
     }

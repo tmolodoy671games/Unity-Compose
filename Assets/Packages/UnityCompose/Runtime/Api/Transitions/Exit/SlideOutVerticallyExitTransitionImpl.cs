@@ -31,11 +31,13 @@ internal class SlideOutVerticallyExitTransitionImpl : IExitTransition
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier
-            .Top(
-                Mathf.Lerp(
-                    a: 0,
-                    b: _targetOffsetY(parent.Height + parent.PaddingTop),
-                    t: resolvedProgress
+            .Then(
+                scope.Position(
+                    top: Mathf.Lerp(
+                        a: 0,
+                        b: _targetOffsetY(parent.Height + parent.PaddingTop),
+                        t: resolvedProgress
+                    )
                 )
             );
     }

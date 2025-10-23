@@ -31,11 +31,13 @@ internal class SlideOutHorizontallyExitTransitionImpl : IExitTransition
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier
-            .Left(
-                Mathf.Lerp(
-                    a: 0,
-                    b: _targetOffsetX(parent.Width + parent.PaddingLeft),
-                    t: resolvedProgress
+            .Then(
+                scope.Position(
+                    left: Mathf.Lerp(
+                        a: 0,
+                        b: _targetOffsetX(parent.Width + parent.PaddingLeft),
+                        t: resolvedProgress
+                    )
                 )
             );
     }

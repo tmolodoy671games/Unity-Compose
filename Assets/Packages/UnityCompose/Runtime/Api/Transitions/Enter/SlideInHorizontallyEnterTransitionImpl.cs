@@ -31,11 +31,13 @@ internal class SlideInHorizontallyEnterTransitionImpl : IEnterTransition
     {
         var resolvedProgress = _curve.Evaluate(progress);
         return Modifier
-            .Left(
-                Mathf.Lerp(
-                    a: _initialOffsetX(parent.Width + parent.PaddingLeft),
-                    b: 0,
-                    t: resolvedProgress
+            .Then(
+                scope.Position(
+                    left: Mathf.Lerp(
+                        a: _initialOffsetX(parent.Width + parent.PaddingLeft),
+                        b: 0,
+                        t: resolvedProgress
+                    )
                 )
             );
     }
