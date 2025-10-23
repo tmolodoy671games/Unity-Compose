@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SharpExtensions;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -16,5 +16,6 @@ public readonly record struct ComposeTransition(
         TimingFunction: EasingMode.EaseInOut
     );
 
-    public bool IsDefault() => Math.Abs(Duration - 0) < 0.001f;
+    public bool IsDefault() => Duration.AlmostEquals(0f);
+    public bool HasValue => Duration > 0;
 }
