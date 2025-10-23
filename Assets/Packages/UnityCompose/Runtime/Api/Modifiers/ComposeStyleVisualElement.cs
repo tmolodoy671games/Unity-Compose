@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-public static partial class ComposeStyleExtensions
+public static partial class ModifierExtensions
 {
     private class PickingModeImpl : BaseModifier<PickingModeImpl>
     {

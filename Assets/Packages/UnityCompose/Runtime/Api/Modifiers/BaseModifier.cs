@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using StableCollections;
 using UnityEngine.UIElements;
 using static UnityCompose.ComposeFunctions;
@@ -17,17 +18,7 @@ public interface IModifier
     [Composable]
     void Revert(VisualElement element);
 
-    public IModifier Then(IModifier? composeStyle)
-    {
-        if (composeStyle == null)
-            return this;
-        if (Equals(this, Modifier))
-            return composeStyle;
-        if (Equals(composeStyle, Modifier))
-            return this;
-        return new CompositeModifierImpl(this, composeStyle);
-    }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier operator +(IModifier style1, IModifier style2)
     {
         return style1.Then(style2);
@@ -41,7 +32,7 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     public abstract void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties);
 
     public abstract void Revert(VisualElement element);
-    
+
     protected abstract bool Equals(T other);
 
     public override bool Equals(object? obj)
@@ -59,9 +50,20 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     }
 }
 
-public static partial class ComposeStyleExtensions
+public static partial class ModifierExtensions
 {
-    public static IModifier OrEmpty(this IModifier? style) => style ?? Modifier;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier OrEmpty(this IModifier? modifier) => modifier ?? Modifier;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IModifier Then(this IModifier? left, IModifier? right)
+    {
+        if (left == null || Equals(left, EmptyModifierImpl.Instance))
+            return right.OrEmpty();
+        if (right == null || Equals(right, EmptyModifierImpl.Instance))
+            return left.OrEmpty();
+        return new CompositeModifierImpl(left, right);
+    }
 }
 
 internal class EmptyModifierImpl : BaseModifier<EmptyModifierImpl>
