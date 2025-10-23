@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                                 style: Modifier
                                     .Name("add-item-button")
                                     .AlignSelf(Align.FlexEnd)
-                                    .BackgroundColor(Color.blue)
+                                    .Background(Color.blue)
                                     .Padding(32, 16)
                                     .BorderRadius(16)
                                     .OnClick(() =>
@@ -116,7 +116,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignVertically: Align.Center,
                 style: Modifier
                     .Name("item-row")
-                    .BackgroundColor(Color.cyan)
+                    .Background(Color.cyan)
                     .Width(100.Percent())
                     .Padding(4)
                     .BorderRadius(12)
@@ -144,7 +144,7 @@ namespace UnityCompose.Samples.Behaviors
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
                                     .Name("up-arrow-button")
-                                    .BackgroundColor(Color.green)
+                                    .Background(Color.green)
                                     .Padding(6, 4)
                                     .BorderRadius(16)
                                     .OnClick(onMoveUpClick)
@@ -157,7 +157,7 @@ namespace UnityCompose.Samples.Behaviors
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
                                     .Name("down-arrow-button")
-                                    .BackgroundColor(Color.green)
+                                    .Background(Color.green)
                                     .Padding(6, 4)
                                     .BorderRadius(16)
                                     .OnClick(onMoveDownClick)
@@ -172,7 +172,7 @@ namespace UnityCompose.Samples.Behaviors
                         align: TextAnchor.MiddleCenter,
                         style: Modifier
                             .Name("remove-button")
-                            .BackgroundColor(Color.red)
+                            .Background(Color.red)
                             .Padding(16, 4)
                             .BorderRadius(16)
                             .OnClick(onRemoveClick)

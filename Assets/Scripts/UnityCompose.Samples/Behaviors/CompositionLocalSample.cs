@@ -42,7 +42,7 @@ namespace UnityCompose.Samples.Behaviors
                         textColor: Color.white,
                         fontSize: 32,
                         style: Modifier
-                            .BackgroundColor(Color.blue)
+                            .Background(Color.blue)
                             .Padding(32)
                             .BorderRadius(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
@@ -61,7 +61,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Spacer(
                         style: Modifier
-                            .BackgroundColor(
+                            .Background(
                                 LocalIsSwitched.Current ? Color.green : Color.red, Transition()
                             )
                             .Padding(100)

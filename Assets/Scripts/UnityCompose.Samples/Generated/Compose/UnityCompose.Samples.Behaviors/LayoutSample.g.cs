@@ -15,9 +15,9 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Width(100.Percent()).Height(100.Percent()), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Box(style: Modifier.BackgroundColor(Color.red).Size(400), content: RememberComposable<global::System.Action>(null, () =>
+                    Box(style: Modifier.Background(Color.red).Size(400), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Spacer(style: Modifier.Size(100).Position(Position.Absolute).BackgroundColor(Color.yellow).Top(5));
+                        Spacer(style: Modifier.Size(100).Position(Position.Absolute).Background(Color.yellow).Top(5));
                     }));
                 }));
             // Box(
@@ -32,7 +32,7 @@ namespace UnityCompose.Samples.Behaviors
             //             alignHorizontally: Align.Center,
             //             alignVertically: Justify.Center,
             //             style: ComposeStyle.Empty
-            //                 .BackgroundColor(Color.darkRed)
+            //                 .Background(Color.darkRed)
             //                 .Size(400),
             //             content: () =>
             //             {
@@ -40,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
             //                     style: ComposeStyle.Empty
             //                         .Size(100)
             //                         .Position(Position.Absolute)
-            //                         .BackgroundColor(Color.greenYellow)
+            //                         .Background(Color.greenYellow)
             //                 );
             //             }
             //         );

@@ -38,7 +38,7 @@ namespace UnityCompose.Samples.Behaviors
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
                                     style: Modifier
-                                        .BackgroundColor(Color.red)
+                                        .Background(Color.red)
                                         .Padding(20)
                                         .BorderRadius(16)
                                         .OnClick(() => firstCount.Value++)
@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
-                                    .BackgroundColor(Color.green)
+                                    .Background(Color.green)
                                     .Padding(20)
                                     .BorderRadius(16)
                                     .MarginTop(16)
@@ -65,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
-                                    .BackgroundColor(Color.blue)
+                                    .Background(Color.blue)
                                     .Padding(20)
                                     .BorderRadius(16)
                                     .MarginTop(16)

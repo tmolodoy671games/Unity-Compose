@@ -23,14 +23,14 @@ namespace UnityCompose.Samples.Behaviors
                 style: Modifier
                     .Width(100.Percent())
                     .Height(100.Percent())
-                    .BackgroundColor(Color.white),
+                    .Background(Color.white),
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
                         style: Modifier
                             .Padding(isHovered.Value ? 80 : 40, 16, Transition())
-                            .BackgroundColor(Color.blue)
+                            .Background(Color.blue)
                             .BorderRadius(16)
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false),

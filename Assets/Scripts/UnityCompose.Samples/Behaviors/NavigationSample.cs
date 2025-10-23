@@ -85,13 +85,13 @@ namespace UnityCompose.Samples.Behaviors
                 alignVertically: Justify.Center,
                 style: Modifier
                     .Size(100.Percent())
-                    .BackgroundColor(Color.green),
+                    .Background(Color.green),
                 content: () =>
                 {
                     Spacer(
                         style: Modifier
                             .Size(100)
-                            .BackgroundColor(Color.blue)
+                            .Background(Color.blue)
                             .Scale(1 + 2 * LocalTransitionProgress.Current)
                     );
                 }
@@ -109,7 +109,7 @@ namespace UnityCompose.Samples.Behaviors
             Spacer(
                 style: Modifier
                     .Size(100.Percent())
-                    .BackgroundColor(Color.red)
+                    .Background(Color.red)
             );
         }
     }

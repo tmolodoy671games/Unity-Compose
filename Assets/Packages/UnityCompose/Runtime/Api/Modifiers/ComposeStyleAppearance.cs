@@ -7,70 +7,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    private class BackgroundColorImpl : BaseModifier<BackgroundColorImpl>
-    {
-        private readonly StyleColor _backgroundColor;
-        private readonly ComposeTransition _transition;
-
-        public BackgroundColorImpl(StyleColor backgroundColor, ComposeTransition transition)
-        {
-            _backgroundColor = backgroundColor;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.backgroundColor = _backgroundColor;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "background-color");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.BackgroundColor);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.backgroundColor = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(BackgroundColorImpl other)
-        {
-            return _backgroundColor == other._backgroundColor && Equals(_transition, other._transition);
-        }
-    }
-
-    private class BackgroundImageImpl : BaseModifier<BackgroundImageImpl>
-    {
-        private readonly StyleBackground _backgroundImage;
-
-        public BackgroundImageImpl(StyleBackground backgroundImage)
-        {
-            _backgroundImage = backgroundImage;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.backgroundImage = _backgroundImage;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.BackgroundImage);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.backgroundImage = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(BackgroundImageImpl other)
-        {
-            return _backgroundImage == other._backgroundImage;
-        }
-    }
-
     private class VisibilityImpl : BaseModifier<VisibilityImpl>
     {
         private readonly StyleEnum<Visibility> _visibility;
@@ -261,20 +197,6 @@ public static partial class ModifierExtensions
         {
             return _overflow == other._overflow;
         }
-    }
-
-    public static IModifier BackgroundColor(
-        this IModifier style,
-        StyleColor color,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new BackgroundColorImpl(color, transition));
-    }
-
-    public static IModifier BackgroundImage(this IModifier style, StyleBackground image)
-    {
-        return style.Then(new BackgroundImageImpl(image));
     }
 
     public static IModifier Visibility(this IModifier style, StyleEnum<Visibility> visibility)

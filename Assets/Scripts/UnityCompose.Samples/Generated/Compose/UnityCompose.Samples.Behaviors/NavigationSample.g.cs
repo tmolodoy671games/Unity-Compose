@@ -77,9 +77,9 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowSecondScreen()));
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Size(100.Percent()).BackgroundColor(Color.green), content: RememberComposable<global::System.Action>(null, () =>
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Size(100.Percent()).Background(Color.green), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Spacer(style: Modifier.Size(100).BackgroundColor(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
+                    Spacer(style: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
             }
             finally
@@ -101,7 +101,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowFirstScreen()));
-                Spacer(style: Modifier.Size(100.Percent()).BackgroundColor(Color.red));
+                Spacer(style: Modifier.Size(100.Percent()).Background(Color.red));
             }
             finally
             {

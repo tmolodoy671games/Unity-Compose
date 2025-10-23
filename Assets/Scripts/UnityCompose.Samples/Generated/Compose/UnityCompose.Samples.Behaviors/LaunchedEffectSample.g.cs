@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
                 Column(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Name("launched-effect-disposal").FlexGrow(1), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     var count = Remember(() => MutableStateOf(0));
-                    Label(text: count.Value.ToString(), textColor: Color.white, fontSize: 40, style: Modifier.Name("test-label").BackgroundColor(Color.red).Padding(10));
+                    Label(text: count.Value.ToString(), textColor: Color.white, fontSize: 40, style: Modifier.Name("test-label").Background(Color.red).Padding(10));
                     var isEffectRunning = Remember(() => MutableStateOf(false));
                     if (isEffectRunning.Value)
                     {
@@ -35,7 +35,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = Remember(() => MutableStateOf(false));
-                    Label(text: $"Launched Effect is {onOrOff}", textColor: Color.white, fontSize: 40, style: Modifier.Name("test-button").BackgroundColor(isHovered.Value ? Color.cyan : Color.blue, Transition()).PaddingVertical(20).PaddingHorizontal(isHovered.Value ? 40 : 20, Transition()).BorderRadius(16).MarginTop(32).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>(isHovered, () => isHovered.Value = false)).OnClick(Remember<global::System.Action>(isEffectRunning, () => isEffectRunning.Value = !isEffectRunning.Value)));
+                    Label(text: $"Launched Effect is {onOrOff}", textColor: Color.white, fontSize: 40, style: Modifier.Name("test-button").Background(isHovered.Value ? Color.cyan : Color.blue, Transition()).PaddingVertical(20).PaddingHorizontal(isHovered.Value ? 40 : 20, Transition()).BorderRadius(16).MarginTop(32).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>(isHovered, () => isHovered.Value = false)).OnClick(Remember<global::System.Action>(isEffectRunning, () => isEffectRunning.Value = !isEffectRunning.Value)));
                 }));
             }
             finally

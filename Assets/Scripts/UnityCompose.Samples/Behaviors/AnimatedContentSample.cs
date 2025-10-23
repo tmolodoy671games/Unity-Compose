@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                                 transitionDuration: Duration,
                                 style: Modifier
                                     .Name("animated-content")
-                                    .BackgroundColor(
+                                    .Background(
                                         isSwitched.Value ? Color.green : Color.red,
                                         Transition(Duration)
                                     ),
@@ -72,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 64,
                                 style: Modifier
                                     .Padding(100, 32)
-                                    .BackgroundColor(Color.blue)
+                                    .Background(Color.blue)
                                     .MarginTop(16)
                                     .BorderRadius(16)
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)

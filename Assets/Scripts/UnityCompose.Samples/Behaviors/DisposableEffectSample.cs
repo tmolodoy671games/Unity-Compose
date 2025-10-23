@@ -46,7 +46,7 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40,
                         style: Modifier
                             .Name("test-button")
-                            .BackgroundColor(isHovered.Value ? Color.cyan : Color.blue, Transition())
+                            .Background(isHovered.Value ? Color.cyan : Color.blue, Transition())
                             .PaddingVertical(20)
                             .PaddingHorizontal(isHovered.Value ? 40 : 20, Transition())
                             .BorderRadius(16)

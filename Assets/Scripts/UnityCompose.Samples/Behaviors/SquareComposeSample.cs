@@ -24,7 +24,7 @@ namespace UnityCompose.Samples.Behaviors
             Spacer(
                 style: Modifier
                     .Size(100)
-                    .BackgroundColor(isPressed.Value ? Color.cyan : Color.blue, Transition())
+                    .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
                     .AlignSelf(Align.Center)
                     .BorderRadius(32)
                     .Top(50.Percent())
