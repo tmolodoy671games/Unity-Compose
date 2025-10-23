@@ -7,66 +7,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    private class VisibilityImpl : BaseModifier<VisibilityImpl>
-    {
-        private readonly StyleEnum<Visibility> _visibility;
-
-        public VisibilityImpl(StyleEnum<Visibility> visibility)
-        {
-            _visibility = visibility;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.visibility = _visibility;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Visibility);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.visibility = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(VisibilityImpl other)
-        {
-            return _visibility == other._visibility;
-        }
-    }
-
-    private class DisplayImpl : BaseModifier<DisplayImpl>
-    {
-        private readonly StyleEnum<DisplayStyle> _display;
-
-        public DisplayImpl(StyleEnum<DisplayStyle> display)
-        {
-            _display = display;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.display = _display;
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Display);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.display = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(DisplayImpl other)
-        {
-            return _display == other._display;
-        }
-    }
-
     private class OpacityImpl : BaseModifier<OpacityImpl>
     {
         private readonly StyleFloat _opacity;
@@ -197,16 +137,6 @@ public static partial class ModifierExtensions
         {
             return _overflow == other._overflow;
         }
-    }
-
-    public static IModifier Visibility(this IModifier style, StyleEnum<Visibility> visibility)
-    {
-        return style.Then(new VisibilityImpl(visibility));
-    }
-
-    public static IModifier Display(this IModifier style, StyleEnum<DisplayStyle> display)
-    {
-        return style.Then(new DisplayImpl(display));
     }
 
     public static IModifier Opacity(
