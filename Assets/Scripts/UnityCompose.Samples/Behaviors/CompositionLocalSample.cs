@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class CompositionLocalSample : ComposeUI
-    { 
+    {
         private static readonly ICompositionLocal<bool> LocalIsSwitched = CompositionLocalOf(() => false);
 
         [Composable]
@@ -46,7 +46,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Padding(32)
                             .BorderRadius(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .MarginTop(80)
+                            .Margin(top: 80)
                     );
                 }
             );

@@ -76,9 +76,9 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).Width(100.Percent()).Padding(4).BorderRadius(12).MarginVertical(4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
+                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).Width(100.Percent()).Padding(4).BorderRadius(12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
                 {
-                    Label(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: Modifier.Name("item-name-label").FlexGrow(1).MarginLeft(32));
+                    Label(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: Modifier.Name("item-name-label").FlexGrow(1).Margin(left: 32));
                     Column(content: RememberComposable<global::System.Action>((onMoveUpClick, onMoveDownClick), () =>
                     {
                         Label(text: "↑", textColor: Color.white, fontSize: 40, fontStyle: FontStyle.Bold, align: TextAnchor.MiddleCenter, style: Modifier.Name("up-arrow-button").Background(Color.green).Padding(6, 4).BorderRadius(16).OnClick(onMoveUpClick));

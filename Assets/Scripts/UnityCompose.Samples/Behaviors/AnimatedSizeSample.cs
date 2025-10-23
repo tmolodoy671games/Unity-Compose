@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("switch-button")
                                     .Padding(32)
                                     .Background(Color.blue)
-                                    .MarginTop(16)
+                                    .Margin(top: 16)
                                     .BorderRadius(16)
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );

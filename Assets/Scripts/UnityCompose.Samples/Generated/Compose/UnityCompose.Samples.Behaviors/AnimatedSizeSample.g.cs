@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             Label(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, style: Modifier.Name("animated-label-child"));
                         }));
-                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.Name("switch-button").Padding(32).Background(Color.blue).MarginTop(16).BorderRadius(16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.Name("switch-button").Padding(32).Background(Color.blue).Margin(top: 16).BorderRadius(16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

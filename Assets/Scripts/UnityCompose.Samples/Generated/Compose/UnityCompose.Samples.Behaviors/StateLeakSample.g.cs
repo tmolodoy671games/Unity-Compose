@@ -25,8 +25,8 @@ namespace UnityCompose.Samples.Behaviors
                         }
 
                         var secondCount = Remember(() => MutableStateOf(0));
-                        Label(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.green).Padding(20).BorderRadius(16).MarginTop(16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
-                        Label(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.blue).Padding(20).BorderRadius(16).MarginTop(16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                        Label(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.green).Padding(20).BorderRadius(16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
+                        Label(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.blue).Padding(20).BorderRadius(16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
                     }));
                 }));
             }

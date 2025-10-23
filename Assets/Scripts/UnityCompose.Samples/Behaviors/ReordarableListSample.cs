@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
 
         [Composable]
         private static void Layout()
-        { 
+        {
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
@@ -88,10 +88,7 @@ namespace UnityCompose.Samples.Behaviors
                                                         items.RemoveAt(oldIndex);
                                                         items.Insert(newIndex, item);
                                                     },
-                                                    onRemoveClick: () =>
-                                                    {
-                                                        items.Remove(item);
-                                                    }
+                                                    onRemoveClick: () => { items.Remove(item); }
                                                 );
                                             }
                                         );
@@ -120,7 +117,7 @@ namespace UnityCompose.Samples.Behaviors
                     .Width(100.Percent())
                     .Padding(4)
                     .BorderRadius(12)
-                    .MarginVertical(4)
+                    .Margin(vertical: 4)
                     .Name(state.ToString()),
                 content: () =>
                 {
@@ -131,7 +128,7 @@ namespace UnityCompose.Samples.Behaviors
                         style: Modifier
                             .Name("item-name-label")
                             .FlexGrow(1)
-                            .MarginLeft(32)
+                            .Margin(left: 32)
                     );
                     Column(
                         content: () =>
