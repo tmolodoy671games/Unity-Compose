@@ -29,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                     .BorderRadius(32)
                     .Top(50.Percent())
                     .Bottom(50.Percent())
-                    .Pivot(0, 0.5f)
+                    .TransformOrigin(0, 0.5f)
                     .Scale(isHovered.Value ? 2 : 1, Transition())
                     .OnMouseEnter(() => isHovered.Value = true)
                     .OnMouseLeave(() =>
