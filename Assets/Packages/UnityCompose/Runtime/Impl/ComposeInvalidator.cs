@@ -49,7 +49,7 @@ namespace UnityCompose
                     _instance = new GameObject("ComposeInvalidator").AddComponent<ComposeInvalidator>();
                 }
 
-                return _instance;
+                return _instance!;
             }
         }
 

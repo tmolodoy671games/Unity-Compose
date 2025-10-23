@@ -662,7 +662,9 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols: {}
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    Standalone:
+    - -NOWARN:8669
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

@@ -150,13 +150,14 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Box([Composable] Action<IBoxScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    private static void __Box<T>([Composable] Action<IBoxScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+        where T : VisualElement, new()
     {
         if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Box>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>((horizontalAlignment, verticalAlignment), it =>
+            ReusableComposeView<T>(modifier: modifier, initializer: Remember<global::System.Action<T>>((horizontalAlignment, verticalAlignment), it =>
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
@@ -165,6 +166,22 @@ public static partial class ComposeFunctions
                 var scope = Remember(() => new BoxScopeImpl());
                 content(scope);
             }));
+        }
+        finally
+        {
+            CurrentComposer.EndComposeGroup(() => __Box<T>(content, modifier, horizontalAlignment, verticalAlignment));
+        }
+    }
+
+    [Composable]
+    [Compiled]
+    private static void __Box([Composable] Action<IBoxScope> content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    {
+        if (CurrentComposer.BeginComposeGroup((content, modifier, horizontalAlignment, verticalAlignment)))
+            return;
+        try
+        {
+            Box<Box>(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: content);
         }
         finally
         {
@@ -180,7 +197,7 @@ public static partial class ComposeFunctions
             return;
         try
         {
-            Box(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
+            Box<Box>(modifier: modifier, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
         }
         finally
         {

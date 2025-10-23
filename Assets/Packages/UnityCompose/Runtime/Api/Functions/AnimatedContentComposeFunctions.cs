@@ -14,9 +14,9 @@ public static partial class ComposeFunctions
     public static ContentTransform InstantContentTransform => UnityCompose.ContentTransform.Instant;
 
     public static ContentTransform ContentTransform(
-        EnterTransition? enter = null,
-        ExitTransition? exit = null
-    ) => new(enter ?? EnterTransition.EmptyImpl.Instance, exit ?? ExitTransition.EmptyImpl.Instance);
+        IEnterTransition? enter = null,
+        IExitTransition? exit = null
+    ) => new(enter ?? EmptyEnterTransitionImpl.Instance, exit ?? EmptyExitTransitionImpl.Instance);
 
     [Composable]
     public static void AnimatedContent<T>(
@@ -54,15 +54,15 @@ public static partial class ComposeFunctions
             () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value)
         );
 
-        ReusableComposeView<AnimatedContent>(
+        Box<AnimatedContent>(
             modifier: modifier.OrEmpty()
                 .Then(containerModifier),
-            content: () =>
+            content: scope =>
             {
-                var parent = LocalVisualElement.Current;
-                var nextModifier = resolvedTransition.Enter.Get(resolvedProgress, parent)
+                var parent = LocalParentLayout.Current;
+                var nextModifier = resolvedTransition.Enter.Get(scope, resolvedProgress, parent)
                     .Then(contentModifier);
-                var previousModifier = resolvedTransition.Exit.Get(resolvedProgress, parent)
+                var previousModifier = resolvedTransition.Exit.Get(scope, resolvedProgress, parent)
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
 

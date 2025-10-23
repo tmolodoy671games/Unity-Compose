@@ -7,22 +7,6 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static ExitTransition SlideOut(SlideDirection direction) =>
-        new ExitTransition.SlideOut(direction);
-
-    public static ExitTransition FadeOut() => new ExitTransition.FadeOut();
-
-    public static ExitTransition Exit(Func<float, IResolvedStyle, IModifier> factory) =>
-        new ExitTransition.Custom(factory);
-
-    public static EnterTransition SlideIn(SlideDirection direction) =>
-        new EnterTransition.SlideIn(direction);
-
-    public static EnterTransition FadeIn() => new EnterTransition.FadeIn();
-    
-    public static EnterTransition Enter(Func<float, IResolvedStyle, IModifier> factory) =>
-        new EnterTransition.Custom(factory);
-
     public static ComposeTransition Transition() => ComposeTransition.Default;
 
     [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]

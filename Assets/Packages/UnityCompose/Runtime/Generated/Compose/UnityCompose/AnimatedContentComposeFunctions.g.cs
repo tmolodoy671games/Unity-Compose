@@ -33,11 +33,11 @@ public static partial class ComposeFunctions
             var(containerModifier, contentModifier) = animateSize ? AnimateSizeModifiers(transitionDuration) : (Modifier, Modifier);
             // Layout:
             var resolvedTransition = Remember(value!, () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value));
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((value, content, isSwitched, resolvedProgress, previousValue, contentModifier, resolvedTransition), () =>
+            Box<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>((value, content, isSwitched, resolvedProgress, previousValue, contentModifier, resolvedTransition), scope =>
             {
-                var parent = LocalVisualElement.Current;
-                var nextModifier = resolvedTransition.Enter.Get(resolvedProgress, parent).Then(contentModifier);
-                var previousModifier = resolvedTransition.Exit.Get(resolvedProgress, parent).Float();
+                var parent = LocalParentLayout.Current;
+                var nextModifier = resolvedTransition.Enter.Get(scope, resolvedProgress, parent).Then(contentModifier);
+                var previousModifier = resolvedTransition.Exit.Get(scope, resolvedProgress, parent).Float();
                 var isAnimationRunning = resolvedProgress is> 0 and < 1;
                 var next = (Value: value, Style: nextModifier, Progress: resolvedProgress);
                 var previous = (Value: previousValue.Value, Style: previousModifier, Progress: 1 - resolvedProgress);

@@ -44,9 +44,9 @@ public static partial class ComposeFunctions
             var allScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.Union(previousBackStack.Value).Distinct().ToImmutableStableList());
             var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () => transition?.Invoke() ?? ResolveTransition(appearingScreens, disappearingScreens));
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
-            ReusableComposeView<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), () =>
+            Box<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), scope =>
             {
-                CompositionLocalProvider(provides: Remember(() => IImmutableStableList.Create(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)))), content: RememberComposable<global::System.Action>((onTransitionProgressChanged, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), () =>
+                CompositionLocalProvider(provides: Remember(() => IImmutableStableList.Create(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)))), content: RememberComposable<global::System.Action>((onTransitionProgressChanged, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished, scope), () =>
                 {
                     LaunchedEffect(resolvedProgress, Remember<global::System.Action>((onTransitionProgressChanged, resolvedProgress), () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                     if (IsInPreview)
@@ -56,15 +56,15 @@ public static partial class ComposeFunctions
                         var screenState = Remember((screen, currentBackStack, previousBackStack.Value), () => Switch().Case(appearingScreens.Contains(screen), ScreenState.Appearing).Case(disappearingScreens.Contains(screen), ScreenState.Disappearing).Default(ScreenState.Idle).Get());
                         if (screenState == ScreenState.Disappearing && isTransitionFinished)
                             continue;
-                        Key(key: screen, content: RememberComposable<global::System.Action>((currentBackStack, resolvedProgress, resolvedTransition, screen, screenState), () =>
+                        Key(key: screen, content: RememberComposable<global::System.Action>((currentBackStack, resolvedProgress, resolvedTransition, scope, screen, screenState), () =>
                         {
-                            var parent = LocalVisualElement.Current;
+                            var parent = LocalParentLayout.Current;
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentStyle = screenState switch
                             {
                                 ScreenState.Idle => Modifier.Float(!isCurrentScreen),
-                                ScreenState.Appearing => resolvedTransition.Enter.Get(resolvedProgress, parent).Float(!isCurrentScreen),
-                                ScreenState.Disappearing => resolvedTransition.Exit.Get(resolvedProgress, parent).Float(),
+                                ScreenState.Appearing => resolvedTransition.Enter.Get(scope, resolvedProgress, parent).Float(!isCurrentScreen),
+                                ScreenState.Disappearing => resolvedTransition.Exit.Get(scope, resolvedProgress, parent).Float(),
                                 _ => throw new ArgumentOutOfRangeException()};
                             CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ScreenState.Disappearing ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
                         }));

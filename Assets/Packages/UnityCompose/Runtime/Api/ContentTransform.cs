@@ -208,25 +208,6 @@ public abstract class ExitTransition
     }
 }
 
-public record ContentTransform(
-    EnterTransition Enter,
-    ExitTransition Exit
-)
-{
-    public static ContentTransform Instant => new(
-        Enter: EnterTransition.Empty,
-        Exit: ExitTransition.Hide
-    );
-
-    public static ContentTransform operator +(ContentTransform first, ContentTransform second)
-    {
-        return new ContentTransform(
-            Enter: first.Enter + second.Enter,
-            Exit: first.Exit + second.Exit
-        );
-    }
-}
-
 public enum SlideDirection
 {
     Up,

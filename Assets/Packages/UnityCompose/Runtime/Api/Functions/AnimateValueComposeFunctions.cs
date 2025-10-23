@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -140,12 +141,7 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
             var startValue = property.Value;
-            var curve = animationCurve ?? AnimationCurve.EaseInOut(
-                timeStart: 0,
-                valueStart: 0,
-                valueEnd: 1,
-                timeEnd: 1
-            );
+            var curve = animationCurve ?? ComposeDefaults.DefaultCurve;
             if (Equals(startValue, newValueFactory())) yield break;
             var elapsed = 0f;
             while (elapsed < duration)

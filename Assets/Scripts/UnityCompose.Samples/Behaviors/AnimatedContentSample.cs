@@ -39,12 +39,12 @@ namespace UnityCompose.Samples.Behaviors
                                 transition: (_, _) =>
                                     isSwitched.Value
                                         ? ContentTransform(
-                                            enter: SlideIn(SlideDirection.Up) + FadeIn(),
-                                            exit: SlideOut(SlideDirection.Up) + FadeOut()
+                                            enter: SlideInVertically(it => -it) + FadeIn(),
+                                            exit: SlideOutVertically(it => it) + FadeOut()
                                         )
                                         : ContentTransform(
-                                            enter: SlideIn(SlideDirection.Down) + FadeIn(),
-                                            exit: SlideOut(SlideDirection.Down) + FadeOut()
+                                            enter: SlideInVertically(it => it) + FadeIn(),
+                                            exit: SlideOutVertically(it => -it) + FadeOut()
                                         ),
                                 animateSize: true,
                                 transitionDuration: Duration,

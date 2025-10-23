@@ -105,9 +105,9 @@ public static partial class ComposeFunctions
         );
         var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
 
-        ReusableComposeView<Navigation>(
+        Box<Navigation>(
             modifier: modifier,
-            content: () =>
+            content: scope =>
             {
                 CompositionLocalProvider(
                     provides: Remember(() => IImmutableStableList.Create(
@@ -133,17 +133,17 @@ public static partial class ComposeFunctions
                                 key: screen,
                                 content: () =>
                                 {
-                                    var parent = LocalVisualElement.Current;
+                                    var parent = LocalParentLayout.Current;
                                     var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                                     var contentStyle = screenState switch
                                     {
                                         ScreenState.Idle => Modifier
                                             .Float(!isCurrentScreen),
                                         ScreenState.Appearing => resolvedTransition.Enter
-                                            .Get(resolvedProgress, parent)
+                                            .Get(scope, resolvedProgress, parent)
                                             .Float(!isCurrentScreen),
                                         ScreenState.Disappearing => resolvedTransition.Exit
-                                            .Get(resolvedProgress, parent)
+                                            .Get(scope, resolvedProgress, parent)
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };

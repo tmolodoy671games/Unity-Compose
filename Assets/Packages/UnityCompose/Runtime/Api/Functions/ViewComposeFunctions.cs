@@ -16,8 +16,11 @@ public static partial class ComposeFunctions
     private static readonly ICompositionLocal<(IModifier? Before, IModifier? After)> LocalModifier =
         CompositionLocalOf<(IModifier? Before, IModifier? After)>(() => (null, null));
 
-    public static readonly ICompositionLocal<VisualElement> LocalVisualElement =
+    private static readonly ICompositionLocal<VisualElement> LocalVisualElement =
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("No LocalVisualElement provided!"));
+
+    public static ICompositionLocal<LayoutInfo> LocalParentLayout =>
+        LocalVisualElement.Select(LayoutInfo.From);
 
     public static CompositionLocalProvides Provides(
         this ICompositionLocal<(IModifier? Before, IModifier? After)> localModifier,
@@ -166,16 +169,16 @@ public static partial class ComposeFunctions
             content: _ => content()
         );
     }
-
+    
     [Composable]
-    public static void Box(
+    internal static void Box<T>(
         [Composable] Action<IBoxScope> content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
-    )
+    ) where T : VisualElement, new()
     {
-        ReusableComposeView<Box>(
+        ReusableComposeView<T>(
             modifier: modifier,
             initializer: it =>
             {
@@ -192,13 +195,29 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Box(
+        [Composable] Action<IBoxScope> content,
+        IModifier? modifier = null,
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
+    )
+    {
+        Box<Box>(
+            modifier: modifier,
+            horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
+            content: content
+        );
+    }
+
+    [Composable]
+    public static void Box(
         [Composable] Action content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
-        Box(
+        Box<Box>(
             modifier: modifier,
             horizontalAlignment: horizontalAlignment,
             verticalAlignment: verticalAlignment,
