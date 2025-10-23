@@ -46,6 +46,7 @@ public static partial class ComposeFunctions
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentStyle = Modifier;
         var containerStyle = Modifier
+            .Clip()
             .OnGeometryChanged(it =>
             {
                 var layout = it.currentTarget.CastTo<VisualElement>().resolvedStyle;

@@ -27,12 +27,12 @@ namespace UnityCompose.Samples.Behaviors
         {
             Box(
                 style: Modifier
-                    .Size(100.Percent()),
+                    .FillMaxSize(),
                 content: () =>
                 {
                     Box(
                         style: Modifier
-                            .Size(100.Percent()),
+                            .FillMaxSize(),
                         content: () =>
                         {
                             Navigation(
@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 style: Modifier
-                                    .Size(100.Percent())
+                                    .FillMaxSize()
                             );
                         }
                     );
@@ -84,7 +84,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
                 style: Modifier
-                    .Size(100.Percent())
+                    .FillMaxSize()
                     .Background(Color.green),
                 content: () =>
                 {
@@ -108,7 +108,7 @@ namespace UnityCompose.Samples.Behaviors
             CollectSpace(() => coordinator.ShowFirstScreen());
             Spacer(
                 style: Modifier
-                    .Size(100.Percent())
+                    .FillMaxSize()
                     .Background(Color.red)
             );
         }

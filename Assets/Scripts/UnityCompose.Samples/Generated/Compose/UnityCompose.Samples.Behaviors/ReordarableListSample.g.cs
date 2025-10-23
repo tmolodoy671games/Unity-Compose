@@ -16,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier, content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(alignHorizontally: Align.Center, style: Modifier.Name("reordarable-list-sample").NewPadding(top: 100).Height(100.Percent()).Width(800), content: RememberComposable<global::System.Action>(null, () =>
+                    Column(alignHorizontally: Align.Center, style: Modifier.Name("reordarable-list-sample").NewPadding(top: 100).FillMaxHeight().Width(800), content: RememberComposable<global::System.Action>(null, () =>
                     {
                         var items = Remember(() => MutableStateListOf(1, 2));
                         Label(text: "Add Item", textColor: Color.white, fontSize: 40, style: Modifier.Name("add-item-button").AlignSelf(Align.FlexEnd).Background(Color.blue).NewPadding(horizontal: 32, vertical: 16).BorderRadius(16).OnClick(Remember<global::System.Action>(items, () =>
@@ -30,7 +30,7 @@ namespace UnityCompose.Samples.Behaviors
                                 }
                             }
                         })));
-                        Column(alignHorizontally: Align.Center, style: Modifier.Name("nested-column").Width(100.Percent()), content: RememberComposable<global::System.Action>(items, () =>
+                        Column(alignHorizontally: Align.Center, style: Modifier.Name("nested-column").FillMaxWidth(), content: RememberComposable<global::System.Action>(items, () =>
                         {
                             foreach (var item in items)
                             {
@@ -76,7 +76,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).Width(100.Percent()).NewPadding(all: 4).BorderRadius(12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
+                Row(alignVertically: Align.Center, style: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().NewPadding(all: 4).BorderRadius(12).Margin(vertical: 4).Name(state.ToString()), content: RememberComposable<global::System.Action>((state, onMoveUpClick, onMoveDownClick, onRemoveClick), () =>
                 {
                     Label(text: $"Item no. {state}", textColor: Color.black, fontSize: 40, style: Modifier.Name("item-name-label").FlexGrow(1).Margin(left: 32));
                     Column(content: RememberComposable<global::System.Action>((onMoveUpClick, onMoveDownClick), () =>

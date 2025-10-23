@@ -29,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                         style: Modifier
                             .Name("reordarable-list-sample")
                             .NewPadding(top: 100)
-                            .Height(100.Percent())
+                            .FillMaxHeight()
                             .Width(800),
                         content: () =>
                         {
@@ -61,7 +61,7 @@ namespace UnityCompose.Samples.Behaviors
                                 alignHorizontally: Align.Center,
                                 style: Modifier
                                     .Name("nested-column")
-                                    .Width(100.Percent()),
+                                    .FillMaxWidth(),
                                 content: () =>
                                 {
                                     foreach (var item in items)
@@ -114,7 +114,7 @@ namespace UnityCompose.Samples.Behaviors
                 style: Modifier
                     .Name("item-row")
                     .Background(Color.cyan)
-                    .Width(100.Percent())
+                    .FillMaxWidth()
                     .NewPadding(all: 4)
                     .BorderRadius(12)
                     .Margin(vertical: 4)

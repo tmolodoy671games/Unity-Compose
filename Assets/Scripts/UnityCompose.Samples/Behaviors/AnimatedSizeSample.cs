@@ -21,8 +21,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
                 style: Modifier
-                    .Width(100.Percent())
-                    .Height(100.Percent())
+                    .FillMaxSize()
                     .FlexGrow(1),
                 content: () =>
                 {

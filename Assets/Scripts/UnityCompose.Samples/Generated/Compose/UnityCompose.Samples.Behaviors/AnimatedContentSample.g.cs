@@ -46,7 +46,7 @@ namespace UnityCompose.Samples.Behaviors
             try
             {
                 const int Duration = 1;
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Width(100.Percent()).Height(100.Percent()).FlexGrow(1), content: RememberComposable<global::System.Action>(Duration, () =>
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize().FlexGrow(1), content: RememberComposable<global::System.Action>(Duration, () =>
                 {
                     Column(alignHorizontally: Align.Center, style: Modifier.Name("animated-content-sample"), content: RememberComposable<global::System.Action>(Duration, () =>
                     {
