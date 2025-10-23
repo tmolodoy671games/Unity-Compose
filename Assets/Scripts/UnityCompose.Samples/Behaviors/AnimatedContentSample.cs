@@ -24,8 +24,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
                 style: Modifier
-                    .FillMaxSize()
-                    .FlexGrow(1),
+                    .FillMaxSize(),
                 content: () =>
                 {
                     Column(

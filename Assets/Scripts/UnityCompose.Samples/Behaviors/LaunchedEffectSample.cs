@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignVertically: Justify.Center,
                 style: Modifier
                     .Name("launched-effect-disposal")
-                    .FlexGrow(1),
+                    .FillMaxSize(),
                 content: () =>
                 {
                     var count = Remember(() => MutableStateOf(0));

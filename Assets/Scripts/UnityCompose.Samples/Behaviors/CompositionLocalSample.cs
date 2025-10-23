@@ -27,7 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignVertically: Justify.Center,
                 style: Modifier
                     .Name("composition-local-sample")
-                    .FlexGrow(1),
+                    .FillMaxSize(),
                 content: () =>
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));

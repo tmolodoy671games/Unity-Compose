@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FlexGrow(1), content: RememberComposable<global::System.Action>(null, () =>
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     Column(alignHorizontally: Align.Stretch, style: Modifier, content: RememberComposable<global::System.Action>(null, () =>
                     {
