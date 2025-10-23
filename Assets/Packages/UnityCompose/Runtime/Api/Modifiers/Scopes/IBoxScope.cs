@@ -9,7 +9,7 @@ namespace UnityCompose;
 
 public interface IBoxScope
 {
-    IModifier Align(HorizontalAlign align);
+    IModifier Align(Alignment.Horizontal align);
 
     IModifier FillMaxWidth();
     IModifier FillMaxHeight();
@@ -24,7 +24,7 @@ public interface IBoxScope
 
 internal class BoxScopeImpl : IBoxScope
 {
-    public IModifier Align(HorizontalAlign align)
+    public IModifier Align(Alignment.Horizontal align)
     {
         return Modifier + new HorizontalAlignModifierImpl(align);
     }
@@ -52,9 +52,9 @@ internal class BoxScopeImpl : IBoxScope
 
 internal class HorizontalAlignModifierImpl : BaseModifier<HorizontalAlignModifierImpl>
 {
-    private readonly HorizontalAlign _align;
+    private readonly Alignment.Horizontal _align;
 
-    public HorizontalAlignModifierImpl(HorizontalAlign align)
+    public HorizontalAlignModifierImpl(Alignment.Horizontal align)
     {
         _align = align;
     }
@@ -63,9 +63,9 @@ internal class HorizontalAlignModifierImpl : BaseModifier<HorizontalAlignModifie
     {
         element.style.alignSelf = _align switch
         {
-            HorizontalAlign.Left => Align.FlexStart,
-            HorizontalAlign.Center => Align.Center,
-            HorizontalAlign.Right => Align.FlexEnd,
+            Alignment.Horizontal.Left => Align.FlexStart,
+            Alignment.Horizontal.Center => Align.Center,
+            Alignment.Horizontal.Right => Align.FlexEnd,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

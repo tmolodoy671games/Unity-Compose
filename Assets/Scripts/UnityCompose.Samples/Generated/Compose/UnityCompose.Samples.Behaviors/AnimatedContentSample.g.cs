@@ -46,9 +46,9 @@ namespace UnityCompose.Samples.Behaviors
             try
             {
                 const int Duration = 1;
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(Duration, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(Duration, () =>
                 {
-                    Column(alignHorizontally: Align.Center, style: Modifier.Name("animated-content-sample"), content: RememberComposable<global::System.Action>(Duration, () =>
+                    Column(horizontalAlignment: Alignment.Horizontal.Center, style: Modifier.Name("animated-content-sample"), content: RememberComposable<global::System.Action>(Duration, () =>
                     {
                         var isSwitched = Remember(() => MutableStateOf(false));
                         AnimatedContent(value: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transition: Remember<global::System.Func<string, string, global::UnityCompose.ContentTransform>>(isSwitched, (_, _) => isSwitched.Value ? ContentTransform(enter: SlideIn(SlideDirection.Up) + FadeIn(), exit: SlideOut(SlideDirection.Up) + FadeOut()) : ContentTransform(enter: SlideIn(SlideDirection.Down) + FadeIn(), exit: SlideOut(SlideDirection.Down) + FadeOut())), animateSize: true, transitionDuration: Duration, style: Modifier.Name("animated-content").Background(isSwitched.Value ? Color.green : Color.red, Transition(Duration)), content: RememberComposable<global::System.Action<string>>(null, state =>

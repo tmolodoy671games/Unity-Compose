@@ -18,14 +18,14 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        alignHorizontally: Align.Center,
+                        horizontalAlignment: Alignment.Horizontal.Center,
                         style: Modifier
                             .Name("animated-size-sample"),
                         content: () =>

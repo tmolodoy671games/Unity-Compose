@@ -46,7 +46,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Name("composition-local-sample").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.Name("composition-local-sample").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
                     CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsSwitched.Provides(isSwitched.Value)), content: SampleReader);

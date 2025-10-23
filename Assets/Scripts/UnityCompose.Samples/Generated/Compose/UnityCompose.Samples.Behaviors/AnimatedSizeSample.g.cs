@@ -13,9 +13,9 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(alignHorizontally: Align.Center, style: Modifier.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
+                    Column(horizontalAlignment: Alignment.Horizontal.Center, style: Modifier.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
                     {
                         var isSwitched = Remember(() => MutableStateOf(false));
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";

@@ -77,7 +77,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowSecondScreen()));
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize().Background(Color.green), content: RememberComposable<global::System.Action>(null, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize().Background(Color.green), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     Spacer(style: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));

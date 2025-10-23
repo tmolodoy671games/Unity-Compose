@@ -13,20 +13,20 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(alignHorizontally: Align.Stretch, style: Modifier, content: RememberComposable<global::System.Action>(null, () =>
+                    Column(style: Modifier, content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(null, scope =>
                     {
                         var showFirst = Remember(() => MutableStateOf(false));
                         if (showFirst.Value)
                         {
                             var firstCount = Remember(() => MutableStateOf(0));
-                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.red).NewPadding(all: 20).Border(radius: 16).OnClick(Remember<global::System.Action>(firstCount, () => firstCount.Value++)).Name("first-button"));
+                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Then(scope.FillMaxWidth()).Background(Color.red).NewPadding(all: 20).Border(radius: 16).OnClick(Remember<global::System.Action>(firstCount, () => firstCount.Value++)).Name("first-button"));
                         }
 
                         var secondCount = Remember(() => MutableStateOf(0));
-                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.green).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
-                        Text(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Background(Color.blue).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Then(scope.FillMaxWidth()).Background(Color.green).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(secondCount, () => secondCount.Value++)).Name("second-button"));
+                        Text(text: "Switch", fontSize: 20, align: TextAnchor.MiddleCenter, style: Modifier.Then(scope.FillMaxWidth()).Background(Color.blue).NewPadding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(Remember<global::System.Action>(showFirst, () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
                     }));
                 }));
             }

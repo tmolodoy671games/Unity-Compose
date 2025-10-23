@@ -92,18 +92,16 @@ public static partial class ComposeFunctions
     public static void Column(
         [Composable] Action<IColumnScope> content,
         IModifier? style = null,
-        Align alignHorizontally = Align.FlexStart,
-        Justify alignVertically = Justify.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         ReusableComposeView<Column>(
             style: style,
             initializer: it =>
             {
-                StyleEnum<Align> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Justify> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignHorizontallyEnum;
-                it.style.justifyContent = alignVerticallyEnum;
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
             },
             content: () =>
             {
@@ -117,14 +115,14 @@ public static partial class ComposeFunctions
     public static void Column(
         [Composable] Action content,
         IModifier? style = null,
-        Align alignHorizontally = Align.FlexStart,
-        Justify alignVertically = Justify.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         Column(
             style: style,
-            alignHorizontally: alignHorizontally,
-            alignVertically: alignVertically,
+            horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
             content: _ => content()
         );
     }
@@ -133,8 +131,8 @@ public static partial class ComposeFunctions
     public static void Row(
         [Composable] Action<IRowScope> content,
         IModifier? style = null,
-        Justify alignHorizontally = Justify.FlexStart,
-        Align alignVertically = Align.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         ReusableComposeView<Row>(
@@ -142,10 +140,8 @@ public static partial class ComposeFunctions
             initializer: it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
-                StyleEnum<Justify> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Align> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignVerticallyEnum;
-                it.style.justifyContent = alignHorizontallyEnum;
+                it.style.alignItems = verticalAlignment.ToAlign();
+                it.style.justifyContent = horizontalAlignment.ToJustify();
             },
             content: () =>
             {
@@ -159,15 +155,15 @@ public static partial class ComposeFunctions
     public static void Row(
         [Composable] Action content,
         IModifier? style = null,
-        Justify alignHorizontally = Justify.FlexStart,
-        Align alignVertically = Align.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         Row(
             style: style,
-            alignHorizontally: alignHorizontally,
-            alignVertically: alignVertically,
-            content: () => content()
+            horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
+            content: _ => content()
         );
     }
 
@@ -175,18 +171,16 @@ public static partial class ComposeFunctions
     public static void Box(
         [Composable] Action<IBoxScope> content,
         IModifier? style = null,
-        Align alignHorizontally = Align.FlexStart,
-        Justify alignVertically = Justify.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         ReusableComposeView<Box>(
             style: style,
             initializer: it =>
             {
-                StyleEnum<Align> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Justify> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignHorizontallyEnum;
-                it.style.justifyContent = alignVerticallyEnum;
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
             },
             content: () =>
             {
@@ -200,14 +194,14 @@ public static partial class ComposeFunctions
     public static void Box(
         [Composable] Action content,
         IModifier? style = null,
-        Align alignHorizontally = Align.FlexStart,
-        Justify alignVertically = Justify.FlexStart
+        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
+        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
     )
     {
         Box(
             style: style,
-            alignHorizontally: alignHorizontally,
-            alignVertically: alignVertically,
+            horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
             content: _ => content()
         );
     }

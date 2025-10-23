@@ -18,16 +18,15 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        alignHorizontally: Align.Stretch,
                         style: Modifier,
-                        content: () =>
+                        content: scope =>
                         {
                             var showFirst = Remember(() => MutableStateOf(false));
                             if (showFirst.Value)
@@ -38,6 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
                                     style: Modifier
+                                        .Then(scope.FillMaxWidth())
                                         .Background(Color.red)
                                         .NewPadding(all: 20)
                                         .Border(radius: 16)
@@ -52,6 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
+                                    .Then(scope.FillMaxWidth())
                                     .Background(Color.green)
                                     .NewPadding(all: 20)
                                     .Border(radius: 16)
@@ -65,6 +66,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
                                 style: Modifier
+                                    .Then(scope.FillMaxWidth())
                                     .Background(Color.blue)
                                     .NewPadding(all: 20)
                                     .Border(radius: 16)

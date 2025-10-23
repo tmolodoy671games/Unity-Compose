@@ -8,7 +8,7 @@ namespace UnityCompose;
 
 public interface IColumnScope
 {
-    IModifier Align(HorizontalAlign align);
+    IModifier Align(Alignment.Horizontal align);
 
     IModifier FillMaxWidth();
     IModifier Weight(float fraction);
@@ -16,7 +16,7 @@ public interface IColumnScope
 
 internal class ColumnScopeImpl : IColumnScope
 {
-    public IModifier Align(HorizontalAlign align)
+    public IModifier Align(Alignment.Horizontal align)
     {
         return Modifier + new HorizontalAlignModifierImpl(align);
     }

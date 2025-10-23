@@ -14,7 +14,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     var count = Remember(() => MutableStateOf(0));
                     Text(text: count.Value.ToString(), textColor: Color.white, fontSize: 40, style: Modifier.Name("test-label").Background(Color.red).NewPadding(all: 10));

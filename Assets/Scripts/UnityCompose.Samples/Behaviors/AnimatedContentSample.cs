@@ -21,14 +21,14 @@ namespace UnityCompose.Samples.Behaviors
         {
             const int Duration = 1;
             Box(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        alignHorizontally: Align.Center,
+                        horizontalAlignment: Alignment.Horizontal.Center,
                         style: Modifier
                             .Name("animated-content-sample"),
                         content: () =>

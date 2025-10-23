@@ -24,8 +24,8 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 style: Modifier
                     .FillMaxSize(),
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 content: () =>
                 {
                     Spacer(

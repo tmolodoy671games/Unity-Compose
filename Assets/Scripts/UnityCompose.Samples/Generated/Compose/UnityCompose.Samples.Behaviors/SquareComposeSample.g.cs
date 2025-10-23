@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var isHovered = Remember(() => MutableStateOf(false));
                 var isPressed = Remember(() => MutableStateOf(false));
-                Box(style: Modifier.FillMaxSize(), alignHorizontally: Align.Center, alignVertically: Justify.Center, content: RememberComposable<global::System.Action>((isHovered, isPressed), () =>
+                Box(style: Modifier.FillMaxSize(), horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, content: RememberComposable<global::System.Action>((isHovered, isPressed), () =>
                 {
                     Spacer(style: Modifier.Size(100).Background(isPressed.Value ? Color.cyan : Color.blue, Transition()).Border(radius: 32).Scale(isHovered.Value ? 2 : 1, Transition()).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>((isHovered, isPressed), () =>
                     {

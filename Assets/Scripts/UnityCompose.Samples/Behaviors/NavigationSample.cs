@@ -81,8 +81,8 @@ namespace UnityCompose.Samples.Behaviors
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowSecondScreen());
             Box(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .FillMaxSize()
                     .Background(Color.green),

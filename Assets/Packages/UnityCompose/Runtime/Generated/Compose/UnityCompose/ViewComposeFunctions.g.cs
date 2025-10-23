@@ -69,18 +69,16 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Column([Composable] Action<IColumnScope> content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Column([Composable] Action<IColumnScope> content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Column>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>>((alignHorizontally, alignVertically), it =>
+            ReusableComposeView<Column>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>>((horizontalAlignment, verticalAlignment), it =>
             {
-                StyleEnum<Align> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Justify> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignHorizontallyEnum;
-                it.style.justifyContent = alignVerticallyEnum;
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
             }), content: RememberComposable<global::System.Action>(content, () =>
             {
                 var scope = Remember(() => new ColumnScopeImpl());
@@ -89,41 +87,39 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Column(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Column(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Column([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Column([Composable] Action content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            Column(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(content, _ => content()));
+            Column(style: style, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IColumnScope>>(content, _ => content()));
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Column(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Column(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Row([Composable] Action<IRowScope> content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
+    private static void __Row([Composable] Action<IRowScope> content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Row>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>((alignHorizontally, alignVertically), it =>
+            ReusableComposeView<Row>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>((horizontalAlignment, verticalAlignment), it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
-                StyleEnum<Justify> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Align> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignVerticallyEnum;
-                it.style.justifyContent = alignHorizontallyEnum;
+                it.style.alignItems = verticalAlignment.ToAlign();
+                it.style.justifyContent = horizontalAlignment.ToJustify();
             }), content: RememberComposable<global::System.Action>(content, () =>
             {
                 var scope = Remember(() => new RowScopeImpl());
@@ -132,40 +128,38 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Row(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Row(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Row([Composable] Action content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
+    private static void __Row([Composable] Action content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            Row(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action>(content, () => content()));
+            Row(style: style, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IRowScope>>(content, _ => content()));
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Row(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Row(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Box([Composable] Action<IBoxScope> content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Box([Composable] Action<IBoxScope> content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Box>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>((alignHorizontally, alignVertically), it =>
+            ReusableComposeView<Box>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>((horizontalAlignment, verticalAlignment), it =>
             {
-                StyleEnum<Align> alignHorizontallyEnum = alignHorizontally;
-                StyleEnum<Justify> alignVerticallyEnum = alignVertically;
-                it.style.alignItems = alignHorizontallyEnum;
-                it.style.justifyContent = alignVerticallyEnum;
+                it.style.alignItems = horizontalAlignment.ToAlign();
+                it.style.justifyContent = verticalAlignment.ToJustify();
             }), content: RememberComposable<global::System.Action>(content, () =>
             {
                 var scope = Remember(() => new BoxScopeImpl());
@@ -174,23 +168,23 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Box(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Box(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Box([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Box([Composable] Action content, IModifier? style = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
+        if (CurrentComposer.BeginComposeGroup((content, style, horizontalAlignment, verticalAlignment)))
             return;
         try
         {
-            Box(style: style, alignHorizontally: alignHorizontally, alignVertically: alignVertically, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
+            Box(style: style, horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment, content: RememberComposable<global::System.Action<global::UnityCompose.IBoxScope>>(content, _ => content()));
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Box(content, style, alignHorizontally, alignVertically));
+            CurrentComposer.EndComposeGroup(() => __Box(content, style, horizontalAlignment, verticalAlignment));
         }
     }
 

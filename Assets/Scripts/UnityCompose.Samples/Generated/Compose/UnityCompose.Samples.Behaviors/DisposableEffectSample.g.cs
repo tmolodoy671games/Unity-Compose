@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     var isEffectRunning = Remember(() => MutableStateOf(false));
                     if (isEffectRunning.Value)

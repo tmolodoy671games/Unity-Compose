@@ -19,13 +19,13 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier,
                 content: () =>
                 {
                     Column(
-                        alignHorizontally: Align.Center,
+                        horizontalAlignment: Alignment.Horizontal.Center,
                         style: Modifier
                             .Name("reordarable-list-sample")
                             .NewPadding(top: 100)
@@ -40,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 40,
                                 style: Modifier
                                     .Name("add-item-button")
-                                    .Then(scope.Align(HorizontalAlign.Right))
+                                    .Then(scope.Align(Alignment.Horizontal.Right))
                                     .Background(Color.blue)
                                     .NewPadding(horizontal: 32, vertical: 16)
                                     .Border(radius: 16)
@@ -58,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                             );
 
                             Column(
-                                alignHorizontally: Align.Center,
+                                horizontalAlignment: Alignment.Horizontal.Center,
                                 style: Modifier
                                     .Name("nested-column")
                                     .FillMaxWidth(),
@@ -110,7 +110,7 @@ namespace UnityCompose.Samples.Behaviors
         )
         {
             Row(
-                alignVertically: Align.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .Name("item-row")
                     .Background(Color.cyan)

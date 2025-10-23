@@ -18,8 +18,8 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Column(
-                alignHorizontally: Align.Center,
-                alignVertically: Justify.Center,
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
                 style: Modifier
                     .FillMaxSize()
                     .Background(Color.white),
