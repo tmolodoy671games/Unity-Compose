@@ -24,6 +24,11 @@ public static partial class ComposeFunctions
         ReusableComposeView<AnimatedSize>(
             modifier: modifier.OrEmpty()
                 .Then(containerStyle),
+            initializer: it =>
+            {
+                it.style.alignItems = Align.Center;
+                it.style.justifyContent = Justify.Center;
+            },
             content: () =>
             {
                 CompositionLocalProvider(

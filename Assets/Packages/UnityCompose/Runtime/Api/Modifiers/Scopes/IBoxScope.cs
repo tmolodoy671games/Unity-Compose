@@ -15,10 +15,10 @@ public interface IBoxScope
     IModifier FillMaxHeight();
 
     IModifier Position(
-        Optional<float> top = default,
-        Optional<float> bottom = default,
-        Optional<float> left = default,
-        Optional<float> right = default
+        LayoutCoordinate top = default,
+        LayoutCoordinate bottom = default,
+        LayoutCoordinate left = default,
+        LayoutCoordinate right = default
     );
 }
 
@@ -40,10 +40,10 @@ internal class BoxScopeImpl : IBoxScope
     }
 
     public IModifier Position(
-        Optional<float> top,
-        Optional<float> bottom,
-        Optional<float> left,
-        Optional<float> right
+        LayoutCoordinate top,
+        LayoutCoordinate bottom,
+        LayoutCoordinate left,
+        LayoutCoordinate right
     )
     {
         return Modifier + new BoxPositionModifierImpl(top, bottom, left, right);
@@ -117,16 +117,16 @@ internal class FillMaxWidthModifierImpl : BaseModifier<FillMaxWidthModifierImpl>
 
 internal class BoxPositionModifierImpl : BaseModifier<BoxPositionModifierImpl>
 {
-    private readonly Optional<float> _top;
-    private readonly Optional<float> _bottom;
-    private readonly Optional<float> _left;
-    private readonly Optional<float> _right;
+    private readonly LayoutCoordinate _top;
+    private readonly LayoutCoordinate _bottom;
+    private readonly LayoutCoordinate _left;
+    private readonly LayoutCoordinate _right;
 
     public BoxPositionModifierImpl(
-        Optional<float> top,
-        Optional<float> bottom,
-        Optional<float> left,
-        Optional<float> right
+        LayoutCoordinate top,
+        LayoutCoordinate bottom,
+        LayoutCoordinate left,
+        LayoutCoordinate right
     )
     {
         _top = top;
@@ -139,13 +139,13 @@ internal class BoxPositionModifierImpl : BaseModifier<BoxPositionModifierImpl>
     {
         element.style.position = Position.Absolute;
         if (_top.HasValue)
-            element.style.top = _top.Value;
+            element.style.top = _top.ToLength();
         if (_bottom.HasValue)
-            element.style.bottom = _bottom.Value;
+            element.style.bottom = _bottom.ToLength();
         if (_left.HasValue)
-            element.style.left = _left.Value;
+            element.style.left = _left.ToLength();
         if (_right.HasValue)
-            element.style.right = _right.Value;
+            element.style.right = _right.ToLength();
     }
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)

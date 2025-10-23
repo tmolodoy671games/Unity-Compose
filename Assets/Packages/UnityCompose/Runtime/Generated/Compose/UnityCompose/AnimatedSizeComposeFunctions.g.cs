@@ -21,7 +21,11 @@ public static partial class ComposeFunctions
         try
         {
             var(containerStyle, contentStyle) = AnimateSizeModifiers(duration);
-            ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerStyle), content: RememberComposable<global::System.Action>((content, contentStyle), () =>
+            ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerStyle), initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>>(null, it =>
+            {
+                it.style.alignItems = Align.Center;
+                it.style.justifyContent = Justify.Center;
+            }), content: RememberComposable<global::System.Action>((content, contentStyle), () =>
             {
                 CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: contentStyle)), content: content);
             }));

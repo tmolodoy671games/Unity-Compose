@@ -5,13 +5,8 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-public static class FloatExtensions
+public static partial class FloatExtensions
 {
-    public static Length Percent(this float value)
-    {
-        return new Length(value, LengthUnit.Percent);
-    }
-
     internal static float Approximate(this float value) => value.Round(0.1f);
         
     public static float Round(this float value, float step)
