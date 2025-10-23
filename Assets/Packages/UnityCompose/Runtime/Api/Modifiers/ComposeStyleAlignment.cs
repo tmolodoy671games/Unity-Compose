@@ -271,73 +271,6 @@ public static partial class ModifierExtensions
         }
     }
 
-    private class TranslateImpl : BaseModifier<TranslateImpl>
-    {
-        private readonly StyleTranslate _translate;
-        private readonly ComposeTransition _transition;
-
-        public TranslateImpl(StyleTranslate translate, ComposeTransition transition)
-        {
-            _transition = transition;
-            _translate = translate;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.translate = _translate;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "translate");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.Translate);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-            element.style.translate = StyleKeyword.Null;
-        }
-
-        protected override bool Equals(TranslateImpl other)
-        {
-            return _translate == other._translate && Equals(_transition, other._transition);
-        }
-    }
-
-    private class TransformOriginImpl : BaseModifier<TransformOriginImpl>
-    {
-        private readonly TransformOrigin _origin;
-        private readonly ComposeTransition _transition;
-
-        public TransformOriginImpl(TransformOrigin origin, ComposeTransition transition)
-        {
-            _origin = origin;
-            _transition = transition;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.style.transformOrigin = _origin;
-            if (!_transition.IsDefault())
-                element.AddTransition(_transition, "transform-origin");
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-            modifiedProperties.Add(ComposeModifiedProperty.TransformOrigin);
-        }
-
-        public override void Revert(VisualElement element)
-        {
-        }
-
-        protected override bool Equals(TransformOriginImpl other)
-        {
-            return _origin.Equals(other._origin) && Equals(_transition, other._transition);
-        }
-    }
-
     public static IModifier AlignSelf(this IModifier style, StyleEnum<Align> alignSelf)
     {
         return style.Then(new AlignSelfImpl(alignSelf));
@@ -400,24 +333,5 @@ public static partial class ModifierExtensions
     )
     {
         return style.Then(new RightImpl(right, transition));
-    }
-
-    public static IModifier Translate(
-        this IModifier style,
-        StyleTranslate translate,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new TranslateImpl(translate, transition));
-    }
-
-    public static IModifier Translate(
-        this IModifier style,
-        Length x = default,
-        Length y = default,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new TranslateImpl(new Translate(x, y), transition));
     }
 }
