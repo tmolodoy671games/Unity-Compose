@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using SharpExtensions;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
@@ -26,5 +27,29 @@ public static class ParamUtils
         if (second >= 0)
             return second;
         return third >= 0 ? third : fourth;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Optional<T> Resolve<T>(Optional<T> first, Optional<T> second)
+    {
+        return first.HasValue ? first : second;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static  Optional<T> Resolve<T>(Optional<T> first, Optional<T> second, Optional<T> third)
+    {
+        if (first.HasValue)
+            return first;
+        return second.HasValue ? second : third;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static  Optional<T> Resolve<T>( Optional<T> first,  Optional<T> second,  Optional<T> third,  Optional<T> fourth)
+    {
+        if (first.HasValue)
+            return first;
+        if (second.HasValue)
+            return second;
+        return third.HasValue ? third : fourth;
     }
 }
