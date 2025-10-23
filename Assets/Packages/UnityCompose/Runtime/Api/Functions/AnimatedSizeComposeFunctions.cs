@@ -47,19 +47,24 @@ public static partial class ComposeFunctions
         var contentStyle = Modifier;
         var containerStyle = Modifier
             .Clip()
-            .OnGeometryChanged(it =>
+            .OnGloballyPositioned(it =>
             {
-                var layout = it.currentTarget.CastTo<VisualElement>().resolvedStyle;
                 containerPaddings.Value = new Vector2(
-                    layout.paddingLeft + layout.paddingRight,
-                    layout.paddingTop + layout.paddingBottom
+                    it.PaddingLeft + it.PaddingRight,
+                    it.PaddingTop + it.PaddingBottom
                 ).Approximate();
             });
 
         if (!IsInPreview)
         {
             contentStyle = contentStyle
-                .OnSizeChanged(size => contentSize.Value = size.Approximate());
+                .OnGloballyPositioned(it =>
+                {
+                    var resolvedSize = it.Size;
+                    resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
+                    resolvedSize += Vector2.up * (it.MarginTop + it.MarginBottom);
+                    contentSize.Value = resolvedSize.Approximate();
+                });
             var isSizeValid = contentSize.Value is { x: > 0, y: > 0 } &&
                               containerPaddings.Value is { x: >= 0, y: >= 0 };
             if (isSizeValid)

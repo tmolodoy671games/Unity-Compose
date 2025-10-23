@@ -29,10 +29,6 @@ public abstract partial class ComposeUI : MonoBehaviour
     protected virtual void Preview()
     {
     }
-
-    private static void Spacer()
-    {
-    }
 }
 
 public abstract partial class ComposeUI
@@ -42,15 +38,10 @@ public abstract partial class ComposeUI
     private void Update()
     {
         if (ApplicationUtils.IsPlaying) return;
-        var isSelected = Selection.activeGameObject == gameObject;
         var document = GetComponent<UIDocument>();
         if (!document) return;
         var composeView = document.rootVisualElement?.Q<ComposeView>();
-        composeView?.SetContent(isSelected ? Preview : EmptyPreview);
-    }
-
-    private static void EmptyPreview()
-    {
+        composeView?.SetContent(Preview);
     }
 #endif
 }

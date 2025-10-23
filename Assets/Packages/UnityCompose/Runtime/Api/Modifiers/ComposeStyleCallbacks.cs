@@ -163,35 +163,7 @@ public static partial class ModifierExtensions
         {
             return _onMouseMove == other._onMouseMove;
         }
-    }
-
-    private class OnGeometryChangedImpl : BaseModifier<OnGeometryChangedImpl>
-    {
-        private readonly Action<GeometryChangedEvent> _onGeometryChanged;
-
-        public OnGeometryChangedImpl(Action<GeometryChangedEvent> onGeometryChanged)
-        {
-            _onGeometryChanged = onGeometryChanged;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-        }
-
-        public override void Revert(VisualElement element)
-        {
-        }
-
-        protected override bool Equals(OnGeometryChangedImpl other)
-        {
-            return _onGeometryChanged == other._onGeometryChanged;
-        }
-    }
+    } 
 
     public static IModifier OnMouseEnter(this IModifier style, Action onMouseEnter, bool enabled = true)
     {
@@ -237,7 +209,7 @@ public static partial class ModifierExtensions
             return style;
         return style.Then(new OnMouseDownImpl(onMouseDown));
     }
-
+    
     public static IModifier OnLmbDown(this IModifier style, Action onLmbDown, bool enabled = true)
     {
         if (!enabled)
@@ -433,30 +405,5 @@ public static partial class ModifierExtensions
         if (!enabled)
             return style;
         return style.Then(new OnMouseMoveImpl(onMouseMove));
-    }
-
-    public static IModifier OnGeometryChanged(
-        this IModifier style,
-        Action<GeometryChangedEvent> onGeometryChanged,
-        bool enabled = true
-    )
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnGeometryChangedImpl(onGeometryChanged));
-    }
-
-    internal static IModifier OnSizeChanged(this IModifier style, Action<Vector2> onSizeChanged)
-    {
-        return style.Then(new OnGeometryChangedImpl(Callback));
-
-        void Callback(GeometryChangedEvent it)
-        {
-            var resolvedStyle = it.currentTarget.CastTo<VisualElement>().resolvedStyle;
-            var resolvedSize = it.newRect.size;
-            resolvedSize += Vector2.right * (resolvedStyle.marginLeft + resolvedStyle.marginRight);
-            resolvedSize += Vector2.up * (resolvedStyle.marginTop + resolvedStyle.marginBottom);
-            onSizeChanged(resolvedSize);
-        }
     }
 }
