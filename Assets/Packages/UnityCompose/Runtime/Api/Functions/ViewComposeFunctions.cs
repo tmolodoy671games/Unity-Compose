@@ -124,6 +124,7 @@ public static partial class ComposeFunctions
             style: style,
             initializer: it =>
             {
+                it.style.flexDirection = FlexDirection.Row;
                 StyleEnum<Justify> alignHorizontallyEnum = alignHorizontally;
                 StyleEnum<Align> alignVerticallyEnum = alignVertically;
                 it.style.alignItems = alignVerticallyEnum;

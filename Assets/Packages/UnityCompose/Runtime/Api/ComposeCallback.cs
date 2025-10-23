@@ -31,6 +31,11 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
         _callbacks.Add(callback);
     }
 
+    public void Remove(Action<T> callback)
+    {
+        _callbacks.Remove(callback);
+    }
+
     public void Add(Action callback)
     {
         _callbacks.Add(_ => callback());

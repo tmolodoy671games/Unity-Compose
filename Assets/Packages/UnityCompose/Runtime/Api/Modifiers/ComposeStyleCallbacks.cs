@@ -10,37 +10,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    private class OnClickImpl : BaseModifier<OnClickImpl>
-    {
-        private readonly Action<ClickEvent> _onClick;
-
-        public OnClickImpl(Action<ClickEvent> onClick)
-        {
-            _onClick = onClick;
-        }
-
-        public override void Apply(VisualElement element)
-        {
-            if (!IsActive)
-                return;
-            element.pickingMode = PickingMode.Position;
-            element.GetComposeCallback<ClickEvent>().Add(_onClick);
-        }
-
-        public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-        {
-        }
-
-        public override void Revert(VisualElement element)
-        {
-        }
-
-        protected override bool Equals(OnClickImpl other)
-        {
-            return _onClick == other._onClick;
-        }
-    }
-
     private class OnMouseEnterImpl : BaseModifier<OnMouseEnterImpl>
     {
         private readonly Action<MouseEnterEvent> _onMouseEnter;
@@ -222,20 +191,6 @@ public static partial class ModifierExtensions
         {
             return _onGeometryChanged == other._onGeometryChanged;
         }
-    }
-
-    public static IModifier OnClick(this IModifier style, Action onClick, bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnClickImpl(_ => onClick()));
-    }
-
-    public static IModifier OnClick(this IModifier style, Action<ClickEvent> onClick, bool enabled = true)
-    {
-        if (!enabled)
-            return style;
-        return style.Then(new OnClickImpl(onClick));
     }
 
     public static IModifier OnMouseEnter(this IModifier style, Action onMouseEnter, bool enabled = true)

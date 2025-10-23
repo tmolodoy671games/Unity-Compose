@@ -102,6 +102,7 @@ public static partial class ComposeFunctions
         {
             ReusableComposeView<Row>(style: style, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>((alignHorizontally, alignVertically), it =>
             {
+                it.style.flexDirection = FlexDirection.Row;
                 StyleEnum<Justify> alignHorizontallyEnum = alignHorizontally;
                 StyleEnum<Align> alignVerticallyEnum = alignVertically;
                 it.style.alignItems = alignVerticallyEnum;
