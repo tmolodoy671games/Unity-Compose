@@ -14,49 +14,25 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseUp(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(onMouseDown);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMouseUp(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(_ => onMouseDown());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMouseUp(
-        this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<MouseClickInfo> onMouseUp,
         bool enabled = true
     )
     {
         if (enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(onMouseDown);
+        return modifier + new OnMouseUpModifierImpl(onMouseUp);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseUp(
         this IModifier modifier,
-        Action onMouseDown,
+        Action onMouseUp,
         bool enabled = true
     )
     {
         if (enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(_ => onMouseDown());
+        return modifier + new OnMouseUpModifierImpl(_ => onMouseUp());
     }
 
     #endregion
@@ -66,39 +42,7 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbUp(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown(it);
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnLmbUp(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown();
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnLmbUp(
-        this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<MouseClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -107,14 +51,14 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 0)
-                onMouseDown(it);
+                onMouseUp(it);
         });
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbUp(
         this IModifier modifier,
-        Action onMouseDown,
+        Action onMouseUp,
         bool enabled = true
     )
     {
@@ -123,50 +67,18 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 0)
-                onMouseDown();
+                onMouseUp();
         });
     }
 
     #endregion
 
     #region OnRmbUp
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbUp(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown(it);
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnRmbUp(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown();
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnRmbUp(
-        this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<MouseClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -175,14 +87,14 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 1)
-                onMouseDown(it);
+                onMouseUp(it);
         });
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbUp(
         this IModifier modifier,
-        Action onMouseDown,
+        Action onMouseUp,
         bool enabled = true
     )
     {
@@ -191,7 +103,7 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 1)
-                onMouseDown();
+                onMouseUp();
         });
     }
 
@@ -202,39 +114,7 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbUp(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown(it);
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMmbUp(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (enabled)
-            return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown();
-        });
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier OnMmbUp(
-        this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<MouseClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -243,14 +123,14 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 2)
-                onMouseDown(it);
+                onMouseUp(it);
         });
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbUp(
         this IModifier modifier,
-        Action onMouseDown,
+        Action onMouseUp,
         bool enabled = true
     )
     {
@@ -259,7 +139,7 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(it =>
         {
             if (it.Button == 2)
-                onMouseDown();
+                onMouseUp();
         });
     }
 
@@ -270,9 +150,9 @@ internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
 {
     private readonly Action<MouseUpEvent> _onMouseUp;
 
-    public OnMouseUpModifierImpl(Action<MouseClickInfo> onMouseDown)
+    public OnMouseUpModifierImpl(Action<MouseClickInfo> onMouseUp)
     {
-        _onMouseUp = it => onMouseDown(
+        _onMouseUp = it => onMouseUp(
             new MouseClickInfo(
                 Button: it.button,
                 Position: it.mousePosition,
