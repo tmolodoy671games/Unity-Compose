@@ -13,17 +13,17 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(horizontalAlignment: Alignment.Horizontal.Center, style: Modifier.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
+                    Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
                     {
                         var isSwitched = Remember(() => MutableStateOf(false));
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
-                        AnimatedSize(style: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).NewPadding(all: 16), duration: 5, content: Remember<global::System.Action>(text, () =>
+                        AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).NewPadding(all: 16), duration: 5, content: Remember<global::System.Action>(text, () =>
                         {
-                            Text(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, style: Modifier.Name("animated-label-child"));
+                            Text(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, modifier: Modifier.Name("animated-label-child"));
                         }));
-                        Text(text: "Switch", textColor: Color.white, fontSize: 64, style: Modifier.Name("switch-button").NewPadding(all: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Text(text: "Switch", textColor: Color.white, fontSize: 64, modifier: Modifier.Name("switch-button").NewPadding(all: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

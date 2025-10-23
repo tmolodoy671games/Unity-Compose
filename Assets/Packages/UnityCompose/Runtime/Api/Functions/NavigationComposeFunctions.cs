@@ -44,7 +44,7 @@ public static partial class ComposeFunctions
         AnimationCurve? animationCurve = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
         Action<float>? onTransitionProgressChanged = null,
-        IModifier? style = null
+        IModifier? modifier = null
     )
     {
         var backStack = Remember(() => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
@@ -106,7 +106,7 @@ public static partial class ComposeFunctions
         var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
 
         ReusableComposeView<Navigation>(
-            style: style,
+            modifier: modifier,
             content: () =>
             {
                 CompositionLocalProvider(
@@ -155,8 +155,8 @@ public static partial class ComposeFunctions
                                                     Parent: LocalIsActive.Current
                                                 )
                                             ),
-                                            LocalStyle.Provides(
-                                                after: LocalStyle.Current.After.OrEmpty()
+                                            LocalModifier.Provides(
+                                                after: LocalModifier.Current.After.OrEmpty()
                                                     .Then(contentStyle)
                                             ),
                                             LocalTransitionProgress.Provides(

@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .Name("launched-effect-disposal")
                     .FillMaxSize(),
                 content: () =>
@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors
                         text: count.Value.ToString(),
                         textColor: Color.white,
                         fontSize: 40,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("test-label")
                             .Background(Color.red)
                             .NewPadding(all: 10)
@@ -60,7 +60,7 @@ namespace UnityCompose.Samples.Behaviors
                         text: $"Launched Effect is {onOrOff}",
                         textColor: Color.white,
                         fontSize: 40,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("test-button")
                             .Background(isHovered.Value ? Color.cyan : Color.blue, Transition())
                             .NewPadding(vertical: 20)

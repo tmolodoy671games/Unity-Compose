@@ -20,13 +20,13 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
                         horizontalAlignment: Alignment.Horizontal.Center,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("animated-size-sample"),
                         content: () =>
                         {
@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
                                 : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
 
                             AnimatedSize(
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("animated-size")
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(5))
                                     .NewPadding(all: 16),
@@ -48,7 +48,7 @@ namespace UnityCompose.Samples.Behaviors
                                         textColor: Color.white,
                                         fontSize: 64,
                                         align: TextAnchor.MiddleCenter,
-                                        style: Modifier
+                                        modifier: Modifier
                                             .Name("animated-label-child")
                                     );
                                 }
@@ -58,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Switch",
                                 textColor: Color.white,
                                 fontSize: 64,
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("switch-button")
                                     .NewPadding(all: 32)
                                     .Background(Color.blue)

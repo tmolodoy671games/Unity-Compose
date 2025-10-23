@@ -20,12 +20,12 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        style: Modifier,
+                        modifier: Modifier,
                         content: scope =>
                         {
                             var showFirst = Remember(() => MutableStateOf(false));
@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
                                     text: $"Clicked {firstCount.Value} times",
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
-                                    style: Modifier
+                                    modifier: Modifier
                                         .Then(scope.FillMaxWidth())
                                         .Background(Color.red)
                                         .NewPadding(all: 20)
@@ -51,7 +51,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: $"Clicked {secondCount.Value} times",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: Modifier
+                                modifier: Modifier
                                     .Then(scope.FillMaxWidth())
                                     .Background(Color.green)
                                     .NewPadding(all: 20)
@@ -65,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Switch",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: Modifier
+                                modifier: Modifier
                                     .Then(scope.FillMaxWidth())
                                     .Background(Color.blue)
                                     .NewPadding(all: 20)

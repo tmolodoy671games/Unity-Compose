@@ -19,9 +19,9 @@ public interface IModifier
     void Revert(VisualElement element);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier operator +(IModifier style1, IModifier style2)
+    public static IModifier operator +(IModifier left, IModifier right)
     {
-        return style1.Then(style2);
+        return left.Then(right);
     }
 }
 

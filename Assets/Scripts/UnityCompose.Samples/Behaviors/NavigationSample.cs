@@ -26,12 +26,12 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Box(
-                        style: Modifier
+                        modifier: Modifier
                             .FillMaxSize(),
                         content: () =>
                         {
@@ -44,7 +44,7 @@ namespace UnityCompose.Samples.Behaviors
                                 transitionDuration: 5,
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
-                                style: Modifier
+                                modifier: Modifier
                                     .FillMaxSize()
                             );
                         }
@@ -83,13 +83,13 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize()
                     .Background(Color.green),
                 content: () =>
                 {
                     Spacer(
-                        style: Modifier
+                        modifier: Modifier
                             .Size(100)
                             .Background(Color.blue)
                             .Scale(1 + 2 * LocalTransitionProgress.Current)
@@ -107,7 +107,7 @@ namespace UnityCompose.Samples.Behaviors
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowFirstScreen());
             Spacer(
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize()
                     .Background(Color.red)
             );

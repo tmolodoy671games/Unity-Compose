@@ -20,14 +20,14 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize()
                     .Background(Color.white),
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
-                        style: Modifier
+                        modifier: Modifier
                             .NewPadding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition())
                             .Background(Color.blue)
                             .Border(radius: 16)

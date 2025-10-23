@@ -20,18 +20,18 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Box(
-                        style: Modifier
+                        modifier: Modifier
                             .Background(Color.red)
                             .Size(400),
                         content: () =>
                         {
                             Spacer(
-                                style: Modifier
+                                modifier: Modifier
                                     .Size(100)
                                     .Float()
                                     .Background(Color.yellow)

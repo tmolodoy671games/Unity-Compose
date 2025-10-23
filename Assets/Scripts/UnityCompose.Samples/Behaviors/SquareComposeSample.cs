@@ -22,14 +22,14 @@ namespace UnityCompose.Samples.Behaviors
             var isHovered = Remember(() => MutableStateOf(false));
             var isPressed = Remember(() => MutableStateOf(false));
             Box(
-                style: Modifier
+                modifier: Modifier
                     .FillMaxSize(),
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
                 content: () =>
                 {
                     Spacer(
-                        style: Modifier
+                        modifier: Modifier
                             .Size(100)
                             .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
                             .Border(radius: 32)

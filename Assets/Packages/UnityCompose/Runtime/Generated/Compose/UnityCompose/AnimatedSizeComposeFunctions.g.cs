@@ -14,21 +14,21 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     [Compiled]
-    private static void __AnimatedSize(Action content, IModifier? style = null, float duration = ComposeDefaults.TransitionDuration)
+    private static void __AnimatedSize(Action content, IModifier? modifier = null, float duration = ComposeDefaults.TransitionDuration)
     {
-        if (CurrentComposer.BeginComposeGroup((content, style, duration)))
+        if (CurrentComposer.BeginComposeGroup((content, modifier, duration)))
             return;
         try
         {
-            var(containerStyle, contentStyle) = AnimateSizeStyles(duration);
-            ReusableComposeView<AnimatedSize>(style: style.OrEmpty().Then(containerStyle), content: RememberComposable<global::System.Action>((content, contentStyle), () =>
+            var(containerStyle, contentStyle) = AnimateSizeModifiers(duration);
+            ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerStyle), content: RememberComposable<global::System.Action>((content, contentStyle), () =>
             {
-                CompositionLocalProvider(provides: IImmutableStableList.Create(LocalStyle.Provides(after: contentStyle)), content: content);
+                CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: contentStyle)), content: content);
             }));
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __AnimatedSize(content, style, duration));
+            CurrentComposer.EndComposeGroup(() => __AnimatedSize(content, modifier, duration));
         }
     }
 }

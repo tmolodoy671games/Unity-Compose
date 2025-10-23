@@ -46,11 +46,11 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.Name("composition-local-sample").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
                     CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsSwitched.Provides(isSwitched.Value)), content: SampleReader);
-                    Text(text: "Switch", textColor: Color.white, fontSize: 32, style: Modifier.Background(Color.blue).NewPadding(all: 32).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
+                    Text(text: "Switch", textColor: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).NewPadding(all: 32).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
                 }));
             }
             finally
@@ -71,7 +71,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(RememberComposable<global::System.Action>(null, () =>
                     {
-                        Spacer(style: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, Transition()).NewPadding(all: 100));
+                        Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, Transition()).NewPadding(all: 100));
                     }));
                 }));
             }

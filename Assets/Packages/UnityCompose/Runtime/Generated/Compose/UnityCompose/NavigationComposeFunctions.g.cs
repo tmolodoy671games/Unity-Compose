@@ -14,9 +14,9 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, AnimationCurve? animationCurve = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, IModifier? style = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, AnimationCurve? animationCurve = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, IModifier? modifier = null)
     {
-        if (CurrentComposer.BeginComposeGroup((coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, style)))
+        if (CurrentComposer.BeginComposeGroup((coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, modifier)))
             return;
         try
         {
@@ -44,7 +44,7 @@ public static partial class ComposeFunctions
             var allScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.Union(previousBackStack.Value).Distinct().ToImmutableStableList());
             var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () => transition?.Invoke() ?? ResolveTransition(appearingScreens, disappearingScreens));
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
-            ReusableComposeView<Navigation>(style: style, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), () =>
+            ReusableComposeView<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), () =>
             {
                 CompositionLocalProvider(provides: Remember(() => IImmutableStableList.Create(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)))), content: RememberComposable<global::System.Action>((onTransitionProgressChanged, currentBackStack, previousBackStack, resolvedProgress, appearingScreens, disappearingScreens, allScreens, resolvedTransition, isTransitionFinished), () =>
                 {
@@ -66,7 +66,7 @@ public static partial class ComposeFunctions
                                 ScreenState.Appearing => resolvedTransition.Enter.Get(resolvedProgress, parent).Float(!isCurrentScreen),
                                 ScreenState.Disappearing => resolvedTransition.Exit.Get(resolvedProgress, parent).Float(),
                                 _ => throw new ArgumentOutOfRangeException()};
-                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalStyle.Provides(after: LocalStyle.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ScreenState.Disappearing ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
+                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ScreenState.Disappearing ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
                         }));
                     }
                 }));
@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Navigation(coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, style));
+            CurrentComposer.EndComposeGroup(() => __Navigation(coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, modifier));
         }
     }
 }

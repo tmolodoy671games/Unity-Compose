@@ -15,20 +15,20 @@ public static partial class ComposeFunctions
     [Composable]
     public static void AnimatedSize(
         Action content,
-        IModifier? style = null,
+        IModifier? modifier = null,
         float duration = ComposeDefaults.TransitionDuration
     )
     {
-        var (containerStyle, contentStyle) = AnimateSizeStyles(duration);
+        var (containerStyle, contentStyle) = AnimateSizeModifiers(duration);
 
         ReusableComposeView<AnimatedSize>(
-            style: style.OrEmpty()
+            modifier: modifier.OrEmpty()
                 .Then(containerStyle),
             content: () =>
             {
                 CompositionLocalProvider(
                     provides: IImmutableStableList.Create(
-                        LocalStyle.Provides(after: contentStyle)
+                        LocalModifier.Provides(after: contentStyle)
                     ),
                     content: content
                 );
@@ -37,7 +37,7 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    private static (IModifier ContainerStyle, IModifier ContentStyle) AnimateSizeStyles(
+    private static (IModifier ContainerModifier, IModifier ContentModifier) AnimateSizeModifiers(
         float duration,
         object? key = null
     )

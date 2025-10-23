@@ -13,11 +13,11 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, style: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Box(style: Modifier.Background(Color.red).Size(400), content: RememberComposable<global::System.Action>(null, () =>
+                    Box(modifier: Modifier.Background(Color.red).Size(400), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Spacer(style: Modifier.Size(100).Float().Background(Color.yellow).Top(5));
+                        Spacer(modifier: Modifier.Size(100).Float().Background(Color.yellow).Top(5));
                     }));
                 }));
             // Box(

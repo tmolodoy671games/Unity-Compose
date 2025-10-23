@@ -145,38 +145,20 @@ public static partial class ModifierExtensions
     }
 
     public static IModifier Top(
-        this IModifier style,
+        this IModifier modifier,
         StyleLength top,
         ComposeTransition transition = default
     )
     {
-        return style.Then(new TopImpl(top, transition));
-    }
-
-    public static IModifier Bottom(
-        this IModifier style,
-        StyleLength bottom,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new BottomImpl(bottom, transition));
+        return modifier.Then(new TopImpl(top, transition));
     }
 
     public static IModifier Left(
-        this IModifier style,
+        this IModifier modifier,
         StyleLength left,
         ComposeTransition transition = default
     )
     {
-        return style.Then(new LeftImpl(left, transition));
-    }
-
-    public static IModifier Right(
-        this IModifier style,
-        StyleLength right,
-        ComposeTransition transition = default
-    )
-    {
-        return style.Then(new RightImpl(right, transition));
+        return modifier.Then(new LeftImpl(left, transition));
     }
 }

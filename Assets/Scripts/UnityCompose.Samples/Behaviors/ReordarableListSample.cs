@@ -21,12 +21,12 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier,
+                modifier: Modifier,
                 content: () =>
                 {
                     Column(
                         horizontalAlignment: Alignment.Horizontal.Center,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("reordarable-list-sample")
                             .NewPadding(top: 100)
                             .FillMaxHeight()
@@ -38,7 +38,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Add Item",
                                 textColor: Color.white,
                                 fontSize: 40,
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("add-item-button")
                                     .Then(scope.Align(Alignment.Horizontal.Right))
                                     .Background(Color.blue)
@@ -59,7 +59,7 @@ namespace UnityCompose.Samples.Behaviors
 
                             Column(
                                 horizontalAlignment: Alignment.Horizontal.Center,
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("nested-column")
                                     .FillMaxWidth(),
                                 content: () =>
@@ -111,7 +111,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             Row(
                 verticalAlignment: Alignment.Vertical.Center,
-                style: Modifier
+                modifier: Modifier
                     .Name("item-row")
                     .Background(Color.cyan)
                     .FillMaxWidth()
@@ -125,7 +125,7 @@ namespace UnityCompose.Samples.Behaviors
                         text: $"Item no. {state}",
                         textColor: Color.black,
                         fontSize: 40,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("item-name-label")
                             .Then(scope.Weight(1))
                             .Margin(left: 32)
@@ -139,7 +139,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 40,
                                 fontStyle: FontStyle.Bold,
                                 align: TextAnchor.MiddleCenter,
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("up-arrow-button")
                                     .Background(Color.green)
                                     .NewPadding(horizontal: 6, vertical: 4)
@@ -152,7 +152,7 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 40,
                                 fontStyle: FontStyle.Bold,
                                 align: TextAnchor.MiddleCenter,
-                                style: Modifier
+                                modifier: Modifier
                                     .Name("down-arrow-button")
                                     .Background(Color.green)
                                     .NewPadding(horizontal: 6, vertical: 4)
@@ -167,7 +167,7 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40,
                         fontStyle: FontStyle.Bold,
                         align: TextAnchor.MiddleCenter,
-                        style: Modifier
+                        modifier: Modifier
                             .Name("remove-button")
                             .Background(Color.red)
                             .NewPadding(horizontal: 16, vertical: 4)
