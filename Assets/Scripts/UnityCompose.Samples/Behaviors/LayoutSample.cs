@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
                 verticalAlignment: Alignment.Vertical.Center,
                 modifier: Modifier
                     .FillMaxSize(),
-                content: () =>
+                content: scope =>
                 {
                     Box(
                         modifier: Modifier
@@ -35,7 +35,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Size(100)
                                     .Float()
                                     .Background(Color.yellow)
-                                    .Top(5)
+                                    .Then(scope.Position(top: 5))
                             );
                         }
                     );

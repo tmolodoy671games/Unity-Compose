@@ -4,7 +4,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
 internal static class ProgressExtensions
 {
-    public static float Remap(this float progress, float startOffset = 0f, float endOffset = 0f, float speed = 1f)
+    public static float Remap(this float progress, float startOffset = 0f, float speed = 1f, float endOffset = 0f)
     {
         progress = Mathf.Clamp01(progress);
         startOffset = Mathf.Clamp01(startOffset);
