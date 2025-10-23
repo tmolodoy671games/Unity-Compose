@@ -11,7 +11,7 @@ namespace UnityCompose;
 public static partial class ModifierExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Margin(
+    public static IModifier Padding(
         this IModifier modifier,
         float all = -1,
         float horizontal = -1,
@@ -23,7 +23,7 @@ public static partial class ModifierExtensions
         Optional<ComposeTransition> transition = default
     )
     {
-        return modifier + new MarginModifierImpl(
+        return modifier + new PaddingModifierImpl(
             top: ParamUtils.Resolve(top, vertical, all),
             bottom: ParamUtils.Resolve(bottom, vertical, all),
             left: ParamUtils.Resolve(left, horizontal, all),
@@ -33,7 +33,7 @@ public static partial class ModifierExtensions
     }
 }
 
-internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
+internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 {
     private readonly float _top;
     private readonly float _bottom;
@@ -41,7 +41,7 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
     private readonly float _right;
     private readonly Optional<ComposeTransition> _transition;
 
-    public MarginModifierImpl(
+    public PaddingModifierImpl(
         float top,
         float bottom,
         float left,
@@ -60,28 +60,28 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
     {
         if (_top >= 0)
         {
-            element.style.marginTop = _top;
+            element.style.paddingTop = _top;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-left");
         }
 
         if (_bottom >= 0)
         {
-            element.style.marginBottom = _bottom;
+            element.style.paddingBottom = _bottom;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-right");
         }
 
         if (_left >= 0)
         {
-            element.style.marginLeft = _left;
+            element.style.paddingLeft = _left;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-left");
         }
 
         if (_right >= 0)
         {
-            element.style.marginRight = _right;
+            element.style.paddingRight = _right;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-right");
         }
@@ -90,28 +90,28 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
         if (_top >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginTop);
+            modifiedProperties.Add(ComposeModifiedProperty.PaddingTop);
         if (_bottom >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginBottom);
+            modifiedProperties.Add(ComposeModifiedProperty.PaddingBottom);
         if (_left >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginLeft);
+            modifiedProperties.Add(ComposeModifiedProperty.PaddingLeft);
         if (_right >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginRight);
+            modifiedProperties.Add(ComposeModifiedProperty.PaddingRight);
     }
 
     public override void Revert(VisualElement element)
     {
         if (_top >= 0)
-            element.style.marginTop = StyleKeyword.Null;
+            element.style.paddingTop = StyleKeyword.Null;
         if (_bottom >= 0)
-            element.style.marginBottom = StyleKeyword.Null;
+            element.style.paddingBottom = StyleKeyword.Null;
         if (_left >= 0)
-            element.style.marginLeft = StyleKeyword.Null;
+            element.style.paddingLeft = StyleKeyword.Null;
         if (_right >= 0)
-            element.style.marginRight = StyleKeyword.Null;
+            element.style.paddingRight = StyleKeyword.Null;
     }
 
-    protected override bool Equals(MarginModifierImpl other)
+    protected override bool Equals(PaddingModifierImpl other)
     {
         return _top.AlmostEquals(other._top) &&
                _bottom.AlmostEquals(other._bottom) &&
