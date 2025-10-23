@@ -44,7 +44,7 @@ public static partial class ComposeFunctions
         AnimationCurve? animationCurve = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
         Action<float>? onTransitionProgressChanged = null,
-        ComposeStyle? style = null
+        IModifier? style = null
     )
     {
         var backStack = Remember(() => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
@@ -137,7 +137,7 @@ public static partial class ComposeFunctions
                                     var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                                     var contentStyle = screenState switch
                                     {
-                                        ScreenState.Idle => ComposeStyle.Empty
+                                        ScreenState.Idle => IModifier.Empty
                                             .Position(isCurrentScreen ? Position.Relative : Position.Absolute),
                                         ScreenState.Appearing => resolvedTransition.Enter
                                             .Get(resolvedProgress, parent)

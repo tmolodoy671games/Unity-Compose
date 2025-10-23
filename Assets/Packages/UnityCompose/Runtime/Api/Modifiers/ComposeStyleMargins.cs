@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class MarginTopImpl : ComposeStyle<MarginTopImpl>
+    private class MarginTopImpl : IModifier<MarginTopImpl>
     {
         private readonly StyleLength _marginTop;
         private readonly ComposeTransition _transition;
@@ -40,7 +40,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MarginBottomImpl : ComposeStyle<MarginBottomImpl>
+    private class MarginBottomImpl : IModifier<MarginBottomImpl>
     {
         private readonly StyleLength _marginBottom;
         private readonly ComposeTransition _transition;
@@ -74,7 +74,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MarginLeftImpl : ComposeStyle<MarginLeftImpl>
+    private class MarginLeftImpl : IModifier<MarginLeftImpl>
     {
         private readonly StyleLength _marginLeft;
         private readonly ComposeTransition _transition;
@@ -108,7 +108,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MarginRightImpl : ComposeStyle<MarginRightImpl>
+    private class MarginRightImpl : IModifier<MarginRightImpl>
     {
         private readonly StyleLength _marginRight;
         private readonly ComposeTransition _transition;
@@ -142,8 +142,8 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle MarginTop(
-        this ComposeStyle style,
+    public static IModifier MarginTop(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -151,8 +151,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new MarginTopImpl(margin, transition));
     }
 
-    public static ComposeStyle MarginBottom(
-        this ComposeStyle style,
+    public static IModifier MarginBottom(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -160,8 +160,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new MarginBottomImpl(margin, transition));
     }
 
-    public static ComposeStyle MarginLeft(
-        this ComposeStyle style,
+    public static IModifier MarginLeft(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -169,8 +169,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new MarginLeftImpl(margin, transition));
     }
 
-    public static ComposeStyle MarginRight(
-        this ComposeStyle style,
+    public static IModifier MarginRight(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -178,8 +178,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new MarginRightImpl(margin, transition));
     }
 
-    public static ComposeStyle MarginHorizontal(
-        this ComposeStyle style,
+    public static IModifier MarginHorizontal(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -189,8 +189,8 @@ public static partial class ComposeStyleExtensions
             .Then(new MarginRightImpl(margin, transition));
     }
 
-    public static ComposeStyle MarginVertical(
-        this ComposeStyle style,
+    public static IModifier MarginVertical(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -200,8 +200,8 @@ public static partial class ComposeStyleExtensions
             .Then(new MarginBottomImpl(margin, transition));
     }
 
-    public static ComposeStyle Margin(
-        this ComposeStyle style,
+    public static IModifier Margin(
+        this IModifier style,
         StyleLength margin,
         ComposeTransition transition = default
     )
@@ -211,8 +211,8 @@ public static partial class ComposeStyleExtensions
             .MarginVertical(margin, transition);
     }
 
-    public static ComposeStyle Margin(
-        this ComposeStyle style,
+    public static IModifier Margin(
+        this IModifier style,
         StyleLength horizontal,
         StyleLength vertical,
         ComposeTransition transition = default

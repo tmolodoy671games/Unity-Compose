@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void AnimatedSize(
         Action content,
-        ComposeStyle? style = null,
+        IModifier? style = null,
         float duration = ComposeDefaults.TransitionDuration
     )
     {
@@ -37,15 +37,15 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    private static (ComposeStyle ContainerStyle, ComposeStyle ContentStyle) AnimateSizeStyles(
+    private static (IModifier ContainerStyle, IModifier ContentStyle) AnimateSizeStyles(
         float duration,
         object? key = null
     )
     {
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
-        var contentStyle = ComposeStyle.Empty;
-        var containerStyle = ComposeStyle.Empty
+        var contentStyle = IModifier.Empty;
+        var containerStyle = IModifier.Empty
             .OnGeometryChanged(it =>
             {
                 var layout = it.currentTarget.CastTo<VisualElement>().resolvedStyle;

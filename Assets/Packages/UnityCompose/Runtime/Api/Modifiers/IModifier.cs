@@ -5,13 +5,13 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-public abstract class ComposeStyle
+public abstract class IModifier
 {
-    private class EmptyComposeStyleImpl : ComposeStyle<EmptyComposeStyleImpl>
+    private class EmptyModifierImpl : IModifier<EmptyModifierImpl>
     {
-        public static readonly EmptyComposeStyleImpl Instance = new();
+        public static readonly EmptyModifierImpl Instance = new();
 
-        private EmptyComposeStyleImpl()
+        private EmptyModifierImpl()
         {
         }
 
@@ -27,24 +27,24 @@ public abstract class ComposeStyle
         {
         }
 
-        protected override bool Compare(EmptyComposeStyleImpl other)
+        protected override bool Compare(EmptyModifierImpl other)
         {
             return true;
         }
     }
 
-    private class CompositeComposeStyleImpl : ComposeStyle<CompositeComposeStyleImpl>
+    private class CompositeModifierImpl : IModifier<CompositeModifierImpl>
     {
-        private readonly ComposeStyle _first;
-        private readonly ComposeStyle _second;
+        private readonly IModifier _first;
+        private readonly IModifier _second;
         private readonly int _depth;
 
-        public CompositeComposeStyleImpl(ComposeStyle first, ComposeStyle second)
+        public CompositeModifierImpl(IModifier first, IModifier second)
         {
             _first = first;
             _second = second;
-            _depth = (first is CompositeComposeStyleImpl firstComposite ? firstComposite._depth : 1) +
-                     (second is CompositeComposeStyleImpl secondComposite ? secondComposite._depth : 1);
+            _depth = (first is CompositeModifierImpl firstComposite ? firstComposite._depth : 1) +
+                     (second is CompositeModifierImpl secondComposite ? secondComposite._depth : 1);
         }
 
         public override void Apply(VisualElement element)
@@ -65,7 +65,7 @@ public abstract class ComposeStyle
             _second.Revert(element);
         }
 
-        protected override bool Compare(CompositeComposeStyleImpl other)
+        protected override bool Compare(CompositeModifierImpl other)
         {
             return _depth == other._depth &&
                    _first.Compare(other._first) &&
@@ -73,7 +73,7 @@ public abstract class ComposeStyle
         }
     }
 
-    public static ComposeStyle Empty => EmptyComposeStyleImpl.Instance;
+    public static IModifier Empty => EmptyModifierImpl.Instance;
 
     [Composable]
     public abstract void Apply(VisualElement element);
@@ -81,9 +81,9 @@ public abstract class ComposeStyle
     public abstract void Apply(IMutableStableSet<ComposeModifiedProperty> modifiedProperties);
     public abstract void Revert(VisualElement element);
 
-    protected abstract bool Compare(ComposeStyle other);
+    protected abstract bool Compare(IModifier other);
 
-    public ComposeStyle Then(ComposeStyle? composeStyle)
+    public IModifier Then(IModifier? composeStyle)
     {
         if (composeStyle == null)
             return this;
@@ -91,10 +91,10 @@ public abstract class ComposeStyle
             return composeStyle;
         if (Equals(composeStyle, Empty))
             return this;
-        return new CompositeComposeStyleImpl(this, composeStyle);
+        return new CompositeModifierImpl(this, composeStyle);
     }
 
-    public static ComposeStyle operator +(ComposeStyle style1, ComposeStyle style2)
+    public static IModifier operator +(IModifier style1, IModifier style2)
     {
         return style1.Then(style2);
     }
@@ -104,7 +104,7 @@ public abstract class ComposeStyle
         if (obj == null) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Compare((ComposeStyle)obj);
+        return Compare((IModifier)obj);
     }
 
     [SuppressMessage("ReSharper", "BaseObjectGetHashCodeCallInGetHashCode")]
@@ -114,9 +114,9 @@ public abstract class ComposeStyle
     }
 }
 
-public abstract class ComposeStyle<T> : ComposeStyle where T : ComposeStyle<T>
+public abstract class IModifier<T> : IModifier where T : IModifier<T>
 {
-    protected sealed override bool Compare(ComposeStyle other)
+    protected sealed override bool Compare(IModifier other)
     {
         return other is T otherStyle && Compare(otherStyle);
     }
@@ -126,5 +126,5 @@ public abstract class ComposeStyle<T> : ComposeStyle where T : ComposeStyle<T>
 
 public static partial class ComposeStyleExtensions
 {
-    public static ComposeStyle OrEmpty(this ComposeStyle? style) => style ?? ComposeStyle.Empty;
+    public static IModifier OrEmpty(this IModifier? style) => style ?? IModifier.Empty;
 }

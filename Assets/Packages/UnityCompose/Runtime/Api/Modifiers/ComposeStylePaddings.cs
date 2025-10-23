@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class PaddingTopImpl : ComposeStyle<PaddingTopImpl>
+    private class PaddingTopImpl : IModifier<PaddingTopImpl>
     {
         private readonly StyleLength _paddingTop;
         private readonly ComposeTransition _transition;
@@ -40,7 +40,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class PaddingBottomImpl : ComposeStyle<PaddingBottomImpl>
+    private class PaddingBottomImpl : IModifier<PaddingBottomImpl>
     {
         private readonly StyleLength _paddingBottom;
         private readonly ComposeTransition _transition;
@@ -74,7 +74,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class PaddingLeftImpl : ComposeStyle<PaddingLeftImpl>
+    private class PaddingLeftImpl : IModifier<PaddingLeftImpl>
     {
         private readonly StyleLength _paddingLeft;
         private readonly ComposeTransition _transition;
@@ -108,7 +108,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class PaddingRightImpl : ComposeStyle<PaddingRightImpl>
+    private class PaddingRightImpl : IModifier<PaddingRightImpl>
     {
         private readonly StyleLength _paddingRight;
         private readonly ComposeTransition _transition;
@@ -142,8 +142,8 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle PaddingLeft(
-        this ComposeStyle style,
+    public static IModifier PaddingLeft(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -151,8 +151,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new PaddingLeftImpl(padding, transition));
     }
 
-    public static ComposeStyle PaddingRight(
-        this ComposeStyle style,
+    public static IModifier PaddingRight(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -160,8 +160,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new PaddingRightImpl(padding, transition));
     }
 
-    public static ComposeStyle PaddingTop(
-        this ComposeStyle style,
+    public static IModifier PaddingTop(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -169,8 +169,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new PaddingTopImpl(padding, transition));
     }
 
-    public static ComposeStyle PaddingBottom(
-        this ComposeStyle style,
+    public static IModifier PaddingBottom(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -178,8 +178,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new PaddingBottomImpl(padding, transition));
     }
 
-    public static ComposeStyle PaddingHorizontal(
-        this ComposeStyle style,
+    public static IModifier PaddingHorizontal(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -189,8 +189,8 @@ public static partial class ComposeStyleExtensions
             .Then(new PaddingRightImpl(padding, transition));
     }
 
-    public static ComposeStyle PaddingVertical(
-        this ComposeStyle style,
+    public static IModifier PaddingVertical(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -200,8 +200,8 @@ public static partial class ComposeStyleExtensions
             .Then(new PaddingBottomImpl(padding, transition));
     }
 
-    public static ComposeStyle Padding(
-        this ComposeStyle style,
+    public static IModifier Padding(
+        this IModifier style,
         StyleLength padding,
         ComposeTransition transition = default
     )
@@ -211,8 +211,8 @@ public static partial class ComposeStyleExtensions
             .PaddingVertical(padding, transition);
     }
 
-    public static ComposeStyle Padding(
-        this ComposeStyle style,
+    public static IModifier Padding(
+        this IModifier style,
         StyleLength horizontal,
         StyleLength vertical,
         ComposeTransition transition = default

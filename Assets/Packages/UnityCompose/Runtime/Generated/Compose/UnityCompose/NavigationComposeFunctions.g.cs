@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, AnimationCurve? animationCurve = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, ComposeStyle? style = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, AnimationCurve? animationCurve = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, IModifier? style = null)
     {
         if (CurrentComposer.BeginComposeGroup((coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, style)))
             return;
@@ -62,7 +62,7 @@ public static partial class ComposeFunctions
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentStyle = screenState switch
                             {
-                                ScreenState.Idle => ComposeStyle.Empty.Position(isCurrentScreen ? Position.Relative : Position.Absolute),
+                                ScreenState.Idle => IModifier.Empty.Position(isCurrentScreen ? Position.Relative : Position.Absolute),
                                 ScreenState.Appearing => resolvedTransition.Enter.Get(resolvedProgress, parent).Position(isCurrentScreen ? Position.Relative : Position.Absolute),
                                 ScreenState.Disappearing => resolvedTransition.Exit.Get(resolvedProgress, parent).Position(Position.Absolute),
                                 _ => throw new ArgumentOutOfRangeException()};

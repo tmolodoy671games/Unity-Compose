@@ -25,7 +25,7 @@ public static partial class ComposeFunctions
         [Composable] Action<T> content,
         bool animateSize = false,
         float transitionDuration = ComposeDefaults.TransitionDuration,
-        ComposeStyle? style = null
+        IModifier? style = null
     )
     {
         // Progress:
@@ -46,7 +46,7 @@ public static partial class ComposeFunctions
         // Animating size:
         var (containerStyle, contentStyle) = animateSize
             ? AnimateSizeStyles(transitionDuration)
-            : (ComposeStyle.Empty, ComposeStyle.Empty);
+            : (IModifier.Empty, IModifier.Empty);
 
         // Layout:
         var resolvedTransition = Remember(

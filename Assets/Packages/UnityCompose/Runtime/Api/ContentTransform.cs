@@ -17,7 +17,7 @@ public abstract class EnterTransition
             _second = second;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _first.Get(progress, resolvedParentStyle)
                 .Then(_second.Get(progress, resolvedParentStyle));
@@ -33,17 +33,17 @@ public abstract class EnterTransition
             _direction = direction;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _direction switch
             {
-                SlideDirection.Up => ComposeStyle.Empty
+                SlideDirection.Up => IModifier.Empty
                     .Top((1 - progress) * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Down => ComposeStyle.Empty
+                SlideDirection.Down => IModifier.Empty
                     .Top((progress - 1) * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Left => ComposeStyle.Empty
+                SlideDirection.Left => IModifier.Empty
                     .Left((1 - progress) * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
-                SlideDirection.Right => ComposeStyle.Empty
+                SlideDirection.Right => IModifier.Empty
                     .Left((progress - 1) * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -52,9 +52,9 @@ public abstract class EnterTransition
 
     internal class FadeIn : EnterTransition
     {
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return ComposeStyle.Empty
+            return IModifier.Empty
                 .Opacity(progress);
         }
     }
@@ -67,22 +67,22 @@ public abstract class EnterTransition
         {
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return ComposeStyle.Empty;
+            return IModifier.Empty;
         }
     }
 
     internal class Custom : EnterTransition
     {
-        private readonly Func<float, IResolvedStyle, ComposeStyle> _factory;
+        private readonly Func<float, IResolvedStyle, IModifier> _factory;
 
-        public Custom(Func<float, IResolvedStyle, ComposeStyle> factory)
+        public Custom(Func<float, IResolvedStyle, IModifier> factory)
         {
             _factory = factory;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _factory(progress, resolvedParentStyle);
         }
@@ -90,7 +90,7 @@ public abstract class EnterTransition
     
     public static EnterTransition Empty => EmptyImpl.Instance;
 
-    public abstract ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle);
+    public abstract IModifier Get(float progress, IResolvedStyle resolvedParentStyle);
 
     public static EnterTransition operator +(EnterTransition first, EnterTransition second)
     {
@@ -111,7 +111,7 @@ public abstract class ExitTransition
             _second = second;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _first.Get(progress, resolvedParentStyle)
                 .Then(_second.Get(progress, resolvedParentStyle));
@@ -127,17 +127,17 @@ public abstract class ExitTransition
             _direction = direction;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _direction switch
             {
-                SlideDirection.Up => ComposeStyle.Empty
+                SlideDirection.Up => IModifier.Empty
                     .Top(-progress * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Down => ComposeStyle.Empty
+                SlideDirection.Down => IModifier.Empty
                     .Top(progress * resolvedParentStyle.height + resolvedParentStyle.paddingTop),
-                SlideDirection.Left => ComposeStyle.Empty
+                SlideDirection.Left => IModifier.Empty
                     .Left(-progress * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
-                SlideDirection.Right => ComposeStyle.Empty
+                SlideDirection.Right => IModifier.Empty
                     .Left(progress * resolvedParentStyle.width + resolvedParentStyle.paddingLeft),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -146,9 +146,9 @@ public abstract class ExitTransition
 
     internal class FadeOut : ExitTransition
     {
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return ComposeStyle.Empty
+            return IModifier.Empty
                 .Opacity(1 - progress);
         }
     }
@@ -161,23 +161,23 @@ public abstract class ExitTransition
         {
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return ComposeStyle.Empty
+            return IModifier.Empty
                 .Opacity(0f);
         }
     }
     
     internal class Custom : ExitTransition
     {
-        private readonly Func<float, IResolvedStyle, ComposeStyle> _factory;
+        private readonly Func<float, IResolvedStyle, IModifier> _factory;
 
-        public Custom(Func<float, IResolvedStyle, ComposeStyle> factory)
+        public Custom(Func<float, IResolvedStyle, IModifier> factory)
         {
             _factory = factory;
         }
 
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
             return _factory(progress, resolvedParentStyle);
         }
@@ -189,9 +189,9 @@ public abstract class ExitTransition
         
         private HideImpl() {}
         
-        public override ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle)
+        public override IModifier Get(float progress, IResolvedStyle resolvedParentStyle)
         {
-            return ComposeStyle.Empty
+            return IModifier.Empty
                 .Opacity(0f);
         }
     }
@@ -199,7 +199,7 @@ public abstract class ExitTransition
     public static ExitTransition Empty => EmptyImpl.Instance;
     public static ExitTransition Hide => HideImpl.Instance;
 
-    public abstract ComposeStyle Get(float progress, IResolvedStyle resolvedParentStyle);
+    public abstract IModifier Get(float progress, IResolvedStyle resolvedParentStyle);
 
     public static ExitTransition operator +(ExitTransition first, ExitTransition second)
     {

@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class AlignSelfImpl : ComposeStyle<AlignSelfImpl>
+    private class AlignSelfImpl : IModifier<AlignSelfImpl>
     {
         private readonly StyleEnum<Align> _alignSelf;
 
@@ -37,7 +37,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class FlexGrowImpl : ComposeStyle<FlexGrowImpl>
+    private class FlexGrowImpl : IModifier<FlexGrowImpl>
     {
         private readonly StyleFloat _flexGrow;
         private readonly ComposeTransition _transition;
@@ -71,7 +71,7 @@ public static partial class ComposeStyleExtensions
         }
     }
         
-    private class FlexShrinkImpl : ComposeStyle<FlexShrinkImpl>
+    private class FlexShrinkImpl : IModifier<FlexShrinkImpl>
     {
         private readonly StyleFloat _flexShrink;
         private readonly ComposeTransition _transition;
@@ -104,7 +104,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class PositionImpl : ComposeStyle<PositionImpl>
+    private class PositionImpl : IModifier<PositionImpl>
     {
         private readonly StyleEnum<Position> _position;
 
@@ -134,7 +134,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class TopImpl : ComposeStyle<TopImpl>
+    private class TopImpl : IModifier<TopImpl>
     {
         private readonly StyleLength _top;
         private readonly ComposeTransition _transition;
@@ -168,7 +168,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BottomImpl : ComposeStyle<BottomImpl>
+    private class BottomImpl : IModifier<BottomImpl>
     {
         private readonly StyleLength _bottom;
         private readonly ComposeTransition _transition;
@@ -202,7 +202,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class LeftImpl : ComposeStyle<LeftImpl>
+    private class LeftImpl : IModifier<LeftImpl>
     {
         private readonly StyleLength _left;
         private readonly ComposeTransition _transition;
@@ -236,7 +236,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class RightImpl : ComposeStyle<RightImpl>
+    private class RightImpl : IModifier<RightImpl>
     {
         private readonly StyleLength _right;
         private readonly ComposeTransition _transition;
@@ -271,7 +271,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class TranslateImpl : ComposeStyle<TranslateImpl>
+    private class TranslateImpl : IModifier<TranslateImpl>
     {
         private readonly StyleTranslate _translate;
         private readonly ComposeTransition _transition;
@@ -305,7 +305,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class TransformOriginImpl : ComposeStyle<TransformOriginImpl>
+    private class TransformOriginImpl : IModifier<TransformOriginImpl>
     {
         private readonly TransformOrigin _origin;
         private readonly ComposeTransition _transition;
@@ -338,13 +338,13 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle AlignSelf(this ComposeStyle style, StyleEnum<Align> alignSelf)
+    public static IModifier AlignSelf(this IModifier style, StyleEnum<Align> alignSelf)
     {
         return style.Then(new AlignSelfImpl(alignSelf));
     }
 
-    public static ComposeStyle FlexGrow(
-        this ComposeStyle style,
+    public static IModifier FlexGrow(
+        this IModifier style,
         StyleFloat flexGrow,
         ComposeTransition transition = default
     )
@@ -352,8 +352,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new FlexGrowImpl(flexGrow, transition));
     }
 
-    public static ComposeStyle FlexShrink(
-        this ComposeStyle style,
+    public static IModifier FlexShrink(
+        this IModifier style,
         StyleFloat flexShrink,
         ComposeTransition transition = default
     )
@@ -361,13 +361,13 @@ public static partial class ComposeStyleExtensions
         return style.Then(new FlexShrinkImpl(flexShrink, transition));
     }
 
-    public static ComposeStyle Position(this ComposeStyle style, StyleEnum<Position> position)
+    public static IModifier Position(this IModifier style, StyleEnum<Position> position)
     {
         return style.Then(new PositionImpl(position));
     }
 
-    public static ComposeStyle Top(
-        this ComposeStyle style,
+    public static IModifier Top(
+        this IModifier style,
         StyleLength top,
         ComposeTransition transition = default
     )
@@ -375,8 +375,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new TopImpl(top, transition));
     }
 
-    public static ComposeStyle Bottom(
-        this ComposeStyle style,
+    public static IModifier Bottom(
+        this IModifier style,
         StyleLength bottom,
         ComposeTransition transition = default
     )
@@ -384,8 +384,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BottomImpl(bottom, transition));
     }
 
-    public static ComposeStyle Left(
-        this ComposeStyle style,
+    public static IModifier Left(
+        this IModifier style,
         StyleLength left,
         ComposeTransition transition = default
     )
@@ -393,8 +393,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new LeftImpl(left, transition));
     }
 
-    public static ComposeStyle Right(
-        this ComposeStyle style,
+    public static IModifier Right(
+        this IModifier style,
         StyleLength right,
         ComposeTransition transition = default
     )
@@ -402,8 +402,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new RightImpl(right, transition));
     }
 
-    public static ComposeStyle Translate(
-        this ComposeStyle style,
+    public static IModifier Translate(
+        this IModifier style,
         StyleTranslate translate,
         ComposeTransition transition = default
     )
@@ -411,8 +411,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new TranslateImpl(translate, transition));
     }
 
-    public static ComposeStyle Translate(
-        this ComposeStyle style,
+    public static IModifier Translate(
+        this IModifier style,
         Length x = default,
         Length y = default,
         ComposeTransition transition = default
@@ -421,8 +421,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new TranslateImpl(new Translate(x, y), transition));
     }
 
-    public static ComposeStyle Pivot(
-        this ComposeStyle style,
+    public static IModifier Pivot(
+        this IModifier style,
         Vector2 translate,
         ComposeTransition transition = default
     )
@@ -438,8 +438,8 @@ public static partial class ComposeStyleExtensions
         );
     }
 
-    public static ComposeStyle Pivot(
-        this ComposeStyle style,
+    public static IModifier Pivot(
+        this IModifier style,
         float left,
         float top,
         ComposeTransition transition = default
@@ -448,8 +448,8 @@ public static partial class ComposeStyleExtensions
         return style.Pivot(new Vector2(left, top), transition);
     }
 
-    public static ComposeStyle TransformOrigin(
-        this ComposeStyle style,
+    public static IModifier TransformOrigin(
+        this IModifier style,
         TransformOrigin origin,
         ComposeTransition transition = default
     )
@@ -457,8 +457,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new TransformOriginImpl(origin, transition));
     }
 
-    public static ComposeStyle TransformOrigin(
-        this ComposeStyle style,
+    public static IModifier TransformOrigin(
+        this IModifier style,
         float left = 0.5f,
         float top = 0.5f,
         ComposeTransition transition = default

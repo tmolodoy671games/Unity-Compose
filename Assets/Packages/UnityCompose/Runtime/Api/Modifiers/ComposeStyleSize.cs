@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class WidthImpl : ComposeStyle<WidthImpl>
+    private class WidthImpl : IModifier<WidthImpl>
     {
         private readonly StyleLength _width;
         private readonly bool _respectPadding;
@@ -58,7 +58,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class HeightImpl : ComposeStyle<HeightImpl>
+    private class HeightImpl : IModifier<HeightImpl>
     {
         private readonly StyleLength _height;
         private readonly bool _respectPadding;
@@ -109,7 +109,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MaxWidthImpl : ComposeStyle<MaxWidthImpl>
+    private class MaxWidthImpl : IModifier<MaxWidthImpl>
     {
         private readonly StyleLength _maxWidth;
 
@@ -139,7 +139,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MaxHeightImpl : ComposeStyle<MaxHeightImpl>
+    private class MaxHeightImpl : IModifier<MaxHeightImpl>
     {
         private readonly StyleLength _maxHeight;
 
@@ -169,7 +169,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MinWidthImpl : ComposeStyle<MinWidthImpl>
+    private class MinWidthImpl : IModifier<MinWidthImpl>
     {
         private readonly StyleLength _width;
         private readonly ComposeTransition _transition;
@@ -202,7 +202,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class MinHeightImpl : ComposeStyle<MinHeightImpl>
+    private class MinHeightImpl : IModifier<MinHeightImpl>
     {
         private readonly StyleLength _height;
         private readonly ComposeTransition _transition;
@@ -235,50 +235,50 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle Width(this ComposeStyle style, StyleLength width, bool respectPadding = false)
+    public static IModifier Width(this IModifier style, StyleLength width, bool respectPadding = false)
     {
         return style.Then(new WidthImpl(width, respectPadding));
     }
 
-    public static ComposeStyle MaxWidth(this ComposeStyle style, StyleLength maxWidth)
+    public static IModifier MaxWidth(this IModifier style, StyleLength maxWidth)
     {
         return style + new MaxWidthImpl(maxWidth);
     }
 
-    public static ComposeStyle MinWidth(this ComposeStyle style, StyleLength minWidth,
+    public static IModifier MinWidth(this IModifier style, StyleLength minWidth,
         ComposeTransition transition = default)
     {
         return style + new MinWidthImpl(minWidth, transition);
     }
 
-    public static ComposeStyle Height(this ComposeStyle style, StyleLength height, bool respectPadding = false)
+    public static IModifier Height(this IModifier style, StyleLength height, bool respectPadding = false)
     {
         return style.Then(new HeightImpl(height, respectPadding));
     }
 
-    public static ComposeStyle MaxHeight(this ComposeStyle style, StyleLength maxHeight)
+    public static IModifier MaxHeight(this IModifier style, StyleLength maxHeight)
     {
         return style + new MaxHeightImpl(maxHeight);
     }
 
-    public static ComposeStyle MinHeight(this ComposeStyle style, StyleLength minHeight,
+    public static IModifier MinHeight(this IModifier style, StyleLength minHeight,
         ComposeTransition transition = default)
     {
         return style + new MinHeightImpl(minHeight, transition);
     }
 
-    public static ComposeStyle Size(this ComposeStyle style, StyleLength width, StyleLength height,
+    public static IModifier Size(this IModifier style, StyleLength width, StyleLength height,
         bool respectPadding = false)
     {
         return style.Then(new WidthImpl(width, respectPadding)).Then(new HeightImpl(height, respectPadding));
     }
 
-    public static ComposeStyle Size(this ComposeStyle style, StyleLength size, bool respectPadding = false)
+    public static IModifier Size(this IModifier style, StyleLength size, bool respectPadding = false)
     {
         return style.Then(new WidthImpl(size, respectPadding)).Then(new HeightImpl(size, respectPadding));
     }
 
-    public static ComposeStyle Size(this ComposeStyle style, Vector2 size, bool respectPadding = false)
+    public static IModifier Size(this IModifier style, Vector2 size, bool respectPadding = false)
     {
         return style.Then(new WidthImpl(size.x, respectPadding)).Then(new HeightImpl(size.y, respectPadding));
     }

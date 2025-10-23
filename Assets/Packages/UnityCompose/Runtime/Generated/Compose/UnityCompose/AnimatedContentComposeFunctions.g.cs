@@ -11,7 +11,7 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __AnimatedContent<T>(T value, Func<T, T, ContentTransform> transition, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, ComposeStyle? style = null)
+    private static void __AnimatedContent<T>(T value, Func<T, T, ContentTransform> transition, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, IModifier? style = null)
     {
         if (CurrentComposer.BeginComposeGroup((value, transition, content, animateSize, transitionDuration, style)))
             return;
@@ -30,7 +30,7 @@ public static partial class ComposeFunctions
                 targetValue.Value = value;
             }));
             // Animating size:
-            var(containerStyle, contentStyle) = animateSize ? AnimateSizeStyles(transitionDuration) : (ComposeStyle.Empty, ComposeStyle.Empty);
+            var(containerStyle, contentStyle) = animateSize ? AnimateSizeStyles(transitionDuration) : (IModifier.Empty, IModifier.Empty);
             // Layout:
             var resolvedTransition = Remember(value!, () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value));
             ReusableComposeView<AnimatedContent>(style: style.OrEmpty().Then(containerStyle), content: RememberComposable<global::System.Action>((value, content, isSwitched, resolvedProgress, previousValue, contentStyle, resolvedTransition), () =>

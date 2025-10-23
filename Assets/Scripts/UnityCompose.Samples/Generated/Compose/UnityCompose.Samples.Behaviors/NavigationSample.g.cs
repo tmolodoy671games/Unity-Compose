@@ -50,11 +50,11 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(style: ComposeStyle.Empty.Size(100.Percent()), content: RememberComposable<global::System.Action>(null, () =>
+                Box(style: IModifier.Empty.Size(100.Percent()), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Box(style: ComposeStyle.Empty.Size(100.Percent()), content: RememberComposable<global::System.Action>(null, () =>
+                    Box(style: IModifier.Empty.Size(100.Percent()), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(null, () => ContentTransform(enter: FadeIn() + SlideIn(SlideDirection.Left), exit: FadeOut() + SlideOut(SlideDirection.Left))), transitionDuration: 5, initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), style: ComposeStyle.Empty.Size(100.Percent()));
+                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(null, () => ContentTransform(enter: FadeIn() + SlideIn(SlideDirection.Left), exit: FadeOut() + SlideOut(SlideDirection.Left))), transitionDuration: 5, initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), style: IModifier.Empty.Size(100.Percent()));
                     }));
                 }));
             }
@@ -77,9 +77,9 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowSecondScreen()));
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: ComposeStyle.Empty.Size(100.Percent()).BackgroundColor(Color.green), content: RememberComposable<global::System.Action>(null, () =>
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: IModifier.Empty.Size(100.Percent()).BackgroundColor(Color.green), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Spacer(style: ComposeStyle.Empty.Size(100).BackgroundColor(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
+                    Spacer(style: IModifier.Empty.Size(100).BackgroundColor(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
             }
             finally
@@ -101,7 +101,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowFirstScreen()));
-                Spacer(style: ComposeStyle.Empty.Size(100.Percent()).BackgroundColor(Color.red));
+                Spacer(style: IModifier.Empty.Size(100.Percent()).BackgroundColor(Color.red));
             }
             finally
             {

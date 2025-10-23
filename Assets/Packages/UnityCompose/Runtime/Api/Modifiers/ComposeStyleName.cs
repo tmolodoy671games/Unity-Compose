@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class NameImpl : ComposeStyle<NameImpl>
+    private class NameImpl : IModifier<NameImpl>
     {
         private readonly string _name;
 
@@ -43,7 +43,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle Name(this ComposeStyle style, string name)
+    public static IModifier Name(this IModifier style, string name)
     {
         return style.Then(new NameImpl(name));
     }

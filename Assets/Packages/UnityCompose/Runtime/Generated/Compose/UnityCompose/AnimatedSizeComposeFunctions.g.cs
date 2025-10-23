@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     [Compiled]
-    private static void __AnimatedSize(Action content, ComposeStyle? style = null, float duration = ComposeDefaults.TransitionDuration)
+    private static void __AnimatedSize(Action content, IModifier? style = null, float duration = ComposeDefaults.TransitionDuration)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, duration)))
             return;

@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class BorderBottomLeftRadiusImpl : ComposeStyle<BorderBottomLeftRadiusImpl>
+    private class BorderBottomLeftRadiusImpl : IModifier<BorderBottomLeftRadiusImpl>
     {
         private readonly StyleLength _borderBottomLeftRadius;
         private readonly ComposeTransition _transition;
@@ -41,7 +41,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderBottomRightRadiusImpl : ComposeStyle<BorderBottomRightRadiusImpl>
+    private class BorderBottomRightRadiusImpl : IModifier<BorderBottomRightRadiusImpl>
     {
         private readonly StyleLength _borderBottomRightRadius;
         private readonly ComposeTransition _transition;
@@ -76,7 +76,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderTopLeftRadiusImpl : ComposeStyle<BorderTopLeftRadiusImpl>
+    private class BorderTopLeftRadiusImpl : IModifier<BorderTopLeftRadiusImpl>
     {
         private readonly StyleLength _borderTopLeftRadius;
         private readonly ComposeTransition _transition;
@@ -111,7 +111,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderTopRightRadiusImpl : ComposeStyle<BorderTopRightRadiusImpl>
+    private class BorderTopRightRadiusImpl : IModifier<BorderTopRightRadiusImpl>
     {
         private readonly StyleLength _borderTopRightRadius;
         private readonly ComposeTransition _transition;
@@ -146,7 +146,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderTopWidthImpl : ComposeStyle<BorderTopWidthImpl>
+    private class BorderTopWidthImpl : IModifier<BorderTopWidthImpl>
     {
         private readonly StyleFloat _borderTopWidth;
         private readonly ComposeTransition _transition;
@@ -180,7 +180,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderBottomWidthImpl : ComposeStyle<BorderBottomWidthImpl>
+    private class BorderBottomWidthImpl : IModifier<BorderBottomWidthImpl>
     {
         private readonly StyleFloat _borderBottomWidth;
         private readonly ComposeTransition _transition;
@@ -215,7 +215,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderLeftWidthImpl : ComposeStyle<BorderLeftWidthImpl>
+    private class BorderLeftWidthImpl : IModifier<BorderLeftWidthImpl>
     {
         private readonly StyleFloat _borderLeftWidth;
         private readonly ComposeTransition _transition;
@@ -250,7 +250,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderRightWidthImpl : ComposeStyle<BorderRightWidthImpl>
+    private class BorderRightWidthImpl : IModifier<BorderRightWidthImpl>
     {
         private readonly StyleFloat _borderRightWidth;
         private readonly ComposeTransition _transition;
@@ -285,7 +285,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderTopColorImpl : ComposeStyle<BorderTopColorImpl>
+    private class BorderTopColorImpl : IModifier<BorderTopColorImpl>
     {
         private readonly StyleColor _borderTopColor;
         private readonly ComposeTransition _transition;
@@ -320,7 +320,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderBottomColorImpl : ComposeStyle<BorderBottomColorImpl>
+    private class BorderBottomColorImpl : IModifier<BorderBottomColorImpl>
     {
         private readonly StyleColor _borderBottomColor;
         private readonly ComposeTransition _transition;
@@ -356,7 +356,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderLeftColorImpl : ComposeStyle<BorderLeftColorImpl>
+    private class BorderLeftColorImpl : IModifier<BorderLeftColorImpl>
     {
         private readonly StyleColor _borderLeftColor;
         private readonly ComposeTransition _transition;
@@ -391,7 +391,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BorderRightColorImpl : ComposeStyle<BorderRightColorImpl>
+    private class BorderRightColorImpl : IModifier<BorderRightColorImpl>
     {
         private readonly StyleColor _borderRightColor;
         private readonly ComposeTransition _transition;
@@ -427,8 +427,8 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle BorderBottomLeftRadius(
-        this ComposeStyle style,
+    public static IModifier BorderBottomLeftRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -436,8 +436,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderBottomLeftRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderBottomRightRadius(
-        this ComposeStyle style,
+    public static IModifier BorderBottomRightRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -445,8 +445,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderBottomRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderTopLeftRadius(
-        this ComposeStyle style,
+    public static IModifier BorderTopLeftRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -454,8 +454,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderTopLeftRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderTopRightRadius(
-        this ComposeStyle style,
+    public static IModifier BorderTopRightRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -463,8 +463,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderTopRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderRadius(
-        this ComposeStyle style,
+    public static IModifier BorderRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -476,8 +476,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderTopRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderTopRadius(
-        this ComposeStyle style,
+    public static IModifier BorderTopRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -487,8 +487,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderTopRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderBottomRadius(
-        this ComposeStyle style,
+    public static IModifier BorderBottomRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -498,8 +498,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderBottomRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderLeftRadius(
-        this ComposeStyle style,
+    public static IModifier BorderLeftRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -509,8 +509,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderBottomLeftRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderRightRadius(
-        this ComposeStyle style,
+    public static IModifier BorderRightRadius(
+        this IModifier style,
         StyleLength radius,
         ComposeTransition transition = default
     )
@@ -520,8 +520,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderBottomRightRadiusImpl(radius, transition));
     }
 
-    public static ComposeStyle BorderTopWidth(
-        this ComposeStyle style,
+    public static IModifier BorderTopWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -529,8 +529,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderTopWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderBottomWidth(
-        this ComposeStyle style,
+    public static IModifier BorderBottomWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -538,8 +538,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderBottomWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderLeftWidth(
-        this ComposeStyle style,
+    public static IModifier BorderLeftWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -547,8 +547,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderLeftWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderRightWidth(
-        this ComposeStyle style,
+    public static IModifier BorderRightWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -556,8 +556,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderRightWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderWidth(
-        this ComposeStyle style,
+    public static IModifier BorderWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -569,8 +569,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderTopWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderWidth(
-        this ComposeStyle style,
+    public static IModifier BorderWidth(
+        this IModifier style,
         StyleFloat horizontalWidth,
         StyleFloat verticalWidth,
         ComposeTransition transition = default
@@ -581,8 +581,8 @@ public static partial class ComposeStyleExtensions
             .BorderVerticalWidth(verticalWidth, transition);
     }
 
-    public static ComposeStyle BorderHorizontalWidth(
-        this ComposeStyle style,
+    public static IModifier BorderHorizontalWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -592,8 +592,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderRightWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderVerticalWidth(
-        this ComposeStyle style,
+    public static IModifier BorderVerticalWidth(
+        this IModifier style,
         StyleFloat width,
         ComposeTransition transition = default
     )
@@ -603,8 +603,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderBottomWidthImpl(width, transition));
     }
 
-    public static ComposeStyle BorderTopColor(
-        this ComposeStyle style,
+    public static IModifier BorderTopColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -612,8 +612,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderTopColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderBottomColor(
-        this ComposeStyle style,
+    public static IModifier BorderBottomColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -621,8 +621,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderBottomColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderLeftColor(
-        this ComposeStyle style,
+    public static IModifier BorderLeftColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -630,8 +630,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderLeftColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderRightColor(
-        this ComposeStyle style,
+    public static IModifier BorderRightColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -639,8 +639,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BorderRightColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderColor(
-        this ComposeStyle style,
+    public static IModifier BorderColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -652,8 +652,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderTopColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderColor(
-        this ComposeStyle style,
+    public static IModifier BorderColor(
+        this IModifier style,
         StyleColor horizontalColor,
         StyleColor verticalColor,
         ComposeTransition transition = default
@@ -664,8 +664,8 @@ public static partial class ComposeStyleExtensions
             .BorderVerticalColor(verticalColor, transition);
     }
 
-    public static ComposeStyle BorderHorizontalColor(
-        this ComposeStyle style,
+    public static IModifier BorderHorizontalColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -675,8 +675,8 @@ public static partial class ComposeStyleExtensions
             .Then(new BorderRightColorImpl(color, transition));
     }
 
-    public static ComposeStyle BorderVerticalColor(
-        this ComposeStyle style,
+    public static IModifier BorderVerticalColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )

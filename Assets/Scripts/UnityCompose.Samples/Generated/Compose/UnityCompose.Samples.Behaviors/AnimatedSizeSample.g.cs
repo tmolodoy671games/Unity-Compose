@@ -13,17 +13,17 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: ComposeStyle.Empty.Width(100.Percent()).Height(100.Percent()).FlexGrow(1), content: RememberComposable<global::System.Action>(null, () =>
+                Box(alignHorizontally: Align.Center, alignVertically: Justify.Center, style: IModifier.Empty.Width(100.Percent()).Height(100.Percent()).FlexGrow(1), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Column(alignHorizontally: Align.Center, style: ComposeStyle.Empty.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
+                    Column(alignHorizontally: Align.Center, style: IModifier.Empty.Name("animated-size-sample"), content: RememberComposable<global::System.Action>(null, () =>
                     {
                         var isSwitched = Remember(() => MutableStateOf(false));
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
-                        AnimatedSize(style: ComposeStyle.Empty.Name("animated-size").BackgroundColor(isSwitched.Value ? Color.green : Color.red, Transition(5)).Padding(16), duration: 5, content: Remember<global::System.Action>(text, () =>
+                        AnimatedSize(style: IModifier.Empty.Name("animated-size").BackgroundColor(isSwitched.Value ? Color.green : Color.red, Transition(5)).Padding(16), duration: 5, content: Remember<global::System.Action>(text, () =>
                         {
-                            Label(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, style: ComposeStyle.Empty.Name("animated-label-child"));
+                            Label(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, style: IModifier.Empty.Name("animated-label-child"));
                         }));
-                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: ComposeStyle.Empty.Name("switch-button").Padding(32).BackgroundColor(Color.blue).MarginTop(16).BorderRadius(16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Label(text: "Switch", textColor: Color.white, fontSize: 64, style: IModifier.Empty.Name("switch-button").Padding(32).BackgroundColor(Color.blue).MarginTop(16).BorderRadius(16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

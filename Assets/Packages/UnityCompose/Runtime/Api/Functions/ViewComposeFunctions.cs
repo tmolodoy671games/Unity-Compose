@@ -13,16 +13,16 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    private static readonly ICompositionLocal<(ComposeStyle? Before, ComposeStyle? After)> LocalStyle =
-        CompositionLocalOf<(ComposeStyle? Before, ComposeStyle? After)>(() => (null, null));
+    private static readonly ICompositionLocal<(IModifier? Before, IModifier? After)> LocalStyle =
+        CompositionLocalOf<(IModifier? Before, IModifier? After)>(() => (null, null));
 
     public static readonly ICompositionLocal<VisualElement> LocalVisualElement =
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("No LocalVisualElement provided!"));
 
     public static CompositionLocalProvides Provides(
-        this ICompositionLocal<(ComposeStyle? Before, ComposeStyle? After)> localStyle,
-        ComposeStyle? before = null,
-        ComposeStyle? after = null
+        this ICompositionLocal<(IModifier? Before, IModifier? After)> localStyle,
+        IModifier? before = null,
+        IModifier? after = null
     )
     {
         return localStyle.Provides((before, after));
@@ -30,7 +30,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void ReusableComposeView<T>(
-        ComposeStyle? style = null,
+        IModifier? style = null,
         Action<T>? initializer = null,
         [Composable] Action? content = null
     ) where T : VisualElement, new()
@@ -43,7 +43,7 @@ public static partial class ComposeFunctions
             resolvedStyle = resolvedStyle.OrEmpty().Then(localStyle.After);
         var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
 
-        var currentStyle = Remember(() => IMutableStableProperty.Create<ComposeStyle?>(null));
+        var currentStyle = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
         var currentProperties = Remember(() =>
             IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
                 IImmutableStableSet.Empty<ComposeModifiedProperty>()
@@ -93,7 +93,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void Column(
         [Composable] Action content,
-        ComposeStyle? style = null,
+        IModifier? style = null,
         Align alignHorizontally = Align.FlexStart,
         Justify alignVertically = Justify.FlexStart
     )
@@ -114,7 +114,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void Row(
         [Composable] Action content,
-        ComposeStyle? style = null,
+        IModifier? style = null,
         Justify alignHorizontally = Justify.FlexStart,
         Align alignVertically = Align.FlexStart
     )
@@ -135,7 +135,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void Box(
         [Composable] Action content,
-        ComposeStyle? style = null,
+        IModifier? style = null,
         Align alignHorizontally = Align.FlexStart,
         Justify alignVertically = Justify.FlexStart
     )
@@ -155,7 +155,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Spacer(
-        ComposeStyle style
+        IModifier style
     )
     {
         ReusableComposeView<Spacer>(
@@ -172,7 +172,7 @@ public static partial class ComposeFunctions
         Optional<Color> textColor = default,
         WhiteSpace whiteSpace = WhiteSpace.Normal,
         TextAnchor align = TextAnchor.UpperLeft,
-        ComposeStyle? style = null
+        IModifier? style = null
     )
     {
         ReusableComposeView<Label>(
@@ -194,7 +194,7 @@ public static partial class ComposeFunctions
     public static void Image(
         Background image,
         Color? tint = null,
-        ComposeStyle? style = null
+        IModifier? style = null
     )
     {
         ReusableComposeView<Image>(

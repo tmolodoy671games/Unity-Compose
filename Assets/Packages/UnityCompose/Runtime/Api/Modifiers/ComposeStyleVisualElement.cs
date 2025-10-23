@@ -6,7 +6,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class PickingModeImpl : ComposeStyle<PickingModeImpl>
+    private class PickingModeImpl : IModifier<PickingModeImpl>
     {
         private readonly PickingMode _pickingMode;
 

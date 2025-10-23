@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
             var isHovered = Remember(() => MutableStateOf(false));
             var isPressed = Remember(() => MutableStateOf(false));
             Spacer(
-                style: ComposeStyle.Empty
+                style: IModifier.Empty
                     .Size(100)
                     .BackgroundColor(isPressed.Value ? Color.cyan : Color.blue, Transition())
                     .AlignSelf(Align.Center)

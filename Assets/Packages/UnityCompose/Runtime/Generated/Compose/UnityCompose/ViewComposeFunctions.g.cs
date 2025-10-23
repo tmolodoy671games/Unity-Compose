@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __ReusableComposeView<T>(ComposeStyle? style = null, Action<T>? initializer = null, [Composable] Action? content = null)
+    private static void __ReusableComposeView<T>(IModifier? style = null, Action<T>? initializer = null, [Composable] Action? content = null)
         where T : VisualElement, new()
     {
         if (CurrentComposer.BeginComposeGroup((style, initializer, content)))
@@ -29,7 +29,7 @@ public static partial class ComposeFunctions
             if (localStyle.After != null)
                 resolvedStyle = resolvedStyle.OrEmpty().Then(localStyle.After);
             var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-            var currentStyle = Remember(() => IMutableStableProperty.Create<ComposeStyle?>(null));
+            var currentStyle = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
             var currentProperties = Remember(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
             // if (!Equals(currentStyle.Value, resolvedStyle))
             // {
@@ -71,7 +71,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Column([Composable] Action content, ComposeStyle? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Column([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -93,7 +93,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Row([Composable] Action content, ComposeStyle? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
+    private static void __Row([Composable] Action content, IModifier? style = null, Justify alignHorizontally = Justify.FlexStart, Align alignVertically = Align.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -115,7 +115,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Box([Composable] Action content, ComposeStyle? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
+    private static void __Box([Composable] Action content, IModifier? style = null, Align alignHorizontally = Align.FlexStart, Justify alignVertically = Justify.FlexStart)
     {
         if (CurrentComposer.BeginComposeGroup((content, style, alignHorizontally, alignVertically)))
             return;
@@ -137,7 +137,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Spacer(ComposeStyle style)
+    private static void __Spacer(IModifier style)
     {
         if (CurrentComposer.BeginComposeGroup((style)))
             return;
@@ -153,7 +153,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Label(string text, Optional<TextStyle> textStyle = default, Optional<float> fontSize = default, Optional<FontStyle> fontStyle = default, Optional<Color> textColor = default, WhiteSpace whiteSpace = WhiteSpace.Normal, TextAnchor align = TextAnchor.UpperLeft, ComposeStyle? style = null)
+    private static void __Label(string text, Optional<TextStyle> textStyle = default, Optional<float> fontSize = default, Optional<FontStyle> fontStyle = default, Optional<Color> textColor = default, WhiteSpace whiteSpace = WhiteSpace.Normal, TextAnchor align = TextAnchor.UpperLeft, IModifier? style = null)
     {
         if (CurrentComposer.BeginComposeGroup((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, style)))
             return;
@@ -177,7 +177,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Image(Background image, Color? tint = null, ComposeStyle? style = null)
+    private static void __Image(Background image, Color? tint = null, IModifier? style = null)
     {
         if (CurrentComposer.BeginComposeGroup((image, tint, style)))
             return;

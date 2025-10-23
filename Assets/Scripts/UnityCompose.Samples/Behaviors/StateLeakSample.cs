@@ -20,13 +20,13 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: ComposeStyle.Empty
+                style: IModifier.Empty
                     .FlexGrow(1),
                 content: () =>
                 {
                     Column(
                         alignHorizontally: Align.Stretch,
-                        style: ComposeStyle.Empty,
+                        style: IModifier.Empty,
                         content: () =>
                         {
                             var showFirst = Remember(() => MutableStateOf(false));
@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                                     text: $"Clicked {firstCount.Value} times",
                                     fontSize: 20,
                                     align: TextAnchor.MiddleCenter,
-                                    style: ComposeStyle.Empty
+                                    style: IModifier.Empty
                                         .BackgroundColor(Color.red)
                                         .Padding(20)
                                         .BorderRadius(16)
@@ -51,7 +51,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: $"Clicked {secondCount.Value} times",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: ComposeStyle.Empty
+                                style: IModifier.Empty
                                     .BackgroundColor(Color.green)
                                     .Padding(20)
                                     .BorderRadius(16)
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Switch",
                                 fontSize: 20,
                                 align: TextAnchor.MiddleCenter,
-                                style: ComposeStyle.Empty
+                                style: IModifier.Empty
                                     .BackgroundColor(Color.blue)
                                     .Padding(20)
                                     .BorderRadius(16)

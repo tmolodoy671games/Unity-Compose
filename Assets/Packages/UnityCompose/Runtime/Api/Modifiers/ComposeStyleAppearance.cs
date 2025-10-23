@@ -7,7 +7,7 @@ namespace UnityCompose;
 
 public static partial class ComposeStyleExtensions
 {
-    private class BackgroundColorImpl : ComposeStyle<BackgroundColorImpl>
+    private class BackgroundColorImpl : IModifier<BackgroundColorImpl>
     {
         private readonly StyleColor _backgroundColor;
         private readonly ComposeTransition _transition;
@@ -41,7 +41,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class BackgroundImageImpl : ComposeStyle<BackgroundImageImpl>
+    private class BackgroundImageImpl : IModifier<BackgroundImageImpl>
     {
         private readonly StyleBackground _backgroundImage;
 
@@ -71,7 +71,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class VisibilityImpl : ComposeStyle<VisibilityImpl>
+    private class VisibilityImpl : IModifier<VisibilityImpl>
     {
         private readonly StyleEnum<Visibility> _visibility;
 
@@ -101,7 +101,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class DisplayImpl : ComposeStyle<DisplayImpl>
+    private class DisplayImpl : IModifier<DisplayImpl>
     {
         private readonly StyleEnum<DisplayStyle> _display;
 
@@ -131,7 +131,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class OpacityImpl : ComposeStyle<OpacityImpl>
+    private class OpacityImpl : IModifier<OpacityImpl>
     {
         private readonly StyleFloat _opacity;
         private readonly ComposeTransition _transition;
@@ -165,7 +165,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class ScaleImpl : ComposeStyle<ScaleImpl>
+    private class ScaleImpl : IModifier<ScaleImpl>
     {
         private readonly StyleScale _scale;
         private readonly ComposeTransition _transition;
@@ -199,7 +199,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class RotateImpl : ComposeStyle<RotateImpl>
+    private class RotateImpl : IModifier<RotateImpl>
     {
         private readonly StyleRotate _rotate;
         private readonly ComposeTransition _transition;
@@ -233,7 +233,7 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    private class OverflowImpl : ComposeStyle<OverflowImpl>
+    private class OverflowImpl : IModifier<OverflowImpl>
     {
         private readonly StyleEnum<Overflow> _overflow;
 
@@ -263,8 +263,8 @@ public static partial class ComposeStyleExtensions
         }
     }
 
-    public static ComposeStyle BackgroundColor(
-        this ComposeStyle style,
+    public static IModifier BackgroundColor(
+        this IModifier style,
         StyleColor color,
         ComposeTransition transition = default
     )
@@ -272,23 +272,23 @@ public static partial class ComposeStyleExtensions
         return style.Then(new BackgroundColorImpl(color, transition));
     }
 
-    public static ComposeStyle BackgroundImage(this ComposeStyle style, StyleBackground image)
+    public static IModifier BackgroundImage(this IModifier style, StyleBackground image)
     {
         return style.Then(new BackgroundImageImpl(image));
     }
 
-    public static ComposeStyle Visibility(this ComposeStyle style, StyleEnum<Visibility> visibility)
+    public static IModifier Visibility(this IModifier style, StyleEnum<Visibility> visibility)
     {
         return style.Then(new VisibilityImpl(visibility));
     }
 
-    public static ComposeStyle Display(this ComposeStyle style, StyleEnum<DisplayStyle> display)
+    public static IModifier Display(this IModifier style, StyleEnum<DisplayStyle> display)
     {
         return style.Then(new DisplayImpl(display));
     }
 
-    public static ComposeStyle Opacity(
-        this ComposeStyle style,
+    public static IModifier Opacity(
+        this IModifier style,
         StyleFloat opacity,
         ComposeTransition transition = default
     )
@@ -296,8 +296,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new OpacityImpl(opacity, transition));
     }
 
-    public static ComposeStyle Scale(
-        this ComposeStyle style,
+    public static IModifier Scale(
+        this IModifier style,
         StyleScale scale,
         ComposeTransition transition = default
     )
@@ -305,8 +305,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new ScaleImpl(scale, transition));
     }
         
-    public static ComposeStyle Scale(
-        this ComposeStyle style,
+    public static IModifier Scale(
+        this IModifier style,
         float scale,
         ComposeTransition transition = default
     )
@@ -314,8 +314,8 @@ public static partial class ComposeStyleExtensions
         return style.Then(new ScaleImpl(Vector2.one * scale, transition));
     }
 
-    public static ComposeStyle Rotate(
-        this ComposeStyle style,
+    public static IModifier Rotate(
+        this IModifier style,
         StyleRotate rotate,
         ComposeTransition transition = default
     )
@@ -323,7 +323,7 @@ public static partial class ComposeStyleExtensions
         return style.Then(new RotateImpl(rotate, transition));
     }
 
-    public static ComposeStyle Overflow(this ComposeStyle style, StyleEnum<Overflow> overflow)
+    public static IModifier Overflow(this IModifier style, StyleEnum<Overflow> overflow)
     {
         return style.Then(new OverflowImpl(overflow));
     }

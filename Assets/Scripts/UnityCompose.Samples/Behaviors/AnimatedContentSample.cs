@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
             Box(
                 alignHorizontally: Align.Center,
                 alignVertically: Justify.Center,
-                style: ComposeStyle.Empty
+                style: IModifier.Empty
                     .Width(100.Percent())
                     .Height(100.Percent())
                     .FlexGrow(1),
@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(
                         alignHorizontally: Align.Center,
-                        style: ComposeStyle.Empty
+                        style: IModifier.Empty
                             .Name("animated-content-sample"),
                         content: () =>
                         {
@@ -50,7 +50,7 @@ namespace UnityCompose.Samples.Behaviors
                                         ),
                                 animateSize: true,
                                 transitionDuration: Duration,
-                                style: ComposeStyle.Empty
+                                style: IModifier.Empty
                                     .Name("animated-content")
                                     .BackgroundColor(
                                         isSwitched.Value ? Color.green : Color.red,
@@ -70,7 +70,7 @@ namespace UnityCompose.Samples.Behaviors
                                 text: "Switch",
                                 textColor: Color.white,
                                 fontSize: 64,
-                                style: ComposeStyle.Empty
+                                style: IModifier.Empty
                                     .Padding(100, 32)
                                     .BackgroundColor(Color.blue)
                                     .MarginTop(16)
