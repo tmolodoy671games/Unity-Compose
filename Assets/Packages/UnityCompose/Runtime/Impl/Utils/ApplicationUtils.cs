@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿// ReSharper disable RedundantUsingDirective
+
+using UnityEditor;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
