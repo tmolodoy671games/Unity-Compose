@@ -18,7 +18,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(onMouseUp);
     }
@@ -30,7 +30,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(_ => onMouseUp());
     }
@@ -46,7 +46,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {
@@ -62,7 +62,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {
@@ -82,7 +82,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {
@@ -98,7 +98,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {
@@ -118,7 +118,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {
@@ -134,7 +134,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseUpModifierImpl(it =>
         {

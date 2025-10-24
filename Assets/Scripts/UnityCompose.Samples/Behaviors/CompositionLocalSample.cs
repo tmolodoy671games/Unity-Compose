@@ -44,10 +44,10 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 32,
                         modifier: Modifier
                             .Background(Color.blue)
-                            .NewPadding(all: 32)
+                            .Padding(all: 32)
                             .Border(radius: 16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .NewMargin(top: 80)
+                            .Margin(top: 80)
                     );
                 }
             );
@@ -65,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(
                                 LocalIsSwitched.Current ? Color.green : Color.red, Transition()
                             )
-                            .NewPadding(all: 100)
+                            .Padding(all: 100)
                     );
                 });
             });

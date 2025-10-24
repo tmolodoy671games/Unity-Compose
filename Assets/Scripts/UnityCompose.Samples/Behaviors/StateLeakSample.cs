@@ -39,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors
                                     modifier: Modifier
                                         .FillMaxWidth()
                                         .Background(Color.red)
-                                        .NewPadding(all: 20)
+                                        .Padding(all: 20)
                                         .Border(radius: 16)
                                         .OnClick(() => firstCount.Value++)
                                         .Name("first-button")
@@ -54,9 +54,9 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .FillMaxWidth()
                                     .Background(Color.green)
-                                    .NewPadding(all: 20)
+                                    .Padding(all: 20)
                                     .Border(radius: 16)
-                                    .NewMargin(top: 16)
+                                    .Margin(top: 16)
                                     .OnClick(() => secondCount.Value++)
                                     .Name("second-button")
                             );
@@ -68,9 +68,9 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .FillMaxWidth()
                                     .Background(Color.blue)
-                                    .NewPadding(all: 20)
+                                    .Padding(all: 20)
                                     .Border(radius: 16)
-                                    .NewMargin(top: 16)
+                                    .Margin(top: 16)
                                     .OnClick(() => showFirst.Value = !showFirst.Value)
                                     .Name("switch-button")
                             );

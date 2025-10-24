@@ -18,7 +18,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(onMouseDown);
     }
@@ -30,7 +30,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(_ => onMouseDown());
     }
@@ -46,7 +46,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -62,7 +62,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -82,7 +82,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -98,7 +98,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -118,7 +118,7 @@ public static partial class ModifierExtensions
         Action<MouseClickInfo> onMouseDown
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -134,7 +134,7 @@ public static partial class ModifierExtensions
         Action onMouseDown
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -150,7 +150,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {
@@ -166,7 +166,7 @@ public static partial class ModifierExtensions
         bool enabled = true
     )
     {
-        if (enabled)
+        if (!enabled)
             return modifier;
         return modifier + new OnMouseDownModifierImpl(it =>
         {

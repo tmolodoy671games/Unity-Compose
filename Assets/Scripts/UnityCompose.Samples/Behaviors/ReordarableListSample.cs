@@ -29,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                         horizontalAlignment: Alignment.Horizontal.Center,
                         modifier: Modifier
                             .Name("reordarable-list-sample")
-                            .NewPadding(top: 100)
+                            .Padding(top: 100)
                             .FillMaxHeight()
                             .Width(800),
                         content: () =>
@@ -43,7 +43,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("add-item-button")
                                     .Align(Alignment.Right)
                                     .Background(Color.blue)
-                                    .NewPadding(horizontal: 32, vertical: 16)
+                                    .Padding(horizontal: 32, vertical: 16)
                                     .Border(radius: 16)
                                     .OnClick(() =>
                                     {
@@ -116,9 +116,9 @@ namespace UnityCompose.Samples.Behaviors
                     .Name("item-row")
                     .Background(Color.cyan)
                     .FillMaxWidth()
-                    .NewPadding(all: 4)
+                    .Padding(all: 4)
                     .Border(radius: 12)
-                    .NewMargin(vertical: 4)
+                    .Margin(vertical: 4)
                     .Name(state.ToString()),
                 content: () =>
                 {
@@ -129,7 +129,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Name("item-name-label")
                             .Weight(1)
-                            .NewMargin(left: 32)
+                            .Margin(left: 32)
                     );
                     Column(
                         content: () =>
@@ -143,7 +143,7 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .Name("up-arrow-button")
                                     .Background(Color.green)
-                                    .NewPadding(horizontal: 6, vertical: 4)
+                                    .Padding(horizontal: 6, vertical: 4)
                                     .Border(radius: 16)
                                     .OnClick(onMoveUpClick)
                             );
@@ -156,7 +156,7 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .Name("down-arrow-button")
                                     .Background(Color.green)
-                                    .NewPadding(horizontal: 6, vertical: 4)
+                                    .Padding(horizontal: 6, vertical: 4)
                                     .Border(radius: 16)
                                     .OnClick(onMoveDownClick)
                             );
@@ -171,7 +171,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Name("remove-button")
                             .Background(Color.red)
-                            .NewPadding(horizontal: 16, vertical: 4)
+                            .Padding(horizontal: 16, vertical: 4)
                             .Border(radius: 16)
                             .OnClick(onRemoveClick)
                     );
