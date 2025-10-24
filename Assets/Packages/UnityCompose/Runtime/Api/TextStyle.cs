@@ -6,6 +6,6 @@ namespace UnityCompose;
 public readonly record struct TextStyle(
     Color Color,
     float FontSize,
-    bool Bold = false, 
-    bool Italic = false
+    FontWeight FontWeight = FontWeight.Normal, 
+    FontStyle FontStyle = FontStyle.Normal
 );

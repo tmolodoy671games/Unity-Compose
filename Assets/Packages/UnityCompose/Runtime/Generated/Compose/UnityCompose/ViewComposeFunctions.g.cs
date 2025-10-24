@@ -146,7 +146,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, FontStyle fontStyle = FontStyle.Normal, FontWeight fontWeight = FontWeight.Normal, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
+    private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
     {
         if (CurrentComposer.BeginComposeGroup((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier)))
             return;
@@ -156,7 +156,9 @@ public static partial class ComposeFunctions
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
-                it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(fontStyle, fontWeight);
+                var resolvedFontStyle = fontStyle.HasValue ? fontStyle.Value : style.HasValue ? style.Value.FontStyle : FontStyle.Normal;
+                var resolvedFontWeight = fontWeight.HasValue ? fontWeight.Value : style.HasValue ? style.Value.FontWeight : FontWeight.Normal;
+                it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(resolvedFontStyle, resolvedFontWeight);
                 it.style.unityTextAlign = textAlign.ToTextAnchor();
                 it.style.fontSize = fontSize.GetOrDefault(style.HasValue ? style.Value.FontSize : 14f);
                 it.style.color = color.GetOrDefault(style.HasValue ? style.Value.Color : Color.white);
