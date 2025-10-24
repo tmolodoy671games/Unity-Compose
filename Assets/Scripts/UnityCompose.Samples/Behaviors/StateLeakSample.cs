@@ -35,7 +35,7 @@ namespace UnityCompose.Samples.Behaviors
                                 Text(
                                     text: $"Clicked {firstCount.Value} times",
                                     fontSize: 20,
-                                    align: TextAnchor.MiddleCenter,
+                                    textAlign: TextAlign.MiddleCenter,
                                     modifier: Modifier
                                         .FillMaxWidth()
                                         .Background(Color.red)
@@ -50,7 +50,7 @@ namespace UnityCompose.Samples.Behaviors
                             Text(
                                 text: $"Clicked {secondCount.Value} times",
                                 fontSize: 20,
-                                align: TextAnchor.MiddleCenter,
+                                textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .FillMaxWidth()
                                     .Background(Color.green)
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                             Text(
                                 text: "Switch",
                                 fontSize: 20,
-                                align: TextAnchor.MiddleCenter,
+                                textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .FillMaxWidth()
                                     .Background(Color.blue)

@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                             var items = Remember(() => MutableStateListOf(1, 2));
                             Text(
                                 text: "Add Item",
-                                textColor: Color.white,
+                                color: Color.white,
                                 fontSize: 40,
                                 modifier: Modifier
                                     .Name("add-item-button")
@@ -124,7 +124,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Text(
                         text: $"Item no. {state}",
-                        textColor: Color.black,
+                        color: Color.black,
                         fontSize: 40,
                         modifier: Modifier
                             .Name("item-name-label")
@@ -136,10 +136,10 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             Text(
                                 text: "↑",
-                                textColor: Color.white,
+                                color: Color.white,
                                 fontSize: 40,
-                                fontStyle: FontStyle.Bold,
-                                align: TextAnchor.MiddleCenter,
+                                fontWeight: FontWeight.Bold,
+                                textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .Name("up-arrow-button")
                                     .Background(Color.green)
@@ -149,10 +149,10 @@ namespace UnityCompose.Samples.Behaviors
                             );
                             Text(
                                 text: "↓",
-                                textColor: Color.white,
+                                color: Color.white,
                                 fontSize: 40,
-                                fontStyle: FontStyle.Bold,
-                                align: TextAnchor.MiddleCenter,
+                                fontWeight: FontWeight.Bold,
+                                textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .Name("down-arrow-button")
                                     .Background(Color.green)
@@ -164,10 +164,10 @@ namespace UnityCompose.Samples.Behaviors
                     );
                     Text(
                         text: "X",
-                        textColor: Color.white,
+                        color: Color.white,
                         fontSize: 40,
-                        fontStyle: FontStyle.Bold,
-                        align: TextAnchor.MiddleCenter,
+                        fontWeight: FontWeight.Bold,
+                        textAlign: TextAlign.MiddleCenter,
                         modifier: Modifier
                             .Name("remove-button")
                             .Background(Color.red)

@@ -30,7 +30,7 @@ namespace UnityCompose.Samples.Behaviors
                     var count = Remember(() => MutableStateOf(0));
                     Text(
                         text: count.Value.ToString(),
-                        textColor: Color.white,
+                        color: Color.white,
                         fontSize: 40,
                         modifier: Modifier
                             .Name("test-label")
@@ -59,7 +59,7 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     Text(
                         text: $"Launched Effect is {onOrOff}",
-                        textColor: Color.white,
+                        color: Color.white,
                         fontSize: 40,
                         modifier: Modifier
                             .Name("test-button")

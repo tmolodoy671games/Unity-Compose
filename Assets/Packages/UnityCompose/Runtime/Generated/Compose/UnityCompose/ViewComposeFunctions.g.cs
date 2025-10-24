@@ -146,31 +146,31 @@ public static partial class ComposeFunctions
 
     [Composable]
     [Compiled]
-    private static void __Text(string text, Optional<TextStyle> textStyle = default, Optional<float> fontSize = default, Optional<FontStyle> fontStyle = default, Optional<Color> textColor = default, WhiteSpace whiteSpace = WhiteSpace.Normal, TextAnchor align = TextAnchor.UpperLeft, IModifier? modifier = null)
+    private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, FontStyle fontStyle = FontStyle.Normal, FontWeight fontWeight = FontWeight.Normal, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
     {
-        if (CurrentComposer.BeginComposeGroup((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, modifier)))
+        if (CurrentComposer.BeginComposeGroup((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier)))
             return;
         try
         {
-            ReusableComposeView<Text>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>((text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align), it =>
+            ReusableComposeView<Text>(modifier: modifier, initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign), it =>
             {
                 it.text = text;
-                it.style.whiteSpace = whiteSpace;
-                it.style.unityFontStyleAndWeight = fontStyle.GetOrDefault(textStyle.HasValue ? textStyle.Value.FontStyle : FontStyle.Normal);
-                it.style.unityTextAlign = align;
-                it.style.fontSize = fontSize.GetOrDefault(textStyle.HasValue ? textStyle.Value.FontSize : 14f);
-                it.style.color = textColor.GetOrDefault(textStyle.HasValue ? textStyle.Value.Color : Color.white);
+                it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
+                it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(fontStyle, fontWeight);
+                it.style.unityTextAlign = textAlign.ToTextAnchor();
+                it.style.fontSize = fontSize.GetOrDefault(style.HasValue ? style.Value.FontSize : 14f);
+                it.style.color = color.GetOrDefault(style.HasValue ? style.Value.Color : Color.white);
             }));
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Text(text, textStyle, fontSize, fontStyle, textColor, whiteSpace, align, modifier));
+            CurrentComposer.EndComposeGroup(() => __Text(text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier));
         }
     }
 
     [Composable]
     [Compiled]
-    private static void __Image(Background image, Color? tint = null, IModifier? modifier = null)
+    private static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null)
     {
         if (CurrentComposer.BeginComposeGroup((image, tint, modifier)))
             return;
@@ -178,8 +178,9 @@ public static partial class ComposeFunctions
         {
             ReusableComposeView<Image>(initializer: Remember<global::System.Action<global::UnityEngine.UIElements.Image>>((image, tint), it =>
             {
-                it.sprite = image.sprite;
-                it.image = image.renderTexture as Texture ?? image.texture;
+                it.sprite = image.Sprite;
+                it.vectorImage = image.VectorImage;
+                it.image = image.Texture;
                 it.tintColor = tint ?? Color.white;
             }), modifier: modifier);
         }

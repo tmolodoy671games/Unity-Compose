@@ -162,12 +162,13 @@ public static partial class ComposeFunctions
     [Composable]
     public static void Text(
         string text,
-        Optional<TextStyle> textStyle = default,
+        Optional<Color> color = default,
         Optional<float> fontSize = default,
-        Optional<FontStyle> fontStyle = default,
-        Optional<Color> textColor = default,
-        WhiteSpace whiteSpace = WhiteSpace.Normal,
-        TextAnchor align = TextAnchor.UpperLeft,
+        Optional<TextStyle> style = default,
+        FontStyle fontStyle = FontStyle.Normal,
+        FontWeight fontWeight = FontWeight.Normal,
+        bool softWrap = true,
+        TextAlign textAlign = TextAlign.UpperLeft,
         IModifier? modifier = null
     )
     {
@@ -176,19 +177,18 @@ public static partial class ComposeFunctions
             initializer: it =>
             {
                 it.text = text;
-                it.style.whiteSpace = whiteSpace;
-                it.style.unityFontStyleAndWeight = fontStyle
-                    .GetOrDefault(textStyle.HasValue ? textStyle.Value.FontStyle : FontStyle.Normal);
-                it.style.unityTextAlign = align;
-                it.style.fontSize = fontSize.GetOrDefault(textStyle.HasValue ? textStyle.Value.FontSize : 14f);
-                it.style.color = textColor.GetOrDefault(textStyle.HasValue ? textStyle.Value.Color : Color.white);
+                it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
+                it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(fontStyle, fontWeight);
+                it.style.unityTextAlign = textAlign.ToTextAnchor();
+                it.style.fontSize = fontSize.GetOrDefault(style.HasValue ? style.Value.FontSize : 14f);
+                it.style.color = color.GetOrDefault(style.HasValue ? style.Value.Color : Color.white);
             }
         );
     }
 
     [Composable]
     public static void Image(
-        Background image,
+        ComposeImage image,
         Color? tint = null,
         IModifier? modifier = null
     )
@@ -196,8 +196,9 @@ public static partial class ComposeFunctions
         ReusableComposeView<Image>(
             initializer: it =>
             {
-                it.sprite = image.sprite;
-                it.image = image.renderTexture as Texture ?? image.texture;
+                it.sprite = image.Sprite;
+                it.vectorImage = image.VectorImage;
+                it.image = image.Texture;
                 it.tintColor = tint ?? Color.white;
             },
             modifier: modifier

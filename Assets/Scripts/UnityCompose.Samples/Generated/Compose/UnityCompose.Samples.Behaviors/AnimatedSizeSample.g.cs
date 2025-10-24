@@ -21,9 +21,9 @@ namespace UnityCompose.Samples.Behaviors
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
                         AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).NewPadding(all: 16), duration: 5, content: Remember<global::System.Action>(text, () =>
                         {
-                            Text(text: text, textColor: Color.white, fontSize: 64, align: TextAnchor.MiddleCenter, modifier: Modifier.Name("animated-label-child"));
+                            Text(text: text, color: Color.white, fontSize: 64, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("animated-label-child"));
                         }));
-                        Text(text: "Switch", textColor: Color.white, fontSize: 64, modifier: Modifier.Name("switch-button").NewPadding(all: 32).Background(Color.blue).NewMargin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
+                        Text(text: "Switch", color: Color.white, fontSize: 64, modifier: Modifier.Name("switch-button").NewPadding(all: 32).Background(Color.blue).NewMargin(top: 16).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }

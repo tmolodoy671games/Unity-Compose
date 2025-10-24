@@ -40,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     Text(
                         text: "Switch",
-                        textColor: Color.white,
+                        color: Color.white,
                         fontSize: 32,
                         modifier: Modifier
                             .Background(Color.blue)

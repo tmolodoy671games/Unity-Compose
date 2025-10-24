@@ -45,9 +45,9 @@ namespace UnityCompose.Samples.Behaviors
                                 {
                                     Text(
                                         text: text,
-                                        textColor: Color.white,
+                                        color: Color.white,
                                         fontSize: 64,
-                                        align: TextAnchor.MiddleCenter,
+                                        textAlign: TextAlign.MiddleCenter,
                                         modifier: Modifier
                                             .Name("animated-label-child")
                                     );
@@ -56,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors
 
                             Text(
                                 text: "Switch",
-                                textColor: Color.white,
+                                color: Color.white,
                                 fontSize: 64,
                                 modifier: Modifier
                                     .Name("switch-button")

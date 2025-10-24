@@ -42,7 +42,7 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     Text(
                         text: $"DisposableEffect is {onOrOff}",
-                        textColor: Color.white,
+                        color: Color.white,
                         fontSize: 40,
                         modifier: Modifier
                             .Name("test-button")

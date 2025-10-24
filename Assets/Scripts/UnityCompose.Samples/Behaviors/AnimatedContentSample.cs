@@ -58,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                                 {
                                     Text(
                                         text: state.ToString(),
-                                        textColor: Color.white,
+                                        color: Color.white,
                                         fontSize: 64
                                     );
                                 }
@@ -66,7 +66,7 @@ namespace UnityCompose.Samples.Behaviors
 
                             Text(
                                 text: "Switch",
-                                textColor: Color.white,
+                                color: Color.white,
                                 fontSize: 64,
                                 modifier: Modifier
                                     .NewPadding(horizontal: 100, vertical: 32)

@@ -50,7 +50,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
                     CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsSwitched.Provides(isSwitched.Value)), content: SampleReader);
-                    Text(text: "Switch", textColor: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).NewPadding(all: 32).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)).NewMargin(top: 80));
+                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).NewPadding(all: 32).Border(radius: 16).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)).NewMargin(top: 80));
                 }));
             }
             finally
