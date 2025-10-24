@@ -62,28 +62,28 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
         {
             element.style.paddingTop = _top;
             if (_transition.HasValue)
-                element.AddTransition(_transition.Value, "margin-left");
+                element.AddTransition(_transition.Value, "padding-left");
         }
 
         if (_bottom >= 0)
         {
             element.style.paddingBottom = _bottom;
             if (_transition.HasValue)
-                element.AddTransition(_transition.Value, "margin-right");
+                element.AddTransition(_transition.Value, "padding-right");
         }
 
         if (_left >= 0)
         {
             element.style.paddingLeft = _left;
             if (_transition.HasValue)
-                element.AddTransition(_transition.Value, "margin-left");
+                element.AddTransition(_transition.Value, "padding-left");
         }
 
         if (_right >= 0)
         {
             element.style.paddingRight = _right;
             if (_transition.HasValue)
-                element.AddTransition(_transition.Value, "margin-right");
+                element.AddTransition(_transition.Value, "padding-right");
         }
     }
 
