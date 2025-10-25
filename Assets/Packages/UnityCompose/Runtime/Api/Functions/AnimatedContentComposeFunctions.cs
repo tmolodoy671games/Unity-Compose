@@ -1,6 +1,7 @@
 using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -33,7 +34,11 @@ public static partial class ComposeFunctions
         var isSwitched = Remember(() => MutableStateOf(false));
         LaunchedEffect(targetState!, () => isSwitched.Value = !isSwitched.Value);
 
-        var progress = AnimateFloatAsState(isSwitched.Value ? 1 : 0f, transitionDuration).Value;
+        var progress = AnimateFloatAsState(
+            targetValue: isSwitched.Value ? 1 : 0f,
+            duration: transitionDuration,
+            animationCurve: AnimationCurve.Linear(0, 0, 1, 1)
+        ).Value;
         var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 
         var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
@@ -52,7 +57,9 @@ public static partial class ComposeFunctions
         // Layout:
         var resolvedTransition = Remember(
             targetState!,
-            () => Equals(previousValue.Value, targetState) ? ContentTransform() : transitionSpec(previousValue.Value, targetState)
+            () => Equals(previousValue.Value, targetState)
+                ? ContentTransform()
+                : transitionSpec(previousValue.Value, targetState)
         );
 
         ReusableComposeView<AnimatedContent>(
