@@ -12,31 +12,6 @@ public static partial class ComposeFunctions
         AnimationCurve? animationCurve = null
     )
     {
-        return new SlideInHorizontallyEnterTransitionImpl(initialOffsetX, animationCurve);
-    }
-}
-
-internal class SlideInHorizontallyEnterTransitionImpl : IEnterTransition
-{
-    private readonly Func<float, float> _initialOffsetX;
-    private readonly AnimationCurve _curve;
-
-    public SlideInHorizontallyEnterTransitionImpl(Func<float, float> initialOffsetX, AnimationCurve? curve)
-    {
-        _initialOffsetX = initialOffsetX;
-        _curve = curve ?? ComposeDefaults.DefaultCurve;
-    }
-
-    public IModifier Get(float progress, LayoutInfo parent)
-    {
-        var resolvedProgress = _curve.Evaluate(progress);
-        return Modifier
-            .Position(
-                left: Mathf.Lerp(
-                    a: _initialOffsetX(parent.Width + parent.PaddingLeft),
-                    b: 0,
-                    t: resolvedProgress
-                )
-            );
+        return new SlideInEnterTransitionImpl(it => initialOffsetX(it.x), null, animationCurve);
     }
 }
