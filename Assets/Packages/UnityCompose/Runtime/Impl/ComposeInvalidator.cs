@@ -96,7 +96,7 @@ namespace UnityCompose
 
         public static void InstantInvalidate()
         {
-            if (!ApplicationUtils.IsPlaying) return;
+            // if (!ApplicationUtils.IsPlaying) return;
             if (Instance._instantInvalidatedGroups.Count == 0) return;
             var groupsToInvalidate = Instance._instantInvalidatedGroups.ToImmutableStableList();
             Instance._instantInvalidatedGroups.Clear();
