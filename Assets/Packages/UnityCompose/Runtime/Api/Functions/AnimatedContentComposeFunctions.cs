@@ -21,8 +21,8 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void AnimatedContent<T>(
-        T value,
-        Func<T, T, ContentTransform> transition,
+        T targetState,
+        Func<T, T, ContentTransform> transitionSpec,
         [Composable] Action<T> content,
         bool animateSize = false,
         float transitionDuration = ComposeDefaults.TransitionDuration,
@@ -31,17 +31,17 @@ public static partial class ComposeFunctions
     {
         // Progress:
         var isSwitched = Remember(() => MutableStateOf(false));
-        LaunchedEffect(value!, () => isSwitched.Value = !isSwitched.Value);
+        LaunchedEffect(targetState!, () => isSwitched.Value = !isSwitched.Value);
 
         var progress = AnimateFloatAsState(isSwitched.Value ? 1 : 0f, transitionDuration).Value;
         var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 
-        var previousValue = Remember(() => IMutableStableProperty.Create(value));
-        var targetValue = Remember(() => IMutableStableProperty.Create(value));
-        LaunchedEffect(value!, () =>
+        var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
+        var targetValue = Remember(() => IMutableStableProperty.Create(targetState));
+        LaunchedEffect(targetState!, () =>
         {
             previousValue.Value = targetValue.Value;
-            targetValue.Value = value;
+            targetValue.Value = targetState;
         });
 
         // Animating size:
@@ -51,8 +51,8 @@ public static partial class ComposeFunctions
 
         // Layout:
         var resolvedTransition = Remember(
-            value!,
-            () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value)
+            targetState!,
+            () => Equals(previousValue.Value, targetState) ? ContentTransform() : transitionSpec(previousValue.Value, targetState)
         );
 
         ReusableComposeView<AnimatedContent>(
@@ -67,7 +67,7 @@ public static partial class ComposeFunctions
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
 
-                var next = (Value: value, Style: nextModifier, Progress: resolvedProgress,
+                var next = (Value: targetState, Style: nextModifier, Progress: resolvedProgress,
                     ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering);
                 var previous = (Value: previousValue.Value, Style: previousModifier, Progress: 1 - resolvedProgress,
                     ContentState: ContentState.Exiting);

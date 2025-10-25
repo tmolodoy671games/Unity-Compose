@@ -9,35 +9,35 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __AnimatedContent<T>(T value, Func<T, T, ContentTransform> transition, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, IModifier? modifier = null)
+    private static void __AnimatedContent<T>(T targetState, Func<T, T, ContentTransform> transitionSpec, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, IModifier? modifier = null)
     {
-        if (CurrentComposer.BeginComposeGroup((value, transition, content, animateSize, transitionDuration, modifier)))
+        if (CurrentComposer.BeginComposeGroup((targetState, transitionSpec, content, animateSize, transitionDuration, modifier)))
             return;
         try
         {
             // Progress:
             var isSwitched = Remember(() => MutableStateOf(false));
-            LaunchedEffect(value!, Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value));
+            LaunchedEffect(targetState!, Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value));
             var progress = AnimateFloatAsState(isSwitched.Value ? 1 : 0f, transitionDuration).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
-            var previousValue = Remember(() => IMutableStableProperty.Create(value));
-            var targetValue = Remember(() => IMutableStableProperty.Create(value));
-            LaunchedEffect(value!, Remember<global::System.Action>((value, previousValue, targetValue), () =>
+            var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
+            var targetValue = Remember(() => IMutableStableProperty.Create(targetState));
+            LaunchedEffect(targetState!, Remember<global::System.Action>((targetState, previousValue, targetValue), () =>
             {
                 previousValue.Value = targetValue.Value;
-                targetValue.Value = value;
+                targetValue.Value = targetState;
             }));
             // Animating size:
             var(containerModifier, contentModifier) = animateSize ? AnimateSizeModifiers(transitionDuration) : (Modifier, Modifier);
             // Layout:
-            var resolvedTransition = Remember(value!, () => Equals(previousValue.Value, value) ? ContentTransform() : transition(previousValue.Value, value));
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((value, content, isSwitched, resolvedProgress, previousValue, contentModifier, resolvedTransition), () =>
+            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? ContentTransform() : transitionSpec(previousValue.Value, targetState));
+            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, resolvedProgress, previousValue, contentModifier, resolvedTransition), () =>
             {
                 var parent = LocalParentLayout.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedProgress, parent).Then(contentModifier);
                 var previousModifier = resolvedTransition.Exit.Get(resolvedProgress, parent).Float();
                 var isAnimationRunning = resolvedProgress is> 0 and < 1;
-                var next = (Value: value, Style: nextModifier, Progress: resolvedProgress, ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering);
+                var next = (Value: targetState, Style: nextModifier, Progress: resolvedProgress, ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering);
                 var previous = (Value: previousValue.Value, Style: previousModifier, Progress: 1 - resolvedProgress, ContentState: ContentState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
                 if (isSwitched.Value || isAnimationRunning)
@@ -59,7 +59,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __AnimatedContent<T>(value, transition, content, animateSize, transitionDuration, modifier));
+            CurrentComposer.EndComposeGroup(() => __AnimatedContent<T>(targetState, transitionSpec, content, animateSize, transitionDuration, modifier));
         }
     }
 }
