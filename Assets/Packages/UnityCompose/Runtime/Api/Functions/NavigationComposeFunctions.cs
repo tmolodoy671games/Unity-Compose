@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             duration: transitionDuration,
-            animationCurve: animationCurve
+            animationCurve: animationCurve ?? AnimationCurve.Linear(0, 0, 1, 1)
         ).Value;
         var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 
@@ -176,6 +176,7 @@ public static partial class ComposeFunctions
         if (isTransitionFinished)
             previousBackStack.Value = currentBackStack;
     }
+
     private static ContentTransform ResolveTransition(
         IStableList<ComposeScreen> enteringScreens,
         IStableList<ComposeScreen> exitingScreens

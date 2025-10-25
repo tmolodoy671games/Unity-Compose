@@ -24,6 +24,15 @@ public record ContentTransform(
     }
 }
 
+public static partial class EnterTransitionExtensions
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ContentTransform TogetherWith(this IEnterTransition enter, IExitTransition exit)
+    {
+        return new ContentTransform(enter, exit);
+    }
+}
+
 public static class ContentTransformExtensions
 {
     public static ContentTransform Remap(

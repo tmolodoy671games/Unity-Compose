@@ -38,13 +38,13 @@ namespace UnityCompose.Samples.Behaviors
                                 targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short",
                                 transitionSpec: (_, _) =>
                                     isSwitched.Value
-                                        ? ContentTransform(
-                                            enter: SlideInVertically(it => -it) + FadeIn(),
-                                            exit: SlideOutVertically(it => it) + FadeOut()
+                                        ? (SlideInVertically(it => -it) + FadeIn())
+                                        .TogetherWith(
+                                            SlideOutVertically(it => it) + FadeOut()
                                         )
-                                        : ContentTransform(
-                                            enter: SlideInVertically(it => it) + FadeIn(),
-                                            exit: SlideOutVertically(it => -it) + FadeOut()
+                                        : (SlideInVertically(it => it) + FadeIn())
+                                        .TogetherWith(
+                                            SlideOutVertically(it => -it) + FadeOut()
                                         ),
                                 animateSize: true,
                                 transitionDuration: Duration,

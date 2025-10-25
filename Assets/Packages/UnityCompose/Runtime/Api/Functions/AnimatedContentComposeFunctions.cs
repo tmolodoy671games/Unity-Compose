@@ -15,11 +15,6 @@ public static partial class ComposeFunctions
 
     public static ContentTransform InstantContentTransform => UnityCompose.ContentTransform.Instant;
 
-    public static ContentTransform ContentTransform(
-        IEnterTransition? enter = null,
-        IExitTransition? exit = null
-    ) => new(enter ?? EmptyEnterTransitionImpl.Instance, exit ?? EmptyExitTransitionImpl.Instance);
-
     [Composable]
     public static void AnimatedContent<T>(
         T targetState,
@@ -58,7 +53,7 @@ public static partial class ComposeFunctions
         var resolvedTransition = Remember(
             targetState!,
             () => Equals(previousValue.Value, targetState)
-                ? ContentTransform()
+                ? IEnterTransition.Empty.TogetherWith(Hide())
                 : transitionSpec(previousValue.Value, targetState)
         );
 

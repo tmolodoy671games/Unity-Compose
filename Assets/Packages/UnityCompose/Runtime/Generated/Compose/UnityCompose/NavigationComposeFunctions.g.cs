@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
                 if (!Equals(currentBackStack, previousBackStack.Value))
                     isSwitched.Value = !isSwitched.Value;
             }));
-            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, animationCurve: animationCurve).Value;
+            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, animationCurve: animationCurve ?? AnimationCurve.Linear(0, 0, 1, 1)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var appearingScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());

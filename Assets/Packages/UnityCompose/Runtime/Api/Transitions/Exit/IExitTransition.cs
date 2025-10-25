@@ -2,14 +2,11 @@
 
 namespace UnityCompose;
 
-public static partial class ComposeFunctions
-{
-    public static IExitTransition EmptyExit => EmptyExitTransitionImpl.Instance;
-}
-
 public interface IExitTransition
 {
     IModifier Get(float progress, LayoutInfo parent);
+
+    public static IExitTransition Empty => EmptyExitTransitionImpl.Instance;
 
     public static IExitTransition operator +(IExitTransition first, IExitTransition second)
     {
