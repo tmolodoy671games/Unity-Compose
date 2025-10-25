@@ -90,7 +90,7 @@ namespace UnityCompose
 
         public static void RequestInstantInvalidate(ComposeGroup group)
         {
-            if (!ApplicationUtils.IsPlaying) return;
+            // if (!ApplicationUtils.IsPlaying) return;
             Instance._instantInvalidatedGroups.Add(group);
         }
 
