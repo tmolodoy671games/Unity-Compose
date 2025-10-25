@@ -34,6 +34,6 @@ internal class RemapExitTransitionImpl : IExitTransition
 
     public IModifier Get(float progress, LayoutInfo parent)
     {
-        return _original.Get(progress.Remap(_startOffset, _speed, _endOffset), parent);
+        return _original.Get(progress.RemapProgress(_startOffset, _speed, _endOffset), parent);
     }
 }
