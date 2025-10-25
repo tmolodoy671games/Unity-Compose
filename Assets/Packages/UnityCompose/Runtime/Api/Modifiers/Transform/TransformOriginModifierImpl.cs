@@ -2,6 +2,7 @@
 
 using System.Runtime.CompilerServices;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,15 +11,19 @@ namespace UnityCompose;
 public static partial class ModifierExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier TransformOrigin(this IModifier modifier, float origin)
+    public static IModifier TransformOrigin(
+        this IModifier modifier,
+        float originX = -1,
+        float originY = -1,
+        float origin = -1
+    )
     {
-        return modifier + new TransformOriginModifierImpl(Vector2.one * origin);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier TransformOrigin(this IModifier modifier, float originX, float originY)
-    {
-        return modifier + new TransformOriginModifierImpl(new Vector2(originX, originY));
+        return modifier + new TransformOriginModifierImpl(
+            new Vector2(
+                ParamUtils.Resolve(originX, origin),
+                ParamUtils.Resolve(originY, origin)
+            )
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

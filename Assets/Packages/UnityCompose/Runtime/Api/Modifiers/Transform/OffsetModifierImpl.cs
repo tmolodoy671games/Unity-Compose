@@ -2,6 +2,7 @@
 
 using System.Runtime.CompilerServices;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,17 +11,21 @@ namespace UnityCompose;
 public static partial class ModifierExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Offset(this IModifier modifier, float x, float y)
+    public static IModifier Offset(
+        this IModifier modifier,
+        float x = -1,
+        float y = -1,
+        float offset = -1
+    )
     {
-        return modifier + new OffsetModifierImpl(new Vector2(x, y));
+        return modifier + new OffsetModifierImpl(
+            new Vector2(
+                ParamUtils.Resolve(x, offset),
+                ParamUtils.Resolve(y, offset)
+            )
+        );
     }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Offset(this IModifier modifier, float offset)
-    {
-        return modifier + new OffsetModifierImpl(new Vector2(offset, offset));
-    }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Offset(this IModifier modifier, Vector2 offset)
     {
