@@ -18,7 +18,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void AnimatedContent<T>(
         T targetState,
-        Func<T, T, ContentTransform> transitionSpec,
+        Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
         [Composable] Action<T> content,
         bool animateSize = false,
         float transitionDuration = ComposeDefaults.TransitionDuration,
@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
             targetState!,
             () => Equals(previousValue.Value, targetState)
                 ? IEnterTransition.Empty.TogetherWith(Hide())
-                : transitionSpec(previousValue.Value, targetState)
+                : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))
         );
 
         ReusableComposeView<AnimatedContent>(
@@ -122,4 +122,22 @@ public enum ContentState
     Entering,
     Idle,
     Exiting,
+}
+
+public interface IAnimatedContentTransitionScope<T>
+{
+    T InitialState { get; }
+    T TargetState { get; }
+}
+
+internal class AnimatedContentTransitionScopeImpl<T> : IAnimatedContentTransitionScope<T>
+{
+    public AnimatedContentTransitionScopeImpl(T initialState, T targetState)
+    {
+        InitialState = initialState;
+        TargetState = targetState;
+    }
+
+    public T InitialState { get; }
+    public T TargetState { get; }
 }

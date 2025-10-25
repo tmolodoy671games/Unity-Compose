@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
                             var isSwitched = Remember(() => MutableStateOf(false));
                             AnimatedContent(
                                 targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short",
-                                transitionSpec: (_, _) =>
+                                transitionSpec: _ =>
                                     isSwitched.Value
                                         ? (SlideInVertically(it => -it) + FadeIn())
                                         .TogetherWith(

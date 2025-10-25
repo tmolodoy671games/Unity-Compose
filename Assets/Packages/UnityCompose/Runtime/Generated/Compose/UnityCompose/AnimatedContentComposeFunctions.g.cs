@@ -10,7 +10,7 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __AnimatedContent<T>(T targetState, Func<T, T, ContentTransform> transitionSpec, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, IModifier? modifier = null)
+    private static void __AnimatedContent<T>(T targetState, Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec, [Composable] Action<T> content, bool animateSize = false, float transitionDuration = ComposeDefaults.TransitionDuration, IModifier? modifier = null)
     {
         if (CurrentComposer.BeginComposeGroup((targetState, transitionSpec, content, animateSize, transitionDuration, modifier)))
             return;
@@ -31,7 +31,7 @@ public static partial class ComposeFunctions
             // Animating size:
             var(containerModifier, contentModifier) = animateSize ? AnimateSizeModifiers(transitionDuration) : (Modifier, Modifier);
             // Layout:
-            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty.TogetherWith(Hide()) : transitionSpec(previousValue.Value, targetState));
+            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty.TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
             ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, resolvedProgress, previousValue, contentModifier, resolvedTransition), () =>
             {
                 var parent = LocalParentLayout.Current;
