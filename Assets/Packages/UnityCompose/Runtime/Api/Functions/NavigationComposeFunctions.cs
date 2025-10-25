@@ -121,12 +121,12 @@ public static partial class ComposeFunctions
                         {
                             var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
                                 () => Switch()
-                                    .Case(appearingScreens.Contains(screen), ScreenState.Appearing)
-                                    .Case(disappearingScreens.Contains(screen), ScreenState.Disappearing)
-                                    .Default(ScreenState.Idle)
+                                    .Case(appearingScreens.Contains(screen), ContentState.Entering)
+                                    .Case(disappearingScreens.Contains(screen), ContentState.Exiting)
+                                    .Default(ContentState.Idle)
                                     .Get()
                             );
-                            if (screenState == ScreenState.Disappearing && isTransitionFinished)
+                            if (screenState == ContentState.Exiting && isTransitionFinished)
                                 continue;
                             Key(
                                 key: screen,
@@ -136,12 +136,12 @@ public static partial class ComposeFunctions
                                     var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                                     var contentStyle = screenState switch
                                     {
-                                        ScreenState.Idle => Modifier
+                                        ContentState.Idle => Modifier
                                             .Float(!isCurrentScreen),
-                                        ScreenState.Appearing => resolvedTransition.Enter
+                                        ContentState.Entering => resolvedTransition.Enter
                                             .Get(resolvedProgress, parent)
                                             .Float(!isCurrentScreen),
-                                        ScreenState.Disappearing => resolvedTransition.Exit
+                                        ContentState.Exiting => resolvedTransition.Exit
                                             .Get(resolvedProgress, parent)
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
@@ -159,7 +159,7 @@ public static partial class ComposeFunctions
                                                     .Then(contentStyle)
                                             ),
                                             LocalTransitionProgress.Provides(
-                                                screenState != ScreenState.Disappearing
+                                                screenState != ContentState.Exiting
                                                     ? resolvedProgress
                                                     : 1 - resolvedProgress
                                             )
@@ -176,14 +176,6 @@ public static partial class ComposeFunctions
         if (isTransitionFinished)
             previousBackStack.Value = currentBackStack;
     }
-
-    private enum ScreenState
-    {
-        Idle,
-        Appearing,
-        Disappearing,
-    }
-
     private static ContentTransform ResolveTransition(
         IStableList<ComposeScreen> enteringScreens,
         IStableList<ComposeScreen> exitingScreens

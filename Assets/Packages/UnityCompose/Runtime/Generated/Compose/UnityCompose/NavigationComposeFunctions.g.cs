@@ -52,8 +52,8 @@ public static partial class ComposeFunctions
                         return;
                     foreach (var screen in allScreens)
                     {
-                        var screenState = Remember((screen, currentBackStack, previousBackStack.Value), () => Switch().Case(appearingScreens.Contains(screen), ScreenState.Appearing).Case(disappearingScreens.Contains(screen), ScreenState.Disappearing).Default(ScreenState.Idle).Get());
-                        if (screenState == ScreenState.Disappearing && isTransitionFinished)
+                        var screenState = Remember((screen, currentBackStack, previousBackStack.Value), () => Switch().Case(appearingScreens.Contains(screen), ContentState.Entering).Case(disappearingScreens.Contains(screen), ContentState.Exiting).Default(ContentState.Idle).Get());
+                        if (screenState == ContentState.Exiting && isTransitionFinished)
                             continue;
                         Key(key: screen, content: RememberComposable<global::System.Action>((currentBackStack, resolvedProgress, resolvedTransition, screen, screenState), () =>
                         {
@@ -61,11 +61,11 @@ public static partial class ComposeFunctions
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentStyle = screenState switch
                             {
-                                ScreenState.Idle => Modifier.Float(!isCurrentScreen),
-                                ScreenState.Appearing => resolvedTransition.Enter.Get(resolvedProgress, parent).Float(!isCurrentScreen),
-                                ScreenState.Disappearing => resolvedTransition.Exit.Get(resolvedProgress, parent).Float(),
+                                ContentState.Idle => Modifier.Float(!isCurrentScreen),
+                                ContentState.Entering => resolvedTransition.Enter.Get(resolvedProgress, parent).Float(!isCurrentScreen),
+                                ContentState.Exiting => resolvedTransition.Exit.Get(resolvedProgress, parent).Float(),
                                 _ => throw new ArgumentOutOfRangeException()};
-                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ScreenState.Disappearing ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
+                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ContentState.Exiting ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
                         }));
                     }
                 }));
