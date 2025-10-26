@@ -8,24 +8,26 @@ public static partial class ComposeFunctions
 {
     public static IExitTransition FadeOut(
         float targetAlpha = 0f,
-        IEasing? easing = null
-    ) => new FadeOutExitTransitionImpl(targetAlpha, easing);
+        AnimationSpec animationSpec = default
+    ) => new FadeOutExitTransitionImpl(targetAlpha, animationSpec);
 }
 
 internal class FadeOutExitTransitionImpl : IExitTransition
 {
     private readonly float _targetAlpha;
-    private readonly IEasing _easing;
+    private readonly AnimationSpec _animationSpec;
 
-    public FadeOutExitTransitionImpl(float targetAlpha, IEasing? easing)
+    public FadeOutExitTransitionImpl(float targetAlpha, AnimationSpec animationSpec)
     {
         _targetAlpha = targetAlpha;
-        _easing = easing ?? EaseInOut;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => _animationSpec.TotalDuration();
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        var resolvedProgress = _easing.Transform(progress);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return Modifier
             .Alpha(Mathf.Lerp(1, _targetAlpha, resolvedProgress));
     }

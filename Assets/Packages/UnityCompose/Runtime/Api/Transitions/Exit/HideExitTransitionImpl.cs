@@ -15,8 +15,10 @@ internal class HideExitTransitionImpl : IExitTransition
     public static readonly HideExitTransitionImpl Instance = new();
     
     private HideExitTransitionImpl() {}
+
+    public float TotalDuration => 0f;
     
-    public IModifier Get(float progress, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
         return Modifier
             .Alpha(0f);

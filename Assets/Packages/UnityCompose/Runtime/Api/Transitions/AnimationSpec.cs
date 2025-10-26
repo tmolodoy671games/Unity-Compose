@@ -11,17 +11,44 @@ public partial class ComposeFunctions
     )
     {
         return new AnimationSpec(
-            Duration: duration,
-            Delay: delay,
-            Easing: easing ?? EaseInOut,
-            HasValue: true
+            duration: duration,
+            delay: delay,
+            easing: easing ?? EaseInOut
         );
     }
 }
 
-public readonly record struct AnimationSpec(
-    float Duration,
-    float Delay,
-    IEasing Easing,
-    bool HasValue
-);
+public readonly record struct AnimationSpec
+{
+    private readonly float _duration;
+    private readonly float _delay;
+    private readonly IEasing _easing;
+    public readonly bool HasValue;
+
+    internal AnimationSpec(float duration, float delay, IEasing easing) : this()
+    {
+        _duration = duration;
+        _delay = delay;
+        _easing = easing;
+        HasValue = true;
+    }
+
+    public float GetProgress(float timeElapsed)
+    {
+        if (timeElapsed < _delay)
+            return 0f;
+
+        if (timeElapsed >= _delay + _duration)
+            return 1f;
+
+        return _easing.Transform((timeElapsed - _delay) / _duration);
+    }
+
+    public float TotalDuration() => _delay + _duration;
+
+    public static AnimationSpec Default = Tween(
+        duration: ComposeDefaults.TransitionDuration,
+        delay: 0f,
+        easing: EaseInOut
+    );
+}

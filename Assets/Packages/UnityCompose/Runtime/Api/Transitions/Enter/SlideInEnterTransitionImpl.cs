@@ -9,10 +9,26 @@ public static partial class ComposeFunctions
 {
     public static IEnterTransition SlideIn(
         Func<Vector2, Vector2> initialOffset,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
-        return new SlideInEnterTransitionImpl(it => initialOffset(it).x, it => initialOffset(it).y, easing);
+        return new SlideInEnterTransitionImpl(it => initialOffset(it).x, it => initialOffset(it).y, animationSpec);
+    }
+
+    public static IEnterTransition SlideInHorizontally(
+        Func<float, float> initialOffsetX,
+        AnimationSpec animationSpec = default
+    )
+    {
+        return new SlideInEnterTransitionImpl(it => initialOffsetX(it.x), null, animationSpec);
+    }
+    
+    public static IEnterTransition SlideInVertically(
+        Func<float, float> initialOffsetY,
+        AnimationSpec animationSpec = default
+    )
+    {
+        return new SlideInEnterTransitionImpl(null, it => initialOffsetY(it.y), animationSpec);
     }
 }
 
@@ -20,22 +36,24 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 {
     private readonly Func<Vector2, float>? _initialOffsetX;
     private readonly Func<Vector2, float>? _initialOffsetY;
-    private readonly IEasing _easing;
+    private readonly AnimationSpec _animationSpec;
 
     public SlideInEnterTransitionImpl(
         Func<Vector2, float>? initialOffsetX,
         Func<Vector2, float>? initialOffsetY,
-        IEasing? easing
+        AnimationSpec animationSpec
     )
     {
         _initialOffsetX = initialOffsetX;
         _initialOffsetY = initialOffsetY;
-        _easing = easing ?? EaseInOut;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => _animationSpec.TotalDuration();
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        var resolvedProgress = _easing.Transform(progress);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         var result = Modifier;
         var parentSize = new Vector2(
             parent.Width + parent.PaddingLeft,

@@ -1,10 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using UnityEngine;
+
 namespace UnityCompose;
 
 public interface IEnterTransition
 {
-    IModifier Get(float progress, LayoutInfo parent);
+    float TotalDuration { get; }
+    
+    IModifier Get(float timeElapsed, LayoutInfo parent);
 
     public static IEnterTransition Empty => EmptyEnterTransitionImpl.Instance;
 
@@ -22,7 +26,9 @@ internal class EmptyEnterTransitionImpl : IEnterTransition
     {
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => 0f;
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
         return Modifier;
     }
@@ -39,9 +45,11 @@ internal class CompositeEnterTransitionImpl : IEnterTransition
         _right = right;
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => Mathf.Max(_left.TotalDuration, _right.TotalDuration);
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        return _left.Get(progress, parent)
-            .Then(_right.Get(progress, parent));
+        return _left.Get(timeElapsed, parent)
+            .Then(_right.Get(timeElapsed, parent));
     }
 }

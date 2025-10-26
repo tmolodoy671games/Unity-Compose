@@ -8,24 +8,26 @@ public static partial class ComposeFunctions
 {
     public static IEnterTransition FadeIn(
         float initialAlpha = 0f,
-        IEasing? easing = null
-    ) => new FadeInEnterTransitionImpl(initialAlpha, easing);
+        AnimationSpec animationSpec = default
+    ) => new FadeInEnterTransitionImpl(initialAlpha, animationSpec);
 }
 
 internal class FadeInEnterTransitionImpl : IEnterTransition
 {
     private readonly float _initialAlpha;
-    private readonly IEasing _easing;
+    private readonly AnimationSpec _animationSpec;
 
-    public FadeInEnterTransitionImpl(float initialAlpha, IEasing? easing)
+    public FadeInEnterTransitionImpl(float initialAlpha, AnimationSpec animationSpec)
     {
         _initialAlpha = initialAlpha;
-        _easing = easing ?? EaseInOut;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => _animationSpec.TotalDuration();
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        var resolvedProgress = _easing.Transform(progress);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return Modifier
             .Alpha(Mathf.Lerp(_initialAlpha, 1, resolvedProgress));
     }

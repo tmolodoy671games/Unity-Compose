@@ -32,19 +32,3 @@ public static partial class EnterTransitionExtensions
         return new ContentTransform(enter, exit);
     }
 }
-
-public static class ContentTransformExtensions
-{
-    public static ContentTransform Remap(
-        this ContentTransform contentTransform,
-        float startOffset = 0f,
-        float speed = 1f,
-        float endOffset = 0f
-    )
-    {
-        return new ContentTransform(
-            Enter: contentTransform.Enter.Remap(startOffset, speed, endOffset),
-            Exit: contentTransform.Exit.Remap(startOffset, speed, endOffset)
-        );
-    }
-}

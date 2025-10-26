@@ -9,46 +9,48 @@ public static partial class ComposeFunctions
 {
     public static IExitTransition ShrinkOut(
         Func<Vector2>? targetScale = null,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
-        return new ShrinkOutExitTransitionImpl(targetScale ?? (() => Vector2.zero), easing);
+        return new ShrinkOutExitTransitionImpl(targetScale ?? (() => Vector2.zero), animationSpec);
     }
 
     public static IExitTransition ShrinkOutHorizontally(
         Func<float>? targetScaleX = null,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         var scaleDelegate = targetScaleX ?? (() => 0f);
-        return new ShrinkOutExitTransitionImpl(() => new Vector2(scaleDelegate(), 1f), easing);
+        return new ShrinkOutExitTransitionImpl(() => new Vector2(scaleDelegate(), 1f), animationSpec);
     }
 
 
     public static IExitTransition ShrinkOutVertically(
         Func<float>? targetScaleY = null,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         var scaleDelegate = targetScaleY ?? (() => 0f);
-        return new ShrinkOutExitTransitionImpl(() => new Vector2(1f, scaleDelegate()), easing);
+        return new ShrinkOutExitTransitionImpl(() => new Vector2(1f, scaleDelegate()), animationSpec);
     }
 }
 
 internal class ShrinkOutExitTransitionImpl : IExitTransition
 {
     private readonly Func<Vector2> _targetScale;
-    private readonly IEasing _easing;
+    private readonly AnimationSpec _animationSpec;
 
-    public ShrinkOutExitTransitionImpl(Func<Vector2> targetScale, IEasing? easing)
+    public ShrinkOutExitTransitionImpl(Func<Vector2> targetScale, AnimationSpec animationSpec)
     {
         _targetScale = targetScale;
-        _easing = easing ?? EaseInOut;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
-    public IModifier Get(float progress, LayoutInfo parent)
+    public float TotalDuration => _animationSpec.TotalDuration();
+
+    public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        var resolvedProgress = _easing.Transform(progress);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return Modifier
             .Scale(
                 Vector2.Lerp(Vector2.one, _targetScale(), resolvedProgress)
