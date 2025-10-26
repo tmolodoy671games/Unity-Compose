@@ -19,7 +19,7 @@ public static partial class ComposeFunctions
             // Progress:
             var isSwitched = Remember(() => MutableStateOf(false));
             LaunchedEffect(targetState!, Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value));
-            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, animationCurve: AnimationCurve.Linear(0, 0, 1, 1)).Value;
+            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, easing: Linear).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
             var targetValue = Remember(() => IMutableStableProperty.Create(targetState));

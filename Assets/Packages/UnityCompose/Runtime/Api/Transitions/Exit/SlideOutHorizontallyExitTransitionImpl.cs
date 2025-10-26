@@ -9,27 +9,27 @@ public static partial class ComposeFunctions
 {
     public static IExitTransition SlideOutHorizontally(
         Func<float, float> targetOffsetX,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
-        return new SlideOutHorizontallyExitTransitionImpl(targetOffsetX, animationCurve);
+        return new SlideOutHorizontallyExitTransitionImpl(targetOffsetX, easing);
     }
 }
 
 internal class SlideOutHorizontallyExitTransitionImpl : IExitTransition
 {
     private readonly Func<float, float> _targetOffsetX;
-    private readonly AnimationCurve _curve;
+    private readonly IEasing _easing;
 
-    public SlideOutHorizontallyExitTransitionImpl(Func<float, float> targetOffsetX, AnimationCurve? curve)
+    public SlideOutHorizontallyExitTransitionImpl(Func<float, float> targetOffsetX, IEasing? easing)
     {
         _targetOffsetX = targetOffsetX;
-        _curve = curve ?? ComposeDefaults.DefaultCurve;
+        _easing = easing ?? EaseInOut;
     }
 
     public IModifier Get(float progress, LayoutInfo parent)
     {
-        var resolvedProgress = _curve.Evaluate(progress);
+        var resolvedProgress = _easing.Transform(progress);
         return Modifier
             .Position(
                 left: Mathf.Lerp(

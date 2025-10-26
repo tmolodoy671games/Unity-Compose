@@ -18,14 +18,14 @@ public static partial class ComposeFunctions
     public static IState<float> AnimateFloatAsState(
         float targetValue,
         float duration = ComposeDefaults.TransitionDuration,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
             interpolator: FloatInterpolator,
             duration: duration,
-            animationCurve: animationCurve
+            easing: easing
         );
     }
     
@@ -34,7 +34,7 @@ public static partial class ComposeFunctions
         object key,
         Func<float> targetValueFactory,
         float duration = ComposeDefaults.TransitionDuration,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
         return AnimateValueAsState(
@@ -42,7 +42,7 @@ public static partial class ComposeFunctions
             targetValueFactory: targetValueFactory,
             interpolator: FloatInterpolator,
             duration: duration,
-            animationCurve: animationCurve
+            easing: easing
         );
     }
 
@@ -50,14 +50,14 @@ public static partial class ComposeFunctions
     public static IState<Vector2> AnimateVector2AsState(
         Vector2 targetValue,
         float duration = ComposeDefaults.TransitionDuration,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
             interpolator: Vector2Interpolator,
             duration: duration,
-            animationCurve: animationCurve
+            easing: easing
         );
     }
     
@@ -66,7 +66,7 @@ public static partial class ComposeFunctions
         object key,
         Func<Vector2> targetValueFactory,
         float duration = ComposeDefaults.TransitionDuration,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
         return AnimateValueAsState(
@@ -74,7 +74,7 @@ public static partial class ComposeFunctions
             targetValueFactory: targetValueFactory,
             interpolator: Vector2Interpolator,
             duration: duration,
-            animationCurve: animationCurve
+            easing: easing
         );
     }
 
@@ -82,7 +82,7 @@ public static partial class ComposeFunctions
     public static IState<T> AnimateValueAsState<T>(
         T targetValue,
         Func<T, T, float, T> interpolator,
-        AnimationCurve? animationCurve = null,
+        IEasing? easing = null,
         float duration = ComposeDefaults.TransitionDuration
     )
     {
@@ -98,19 +98,14 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
             var startValue = property.Value;
-            var curve = animationCurve ?? AnimationCurve.EaseInOut(
-                timeStart: 0,
-                valueStart: 0,
-                valueEnd: 1,
-                timeEnd: 1
-            );
+            var curve = easing ?? EaseInOut;
             if (Equals(startValue, targetValue)) yield break;
             var elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 var t = Mathf.Clamp01(elapsed / duration);
-                property.Value = interpolator(startValue, newValue, curve.Evaluate(t));
+                property.Value = interpolator(startValue, newValue, curve.Transform(t));
                 yield return null;
             }
 
@@ -123,7 +118,7 @@ public static partial class ComposeFunctions
         object key,
         Func<T> targetValueFactory,
         Func<T, T, float, T> interpolator,
-        AnimationCurve? animationCurve = null,
+        IEasing? easing = null,
         float duration = ComposeDefaults.TransitionDuration
     )
     {
@@ -140,14 +135,14 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
             var startValue = property.Value;
-            var curve = animationCurve ?? ComposeDefaults.DefaultCurve;
+            var curve = easing ?? EaseInOut;
             if (Equals(startValue, newValueFactory())) yield break;
             var elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 var t = Mathf.Clamp01(elapsed / duration);
-                property.Value = interpolator(startValue, newValueFactory(), curve.Evaluate(t));
+                property.Value = interpolator(startValue, newValueFactory(), curve.Transform(t));
                 yield return null;
             }
 

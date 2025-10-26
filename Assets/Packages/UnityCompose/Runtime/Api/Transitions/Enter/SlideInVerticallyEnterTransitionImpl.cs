@@ -9,9 +9,9 @@ public static partial class ComposeFunctions
 {
     public static IEnterTransition SlideInVertically(
         Func<float, float> initialOffsetY,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
-        return new SlideInEnterTransitionImpl(null, it => initialOffsetY(it.y), animationCurve);
+        return new SlideInEnterTransitionImpl(null, it => initialOffsetY(it.y), easing);
     }
 }

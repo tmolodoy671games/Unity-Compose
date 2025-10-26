@@ -40,7 +40,7 @@ public static partial class ComposeFunctions
         IComposeCoordinator coordinator,
         Func<ContentTransform>? transition = null,
         float transitionDuration = ComposeDefaults.TransitionDuration,
-        AnimationCurve? animationCurve = null,
+        IEasing? easing = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
         Action<float>? onTransitionProgressChanged = null,
         IModifier? modifier = null
@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             duration: transitionDuration,
-            animationCurve: animationCurve ?? AnimationCurve.Linear(0, 0, 1, 1)
+            easing: easing ?? Linear
         ).Value;
         var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 

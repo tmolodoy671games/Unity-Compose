@@ -13,9 +13,9 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, AnimationCurve? animationCurve = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, IModifier? modifier = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, float transitionDuration = ComposeDefaults.TransitionDuration, IEasing? easing = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, IModifier? modifier = null)
     {
-        if (CurrentComposer.BeginComposeGroup((coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, modifier)))
+        if (CurrentComposer.BeginComposeGroup((coordinator, transition, transitionDuration, easing, initialScreens, onTransitionProgressChanged, modifier)))
             return;
         try
         {
@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
                 if (!Equals(currentBackStack, previousBackStack.Value))
                     isSwitched.Value = !isSwitched.Value;
             }));
-            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, animationCurve: animationCurve ?? AnimationCurve.Linear(0, 0, 1, 1)).Value;
+            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, duration: transitionDuration, easing: easing ?? Linear).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var appearingScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());
@@ -75,7 +75,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __Navigation(coordinator, transition, transitionDuration, animationCurve, initialScreens, onTransitionProgressChanged, modifier));
+            CurrentComposer.EndComposeGroup(() => __Navigation(coordinator, transition, transitionDuration, easing, initialScreens, onTransitionProgressChanged, modifier));
         }
     }
 }

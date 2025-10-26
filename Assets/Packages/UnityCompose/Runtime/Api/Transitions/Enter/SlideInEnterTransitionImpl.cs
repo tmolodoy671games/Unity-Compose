@@ -9,10 +9,10 @@ public static partial class ComposeFunctions
 {
     public static IEnterTransition SlideIn(
         Func<Vector2, Vector2> initialOffset,
-        AnimationCurve? animationCurve = null
+        IEasing? easing = null
     )
     {
-        return new SlideInEnterTransitionImpl(it => initialOffset(it).x, it => initialOffset(it).y, animationCurve);
+        return new SlideInEnterTransitionImpl(it => initialOffset(it).x, it => initialOffset(it).y, easing);
     }
 }
 
@@ -20,22 +20,22 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 {
     private readonly Func<Vector2, float>? _initialOffsetX;
     private readonly Func<Vector2, float>? _initialOffsetY;
-    private readonly AnimationCurve _curve;
+    private readonly IEasing _easing;
 
     public SlideInEnterTransitionImpl(
         Func<Vector2, float>? initialOffsetX,
         Func<Vector2, float>? initialOffsetY,
-        AnimationCurve? curve
+        IEasing? easing
     )
     {
         _initialOffsetX = initialOffsetX;
         _initialOffsetY = initialOffsetY;
-        _curve = curve ?? ComposeDefaults.DefaultCurve;
+        _easing = easing ?? EaseInOut;
     }
 
     public IModifier Get(float progress, LayoutInfo parent)
     {
-        var resolvedProgress = _curve.Evaluate(progress);
+        var resolvedProgress = _easing.Transform(progress);
         var result = Modifier;
         var parentSize = new Vector2(
             parent.Width + parent.PaddingLeft,

@@ -32,7 +32,7 @@ public static partial class ComposeFunctions
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             duration: transitionDuration,
-            animationCurve: AnimationCurve.Linear(0, 0, 1, 1)
+            easing: Linear
         ).Value;
         var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 
