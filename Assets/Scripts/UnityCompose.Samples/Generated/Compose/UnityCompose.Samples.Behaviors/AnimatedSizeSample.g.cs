@@ -19,7 +19,7 @@ namespace UnityCompose.Samples.Behaviors
                     {
                         var isSwitched = Remember(() => MutableStateOf(false));
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
-                        AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).Padding(all: 16), duration: 5, content: Remember<global::System.Action>(text, () =>
+                        AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).Padding(all: 16), animationSpec: Tween(duration: 5), content: Remember<global::System.Action>(text, () =>
                         {
                             Text(text: text, color: Color.white, fontSize: 64, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("animated-label-child"));
                         }));

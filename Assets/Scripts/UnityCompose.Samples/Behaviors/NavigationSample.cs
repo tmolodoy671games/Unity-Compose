@@ -38,7 +38,6 @@ namespace UnityCompose.Samples.Behaviors
                                 coordinator: Remember(() => new SampleCoordinatorImpl()),
                                 transition: () => (FadeIn() + SlideInHorizontally(it => -it))
                                     .TogetherWith(FadeOut() + SlideOutHorizontally(it => it)),
-                                transitionDuration: 5,
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 modifier: Modifier

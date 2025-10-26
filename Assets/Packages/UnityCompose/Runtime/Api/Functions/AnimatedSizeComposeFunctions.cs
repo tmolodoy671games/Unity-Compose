@@ -15,10 +15,11 @@ public static partial class ComposeFunctions
     public static void AnimatedSize(
         Action content,
         IModifier? modifier = null,
-        float duration = ComposeDefaults.TransitionDuration
+        AnimationSpec animationSpec = default
     )
     {
-        var (containerStyle, contentStyle) = AnimateSizeModifiers(duration);
+        var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        var (containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec);
 
         ReusableComposeView<AnimatedSize>(
             modifier: modifier.OrEmpty()
@@ -42,10 +43,11 @@ public static partial class ComposeFunctions
 
     [Composable]
     private static (IModifier ContainerModifier, IModifier ContentModifier) AnimateSizeModifiers(
-        float duration,
+        AnimationSpec animationSpec,
         object? key = null
     )
     {
+        var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentStyle = Modifier;
@@ -77,11 +79,11 @@ public static partial class ComposeFunctions
                     ? AnimateVector2AsState(
                         key: key,
                         targetValueFactory: () => contentSize.Value + containerPaddings.Value,
-                        duration: duration
+                        animationSpec: resolvedAnimationSpec
                     ).Value
                     : AnimateVector2AsState(
                         targetValue: contentSize.Value + containerPaddings.Value,
-                        duration: duration
+                        animationSpec: resolvedAnimationSpec
                     ).Value;
                 containerStyle = containerStyle
                     .Size(animatedSize);

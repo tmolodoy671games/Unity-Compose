@@ -50,8 +50,9 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("animated-content-sample"), content: RememberComposable<global::System.Action>(Duration, () =>
                     {
+                        var animationSpec = Tween(easing: EaseInOutEasing, duration: Duration);
                         var isSwitched = Remember(() => MutableStateOf(false));
-                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: Remember<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<string>, global::UnityCompose.ContentTransform>>(isSwitched, _ => isSwitched.Value ? (SlideInVertically(it => -it) + FadeIn()).TogetherWith(SlideOutVertically(it => it) + FadeOut()) : (SlideInVertically(it => it) + FadeIn()).TogetherWith(SlideOutVertically(it => -it) + FadeOut())), animateSize: true, transitionDuration: Duration, modifier: Modifier.Name("animated-content").Background(isSwitched.Value ? Color.green : Color.red, Transition(Duration)), content: RememberComposable<global::System.Action<string>>(null, state =>
+                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: Remember<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<string>, global::UnityCompose.ContentTransform>>((animationSpec, isSwitched), _ => isSwitched.Value ? SlideInVertically(it => -it, animationSpec: animationSpec).TogetherWith(SlideOutVertically(it => it, animationSpec: animationSpec)) : SlideInVertically(it => it, animationSpec: animationSpec).TogetherWith(SlideOutVertically(it => -it, animationSpec: animationSpec))), sizeAnimationSpec: animationSpec, modifier: Modifier.Name("animated-content").Background(isSwitched.Value ? Color.green : Color.red, Transition(Duration)), content: RememberComposable<global::System.Action<string>>(null, state =>
                         {
                             Text(text: state.ToString(), color: Color.white, fontSize: 64);
                         }));

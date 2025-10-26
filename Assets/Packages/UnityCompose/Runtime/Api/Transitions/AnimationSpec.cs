@@ -13,7 +13,7 @@ public partial class ComposeFunctions
         return new AnimationSpec(
             duration: duration,
             delay: delay,
-            easing: easing ?? EaseInOut
+            easing: easing ?? EaseInOutEasing
         );
     }
 }
@@ -46,9 +46,22 @@ public readonly record struct AnimationSpec
 
     public float TotalDuration() => _delay + _duration;
 
+    public AnimationSpec With(
+        float duration = -1,
+        float delay = -1,
+        IEasing? easing = null
+    )
+    {
+        return new AnimationSpec(
+            duration: duration >= 0 ? duration : _duration,
+            delay: delay  >= 0 ? delay : _delay,
+            easing: easing ?? _easing
+        );
+    }
+
     public static AnimationSpec Default = Tween(
-        duration: ComposeDefaults.TransitionDuration,
         delay: 0f,
-        easing: EaseInOut
+        duration: ComposeDefaults.TransitionDuration,
+        easing: EaseInOutEasing
     );
 }

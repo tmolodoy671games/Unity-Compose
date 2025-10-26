@@ -20,21 +20,13 @@ public static partial class ComposeFunctions
         T targetState,
         Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
         [Composable] Action<T> content,
-        bool animateSize = false,
-        float transitionDuration = ComposeDefaults.TransitionDuration,
+        AnimationSpec sizeAnimationSpec = default,
         IModifier? modifier = null
     )
     {
         // Progress:
         var isSwitched = Remember(() => MutableStateOf(false));
         LaunchedEffect(targetState!, () => isSwitched.Value = !isSwitched.Value);
-
-        var progress = AnimateFloatAsState(
-            targetValue: isSwitched.Value ? 1 : 0f,
-            duration: transitionDuration,
-            easing: Linear
-        ).Value;
-        var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
 
         var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
         var targetValue = Remember(() => IMutableStableProperty.Create(targetState));
@@ -43,29 +35,40 @@ public static partial class ComposeFunctions
             previousValue.Value = targetValue.Value;
             targetValue.Value = targetState;
         });
-
-        // Animating size:
-        var (containerModifier, contentModifier) = animateSize
-            ? AnimateSizeModifiers(transitionDuration)
-            : (Modifier, Modifier);
-
-        // Layout:
+        
         var resolvedTransition = Remember(
             targetState!,
             () => Equals(previousValue.Value, targetState)
                 ? IEnterTransition.Empty.TogetherWith(Hide())
                 : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))
         );
+        var transitionDuration = resolvedTransition.TotalDuration;
 
+        var progress = AnimateFloatAsState(
+            targetValue: isSwitched.Value ? 1 : 0f,
+            animationSpec: Tween(
+                easing: LinearEasing,
+                duration: transitionDuration
+            )
+        ).Value;
+        var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
+        var resolvedTimeElapsed = resolvedProgress * transitionDuration;
+
+        // Animating size:
+        var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
+            ? AnimateSizeModifiers(sizeAnimationSpec)
+            : (Modifier, Modifier);
+
+        // Layout:
         ReusableComposeView<AnimatedContent>(
             modifier: modifier.OrEmpty()
                 .Then(containerModifier),
             content: () =>
             {
                 var parent = LocalParentLayout.Current;
-                var nextModifier = resolvedTransition.Enter.Get(resolvedProgress, parent)
+                var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent)
                     .Then(contentModifier);
-                var previousModifier = resolvedTransition.Exit.Get(resolvedProgress, parent)
+                var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent)
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
 

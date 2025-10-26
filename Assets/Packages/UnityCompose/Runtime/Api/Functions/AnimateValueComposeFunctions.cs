@@ -17,15 +17,13 @@ public static partial class ComposeFunctions
     [Composable, Compiled]
     public static IState<float> AnimateFloatAsState(
         float targetValue,
-        float duration = ComposeDefaults.TransitionDuration,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
             interpolator: FloatInterpolator,
-            duration: duration,
-            easing: easing
+            animationSpec: animationSpec
         );
     }
     
@@ -33,31 +31,27 @@ public static partial class ComposeFunctions
     public static IState<float> AnimateFloatAsState(
         object key,
         Func<float> targetValueFactory,
-        float duration = ComposeDefaults.TransitionDuration,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         return AnimateValueAsState(
             key: key,
             targetValueFactory: targetValueFactory,
             interpolator: FloatInterpolator,
-            duration: duration,
-            easing: easing
+            animationSpec: animationSpec
         );
     }
 
     [Composable, Compiled]
     public static IState<Vector2> AnimateVector2AsState(
         Vector2 targetValue,
-        float duration = ComposeDefaults.TransitionDuration,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
             interpolator: Vector2Interpolator,
-            duration: duration,
-            easing: easing
+            animationSpec: animationSpec
         );
     }
     
@@ -65,16 +59,14 @@ public static partial class ComposeFunctions
     public static IState<Vector2> AnimateVector2AsState(
         object key,
         Func<Vector2> targetValueFactory,
-        float duration = ComposeDefaults.TransitionDuration,
-        IEasing? easing = null
+        AnimationSpec animationSpec = default
     )
     {
         return AnimateValueAsState(
             key: key,
             targetValueFactory: targetValueFactory,
             interpolator: Vector2Interpolator,
-            duration: duration,
-            easing: easing
+            animationSpec: animationSpec
         );
     }
 
@@ -82,12 +74,12 @@ public static partial class ComposeFunctions
     public static IState<T> AnimateValueAsState<T>(
         T targetValue,
         Func<T, T, float, T> interpolator,
-        IEasing? easing = null,
-        float duration = ComposeDefaults.TransitionDuration
+        AnimationSpec animationSpec = default
     )
     {
         var property = Remember(() => MutableStateOf(targetValue));
         if (Equals(property.Value, targetValue)) return property;
+        animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
 
         LaunchedEffect(
             key: targetValue!,
@@ -98,14 +90,12 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
             var startValue = property.Value;
-            var curve = easing ?? EaseInOut;
             if (Equals(startValue, targetValue)) yield break;
             var elapsed = 0f;
-            while (elapsed < duration)
+            while (elapsed < animationSpec.TotalDuration())
             {
                 elapsed += Time.deltaTime;
-                var t = Mathf.Clamp01(elapsed / duration);
-                property.Value = interpolator(startValue, newValue, curve.Transform(t));
+                property.Value = interpolator(startValue, newValue, animationSpec.GetProgress(elapsed));
                 yield return null;
             }
 
@@ -118,13 +108,13 @@ public static partial class ComposeFunctions
         object key,
         Func<T> targetValueFactory,
         Func<T, T, float, T> interpolator,
-        IEasing? easing = null,
-        float duration = ComposeDefaults.TransitionDuration
+        AnimationSpec animationSpec = default
     )
     {
         var targetValue = targetValueFactory();
         var property = Remember(() => MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
 
         LaunchedEffect(
             key: key,
@@ -135,14 +125,12 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
             var startValue = property.Value;
-            var curve = easing ?? EaseInOut;
             if (Equals(startValue, newValueFactory())) yield break;
             var elapsed = 0f;
-            while (elapsed < duration)
+            while (elapsed < animationSpec.TotalDuration())
             {
                 elapsed += Time.deltaTime;
-                var t = Mathf.Clamp01(elapsed / duration);
-                property.Value = interpolator(startValue, newValueFactory(), curve.Transform(t));
+                property.Value = interpolator(startValue, newValueFactory(), animationSpec.GetProgress(elapsed));
                 yield return null;
             }
 

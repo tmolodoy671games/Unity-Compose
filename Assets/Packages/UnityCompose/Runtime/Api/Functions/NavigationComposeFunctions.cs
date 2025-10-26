@@ -39,8 +39,6 @@ public static partial class ComposeFunctions
     public static void Navigation(
         IComposeCoordinator coordinator,
         Func<ContentTransform>? transition = null,
-        float transitionDuration = ComposeDefaults.TransitionDuration,
-        IEasing? easing = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
         Action<float>? onTransitionProgressChanged = null,
         IModifier? modifier = null
@@ -73,13 +71,6 @@ public static partial class ComposeFunctions
                 isSwitched.Value = !isSwitched.Value;
         });
 
-        var progress = AnimateFloatAsState(
-            targetValue: isSwitched.Value ? 1 : 0f,
-            duration: transitionDuration,
-            easing: easing ?? Linear
-        ).Value;
-        var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
-
         var appearingScreens = Remember(
             (currentBackStack, previousBackStack.Value),
             () => currentBackStack
@@ -102,7 +93,16 @@ public static partial class ComposeFunctions
         var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () =>
             transition?.Invoke() ?? ResolveTransition(appearingScreens, disappearingScreens)
         );
+        var progress = AnimateFloatAsState(
+            targetValue: isSwitched.Value ? 1 : 0f,
+            animationSpec: Tween(
+                easing: LinearEasing,
+                duration: resolvedTransition.TotalDuration
+            )
+        ).Value;
+        var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
         var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
+        var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
 
         ReusableComposeView<Navigation>(
             modifier: modifier,
@@ -139,10 +139,10 @@ public static partial class ComposeFunctions
                                         ContentState.Idle => Modifier
                                             .Float(!isCurrentScreen),
                                         ContentState.Entering => resolvedTransition.Enter
-                                            .Get(resolvedProgress, parent)
+                                            .Get(resolvedDuration, parent)
                                             .Float(!isCurrentScreen),
                                         ContentState.Exiting => resolvedTransition.Exit
-                                            .Get(resolvedProgress, parent)
+                                            .Get(resolvedDuration, parent)
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };

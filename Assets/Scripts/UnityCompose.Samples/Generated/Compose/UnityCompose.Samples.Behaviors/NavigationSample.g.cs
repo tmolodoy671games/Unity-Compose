@@ -53,7 +53,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(null, () => (FadeIn() + SlideInHorizontally(it => -it)).TogetherWith(FadeOut() + SlideOutHorizontally(it => it))), transitionDuration: 5, initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(null, () => (FadeIn() + SlideInHorizontally(it => -it)).TogetherWith(FadeOut() + SlideOutHorizontally(it => it))), initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }

@@ -13,13 +13,14 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     [Compiled]
-    private static void __AnimatedSize(Action content, IModifier? modifier = null, float duration = ComposeDefaults.TransitionDuration)
+    private static void __AnimatedSize(Action content, IModifier? modifier = null, AnimationSpec animationSpec = default)
     {
-        if (CurrentComposer.BeginComposeGroup((content, modifier, duration)))
+        if (CurrentComposer.BeginComposeGroup((content, modifier, animationSpec)))
             return;
         try
         {
-            var(containerStyle, contentStyle) = AnimateSizeModifiers(duration);
+            var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+            var(containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec);
             ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerStyle), initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>>(null, it =>
             {
                 it.style.alignItems = Align.Center;
@@ -31,7 +32,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(() => __AnimatedSize(content, modifier, duration));
+            CurrentComposer.EndComposeGroup(() => __AnimatedSize(content, modifier, animationSpec));
         }
     }
 }

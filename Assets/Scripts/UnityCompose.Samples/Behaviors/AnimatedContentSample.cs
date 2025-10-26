@@ -33,21 +33,24 @@ namespace UnityCompose.Samples.Behaviors
                             .Name("animated-content-sample"),
                         content: () =>
                         {
+                            var animationSpec = Tween(
+                                easing: EaseInOutEasing,
+                                duration: Duration
+                            );
                             var isSwitched = Remember(() => MutableStateOf(false));
                             AnimatedContent(
                                 targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short",
                                 transitionSpec: _ =>
                                     isSwitched.Value
-                                        ? (SlideInVertically(it => -it) + FadeIn())
-                                        .TogetherWith(
-                                            SlideOutVertically(it => it) + FadeOut()
-                                        )
-                                        : (SlideInVertically(it => it) + FadeIn())
-                                        .TogetherWith(
-                                            SlideOutVertically(it => -it) + FadeOut()
-                                        ),
-                                animateSize: true,
-                                transitionDuration: Duration,
+                                        ? SlideInVertically(it => -it, animationSpec: animationSpec)
+                                            .TogetherWith(
+                                                SlideOutVertically(it => it, animationSpec: animationSpec)
+                                            )
+                                        : SlideInVertically(it => it, animationSpec: animationSpec)
+                                            .TogetherWith(
+                                                SlideOutVertically(it => -it, animationSpec: animationSpec)
+                                            ),
+                                sizeAnimationSpec: animationSpec,
                                 modifier: Modifier
                                     .Name("animated-content")
                                     .Background(

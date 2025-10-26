@@ -40,7 +40,9 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("animated-size")
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(5))
                                     .Padding(all: 16),
-                                duration: 5,
+                                animationSpec: Tween(
+                                    duration: 5
+                                ),
                                 content: () =>
                                 {
                                     Text(

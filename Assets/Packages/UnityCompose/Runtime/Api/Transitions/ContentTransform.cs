@@ -1,10 +1,11 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace UnityCompose;
 
-public record ContentTransform(
+public readonly record struct ContentTransform(
     IEnterTransition Enter,
     IExitTransition Exit
 )
@@ -13,6 +14,8 @@ public record ContentTransform(
         Enter: EmptyEnterTransitionImpl.Instance,
         Exit: HideExitTransitionImpl.Instance
     );
+    
+    public float TotalDuration => Mathf.Max(Enter.TotalDuration, Exit.TotalDuration);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ContentTransform operator +(ContentTransform first, ContentTransform second)
