@@ -146,6 +146,9 @@ public static partial class ComposeFunctions
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };
+                                    var localProgress = screenState != ContentState.Exiting
+                                        ? resolvedProgress
+                                        : 1 - resolvedProgress;
                                     CompositionLocalProvider(
                                         provides: IImmutableStableList.Create(
                                             LocalIsActive.Provides(
@@ -158,11 +161,8 @@ public static partial class ComposeFunctions
                                                 after: LocalModifier.Current.After.OrEmpty()
                                                     .Then(contentStyle)
                                             ),
-                                            LocalTransitionProgress.Provides(
-                                                screenState != ContentState.Exiting
-                                                    ? resolvedProgress
-                                                    : 1 - resolvedProgress
-                                            )
+                                            LocalTransitionProgress.Provides(localProgress),
+                                            LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration)
                                         ),
                                         content: screen.Content
                                     );

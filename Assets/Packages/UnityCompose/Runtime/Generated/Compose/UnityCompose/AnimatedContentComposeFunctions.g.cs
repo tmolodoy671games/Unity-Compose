@@ -34,7 +34,7 @@ public static partial class ComposeFunctions
             // Animating size:
             var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec) : (Modifier, Modifier);
             // Layout:
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier), () =>
+            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, previousValue, resolvedTransition, transitionDuration, resolvedProgress, resolvedTimeElapsed, contentModifier), () =>
             {
                 var parent = LocalParentLayout.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);
@@ -45,17 +45,17 @@ public static partial class ComposeFunctions
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
                 if (isSwitched.Value || isAnimationRunning)
                 {
-                    Key(key: "First", content: RememberComposable<global::System.Action>((content, pair), () =>
+                    Key(key: "First", content: RememberComposable<global::System.Action>((content, transitionDuration, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.First.Style), LocalTransitionProgress.Provides(pair.First.Progress), LocalContentState.Provides(pair.First.ContentState)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
+                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.First.Style), LocalTransitionProgress.Provides(pair.First.Progress), LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration), LocalContentState.Provides(pair.First.ContentState)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
                     }));
                 }
 
                 if (!isSwitched.Value || isAnimationRunning)
                 {
-                    Key(key: "Second", content: RememberComposable<global::System.Action>((content, pair), () =>
+                    Key(key: "Second", content: RememberComposable<global::System.Action>((content, transitionDuration, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionProgress.Provides(pair.Second.Progress), LocalContentState.Provides(pair.Second.ContentState)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
+                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionProgress.Provides(pair.Second.Progress), LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration), LocalContentState.Provides(pair.Second.ContentState)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
                     }));
                 }
             }));

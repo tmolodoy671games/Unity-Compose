@@ -66,7 +66,8 @@ public static partial class ComposeFunctions
                                 ContentState.Entering => resolvedTransition.Enter.Get(resolvedDuration, parent).Float(!isCurrentScreen),
                                 ContentState.Exiting => resolvedTransition.Exit.Get(resolvedDuration, parent).Float(),
                                 _ => throw new ArgumentOutOfRangeException()};
-                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(screenState != ContentState.Exiting ? resolvedProgress : 1 - resolvedProgress)), content: screen.Content);
+                            var localProgress = screenState != ContentState.Exiting ? resolvedProgress : 1 - resolvedProgress;
+                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(localProgress), LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration)), content: screen.Content);
                         }));
                     }
                 }));

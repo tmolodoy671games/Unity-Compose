@@ -9,6 +9,7 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     public static readonly ICompositionLocal<float> LocalTransitionProgress = CompositionLocalOf(() => 1f);
+    public static readonly ICompositionLocal<float> LocalTransitionTimeElapsed = CompositionLocalOf(() => 0f);
 
     public static readonly ICompositionLocal<ContentState> LocalContentState =
         CompositionLocalOf(() => ContentState.Idle);
@@ -35,7 +36,7 @@ public static partial class ComposeFunctions
             previousValue.Value = targetValue.Value;
             targetValue.Value = targetState;
         });
-        
+
         var resolvedTransition = Remember(
             targetState!,
             () => Equals(previousValue.Value, targetState)
@@ -90,6 +91,7 @@ public static partial class ComposeFunctions
                                 provides: IImmutableStableList.Create(
                                     LocalModifier.Provides(after: pair.First.Style),
                                     LocalTransitionProgress.Provides(pair.First.Progress),
+                                    LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration),
                                     LocalContentState.Provides(pair.First.ContentState)
                                 ),
                                 content: () => content(pair.First.Value)
@@ -108,6 +110,7 @@ public static partial class ComposeFunctions
                                 provides: IImmutableStableList.Create(
                                     LocalModifier.Provides(after: pair.Second.Style),
                                     LocalTransitionProgress.Provides(pair.Second.Progress),
+                                    LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration),
                                     LocalContentState.Provides(pair.Second.ContentState)
                                 ),
                                 content: () => content(pair.Second.Value)
