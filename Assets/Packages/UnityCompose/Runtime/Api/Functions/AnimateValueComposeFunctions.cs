@@ -91,8 +91,10 @@ public static partial class ComposeFunctions
         {
             var startValue = property.Value;
             if (Equals(startValue, targetValue)) yield break;
+            if (animationSpec.Delay > 0)
+                yield return new WaitForSeconds(animationSpec.Delay);
             var elapsed = 0f;
-            while (elapsed < animationSpec.TotalDuration())
+            while (elapsed < animationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
                 property.Value = interpolator(startValue, newValue, animationSpec.GetProgress(elapsed));
@@ -126,8 +128,10 @@ public static partial class ComposeFunctions
         {
             var startValue = property.Value;
             if (Equals(startValue, newValueFactory())) yield break;
+            if (animationSpec.Delay > 0)
+                yield return new WaitForSeconds(animationSpec.Delay);
             var elapsed = 0f;
-            while (elapsed < animationSpec.TotalDuration())
+            while (elapsed < animationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
                 property.Value = interpolator(startValue, newValueFactory(), animationSpec.GetProgress(elapsed));

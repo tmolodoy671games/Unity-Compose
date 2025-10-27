@@ -23,7 +23,7 @@ internal class FadeOutExitTransitionImpl : IExitTransition
         _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration();
+    public float TotalDuration => _animationSpec.TotalDuration;
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {

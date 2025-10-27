@@ -44,7 +44,8 @@ public readonly record struct AnimationSpec
         return _easing.Transform((timeElapsed - _delay) / _duration);
     }
 
-    public float TotalDuration() => _delay + _duration;
+    public float Delay => _delay;
+    public float TotalDuration => _delay + _duration;
 
     public AnimationSpec With(
         float duration = -1,
