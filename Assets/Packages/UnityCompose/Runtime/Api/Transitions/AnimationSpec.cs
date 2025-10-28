@@ -1,5 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
+using UnityEngine;
+
 namespace UnityCompose;
 
 public partial class ComposeFunctions
@@ -35,13 +37,8 @@ public readonly record struct AnimationSpec
 
     public float GetProgress(float timeElapsed)
     {
-        if (timeElapsed < _delay)
-            return 0f;
-
-        if (timeElapsed >= _delay + _duration)
-            return 1f;
-
-        return _easing.Transform((timeElapsed - _delay) / _duration);
+        var progress = Mathf.Clamp01((timeElapsed - _delay) / _duration);
+        return _easing.Transform(progress);
     }
 
     public float Delay => _delay;
