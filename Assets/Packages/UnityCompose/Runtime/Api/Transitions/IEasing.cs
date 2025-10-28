@@ -8,8 +8,8 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static readonly IEasing LinearEasing = CurveEasing(AnimationCurve.Linear(0, 0, 1, 1));
-    public static readonly IEasing EaseInOutEasing = CurveEasing(AnimationCurve.EaseInOut(0, 0, 1, 1));
+    public static readonly IEasing LinearEasing = AnimationCurveEasing(AnimationCurve.Linear(0, 0, 1, 1));
+    public static readonly IEasing EaseInOutEasing = AnimationCurveEasing(AnimationCurve.EaseInOut(0, 0, 1, 1));
     private static IEasing EaseOutEasing = Easing(it => 1 - Mathf.Pow(1 - it, 3));
     private static IEasing EaseInEasing = Easing(it => Mathf.Pow(it, 3));
 
@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
     public static IEasing Easing(Func<float, float> easing) => new CustomEasingImpl(easing);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEasing CurveEasing(AnimationCurve curve) => new AnimationCurveEasingImpl(curve);
+    public static IEasing AnimationCurveEasing(AnimationCurve curve) => new AnimationCurveEasingImpl(curve);
 }
 
 public interface IEasing
