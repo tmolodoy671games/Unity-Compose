@@ -3,6 +3,7 @@
 using System.Runtime.CompilerServices;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,22 +14,19 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Scale(
         this IModifier modifier,
-        float scale,
+        float scale = -1,
+        float scaleX = -1,
+        float scaleY = -1,
         Optional<ComposeTransition> transition = default
     )
     {
-        return modifier + new ScaleModifierImpl(Vector2.one * scale, transition);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Scale(
-        this IModifier modifier,
-        float scaleX,
-        float scaleY,
-        Optional<ComposeTransition> transition = default
-    )
-    {
-        return modifier + new ScaleModifierImpl(new Vector2(scaleX, scaleY), transition);
+        return modifier + new ScaleModifierImpl(
+            new Vector2(
+                ParamUtils.Resolve(scaleX, scale).Absolute(),
+                ParamUtils.Resolve(scaleY, scale).Absolute()
+            ),
+            transition
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

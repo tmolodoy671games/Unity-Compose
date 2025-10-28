@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Size(100)
                             .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
                             .Border(radius: 32)
-                            .Scale(isHovered.Value ? 2 : 1, Transition())
+                            .Scale(isHovered.Value ? 2 : 1, transition: Transition())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() =>
                             {
