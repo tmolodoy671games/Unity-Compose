@@ -19,19 +19,6 @@ public static partial class ComposeFunctions
             animationSpec: animationSpec
         );
     }
-
-    public static IEnterTransition ScaleIn(
-        float initialScale = 0,
-        float targetScale = 1,
-        AnimationSpec animationSpec = default
-    )
-    {
-        return new ScaleInEnterTransitionImpl(
-            initialScale: initialScale * Vector2.one,
-            targetScale: targetScale * Vector2.one,
-            animationSpec: animationSpec
-        );
-    }
 }
 
 internal class ScaleInEnterTransitionImpl : IEnterTransition

@@ -20,20 +20,6 @@ public static partial class ComposeFunctions
             animationSpec: animationSpec
         );
     }
-
-
-    public static IExitTransition ScaleOut(
-        float initialScale = 1f,
-        float targetScale = 0f,
-        AnimationSpec animationSpec = default
-    )
-    {
-        return new ScaleOutExitTransitionImpl(
-            initialScale: initialScale * Vector2.one,
-            targetScale: targetScale * Vector2.one,
-            animationSpec: animationSpec
-        );
-    }
 }
 
 internal class ScaleOutExitTransitionImpl : IExitTransition
