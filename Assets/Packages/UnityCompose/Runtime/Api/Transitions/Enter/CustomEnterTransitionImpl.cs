@@ -32,9 +32,9 @@ internal class CustomEnterTransitionImpl : IEnterTransition
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
-        if (resolvedProgress <= 0f)
+        if (timeElapsed < _animationSpec.Delay)
             return Modifier;
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return _transition(resolvedProgress, parent);
     }
 }
