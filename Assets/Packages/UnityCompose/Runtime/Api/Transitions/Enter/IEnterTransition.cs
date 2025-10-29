@@ -7,10 +7,11 @@ namespace UnityCompose;
 public interface IEnterTransition
 {
     float TotalDuration { get; }
-    
+
     IModifier Get(float timeElapsed, LayoutInfo parent);
 
-    public static IEnterTransition Empty => EmptyEnterTransitionImpl.Instance;
+    public static IEnterTransition Empty(AnimationSpec animationSpec = default) =>
+        new EmptyEnterTransitionImpl(animationSpec);
 
     public static IEnterTransition operator +(IEnterTransition first, IEnterTransition second)
     {
@@ -20,13 +21,14 @@ public interface IEnterTransition
 
 internal class EmptyEnterTransitionImpl : IEnterTransition
 {
-    public static readonly EmptyEnterTransitionImpl Instance = new();
+    private readonly AnimationSpec _animationSpec;
 
-    private EmptyEnterTransitionImpl()
+    public EmptyEnterTransitionImpl(AnimationSpec animationSpec)
     {
+        _animationSpec = animationSpec;
     }
 
-    public float TotalDuration => 0f;
+    public float TotalDuration => _animationSpec.TotalDuration;
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {

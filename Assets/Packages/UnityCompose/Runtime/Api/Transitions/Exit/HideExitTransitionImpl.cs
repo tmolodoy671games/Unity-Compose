@@ -7,17 +7,21 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IExitTransition Hide() => HideExitTransitionImpl.Instance;
+    public static IExitTransition Hide(AnimationSpec animationSpec = default) =>
+        new HideExitTransitionImpl(animationSpec);
 }
 
 internal class HideExitTransitionImpl : IExitTransition
 {
-    public static readonly HideExitTransitionImpl Instance = new();
-    
-    private HideExitTransitionImpl() {}
+    private readonly AnimationSpec _animationSpec;
+
+    public HideExitTransitionImpl(AnimationSpec animationSpec)
+    {
+        _animationSpec = animationSpec;
+    }
 
     public float TotalDuration => 0f;
-    
+
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
         return Modifier

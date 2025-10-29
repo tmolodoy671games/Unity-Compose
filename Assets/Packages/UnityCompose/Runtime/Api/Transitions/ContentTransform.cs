@@ -11,10 +11,10 @@ public readonly record struct ContentTransform(
 )
 {
     public static readonly ContentTransform Instant = new(
-        Enter: EmptyEnterTransitionImpl.Instance,
-        Exit: HideExitTransitionImpl.Instance
+        Enter: IEnterTransition.Empty(),
+        Exit: IExitTransition.Empty()
     );
-    
+
     public float TotalDuration => Mathf.Max(Enter.TotalDuration, Exit.TotalDuration);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

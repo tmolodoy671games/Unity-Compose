@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
     public static readonly ICompositionLocal<ContentState> LocalContentState =
         CompositionLocalOf(() => ContentState.Idle);
 
-    public static ContentTransform InstantContentTransform => UnityCompose.ContentTransform.Instant;
+    public static ContentTransform InstantContentTransform => ContentTransform.Instant;
 
     [Composable]
     public static void AnimatedContent<T>(
@@ -40,7 +40,7 @@ public static partial class ComposeFunctions
         var resolvedTransition = Remember(
             targetState!,
             () => Equals(previousValue.Value, targetState)
-                ? IEnterTransition.Empty.TogetherWith(Hide())
+                ? IEnterTransition.Empty().TogetherWith(Hide())
                 : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))
         );
         var transitionDuration = resolvedTransition.TotalDuration;
@@ -130,7 +130,7 @@ public enum ContentState
     Exiting,
 }
 
-public interface IAnimatedContentTransitionScope<T>
+public interface IAnimatedContentTransitionScope<out T>
 {
     T InitialState { get; }
     T TargetState { get; }

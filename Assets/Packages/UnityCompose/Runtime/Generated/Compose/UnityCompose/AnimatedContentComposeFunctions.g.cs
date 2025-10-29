@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
             }));
-            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty.TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
+            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
