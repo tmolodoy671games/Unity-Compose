@@ -25,7 +25,7 @@ internal class EmptyExitTransitionImpl : IExitTransition
 
     public EmptyExitTransitionImpl(AnimationSpec animationSpec)
     {
-        _animationSpec = animationSpec;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

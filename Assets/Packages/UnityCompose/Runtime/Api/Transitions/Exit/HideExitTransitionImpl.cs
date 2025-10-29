@@ -17,7 +17,7 @@ internal class HideExitTransitionImpl : IExitTransition
 
     public HideExitTransitionImpl(AnimationSpec animationSpec)
     {
-        _animationSpec = animationSpec;
+        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
 
     public float TotalDuration => 0f;
