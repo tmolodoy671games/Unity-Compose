@@ -1,59 +1,59 @@
-﻿using System;
-using UnityEngine;
+﻿// ReSharper disable CheckNamespace
 
-// ReSharper disable CheckNamespace
+using System;
+using UnityEngine;
 
 namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static IEnterTransition SlideIn(
-        Func<Vector2, Vector2> initialOffset,
-        Func<Vector2, Vector2>? targetOffset = null,
+    public static IExitTransition SlideOut(
+        Func<Vector2, Vector2> targetOffset,
+        Func<Vector2, Vector2>? initialOffset = null,
         AnimationSpec animationSpec = default
     )
     {
-        return new SlideInEnterTransitionImpl(
-            initialOffsetX: it => initialOffset(it).x,
-            initialOffsetY: it => initialOffset(it).y,
-            targetOffsetX: targetOffset != null ? it => targetOffset(it).x : null,
-            targetOffsetY: targetOffset != null ? it => targetOffset(it).y : null,
+        return new SlideOutExitTransitionImpl(
+            initialOffsetX: initialOffset != null ? it => initialOffset(it).x : _ => 0,
+            initialOffsetY: initialOffset != null ? it => initialOffset(it).y : _ => 0,
+            targetOffsetX: it => targetOffset(it).x,
+            targetOffsetY: it => targetOffset(it).y,
             animationSpec: animationSpec
         );
     }
 
-    public static IEnterTransition SlideInHorizontally(
-        Func<float, float> initialOffsetX,
-        Func<float, float>? targetOffsetX = null,
+    public static IExitTransition SlideOutHorizontally(
+        Func<float, float> targetOffsetX,
+        Func<float, float>? initialOffsetX = null,
         AnimationSpec animationSpec = default
     )
     {
-        return new SlideInEnterTransitionImpl(
-            initialOffsetX: it => initialOffsetX(it.x),
-            targetOffsetX: targetOffsetX != null ? it => targetOffsetX(it.x) : null,
+        return new SlideOutExitTransitionImpl(
+            initialOffsetX: initialOffsetX != null ? it => initialOffsetX(it.x) : _ => 0,
+            targetOffsetX: it => targetOffsetX(it.x),
             initialOffsetY: null,
             targetOffsetY: null,
             animationSpec: animationSpec
         );
     }
 
-    public static IEnterTransition SlideInVertically(
-        Func<float, float> initialOffsetY,
-        Func<float, float>? targetOffsetY = null,
+    public static IExitTransition SlideOutVertically(
+        Func<float, float> targetOffsetY,
+        Func<float, float>? initialOffsetY = null,
         AnimationSpec animationSpec = default
     )
     {
-        return new SlideInEnterTransitionImpl(
+        return new SlideOutExitTransitionImpl(
             initialOffsetX: null,
             targetOffsetX: null,
-            initialOffsetY: it => initialOffsetY(it.y),
-            targetOffsetY: targetOffsetY != null ? it => targetOffsetY(it.x) : null,
+            initialOffsetY: initialOffsetY != null ? it => initialOffsetY(it.y) : _ => 0,
+            targetOffsetY: it => targetOffsetY(it.y),
             animationSpec: animationSpec
         );
     }
 }
 
-internal class SlideInEnterTransitionImpl : IEnterTransition
+internal class SlideOutExitTransitionImpl : IExitTransition
 {
     private readonly Func<Vector2, float>? _initialOffsetX;
     private readonly Func<Vector2, float>? _initialOffsetY;
@@ -61,7 +61,7 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
     private readonly Func<Vector2, float>? _targetOffsetY;
     private readonly AnimationSpec _animationSpec;
 
-    public SlideInEnterTransitionImpl(
+    public SlideOutExitTransitionImpl(
         Func<Vector2, float>? initialOffsetX,
         Func<Vector2, float>? initialOffsetY,
         Func<Vector2, float>? targetOffsetX,

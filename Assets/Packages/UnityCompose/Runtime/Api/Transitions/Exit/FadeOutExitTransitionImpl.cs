@@ -7,18 +7,25 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     public static IExitTransition FadeOut(
+        float initialAlpha = 1f,
         float targetAlpha = 0f,
         AnimationSpec animationSpec = default
-    ) => new FadeOutExitTransitionImpl(targetAlpha, animationSpec);
+    ) => new FadeOutExitTransitionImpl(initialAlpha, targetAlpha, animationSpec);
 }
 
 internal class FadeOutExitTransitionImpl : IExitTransition
 {
+    private readonly float _initialAlpha;
     private readonly float _targetAlpha;
     private readonly AnimationSpec _animationSpec;
 
-    public FadeOutExitTransitionImpl(float targetAlpha, AnimationSpec animationSpec)
+    public FadeOutExitTransitionImpl(
+        float initialAlpha,
+        float targetAlpha,
+        AnimationSpec animationSpec
+    )
     {
+        _initialAlpha = initialAlpha;
         _targetAlpha = targetAlpha;
         _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
     }
@@ -29,6 +36,6 @@ internal class FadeOutExitTransitionImpl : IExitTransition
     {
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return Modifier
-            .Alpha(Mathf.Lerp(1, _targetAlpha, resolvedProgress));
+            .Alpha(Mathf.Lerp(_initialAlpha, _targetAlpha, resolvedProgress));
     }
 }
