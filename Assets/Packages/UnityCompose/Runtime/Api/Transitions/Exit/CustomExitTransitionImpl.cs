@@ -32,6 +32,9 @@ internal class CustomExitTransitionImpl : IExitTransition
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        return _transition(_animationSpec.GetProgress(timeElapsed), parent);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
+        if (resolvedProgress <= 0f)
+            return Modifier;
+        return _transition(resolvedProgress, parent);
     }
 }

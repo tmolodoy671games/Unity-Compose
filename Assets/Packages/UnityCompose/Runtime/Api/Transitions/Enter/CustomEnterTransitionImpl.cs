@@ -11,7 +11,7 @@ public static partial class ComposeFunctions
     public static IEnterTransition Enter(
         Func<float, LayoutInfo, IModifier> transition,
         AnimationSpec animationSpec = default
-        )
+    )
     {
         return new CustomEnterTransitionImpl(transition, animationSpec);
     }
@@ -32,6 +32,9 @@ internal class CustomEnterTransitionImpl : IEnterTransition
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
-        return _transition(_animationSpec.GetProgress(timeElapsed), parent);
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
+        if (resolvedProgress <= 0f)
+            return Modifier;
+        return _transition(resolvedProgress, parent);
     }
 }

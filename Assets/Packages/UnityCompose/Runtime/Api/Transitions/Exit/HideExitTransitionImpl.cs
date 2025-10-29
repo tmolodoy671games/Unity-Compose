@@ -24,6 +24,9 @@ internal class HideExitTransitionImpl : IExitTransition
 
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
+        var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
+        if (resolvedProgress <= 0f)
+            return Modifier;
         return Modifier
             .Alpha(0f);
     }

@@ -81,6 +81,8 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
+        if (resolvedProgress <= 0f)
+            return Modifier;
         var result = Modifier;
         var parentSize = new Vector2(
             parent.Width + parent.PaddingLeft,

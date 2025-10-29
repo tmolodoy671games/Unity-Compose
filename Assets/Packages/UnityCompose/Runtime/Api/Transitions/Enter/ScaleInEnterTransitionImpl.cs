@@ -43,6 +43,8 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
     public IModifier Get(float timeElapsed, LayoutInfo parent)
     {
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
+        if (resolvedProgress <= 0f)
+            return Modifier;
         return Modifier
             .Scale(
                 Vector2.LerpUnclamped(
