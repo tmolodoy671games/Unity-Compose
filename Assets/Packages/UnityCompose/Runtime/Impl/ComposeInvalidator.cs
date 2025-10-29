@@ -47,7 +47,8 @@ namespace UnityCompose
                 {
                     _instance = new GameObject("ComposeInvalidator").AddComponent<ComposeInvalidator>();
                     _instance.gameObject.hideFlags = HideFlags.HideAndDontSave;
-                    DontDestroyOnLoad(_instance.gameObject);
+                    if (ApplicationUtils.IsPlaying)
+                        DontDestroyOnLoad(_instance.gameObject);
                 }
 
                 return _instance!;
@@ -66,7 +67,8 @@ namespace UnityCompose
         {
             _instance = this;
             gameObject.hideFlags = HideFlags.HideAndDontSave;
-            DontDestroyOnLoad(gameObject);
+            if (ApplicationUtils.IsPlaying)
+                DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
