@@ -14,16 +14,16 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Scale(
         this IModifier modifier,
-        float scale = -1,
-        float scaleX = -1,
-        float scaleY = -1,
+        Optional<float> scale = default,
+        Optional<float> scaleX = default,
+        Optional<float> scaleY = default,
         Optional<ComposeTransition> transition = default
     )
     {
         return modifier + new ScaleModifierImpl(
             new Vector2(
-                ParamUtils.Resolve(scaleX, scale).Absolute(),
-                ParamUtils.Resolve(scaleY, scale).Absolute()
+                ParamUtils.Resolve(scaleX, scale).GetOrDefault(1),
+                ParamUtils.Resolve(scaleY, scale).GetOrDefault(1)
             ),
             transition
         );
