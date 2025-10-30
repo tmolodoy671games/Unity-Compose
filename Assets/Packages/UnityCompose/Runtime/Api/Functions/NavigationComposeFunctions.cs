@@ -162,7 +162,8 @@ public static partial class ComposeFunctions
                                                     .Then(contentStyle)
                                             ),
                                             LocalTransitionProgress.Provides(localProgress),
-                                            LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration)
+                                            LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration),
+                                            LocalContentState.Provides(screenState)
                                         ),
                                         content: screen.Content
                                     );
