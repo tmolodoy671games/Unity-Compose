@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System.Runtime.CompilerServices;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
@@ -13,23 +14,17 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Offset(
         this IModifier modifier,
-        float x = -1,
-        float y = -1,
-        float offset = -1
+        Optional<float> x = default,
+        Optional<float> y = default,
+        Optional<Vector2> offset = default
     )
     {
         return modifier + new OffsetModifierImpl(
             new Vector2(
-                ParamUtils.Resolve(x, offset),
-                ParamUtils.Resolve(y, offset)
+                x.GetOrDefault(offset.HasValue ? offset.Value.x : 0f),
+                y.GetOrDefault(offset.HasValue ? offset.Value.y : 0f)
             )
         );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Offset(this IModifier modifier, Vector2 offset)
-    {
-        return modifier + new OffsetModifierImpl(offset);
     }
 }
 
