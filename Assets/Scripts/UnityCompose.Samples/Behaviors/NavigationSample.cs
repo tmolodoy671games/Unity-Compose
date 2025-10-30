@@ -24,6 +24,9 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
+            var animationSpec = Tween(
+                duration: 1f
+            );
             Box(
                 modifier: Modifier
                     .FillMaxSize(),
@@ -36,8 +39,11 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             Navigation(
                                 coordinator: Remember(() => new SampleCoordinatorImpl()),
-                                transition: () => (FadeIn() + SlideInHorizontally(it => -it))
-                                    .TogetherWith(FadeOut() + SlideOutHorizontally(it => it)),
+                                transition: () =>
+                                    (FadeIn(animationSpec: animationSpec) +
+                                     SlideInHorizontally(it => -it, animationSpec: animationSpec))
+                                    .TogetherWith(FadeOut(animationSpec: animationSpec) +
+                                                  SlideOutHorizontally(it => it, animationSpec: animationSpec)),
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 modifier: Modifier

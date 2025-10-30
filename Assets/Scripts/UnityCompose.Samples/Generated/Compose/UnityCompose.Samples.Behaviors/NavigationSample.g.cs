@@ -49,11 +49,12 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                var animationSpec = Tween(duration: 1f);
+                Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(animationSpec, () =>
                 {
-                    Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(null, () =>
+                    Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>(animationSpec, () =>
                     {
-                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(null, () => (FadeIn() + SlideInHorizontally(it => -it)).TogetherWith(FadeOut() + SlideOutHorizontally(it => it))), initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: Remember<global::System.Func<global::UnityCompose.ContentTransform>>(animationSpec, () => (FadeIn(animationSpec: animationSpec) + SlideInHorizontally(it => -it, animationSpec: animationSpec)).TogetherWith(FadeOut(animationSpec: animationSpec) + SlideOutHorizontally(it => it, animationSpec: animationSpec))), initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
