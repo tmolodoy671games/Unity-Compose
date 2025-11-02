@@ -162,7 +162,7 @@ public static partial class ComposeFunctions
                                                 TransitionState.Create(
                                                     state: screenState,
                                                     absoluteProgress: resolvedProgress,
-                                                    duration: resolvedDuration
+                                                    duration: resolvedTransition.TotalDuration
                                                 )
                                             )
                                         ),
