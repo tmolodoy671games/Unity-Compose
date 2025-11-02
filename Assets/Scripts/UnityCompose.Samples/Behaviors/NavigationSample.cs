@@ -40,10 +40,11 @@ namespace UnityCompose.Samples.Behaviors
                             Navigation(
                                 coordinator: Remember(() => new SampleCoordinatorImpl()),
                                 transition: () =>
-                                    (FadeIn(animationSpec: animationSpec) +
-                                     SlideInHorizontally(it => -it, animationSpec: animationSpec))
-                                    .TogetherWith(FadeOut(animationSpec: animationSpec) +
-                                                  SlideOutHorizontally(it => it, animationSpec: animationSpec)),
+                                (
+                                    (FadeIn() + SlideInHorizontally(it => -it))
+                                    .TogetherWith(FadeOut() + SlideOutHorizontally(it => it))
+                                    .With(animationSpec)
+                                ),
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 modifier: Modifier
@@ -94,7 +95,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Size(100)
                             .Background(Color.blue)
-                            .Scale(1 + 2 * LocalTransitionProgress.Current)
+                            .Scale(1 + 2 * LocalTransitionState.Current.Progress)
                     );
                 }
             );

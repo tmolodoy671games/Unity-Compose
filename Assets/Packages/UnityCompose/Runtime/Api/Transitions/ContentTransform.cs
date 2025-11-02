@@ -17,6 +17,14 @@ public readonly record struct ContentTransform(
 
     public float TotalDuration => Mathf.Max(Enter.TotalDuration, Exit.TotalDuration);
 
+    public ContentTransform With(AnimationSpec animationSpec)
+    {
+        return new ContentTransform(
+            Enter: Enter.With(animationSpec),
+            Exit: Exit.With(animationSpec)
+        );
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ContentTransform operator +(ContentTransform first, ContentTransform second)
     {

@@ -29,4 +29,9 @@ internal class HideExitTransitionImpl : IExitTransition
         return Modifier
             .Alpha(0f);
     }
+
+    public IExitTransition With(AnimationSpec animationSpec)
+    {
+        return new HideExitTransitionImpl(animationSpec);
+    }
 }

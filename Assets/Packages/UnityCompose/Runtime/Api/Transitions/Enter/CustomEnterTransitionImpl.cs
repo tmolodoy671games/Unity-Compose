@@ -37,4 +37,12 @@ internal class CustomEnterTransitionImpl : IEnterTransition
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return _transition(resolvedProgress, parent);
     }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new CustomEnterTransitionImpl(
+            transition: _transition,
+            animationSpec: animationSpec
+        );
+    }
 }

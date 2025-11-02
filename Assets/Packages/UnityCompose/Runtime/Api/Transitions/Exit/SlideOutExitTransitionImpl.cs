@@ -114,4 +114,15 @@ internal class SlideOutExitTransitionImpl : IExitTransition
 
         return result;
     }
+
+    public IExitTransition With(AnimationSpec animationSpec)
+    {
+        return new SlideOutExitTransitionImpl(
+            initialOffsetX: _initialOffsetX,
+            targetOffsetX: _targetOffsetX,
+            initialOffsetY: _initialOffsetY,
+            targetOffsetY: _targetOffsetY,
+            animationSpec: animationSpec
+        );
+    }
 }

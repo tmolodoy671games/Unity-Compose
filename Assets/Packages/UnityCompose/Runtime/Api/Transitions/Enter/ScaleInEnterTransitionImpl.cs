@@ -54,4 +54,13 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
                 )
             );
     }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new ScaleInEnterTransitionImpl(
+            initialScale: _initialScale,
+            targetScale: _targetScale,
+            animationSpec: animationSpec
+        );
+    }
 }

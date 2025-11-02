@@ -1,20 +1,19 @@
 using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static readonly ICompositionLocal<float> LocalTransitionProgress = CompositionLocalOf(() => 1f);
-    public static readonly ICompositionLocal<float> LocalTransitionTimeElapsed = CompositionLocalOf(() => 0f);
-
-    public static readonly ICompositionLocal<ContentState> LocalContentState =
-        CompositionLocalOf(() => ContentState.Idle);
-
-    public static ContentTransform InstantContentTransform => ContentTransform.Instant;
+    public static readonly ICompositionLocal<TransitionState> LocalTransitionState = CompositionLocalOf(() =>
+        TransitionState.Create(
+            state: ContentState.Idle,
+            absoluteProgress: 1,
+            duration: 100
+        )
+    );
 
     [Composable]
     public static void AnimatedContent<T>(
@@ -73,10 +72,16 @@ public static partial class ComposeFunctions
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
 
-                var next = (Value: targetState, Style: nextModifier, Progress: resolvedProgress,
-                    ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering);
-                var previous = (Value: previousValue.Value, Style: previousModifier, Progress: 1 - resolvedProgress,
-                    ContentState: ContentState.Exiting);
+                var next = (
+                    Value: targetState,
+                    Style: nextModifier,
+                    ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering
+                );
+                var previous = (
+                    Value: previousValue.Value,
+                    Style: previousModifier,
+                    ContentState: ContentState.Exiting
+                );
                 var pair = isSwitched.Value
                     ? (First: next, Second: previous)
                     : (First: previous, Second: next);
@@ -90,9 +95,13 @@ public static partial class ComposeFunctions
                             CompositionLocalProvider(
                                 provides: IImmutableStableList.Create(
                                     LocalModifier.Provides(after: pair.First.Style),
-                                    LocalTransitionProgress.Provides(pair.First.Progress),
-                                    LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration),
-                                    LocalContentState.Provides(pair.First.ContentState)
+                                    LocalTransitionState.Provides(
+                                        TransitionState.Create(
+                                            state: pair.First.ContentState,
+                                            absoluteProgress: resolvedProgress,
+                                            duration: resolvedTransition.TotalDuration
+                                        )
+                                    )
                                 ),
                                 content: () => content(pair.First.Value)
                             );
@@ -109,9 +118,13 @@ public static partial class ComposeFunctions
                             CompositionLocalProvider(
                                 provides: IImmutableStableList.Create(
                                     LocalModifier.Provides(after: pair.Second.Style),
-                                    LocalTransitionProgress.Provides(pair.Second.Progress),
-                                    LocalTransitionTimeElapsed.Provides(resolvedProgress * transitionDuration),
-                                    LocalContentState.Provides(pair.Second.ContentState)
+                                    LocalTransitionState.Provides(
+                                        TransitionState.Create(
+                                            state: pair.First.ContentState,
+                                            absoluteProgress: resolvedProgress,
+                                            duration: resolvedTransition.TotalDuration
+                                        )
+                                    )
                                 ),
                                 content: () => content(pair.Second.Value)
                             );
@@ -121,29 +134,4 @@ public static partial class ComposeFunctions
             }
         );
     }
-}
-
-public enum ContentState
-{
-    Entering,
-    Idle,
-    Exiting,
-}
-
-public interface IAnimatedContentTransitionScope<out T>
-{
-    T InitialState { get; }
-    T TargetState { get; }
-}
-
-internal class AnimatedContentTransitionScopeImpl<T> : IAnimatedContentTransitionScope<T>
-{
-    public AnimatedContentTransitionScopeImpl(T initialState, T targetState)
-    {
-        InitialState = initialState;
-        TargetState = targetState;
-    }
-
-    public T InitialState { get; }
-    public T TargetState { get; }
 }

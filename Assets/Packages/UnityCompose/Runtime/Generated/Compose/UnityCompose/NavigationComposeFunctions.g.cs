@@ -39,7 +39,7 @@ public static partial class ComposeFunctions
             var appearingScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());
             var allScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.Union(previousBackStack.Value).Distinct().ToImmutableStableList());
-            var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () => transition?.Invoke() ?? ResolveTransition(appearingScreens, disappearingScreens));
+            var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () => ResolveTransition(transition, appearingScreens, disappearingScreens));
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
@@ -66,8 +66,7 @@ public static partial class ComposeFunctions
                                 ContentState.Entering => resolvedTransition.Enter.Get(resolvedDuration, parent).Float(!isCurrentScreen),
                                 ContentState.Exiting => resolvedTransition.Exit.Get(resolvedDuration, parent).Float(),
                                 _ => throw new ArgumentOutOfRangeException()};
-                            var localProgress = screenState != ContentState.Exiting ? resolvedProgress : 1 - resolvedProgress;
-                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionProgress.Provides(localProgress), LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration), LocalContentState.Provides(screenState)), content: screen.Content);
+                            CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: LocalIsActive.Current)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalTransitionState.Provides(TransitionState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedDuration))), content: screen.Content);
                         }));
                     }
                 }));

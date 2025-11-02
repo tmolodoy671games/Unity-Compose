@@ -10,6 +10,8 @@ public interface IEnterTransition
 
     IModifier Get(float timeElapsed, LayoutInfo parent);
 
+    IEnterTransition With(AnimationSpec animationSpec);
+
     public static IEnterTransition Empty(AnimationSpec animationSpec = default) =>
         new EmptyEnterTransitionImpl(animationSpec);
 
@@ -34,6 +36,11 @@ internal class EmptyEnterTransitionImpl : IEnterTransition
     {
         return Modifier;
     }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new EmptyEnterTransitionImpl(animationSpec: animationSpec);
+    }
 }
 
 internal class CompositeEnterTransitionImpl : IEnterTransition
@@ -53,5 +60,13 @@ internal class CompositeEnterTransitionImpl : IEnterTransition
     {
         return _left.Get(timeElapsed, parent)
             .Then(_right.Get(timeElapsed, parent));
+    }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new CompositeEnterTransitionImpl(
+            left: _left.With(animationSpec),
+            right: _right.With(animationSpec)
+        );
     }
 }

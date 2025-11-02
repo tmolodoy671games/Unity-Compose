@@ -37,4 +37,9 @@ internal class CustomExitTransitionImpl : IExitTransition
             return Modifier;
         return _transition(resolvedProgress, parent);
     }
+
+    public IExitTransition With(AnimationSpec animationSpec)
+    {
+        return new CustomExitTransitionImpl(_transition, animationSpec);
+    }
 }

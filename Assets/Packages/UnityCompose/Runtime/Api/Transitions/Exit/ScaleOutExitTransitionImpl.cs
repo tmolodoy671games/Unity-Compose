@@ -51,4 +51,13 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
                 Vector2.Lerp(_initialScale, _targetScale, resolvedProgress)
             );
     }
+
+    public IExitTransition With(AnimationSpec animationSpec)
+    {
+        return new ScaleOutExitTransitionImpl(
+            initialScale: _initialScale,
+            targetScale: _targetScale,
+            animationSpec: animationSpec
+        );
+    }
 }

@@ -114,4 +114,15 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 
         return result;
     }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new SlideInEnterTransitionImpl(
+            initialOffsetX: _initialOffsetX,
+            initialOffsetY: _initialOffsetY,
+            targetOffsetX: _targetOffsetX,
+            targetOffsetY: _targetOffsetY,
+            animationSpec: animationSpec
+        );
+    }
 }

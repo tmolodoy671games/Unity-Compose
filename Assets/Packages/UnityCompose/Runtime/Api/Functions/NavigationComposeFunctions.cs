@@ -91,7 +91,7 @@ public static partial class ComposeFunctions
                 .ToImmutableStableList()
         );
         var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () =>
-            transition?.Invoke() ?? ResolveTransition(appearingScreens, disappearingScreens)
+            ResolveTransition(transition, appearingScreens, disappearingScreens)
         );
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
@@ -146,9 +146,6 @@ public static partial class ComposeFunctions
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };
-                                    var localProgress = screenState != ContentState.Exiting
-                                        ? resolvedProgress
-                                        : 1 - resolvedProgress;
                                     CompositionLocalProvider(
                                         provides: IImmutableStableList.Create(
                                             LocalIsActive.Provides(
@@ -161,9 +158,13 @@ public static partial class ComposeFunctions
                                                 after: LocalModifier.Current.After.OrEmpty()
                                                     .Then(contentStyle)
                                             ),
-                                            LocalTransitionProgress.Provides(localProgress),
-                                            LocalTransitionTimeElapsed.Provides(resolvedProgress * resolvedDuration),
-                                            LocalContentState.Provides(screenState)
+                                            LocalTransitionState.Provides(
+                                                TransitionState.Create(
+                                                    state: screenState,
+                                                    absoluteProgress: resolvedProgress,
+                                                    duration: resolvedDuration
+                                                )
+                                            )
                                         ),
                                         content: screen.Content
                                     );
@@ -179,15 +180,18 @@ public static partial class ComposeFunctions
     }
 
     private static ContentTransform ResolveTransition(
+        Func<ContentTransform>? transition,
         IStableList<ComposeScreen> enteringScreens,
         IStableList<ComposeScreen> exitingScreens
     )
     {
+        if (transition != null)
+            return transition();
         if (enteringScreens.Count == 1)
             return enteringScreens[0].Transitions.Enter;
         if (exitingScreens.Count == 1)
             return exitingScreens[0].Transitions.Exit;
-        return InstantContentTransform;
+        return ContentTransform.Instant;
     }
 }
 

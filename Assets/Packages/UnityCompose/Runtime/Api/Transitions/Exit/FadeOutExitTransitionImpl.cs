@@ -40,4 +40,13 @@ internal class FadeOutExitTransitionImpl : IExitTransition
         return Modifier
             .Alpha(Mathf.Lerp(_initialAlpha, _targetAlpha, resolvedProgress));
     }
+
+    public IExitTransition With(AnimationSpec animationSpec)
+    {
+        return new FadeOutExitTransitionImpl(
+            initialAlpha: _initialAlpha,
+            targetAlpha: _targetAlpha,
+            animationSpec: animationSpec
+        );
+    }
 }

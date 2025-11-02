@@ -40,4 +40,13 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
         return Modifier
             .Alpha(Mathf.LerpUnclamped(_initialAlpha, _targetAlpha, resolvedProgress));
     }
+
+    public IEnterTransition With(AnimationSpec animationSpec)
+    {
+        return new FadeInEnterTransitionImpl(
+            initialAlpha: _initialAlpha,
+            targetAlpha: _targetAlpha,
+            animationSpec: animationSpec
+        );
+    }
 }
