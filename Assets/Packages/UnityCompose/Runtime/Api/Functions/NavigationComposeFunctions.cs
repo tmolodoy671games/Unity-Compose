@@ -129,6 +129,8 @@ public static partial class ComposeFunctions
                             );
                             if (screenState == ContentState.Exiting && isTransitionFinished)
                                 continue;
+                            if (screenState == ContentState.Entering && isTransitionFinished)
+                                screenState = ContentState.Idle;
                             Key(
                                 key: screen,
                                 content: () =>

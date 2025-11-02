@@ -56,6 +56,8 @@ public static partial class ComposeFunctions
                         var screenState = Remember((screen, currentBackStack, previousBackStack.Value), () => Switch().Case(appearingScreens.Contains(screen), ContentState.Entering).Case(disappearingScreens.Contains(screen), ContentState.Exiting).Default(ContentState.Idle).Get());
                         if (screenState == ContentState.Exiting && isTransitionFinished)
                             continue;
+                        if (screenState == ContentState.Entering && isTransitionFinished)
+                            screenState = ContentState.Idle;
                         Key(key: screen, content: RememberComposable<global::System.Action>((currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState), () =>
                         {
                             var parent = LocalParentLayout.Current;
