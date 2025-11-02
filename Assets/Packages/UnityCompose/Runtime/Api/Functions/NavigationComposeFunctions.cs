@@ -85,9 +85,10 @@ public static partial class ComposeFunctions
         );
         var allScreens = Remember(
             (currentBackStack, previousBackStack.Value),
-            () => currentBackStack
-                .Union(previousBackStack.Value)
+            () => previousBackStack.Value
+                .Union(currentBackStack)
                 .Distinct()
+                .OrderBy(static it => it.Priority)
                 .ToImmutableStableList()
         );
         var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () =>

@@ -38,7 +38,7 @@ public static partial class ComposeFunctions
             }));
             var appearingScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());
-            var allScreens = Remember((currentBackStack, previousBackStack.Value), () => currentBackStack.Union(previousBackStack.Value).Distinct().ToImmutableStableList());
+            var allScreens = Remember((currentBackStack, previousBackStack.Value), () => previousBackStack.Value.Union(currentBackStack).Distinct().OrderBy(static it => it.Priority).ToImmutableStableList());
             var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () => ResolveTransition(transition, appearingScreens, disappearingScreens));
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
