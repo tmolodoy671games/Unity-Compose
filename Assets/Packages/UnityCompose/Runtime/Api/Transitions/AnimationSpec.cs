@@ -57,6 +57,11 @@ public readonly record struct AnimationSpec
         );
     }
 
+    public override string ToString()
+    {
+        return $"AnimationSpec(Delay: {_delay}, Duration: {_duration}, Easing: {_easing})";
+    }
+
     public static AnimationSpec Default = Tween(
         delay: 0f,
         duration: ComposeDefaults.TransitionDuration,
