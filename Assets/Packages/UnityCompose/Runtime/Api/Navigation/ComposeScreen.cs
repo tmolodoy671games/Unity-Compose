@@ -16,7 +16,7 @@ public abstract partial class ComposeScreen
 
     public virtual string ScreenKey => GetType().FullName!;
     public virtual int Priority => 0;
-    public virtual ScreenTransitions Transitions => ScreenTransitions.Empty;
+    public virtual ScreenTransitions? Transitions => null;
 
     [Composable, Compiled]
     public abstract void Content();

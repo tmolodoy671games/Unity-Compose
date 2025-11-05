@@ -200,11 +200,23 @@ public readonly struct Percent : IEquatable<Percent>
     {
         return new Percent(left._value - right._value);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Percent operator -(Percent left)
+    {
+        return new Percent(-left._value);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Percent operator *(Percent left, Percent right)
     {
         return new Percent(left._value * right._value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Percent operator *(Percent left, float right)
+    {
+        return new Percent(left._value * right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

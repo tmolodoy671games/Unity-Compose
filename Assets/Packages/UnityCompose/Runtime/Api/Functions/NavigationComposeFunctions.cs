@@ -186,12 +186,22 @@ public static partial class ComposeFunctions
         IStableList<ComposeScreen> exitingScreens
     )
     {
+        if (enteringScreens.Count == 1)
+        {
+            var transitions = enteringScreens[0].Transitions;
+            if (transitions != null)
+                return transitions.Enter;
+        }
+
+        if (exitingScreens.Count == 1)
+        {
+            var transitions = exitingScreens[0].Transitions;
+            if (transitions != null)
+                return transitions.Exit;
+        }
+
         if (transition != null)
             return transition();
-        if (enteringScreens.Count == 1)
-            return enteringScreens[0].Transitions.Enter;
-        if (exitingScreens.Count == 1)
-            return exitingScreens[0].Transitions.Exit;
         return ContentTransform.Instant;
     }
 }
