@@ -17,11 +17,3 @@ public static partial class FloatExtensions
         
     internal static Vector2 Approximate(this Vector2 value) => new(value.x.Approximate(), value.y.Approximate());
 }
-
-public static class IntExtensions
-{
-    public static Length Percent(this int value)
-    {
-        return new Length(value, LengthUnit.Percent);
-    }
-}

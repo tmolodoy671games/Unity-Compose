@@ -9,10 +9,10 @@ public static partial class ModifierExtensions
 {
     public static IModifier Position(
         this IModifier modifier,
-        LayoutCoordinate top = default,
-        LayoutCoordinate bottom = default,
-        LayoutCoordinate left = default,
-        LayoutCoordinate right = default
+        LayoutLength top = default,
+        LayoutLength bottom = default,
+        LayoutLength left = default,
+        LayoutLength right = default
     )
     {
         return modifier + new PositionModifierImpl(top, bottom, left, right);
@@ -21,16 +21,16 @@ public static partial class ModifierExtensions
 
 internal class PositionModifierImpl : BaseModifier<PositionModifierImpl>
 {
-    private readonly LayoutCoordinate _top;
-    private readonly LayoutCoordinate _bottom;
-    private readonly LayoutCoordinate _left;
-    private readonly LayoutCoordinate _right;
+    private readonly LayoutLength _top;
+    private readonly LayoutLength _bottom;
+    private readonly LayoutLength _left;
+    private readonly LayoutLength _right;
 
     public PositionModifierImpl(
-        LayoutCoordinate top,
-        LayoutCoordinate bottom,
-        LayoutCoordinate left,
-        LayoutCoordinate right
+        LayoutLength top,
+        LayoutLength bottom,
+        LayoutLength left,
+        LayoutLength right
     )
     {
         _top = top;
