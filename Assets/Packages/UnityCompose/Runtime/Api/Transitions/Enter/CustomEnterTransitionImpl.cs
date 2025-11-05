@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using SharpExtensions;
 
 namespace UnityCompose;
 
@@ -10,10 +11,10 @@ public static partial class ComposeFunctions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnterTransition Enter(
         Func<float, LayoutInfo, IModifier> transition,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
-        return new CustomEnterTransitionImpl(transition, animationSpec);
+        return new CustomEnterTransitionImpl(transition, animationSpec.GetOrDefault());
     }
 }
 
@@ -25,7 +26,7 @@ internal class CustomEnterTransitionImpl : IEnterTransition
     public CustomEnterTransitionImpl(Func<float, LayoutInfo, IModifier> transition, AnimationSpec animationSpec)
     {
         _transition = transition;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

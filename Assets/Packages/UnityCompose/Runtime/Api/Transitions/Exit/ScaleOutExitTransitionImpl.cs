@@ -11,13 +11,13 @@ public static partial class ComposeFunctions
     public static IExitTransition ScaleOut(
         Optional<Vector2> initialScale = default,
         Optional<Vector2> targetScale = default,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new ScaleOutExitTransitionImpl(
             initialScale: initialScale.GetOrDefault(Vector2.one),
             targetScale: targetScale.GetOrDefault(Vector2.zero),
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 }
@@ -36,7 +36,7 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
     {
         _initialScale = initialScale;
         _targetScale = targetScale;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

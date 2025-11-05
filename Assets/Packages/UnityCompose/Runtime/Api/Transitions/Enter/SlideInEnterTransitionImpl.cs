@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpExtensions;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -10,7 +11,7 @@ public static partial class ComposeFunctions
     public static IEnterTransition SlideIn(
         Func<Vector2, Vector2> initialOffset,
         Func<Vector2, Vector2>? targetOffset = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideInEnterTransitionImpl(
@@ -18,14 +19,14 @@ public static partial class ComposeFunctions
             initialOffsetY: it => initialOffset(it).y,
             targetOffsetX: targetOffset != null ? it => targetOffset(it).x : null,
             targetOffsetY: targetOffset != null ? it => targetOffset(it).y : null,
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 
     public static IEnterTransition SlideInHorizontally(
         Func<float, float> initialOffsetX,
         Func<float, float>? targetOffsetX = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideInEnterTransitionImpl(
@@ -33,14 +34,14 @@ public static partial class ComposeFunctions
             targetOffsetX: targetOffsetX != null ? it => targetOffsetX(it.x) : null,
             initialOffsetY: null,
             targetOffsetY: null,
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 
     public static IEnterTransition SlideInVertically(
         Func<float, float> initialOffsetY,
         Func<float, float>? targetOffsetY = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideInEnterTransitionImpl(
@@ -48,7 +49,7 @@ public static partial class ComposeFunctions
             targetOffsetX: null,
             initialOffsetY: it => initialOffsetY(it.y),
             targetOffsetY: targetOffsetY != null ? it => targetOffsetY(it.x) : null,
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 }
@@ -73,7 +74,7 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
         _initialOffsetY = initialOffsetY;
         _targetOffsetX = targetOffsetX;
         _targetOffsetY = targetOffsetY;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

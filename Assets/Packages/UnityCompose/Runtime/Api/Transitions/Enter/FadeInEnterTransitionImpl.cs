@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using SharpExtensions;
 using UnityEngine;
 
 namespace UnityCompose;
@@ -9,8 +10,8 @@ public static partial class ComposeFunctions
     public static IEnterTransition FadeIn(
         float initialAlpha = 0f,
         float targetAlpha = 1f,
-        AnimationSpec animationSpec = default
-    ) => new FadeInEnterTransitionImpl(initialAlpha, targetAlpha, animationSpec);
+        Optional<AnimationSpec> animationSpec = default
+    ) => new FadeInEnterTransitionImpl(initialAlpha, targetAlpha, animationSpec.GetOrDefault());
 }
 
 internal class FadeInEnterTransitionImpl : IEnterTransition
@@ -27,7 +28,7 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
     {
         _initialAlpha = initialAlpha;
         _targetAlpha = targetAlpha;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

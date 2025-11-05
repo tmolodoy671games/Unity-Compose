@@ -1,14 +1,15 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System.Runtime.CompilerServices;
+using SharpExtensions;
 
 namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IExitTransition Hide(AnimationSpec animationSpec = default) =>
-        new HideExitTransitionImpl(animationSpec);
+    public static IExitTransition Hide(Optional<AnimationSpec> animationSpec = default) =>
+        new HideExitTransitionImpl(animationSpec.GetOrDefault());
 }
 
 internal class HideExitTransitionImpl : IExitTransition
@@ -17,7 +18,7 @@ internal class HideExitTransitionImpl : IExitTransition
 
     public HideExitTransitionImpl(AnimationSpec animationSpec)
     {
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => 0f;

@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using SharpExtensions;
 using UnityEngine;
 
 namespace UnityCompose;
@@ -10,7 +11,7 @@ public static partial class ComposeFunctions
     public static IExitTransition SlideOut(
         Func<Vector2, Vector2> targetOffset,
         Func<Vector2, Vector2>? initialOffset = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideOutExitTransitionImpl(
@@ -18,14 +19,14 @@ public static partial class ComposeFunctions
             initialOffsetY: initialOffset != null ? it => initialOffset(it).y : _ => 0,
             targetOffsetX: it => targetOffset(it).x,
             targetOffsetY: it => targetOffset(it).y,
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 
     public static IExitTransition SlideOutHorizontally(
         Func<float, float> targetOffsetX,
         Func<float, float>? initialOffsetX = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideOutExitTransitionImpl(
@@ -33,14 +34,14 @@ public static partial class ComposeFunctions
             targetOffsetX: it => targetOffsetX(it.x),
             initialOffsetY: null,
             targetOffsetY: null,
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 
     public static IExitTransition SlideOutVertically(
         Func<float, float> targetOffsetY,
         Func<float, float>? initialOffsetY = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new SlideOutExitTransitionImpl(
@@ -48,7 +49,7 @@ public static partial class ComposeFunctions
             targetOffsetX: null,
             initialOffsetY: initialOffsetY != null ? it => initialOffsetY(it.y) : _ => 0,
             targetOffsetY: it => targetOffsetY(it.y),
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 }
@@ -73,7 +74,7 @@ internal class SlideOutExitTransitionImpl : IExitTransition
         _initialOffsetY = initialOffsetY;
         _targetOffsetX = targetOffsetX;
         _targetOffsetY = targetOffsetY;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

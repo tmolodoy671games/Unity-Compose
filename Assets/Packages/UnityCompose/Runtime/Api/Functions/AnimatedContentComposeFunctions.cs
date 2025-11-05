@@ -1,4 +1,5 @@
 using System;
+using Microsoft.CodeAnalysis;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 
@@ -20,7 +21,7 @@ public static partial class ComposeFunctions
         T targetState,
         Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
         [Composable] Action<T> content,
-        AnimationSpec sizeAnimationSpec = default,
+        Optional<AnimationSpec> sizeAnimationSpec = default,
         IModifier? modifier = null
     )
     {
@@ -56,7 +57,7 @@ public static partial class ComposeFunctions
 
         // Animating size:
         var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
-            ? AnimateSizeModifiers(sizeAnimationSpec)
+            ? AnimateSizeModifiers(sizeAnimationSpec.Value)
             : (Modifier, Modifier);
 
         // Layout:

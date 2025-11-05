@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
     [Composable, Compiled]
     public static IState<float> AnimateFloatAsState(
         float targetValue,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
@@ -31,7 +31,7 @@ public static partial class ComposeFunctions
     public static IState<float> AnimateFloatAsState(
         object key,
         Func<float> targetValueFactory,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
@@ -45,7 +45,7 @@ public static partial class ComposeFunctions
     [Composable, Compiled]
     public static IState<Vector2> AnimateVector2AsState(
         Vector2 targetValue,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
@@ -59,7 +59,7 @@ public static partial class ComposeFunctions
     public static IState<Vector2> AnimateVector2AsState(
         object key,
         Func<Vector2> targetValueFactory,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
@@ -74,12 +74,12 @@ public static partial class ComposeFunctions
     public static IState<T> AnimateValueAsState<T>(
         T targetValue,
         Func<T, T, float, T> interpolator,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         var property = Remember(() => MutableStateOf(targetValue));
         if (Equals(property.Value, targetValue)) return property;
-        animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
         LaunchedEffect(
             key: targetValue!,
@@ -91,13 +91,13 @@ public static partial class ComposeFunctions
         {
             var startValue = property.Value;
             if (Equals(startValue, targetValue)) yield break;
-            if (animationSpec.Delay > 0)
-                yield return new WaitForSeconds(animationSpec.Delay);
+            if (resolvedAnimationSpec.Delay > 0)
+                yield return new WaitForSeconds(resolvedAnimationSpec.Delay);
             var elapsed = 0f;
-            while (elapsed < animationSpec.TotalDuration)
+            while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
-                property.Value = interpolator(startValue, newValue, animationSpec.GetProgress(elapsed));
+                property.Value = interpolator(startValue, newValue, resolvedAnimationSpec.GetProgress(elapsed));
                 yield return null;
             }
 
@@ -110,13 +110,13 @@ public static partial class ComposeFunctions
         object key,
         Func<T> targetValueFactory,
         Func<T, T, float, T> interpolator,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         var targetValue = targetValueFactory();
         var property = Remember(() => MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
-        animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
         LaunchedEffect(
             key: key,
@@ -128,13 +128,13 @@ public static partial class ComposeFunctions
         {
             var startValue = property.Value;
             if (Equals(startValue, newValueFactory())) yield break;
-            if (animationSpec.Delay > 0)
-                yield return new WaitForSeconds(animationSpec.Delay);
+            if (resolvedAnimationSpec.Delay > 0)
+                yield return new WaitForSeconds(resolvedAnimationSpec.Delay);
             var elapsed = 0f;
-            while (elapsed < animationSpec.TotalDuration)
+            while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
-                property.Value = interpolator(startValue, newValueFactory(), animationSpec.GetProgress(elapsed));
+                property.Value = interpolator(startValue, newValueFactory(), resolvedAnimationSpec.GetProgress(elapsed));
                 yield return null;
             }
 

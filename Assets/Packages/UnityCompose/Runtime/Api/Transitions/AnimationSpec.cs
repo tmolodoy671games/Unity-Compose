@@ -1,5 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System.Runtime.CompilerServices;
+using SharpExtensions;
 using UnityEngine;
 
 namespace UnityCompose;
@@ -25,14 +27,12 @@ public readonly record struct AnimationSpec
     private readonly float _duration;
     private readonly float _delay;
     private readonly IEasing _easing;
-    public readonly bool HasValue;
 
     internal AnimationSpec(float duration, float delay, IEasing easing) : this()
     {
         _duration = duration;
         _delay = delay;
         _easing = easing;
-        HasValue = true;
     }
 
     public float GetProgress(float timeElapsed)
@@ -52,7 +52,7 @@ public readonly record struct AnimationSpec
     {
         return new AnimationSpec(
             duration: duration >= 0 ? duration : _duration,
-            delay: delay  >= 0 ? delay : _delay,
+            delay: delay >= 0 ? delay : _delay,
             easing: easing ?? _easing
         );
     }
@@ -67,4 +67,13 @@ public readonly record struct AnimationSpec
         duration: ComposeDefaults.TransitionDuration,
         easing: EaseInOutEasing
     );
+}
+
+public static class OptionalAnimationSpecExtensions
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static AnimationSpec GetOrDefault(this Optional<AnimationSpec> animationSpec)
+    {
+        return animationSpec.HasValue ? animationSpec.Value : AnimationSpec.Default;
+    }
 }

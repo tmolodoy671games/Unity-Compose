@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
@@ -15,11 +16,11 @@ public static partial class ComposeFunctions
     public static void AnimatedSize(
         Action content,
         IModifier? modifier = null,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
-        var (containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec);
+        var (containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault());
 
         ReusableComposeView<AnimatedSize>(
             modifier: modifier.OrEmpty()
@@ -47,7 +48,7 @@ public static partial class ComposeFunctions
         object? key = null
     )
     {
-        var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        var resolvedAnimationSpec = animationSpec;
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentStyle = Modifier;

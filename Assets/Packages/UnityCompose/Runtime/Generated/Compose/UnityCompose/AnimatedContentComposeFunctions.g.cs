@@ -1,4 +1,5 @@
 using System;
+using Microsoft.CodeAnalysis;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using static UnityCompose.ComposeFunctions;
@@ -9,7 +10,7 @@ public static partial class ComposeFunctions
 {
     [Composable]
     [Compiled]
-    private static void __AnimatedContent<T>(T targetState, Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec, [Composable] Action<T> content, AnimationSpec sizeAnimationSpec = default, IModifier? modifier = null)
+    private static void __AnimatedContent<T>(T targetState, Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec, [Composable] Action<T> content, Optional<AnimationSpec> sizeAnimationSpec = default, IModifier? modifier = null)
     {
         if (CurrentComposer.BeginComposeGroup((targetState, transitionSpec, content, sizeAnimationSpec, modifier)))
             return;
@@ -31,7 +32,7 @@ public static partial class ComposeFunctions
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var resolvedTimeElapsed = resolvedProgress * transitionDuration;
             // Animating size:
-            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec) : (Modifier, Modifier);
+            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec.Value) : (Modifier, Modifier);
             // Layout:
             ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier), () =>
             {

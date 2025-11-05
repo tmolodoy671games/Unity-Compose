@@ -10,13 +10,13 @@ public static partial class ComposeFunctions
     public static IEnterTransition ScaleIn(
         Optional<Vector2> initialScale = default,
         Optional<Vector2> targetScale = default,
-        AnimationSpec animationSpec = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return new ScaleInEnterTransitionImpl(
             initialScale: initialScale.GetOrDefault(Vector2.zero),
             targetScale: targetScale.GetOrDefault(Vector2.one),
-            animationSpec: animationSpec
+            animationSpec: animationSpec.GetOrDefault()
         );
     }
 }
@@ -35,7 +35,7 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
     {
         _initialScale = initialScale;
         _targetScale = targetScale;
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using SharpExtensions;
 using UnityEngine;
 
 namespace UnityCompose;
@@ -12,8 +13,8 @@ public interface IExitTransition
 
     IExitTransition With(AnimationSpec animationSpec);
 
-    public static IExitTransition Empty(AnimationSpec animationSpec = default) =>
-        new EmptyExitTransitionImpl(animationSpec);
+    public static IExitTransition Empty(Optional<AnimationSpec> animationSpec = default) =>
+        new EmptyExitTransitionImpl(animationSpec.GetOrDefault());
 
     public static IExitTransition operator +(IExitTransition first, IExitTransition second)
     {
@@ -27,7 +28,7 @@ internal class EmptyExitTransitionImpl : IExitTransition
 
     public EmptyExitTransitionImpl(AnimationSpec animationSpec)
     {
-        _animationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
+        _animationSpec = animationSpec;
     }
 
     public float TotalDuration => _animationSpec.TotalDuration;

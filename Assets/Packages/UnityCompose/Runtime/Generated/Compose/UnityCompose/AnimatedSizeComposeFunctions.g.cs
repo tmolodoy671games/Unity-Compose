@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
@@ -13,14 +14,14 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     [Compiled]
-    private static void __AnimatedSize(Action content, IModifier? modifier = null, AnimationSpec animationSpec = default)
+    private static void __AnimatedSize(Action content, IModifier? modifier = null, Optional<AnimationSpec> animationSpec = default)
     {
         if (CurrentComposer.BeginComposeGroup((content, modifier, animationSpec)))
             return;
         try
         {
             var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
-            var(containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec);
+            var(containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault());
             ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerStyle), initializer: Remember<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>>(null, it =>
             {
                 it.style.alignItems = Align.Center;
