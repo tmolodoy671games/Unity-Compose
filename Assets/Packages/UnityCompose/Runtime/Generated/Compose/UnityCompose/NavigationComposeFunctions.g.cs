@@ -46,7 +46,7 @@ public static partial class ComposeFunctions
             var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
             ReusableComposeView<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration), () =>
             {
-                CompositionLocalProvider(provides: Remember(() => IImmutableStableList.Create(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)))), content: RememberComposable<global::System.Action>((onTransitionProgressChanged, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration), () =>
+                CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), content: RememberComposable<global::System.Action>((onTransitionProgressChanged, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration), () =>
                 {
                     LaunchedEffect(resolvedProgress, Remember<global::System.Action>((onTransitionProgressChanged, resolvedProgress), () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                     if (IsInPreview)
@@ -60,7 +60,7 @@ public static partial class ComposeFunctions
                             screenState = ContentState.Idle;
                         Key(key: screen, content: RememberComposable<global::System.Action>((currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState), () =>
                         {
-                            var parent = LocalParentLayout.Current;
+                            var parent = LocalVisualElement.Current;
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentStyle = screenState switch
                             {

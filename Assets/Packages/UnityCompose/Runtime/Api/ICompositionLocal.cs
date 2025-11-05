@@ -7,9 +7,14 @@ public interface ICompositionLocal
 {
 }
 
-public interface ICompositionLocal<out T> : ICompositionLocal
+public interface ICompositionLocal<T> : ICompositionLocal
 {
     T Current { get; }
+    
+    public CompositionLocalProvides Provides(T value)
+    {
+        return new CompositionLocalProvides(this, value);
+    }
 }
 
 internal class CompositionLocalImpl<T> : ICompositionLocal<T>
@@ -55,11 +60,6 @@ public readonly struct CompositionLocalProvides
 
 public static class CompositionLocalExtensions
 {
-    public static CompositionLocalProvides Provides<T>(this ICompositionLocal<T> compositionLocal, T value)
-    {
-        return new CompositionLocalProvides(compositionLocal, value);
-    }
-
     public static ICompositionLocal<T2> Select<T1, T2>(
         this ICompositionLocal<T1> compositionLocal,
         Func<T1, T2> selector

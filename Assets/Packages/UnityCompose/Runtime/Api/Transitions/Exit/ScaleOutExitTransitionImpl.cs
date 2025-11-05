@@ -3,6 +3,7 @@
 using System;
 using SharpExtensions;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
@@ -41,8 +42,9 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
+        if (parent == null) throw new ArgumentNullException(nameof(parent));
         if (timeElapsed < _animationSpec.Delay)
             return Modifier;
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);

@@ -18,7 +18,10 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(modifier: Modifier.Padding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition()).Background(Color.blue).Border(radius: 16).OnMouseEnter(Remember<global::System.Action>(isHovered, () => isHovered.Value = true)).OnMouseLeave(Remember<global::System.Action>(isHovered, () => isHovered.Value = false)), content: RememberComposable<global::System.Action>(null, () =>
                     {
-                        Text(text: "Click me", fontSize: 24);
+                        CompositionLocalProvider(LocalContentColor.Provides(Color.white), content: RememberComposable<global::System.Action>(null, () =>
+                        {
+                            Text(text: "Click me", fontSize: 24);
+                        }));
                     }));
                 }));
             }

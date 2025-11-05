@@ -161,7 +161,16 @@ public static partial class ComposeFunctions
                 it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(resolvedFontStyle, resolvedFontWeight);
                 it.style.unityTextAlign = textAlign.ToTextAnchor();
                 it.style.fontSize = fontSize.GetOrDefault(style.HasValue ? style.Value.FontSize : 14f);
-                it.style.color = color.GetOrDefault(style.HasValue ? style.Value.Color : Color.white);
+                if (color.HasValue)
+                    it.style.color = color.Value;
+                else if (style is { HasValue: true, Value.Color.HasValue: true })
+                    it.style.color = style.Value.Color.Value;
+                else if (LocalContentColor.Current.HasValue)
+                    it.style.color = LocalContentColor.Current.Value;
+                else if (LocalTextStyle.Current is { HasValue: true, Value.Color.HasValue: true })
+                    it.style.color = LocalTextStyle.Current.Value.Color.Value;
+                else
+                    it.style.color = Color.black;
             }));
         }
         finally

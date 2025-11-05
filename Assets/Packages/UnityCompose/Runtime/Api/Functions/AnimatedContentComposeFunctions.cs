@@ -66,7 +66,7 @@ public static partial class ComposeFunctions
                 .Then(containerModifier),
             content: () =>
             {
-                var parent = LocalParentLayout.Current;
+                var parent = LocalVisualElement.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent)
                     .Then(contentModifier);
                 var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent)
@@ -94,14 +94,12 @@ public static partial class ComposeFunctions
                         content: () =>
                         {
                             CompositionLocalProvider(
-                                provides: IImmutableStableList.Create(
-                                    LocalModifier.Provides(after: pair.First.Style),
-                                    LocalTransitionState.Provides(
-                                        TransitionState.Create(
-                                            state: pair.First.ContentState,
-                                            absoluteProgress: resolvedProgress,
-                                            duration: resolvedTransition.TotalDuration
-                                        )
+                                LocalModifier.Provides(after: pair.First.Style),
+                                LocalTransitionState.Provides(
+                                    TransitionState.Create(
+                                        state: pair.First.ContentState,
+                                        absoluteProgress: resolvedProgress,
+                                        duration: resolvedTransition.TotalDuration
                                     )
                                 ),
                                 content: () => content(pair.First.Value)
@@ -117,14 +115,12 @@ public static partial class ComposeFunctions
                         content: () =>
                         {
                             CompositionLocalProvider(
-                                provides: IImmutableStableList.Create(
-                                    LocalModifier.Provides(after: pair.Second.Style),
-                                    LocalTransitionState.Provides(
-                                        TransitionState.Create(
-                                            state: pair.First.ContentState,
-                                            absoluteProgress: resolvedProgress,
-                                            duration: resolvedTransition.TotalDuration
-                                        )
+                                LocalModifier.Provides(after: pair.Second.Style),
+                                LocalTransitionState.Provides(
+                                    TransitionState.Create(
+                                        state: pair.First.ContentState,
+                                        absoluteProgress: resolvedProgress,
+                                        duration: resolvedTransition.TotalDuration
                                     )
                                 ),
                                 content: () => content(pair.Second.Value)

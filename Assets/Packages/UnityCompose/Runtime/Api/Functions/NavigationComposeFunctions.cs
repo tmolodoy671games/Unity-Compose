@@ -110,9 +110,7 @@ public static partial class ComposeFunctions
             content: () =>
             {
                 CompositionLocalProvider(
-                    provides: Remember(() => IImmutableStableList.Create(
-                        LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry))
-                    )),
+                    LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
                     content: () =>
                     {
                         LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
@@ -135,7 +133,7 @@ public static partial class ComposeFunctions
                                 key: screen,
                                 content: () =>
                                 {
-                                    var parent = LocalParentLayout.Current;
+                                    var parent = LocalVisualElement.Current;
                                     var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                                     var contentStyle = screenState switch
                                     {

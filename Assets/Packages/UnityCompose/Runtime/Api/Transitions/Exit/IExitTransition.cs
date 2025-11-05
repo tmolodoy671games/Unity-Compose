@@ -2,6 +2,7 @@
 
 using SharpExtensions;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
@@ -9,7 +10,7 @@ public interface IExitTransition
 {
     float TotalDuration { get; }
 
-    IModifier Get(float timeElapsed, LayoutInfo parent);
+    IModifier Get(float timeElapsed, VisualElement parent);
 
     IExitTransition With(AnimationSpec animationSpec);
 
@@ -33,7 +34,7 @@ internal class EmptyExitTransitionImpl : IExitTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
         return Modifier;
     }
@@ -57,7 +58,7 @@ internal class CompositeExitTransitionImpl : IExitTransition
 
     public float TotalDuration => Mathf.Max(_left.TotalDuration, _right.TotalDuration);
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
         return _left.Get(timeElapsed, parent)
             .Then(_right.Get(timeElapsed, parent));

@@ -2,6 +2,7 @@
 
 using System.Runtime.CompilerServices;
 using SharpExtensions;
+using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
@@ -23,7 +24,7 @@ internal class HideExitTransitionImpl : IExitTransition
 
     public float TotalDuration => 0f;
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
         if (timeElapsed < _animationSpec.Delay)
             return Modifier;

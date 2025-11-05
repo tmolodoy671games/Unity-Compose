@@ -35,9 +35,15 @@ namespace UnityCompose.Samples.Behaviors
                             .OnMouseLeave(() => isHovered.Value = false),
                         content: () =>
                         {
-                            Text(
-                                text: "Click me",
-                                fontSize: 24
+                            CompositionLocalProvider(
+                                LocalContentColor.Provides(Color.white),
+                                content: () =>
+                                {
+                                    Text(
+                                        text: "Click me",
+                                        fontSize: 24
+                                    );
+                                }
                             );
                         }
                     );

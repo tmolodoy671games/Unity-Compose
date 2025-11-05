@@ -2,6 +2,7 @@
 
 using SharpExtensions;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
@@ -33,7 +34,7 @@ internal class FadeOutExitTransitionImpl : IExitTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
         if (timeElapsed < _animationSpec.Delay)
             return Modifier;

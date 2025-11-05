@@ -28,7 +28,7 @@ public static partial class ComposeFunctions
                 it.style.justifyContent = Justify.Center;
             }), content: RememberComposable<global::System.Action>((content, contentStyle), () =>
             {
-                CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: contentStyle)), content: content);
+                CompositionLocalProvider(LocalModifier.Provides(after: contentStyle), content: content);
             }));
         }
         finally

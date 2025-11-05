@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using SharpExtensions;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
 public readonly record struct TextStyle(
-    Color Color,
     float FontSize,
+    Optional<Color> Color = default,
     FontWeight FontWeight = FontWeight.Normal, 
     FontStyle FontStyle = FontStyle.Normal
 );

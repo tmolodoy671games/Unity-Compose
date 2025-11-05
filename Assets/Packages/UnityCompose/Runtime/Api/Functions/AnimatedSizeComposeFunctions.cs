@@ -33,9 +33,7 @@ public static partial class ComposeFunctions
             content: () =>
             {
                 CompositionLocalProvider(
-                    provides: IImmutableStableList.Create(
-                        LocalModifier.Provides(after: contentStyle)
-                    ),
+                    LocalModifier.Provides(after: contentStyle),
                     content: content
                 );
             }

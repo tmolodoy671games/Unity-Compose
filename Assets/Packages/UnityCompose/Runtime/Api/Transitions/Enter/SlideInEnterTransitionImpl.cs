@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpExtensions;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
@@ -79,15 +80,15 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    public IModifier Get(float timeElapsed, LayoutInfo parent)
+    public IModifier Get(float timeElapsed, VisualElement parent)
     {
         if (timeElapsed < _animationSpec.Delay)
             return Modifier;
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         var result = Modifier;
         var parentSize = new Vector2(
-            parent.Width + parent.PaddingLeft,
-            parent.Height + parent.PaddingTop
+            parent.resolvedStyle.width + parent.resolvedStyle.paddingLeft + parent.resolvedStyle.paddingRight,
+            parent.resolvedStyle.height + parent.resolvedStyle.paddingTop + parent.resolvedStyle.paddingBottom
         );
         if (_initialOffsetX != null)
         {

@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
             // Layout:
             ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: RememberComposable<global::System.Action>((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier), () =>
             {
-                var parent = LocalParentLayout.Current;
+                var parent = LocalVisualElement.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);
                 var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent).Float();
                 var isAnimationRunning = resolvedProgress is> 0 and < 1;
@@ -47,7 +47,7 @@ public static partial class ComposeFunctions
                 {
                     Key(key: "First", content: RememberComposable<global::System.Action>((content, resolvedTransition, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.First.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration))), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.First.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
                     }));
                 }
 
@@ -55,7 +55,7 @@ public static partial class ComposeFunctions
                 {
                     Key(key: "Second", content: RememberComposable<global::System.Action>((content, resolvedTransition, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration))), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
                     }));
                 }
             }));
