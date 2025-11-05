@@ -200,9 +200,7 @@ public static partial class ComposeFunctions
                 return transitions.Exit;
         }
 
-        if (transition != null)
-            return transition();
-        return ContentTransform.Instant;
+        return transition?.Invoke() ?? ContentTransform.Instant;
     }
 }
 
