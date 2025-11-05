@@ -55,6 +55,19 @@ public static partial class ComposeFunctions
         );
     }
     
+    [Composable]
+    public static IState<Color> AnimateColorAsState(
+        Color targetValue,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        return AnimateValueAsState(
+            targetValue: targetValue,
+            interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress),
+            animationSpec: animationSpec
+        );
+    }
+    
     [Composable, Compiled]
     public static IState<Vector2> AnimateVector2AsState(
         object key,
