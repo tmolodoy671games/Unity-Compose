@@ -14,12 +14,12 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier SizeIn(
         this IModifier modifier,
-        float min = -1,
-        float max = -1,
-        float minWidth = -1,
-        float maxWidth = -1,
-        float minHeight = -1,
-        float maxHeight = -1
+        LayoutLength min = default,
+        LayoutLength max = default,
+        LayoutLength minWidth = default,
+        LayoutLength maxWidth = default,
+        LayoutLength minHeight = default,
+        LayoutLength maxHeight = default
     )
     {
         return modifier + new SizeInModifierImpl(
@@ -31,47 +31,30 @@ public static partial class ModifierExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier SizeIn(
-        this IModifier modifier,
-        Optional<Vector2> min = default,
-        Optional<Vector2> max = default
-    )
-    {
-        var resolvedMin = min.GetOrDefault(-Vector2.one);
-        var resolvedMax = min.GetOrDefault(-Vector2.one);
-        return modifier + new SizeInModifierImpl(
-            minWidth: resolvedMin.x,
-            maxWidth: resolvedMax.x,
-            minHeight: resolvedMin.y,
-            maxHeight: resolvedMax.y
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier WidthIn(
         this IModifier modifier,
-        float min = -1,
-        float max = -1
+        LayoutLength min = default,
+        LayoutLength max = default
     )
     {
         return modifier + new SizeInModifierImpl(
             minWidth: min,
             maxWidth: max,
-            minHeight: -1,
-            maxHeight: -1
+            minHeight: default,
+            maxHeight: default
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier HeightIn(
         this IModifier modifier,
-        float min = -1,
-        float max = -1
+        LayoutLength min = default,
+        LayoutLength max = default
     )
     {
         return modifier + new SizeInModifierImpl(
-            minWidth: -1,
-            maxWidth: -1,
+            minWidth: default,
+            maxWidth: default,
             minHeight: min,
             maxHeight: max
         );
@@ -80,12 +63,13 @@ public static partial class ModifierExtensions
 
 internal class SizeInModifierImpl : BaseModifier<SizeInModifierImpl>
 {
-    private readonly float _minWidth;
-    private readonly float _maxWidth;
-    private readonly float _minHeight;
-    private readonly float _maxHeight;
+    private readonly LayoutLength _minWidth;
+    private readonly LayoutLength _maxWidth;
+    private readonly LayoutLength _minHeight;
+    private readonly LayoutLength _maxHeight;
 
-    public SizeInModifierImpl(float minWidth, float maxWidth, float minHeight, float maxHeight)
+    public SizeInModifierImpl(LayoutLength minWidth, LayoutLength maxWidth, LayoutLength minHeight,
+        LayoutLength maxHeight)
     {
         _minWidth = minWidth;
         _maxWidth = maxWidth;
@@ -95,45 +79,45 @@ internal class SizeInModifierImpl : BaseModifier<SizeInModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        if (_minWidth >= 0)
+        if (_minWidth.HasValue)
             element.style.minWidth = _minWidth;
-        if (_maxWidth >= 0)
+        if (_maxWidth.HasValue)
             element.style.maxWidth = _maxWidth;
-        if (_minHeight >= 0)
+        if (_minHeight.HasValue)
             element.style.minHeight = _minHeight;
-        if (_maxHeight >= 0)
+        if (_maxHeight.HasValue)
             element.style.maxHeight = _maxHeight;
     }
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
-        if (_minWidth >= 0)
+        if (_minWidth.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MinWidth);
-        if (_maxWidth >= 0)
+        if (_maxWidth.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MaxWidth);
-        if (_minHeight >= 0)
+        if (_minHeight.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MinHeight);
-        if (_maxHeight >= 0)
+        if (_maxHeight.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MaxHeight);
     }
 
     public override void Revert(VisualElement element)
     {
-        if (_minWidth >= 0)
+        if (_minWidth.HasValue)
             element.style.minWidth = StyleKeyword.Null;
-        if (_maxWidth >= 0)
+        if (_maxWidth.HasValue)
             element.style.maxWidth = StyleKeyword.Null;
-        if (_minHeight >= 0)
+        if (_minHeight.HasValue)
             element.style.minHeight = StyleKeyword.Null;
-        if (_maxHeight >= 0)
+        if (_maxHeight.HasValue)
             element.style.maxHeight = StyleKeyword.Null;
     }
 
     protected override bool Equals(SizeInModifierImpl other)
     {
         return _minWidth.Equals(other._minWidth) &&
-               _maxWidth.AlmostEquals(other._maxWidth) &&
-               _minHeight.AlmostEquals(other._minHeight) &&
-               _maxHeight.AlmostEquals(other._maxHeight);
+               _maxWidth.Equals(other._maxWidth) &&
+               _minHeight.Equals(other._minHeight) &&
+               _maxHeight.Equals(other._maxHeight);
     }
 }

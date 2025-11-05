@@ -13,13 +13,13 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Padding(
         this IModifier modifier,
-        float all = -1,
-        float horizontal = -1,
-        float vertical = -1,
-        float top = -1,
-        float bottom = -1,
-        float left = -1,
-        float right = -1,
+        LayoutLength all = default,
+        LayoutLength horizontal = default,
+        LayoutLength vertical = default,
+        LayoutLength top = default,
+        LayoutLength bottom = default,
+        LayoutLength left = default,
+        LayoutLength right = default,
         Optional<ComposeTransition> transition = default
     )
     {
@@ -35,17 +35,17 @@ public static partial class ModifierExtensions
 
 internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 {
-    private readonly float _top;
-    private readonly float _bottom;
-    private readonly float _left;
-    private readonly float _right;
+    private readonly LayoutLength _top;
+    private readonly LayoutLength _bottom;
+    private readonly LayoutLength _left;
+    private readonly LayoutLength _right;
     private readonly Optional<ComposeTransition> _transition;
 
     public PaddingModifierImpl(
-        float top,
-        float bottom,
-        float left,
-        float right,
+        LayoutLength top,
+        LayoutLength bottom,
+        LayoutLength left,
+        LayoutLength right,
         Optional<ComposeTransition> transition
     )
     {
@@ -58,28 +58,28 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
         {
             element.style.paddingTop = _top;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "padding-left");
         }
 
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
         {
             element.style.paddingBottom = _bottom;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "padding-right");
         }
 
-        if (_left >= 0)
+        if (_left.HasValue)
         {
             element.style.paddingLeft = _left;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "padding-left");
         }
 
-        if (_right >= 0)
+        if (_right.HasValue)
         {
             element.style.paddingRight = _right;
             if (_transition.HasValue)
@@ -89,33 +89,33 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.PaddingTop);
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.PaddingBottom);
-        if (_left >= 0)
+        if (_left.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.PaddingLeft);
-        if (_right >= 0)
+        if (_right.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.PaddingRight);
     }
 
     public override void Revert(VisualElement element)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
             element.style.paddingTop = StyleKeyword.Null;
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
             element.style.paddingBottom = StyleKeyword.Null;
-        if (_left >= 0)
+        if (_left.HasValue)
             element.style.paddingLeft = StyleKeyword.Null;
-        if (_right >= 0)
+        if (_right.HasValue)
             element.style.paddingRight = StyleKeyword.Null;
     }
 
     protected override bool Equals(PaddingModifierImpl other)
     {
-        return _top.AlmostEquals(other._top) &&
-               _bottom.AlmostEquals(other._bottom) &&
-               _left.AlmostEquals(other._left) &&
-               _right.AlmostEquals(other._right);
+        return _top.Equals(other._top) &&
+               _bottom.Equals(other._bottom) &&
+               _left.Equals(other._left) &&
+               _right.Equals(other._right);
     }
 }

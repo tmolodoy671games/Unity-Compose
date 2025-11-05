@@ -30,7 +30,7 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
     {
         if (_px.HasValue) return _px.Value.ToLength();
         if (_percent.HasValue) return _percent.Value.ToLength();
-        throw new IllegalStateException();
+        return 0f;
     }
 
     public bool Equals(LayoutLength other)
@@ -56,6 +56,31 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator LayoutLength(float value) => new Px(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(LayoutLength lhs, LayoutLength rhs)
+    {
+        return lhs.Equals(rhs);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(LayoutLength lhs, LayoutLength rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Length(LayoutLength length)
+    {
+        return length.ToLength();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator StyleLength(LayoutLength length)
+    {
+        return length.ToLength();
+    }
 }
 
 public readonly struct Px : IEquatable<Px>
@@ -108,6 +133,16 @@ public readonly struct Px : IEquatable<Px>
     {
         return new Px(left._value / right._value);
     }
+
+    public static bool operator ==(Px lhs, Px rhs)
+    {
+        return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(Px lhs, Px rhs)
+    {
+        return !(lhs == rhs);
+    }
 }
 
 public readonly struct Percent : IEquatable<Percent>
@@ -157,6 +192,16 @@ public readonly struct Percent : IEquatable<Percent>
     {
         return new Percent(left._value / right._value);
     }
+
+    public static bool operator ==(Percent lhs, Percent rhs)
+    {
+        return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(Percent lhs, Percent rhs)
+    {
+        return !(lhs == rhs);
+    }
 }
 
 public static partial class FloatExtensions
@@ -164,8 +209,8 @@ public static partial class FloatExtensions
     public static Percent Percent(this float coordinate) => new(coordinate);
 
     public static Px Px(this float value) => new Px(value);
-    
-    
+
+
     public static Percent Percent(this int coordinate) => new(coordinate);
 
     public static Px Px(this int value) => new Px(value);

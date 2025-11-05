@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System.Runtime.CompilerServices;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
@@ -13,38 +14,32 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier TransformOrigin(
         this IModifier modifier,
-        float originX = -1,
-        float originY = -1,
-        float origin = -1
+        LayoutLength originX = default,
+        LayoutLength originY = default,
+        Optional<(LayoutLength X, LayoutLength Y)> origin = default
     )
     {
         return modifier + new TransformOriginModifierImpl(
-            new Vector2(
-                ParamUtils.Resolve(originX, origin),
-                ParamUtils.Resolve(originY, origin)
-            )
+            x: originX.HasValue ? originX : origin.HasValue ? origin.Value.X : default,
+            y: originY.HasValue ? originY : origin.HasValue ? origin.Value.Y : default
         );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier TransformOrigin(this IModifier modifier, Vector2 origin)
-    {
-        return modifier + new TransformOriginModifierImpl(origin);
     }
 }
 
 internal class TransformOriginModifierImpl : BaseModifier<TransformOriginModifierImpl>
 {
-    private readonly Vector2 _origin;
+    private readonly LayoutLength _x;
+    private readonly LayoutLength _y;
 
-    public TransformOriginModifierImpl(Vector2 origin)
+    public TransformOriginModifierImpl(LayoutLength x, LayoutLength y)
     {
-        _origin = origin;
+        _x = x;
+        _y = y;
     }
 
     public override void Apply(VisualElement element)
     {
-        element.style.transformOrigin = new TransformOrigin(_origin.x, _origin.y);
+        element.style.transformOrigin = new TransformOrigin(_x.ToLength(), _y.ToLength());
     }
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
@@ -59,6 +54,6 @@ internal class TransformOriginModifierImpl : BaseModifier<TransformOriginModifie
 
     protected override bool Equals(TransformOriginModifierImpl other)
     {
-        return _origin == other._origin;
+        return _x == other._x && _y == other._y;
     }
 }

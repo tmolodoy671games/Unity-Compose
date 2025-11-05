@@ -87,7 +87,7 @@ public static partial class ComposeFunctions
                         animationSpec: resolvedAnimationSpec
                     ).Value;
                 containerStyle = containerStyle
-                    .Size(animatedSize);
+                    .Size(width: animatedSize.x, height: animatedSize.y);
                 contentStyle = contentStyle
                     .Float();
             }

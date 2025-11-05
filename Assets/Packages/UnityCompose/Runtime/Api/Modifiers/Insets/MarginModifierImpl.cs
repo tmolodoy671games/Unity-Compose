@@ -13,13 +13,13 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Margin(
         this IModifier modifier,
-        float all = -1,
-        float horizontal = -1,
-        float vertical = -1,
-        float top = -1,
-        float bottom = -1,
-        float left = -1,
-        float right = -1,
+        LayoutLength all = default,
+        LayoutLength horizontal = default,
+        LayoutLength vertical = default,
+        LayoutLength top = default,
+        LayoutLength bottom = default,
+        LayoutLength left = default,
+        LayoutLength right = default,
         Optional<ComposeTransition> transition = default
     )
     {
@@ -35,17 +35,17 @@ public static partial class ModifierExtensions
 
 internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 {
-    private readonly float _top;
-    private readonly float _bottom;
-    private readonly float _left;
-    private readonly float _right;
+    private readonly LayoutLength _top;
+    private readonly LayoutLength _bottom;
+    private readonly LayoutLength _left;
+    private readonly LayoutLength _right;
     private readonly Optional<ComposeTransition> _transition;
 
     public MarginModifierImpl(
-        float top,
-        float bottom,
-        float left,
-        float right,
+        LayoutLength top,
+        LayoutLength bottom,
+        LayoutLength left,
+        LayoutLength right,
         Optional<ComposeTransition> transition
     )
     {
@@ -58,30 +58,30 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
         {
-            element.style.marginTop = _top;
+            element.style.marginTop = _top.ToLength();
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-left");
         }
 
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
         {
-            element.style.marginBottom = _bottom;
+            element.style.marginBottom = _bottom.ToLength();
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-right");
         }
 
-        if (_left >= 0)
+        if (_left.HasValue)
         {
-            element.style.marginLeft = _left;
+            element.style.marginLeft = _left.ToLength();
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-left");
         }
 
-        if (_right >= 0)
+        if (_right.HasValue)
         {
-            element.style.marginRight = _right;
+            element.style.marginRight = _right.ToLength();
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "margin-right");
         }
@@ -89,33 +89,33 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MarginTop);
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MarginBottom);
-        if (_left >= 0)
+        if (_left.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MarginLeft);
-        if (_right >= 0)
+        if (_right.HasValue)
             modifiedProperties.Add(ComposeModifiedProperty.MarginRight);
     }
 
     public override void Revert(VisualElement element)
     {
-        if (_top >= 0)
+        if (_top.HasValue)
             element.style.marginTop = StyleKeyword.Null;
-        if (_bottom >= 0)
+        if (_bottom.HasValue)
             element.style.marginBottom = StyleKeyword.Null;
-        if (_left >= 0)
+        if (_left.HasValue)
             element.style.marginLeft = StyleKeyword.Null;
-        if (_right >= 0)
+        if (_right.HasValue)
             element.style.marginRight = StyleKeyword.Null;
     }
 
     protected override bool Equals(MarginModifierImpl other)
     {
-        return _top.AlmostEquals(other._top) &&
-               _bottom.AlmostEquals(other._bottom) &&
-               _left.AlmostEquals(other._left) &&
-               _right.AlmostEquals(other._right);
+        return _top.Equals(other._top) &&
+               _bottom.Equals(other._bottom) &&
+               _left.Equals(other._left) &&
+               _right.Equals(other._right);
     }
 }

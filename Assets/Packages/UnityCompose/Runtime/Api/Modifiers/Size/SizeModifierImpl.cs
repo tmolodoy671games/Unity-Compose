@@ -12,37 +12,33 @@ namespace UnityCompose;
 public static partial class ModifierExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Size(this IModifier modifier, float size = -1, float width = -1, float height = -1)
+    public static IModifier Size(
+        this IModifier modifier,
+        LayoutLength size = default,
+        LayoutLength width = default,
+        LayoutLength height = default
+    )
     {
         return modifier + new SizeModifierImpl(
             width: ParamUtils.Resolve(width, size),
             height: ParamUtils.Resolve(height, size)
         );
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Size(this IModifier modifier, Vector2 size)
-    {
-        return modifier + new SizeModifierImpl(
-            width: size.x,
-            height: size.y
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Width(this IModifier modifier, float width)
+    public static IModifier Width(this IModifier modifier, LayoutLength width)
     {
         return modifier + new SizeModifierImpl(
             width: width,
-            height: -1
+            height: default
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IModifier Height(this IModifier modifier, float height)
+    public static IModifier Height(this IModifier modifier, LayoutLength height)
     {
         return modifier + new SizeModifierImpl(
-            width: -1,
+            width: default,
             height: height
         );
     }
@@ -50,10 +46,10 @@ public static partial class ModifierExtensions
 
 internal class SizeModifierImpl : BaseModifier<SizeModifierImpl>
 {
-    private readonly float _width;
-    private readonly float _height;
+    private readonly LayoutLength _width;
+    private readonly LayoutLength _height;
 
-    public SizeModifierImpl(float width, float height)
+    public SizeModifierImpl(LayoutLength width, LayoutLength height)
     {
         _width = width;
         _height = height;
@@ -61,9 +57,9 @@ internal class SizeModifierImpl : BaseModifier<SizeModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        if (_width >= 0)
+        if (_width.HasValue)
             element.style.width = _width;
-        if (_height >= 0)
+        if (_height.HasValue)
             element.style.height = _height;
     }
 
@@ -75,14 +71,14 @@ internal class SizeModifierImpl : BaseModifier<SizeModifierImpl>
 
     public override void Revert(VisualElement element)
     {
-        if (_width >= 0)
+        if (_width.HasValue)
             element.style.width = StyleKeyword.Null;
-        if (_height >= 0)
+        if (_height.HasValue)
             element.style.height = StyleKeyword.Null;
     }
 
     protected override bool Equals(SizeModifierImpl other)
     {
-        return _width.AlmostEquals(other._width) && _height.AlmostEquals(other._height);
+        return _width.Equals(other._width) && _height.Equals(other._height);
     }
 }

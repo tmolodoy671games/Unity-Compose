@@ -14,32 +14,32 @@ public static partial class ModifierExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Offset(
         this IModifier modifier,
-        Optional<float> x = default,
-        Optional<float> y = default,
-        Optional<Vector2> offset = default
+        LayoutLength x = default,
+        LayoutLength y = default,
+        Optional<(LayoutLength X, LayoutLength Y)> offset = default
     )
     {
         return modifier + new OffsetModifierImpl(
-            new Vector2(
-                x.GetOrDefault(offset.HasValue ? offset.Value.x : 0f),
-                y.GetOrDefault(offset.HasValue ? offset.Value.y : 0f)
-            )
+            x: x.HasValue ? x : offset.HasValue ? offset.Value.X : default,
+            y: y.HasValue ? y : offset.HasValue ? offset.Value.Y : default
         );
     }
 }
 
 internal class OffsetModifierImpl : BaseModifier<OffsetModifierImpl>
 {
-    private readonly Vector2 _offset;
+    private readonly LayoutLength _x;
+    private readonly LayoutLength _y;
 
-    public OffsetModifierImpl(Vector2 offset)
+    public OffsetModifierImpl(LayoutLength x, LayoutLength y)
     {
-        _offset = offset;
+        _x = x;
+        _y = y;
     }
 
     public override void Apply(VisualElement element)
     {
-        element.style.translate = new Translate(_offset.x, _offset.y);
+        element.style.translate = new Translate(_x.ToLength(), _y.ToLength());
     }
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
@@ -54,6 +54,6 @@ internal class OffsetModifierImpl : BaseModifier<OffsetModifierImpl>
 
     protected override bool Equals(OffsetModifierImpl other)
     {
-        return _offset == other._offset;
+        return _x.Equals(other._x) && _y.Equals(other._y);
     }
 }

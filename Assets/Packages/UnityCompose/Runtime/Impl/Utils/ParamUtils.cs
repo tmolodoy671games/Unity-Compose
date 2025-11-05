@@ -28,7 +28,7 @@ public static class ParamUtils
             return second;
         return third >= 0 ? third : fourth;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Optional<T> Resolve<T>(Optional<T> first, Optional<T> second)
     {
@@ -36,7 +36,7 @@ public static class ParamUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static  Optional<T> Resolve<T>(Optional<T> first, Optional<T> second, Optional<T> third)
+    public static Optional<T> Resolve<T>(Optional<T> first, Optional<T> second, Optional<T> third)
     {
         if (first.HasValue)
             return first;
@@ -44,7 +44,32 @@ public static class ParamUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static  Optional<T> Resolve<T>( Optional<T> first,  Optional<T> second,  Optional<T> third,  Optional<T> fourth)
+    public static Optional<T> Resolve<T>(Optional<T> first, Optional<T> second, Optional<T> third, Optional<T> fourth)
+    {
+        if (first.HasValue)
+            return first;
+        if (second.HasValue)
+            return second;
+        return third.HasValue ? third : fourth;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LayoutLength Resolve(LayoutLength first, LayoutLength second)
+    {
+        return first.HasValue ? first : second;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LayoutLength Resolve(LayoutLength first, LayoutLength second, LayoutLength third)
+    {
+        if (first.HasValue)
+            return first;
+        return second.HasValue ? second : third;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LayoutLength Resolve(LayoutLength first, LayoutLength second, LayoutLength third,
+        LayoutLength fourth)
     {
         if (first.HasValue)
             return first;
