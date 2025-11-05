@@ -114,31 +114,37 @@ public readonly struct Px : IEquatable<Px>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Px(float value) => new Px(value);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Px operator +(Px left, Px right)
     {
         return new Px(left._value + right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Px operator -(Px left, Px right)
     {
         return new Px(left._value - right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Px operator *(Px left, Px right)
     {
         return new Px(left._value * right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Px operator /(Px left, Px right)
     {
         return new Px(left._value / right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Px lhs, Px rhs)
     {
         return lhs.Equals(rhs);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(Px lhs, Px rhs)
     {
         return !(lhs == rhs);
@@ -172,32 +178,48 @@ public readonly struct Percent : IEquatable<Percent>
     {
         return $"{_value}%";
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Percent operator *(float left, Percent right) {
+        return new Percent(left * right._value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Percent operator /(Percent left, float right) {
+        return new Percent(left._value / right);
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Percent operator +(Percent left, Percent right)
     {
         return new Percent(left._value + right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Percent operator -(Percent left, Percent right)
     {
         return new Percent(left._value - right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Percent operator *(Percent left, Percent right)
     {
         return new Percent(left._value * right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Percent operator /(Percent left, Percent right)
     {
         return new Percent(left._value / right._value);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Percent lhs, Percent rhs)
     {
         return lhs.Equals(rhs);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(Percent lhs, Percent rhs)
     {
         return !(lhs == rhs);
