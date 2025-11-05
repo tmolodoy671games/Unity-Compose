@@ -91,8 +91,8 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
         if (_initialOffsetX != null)
         {
             result = result
-                .Position(
-                    left: Mathf.LerpUnclamped(
+                .Offset(
+                    x: Mathf.LerpUnclamped(
                         a: _initialOffsetX(parentSize),
                         b: _targetOffsetX?.Invoke(parentSize) ?? 0,
                         t: resolvedProgress
@@ -103,8 +103,8 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
         if (_initialOffsetY != null)
         {
             result = result
-                .Position(
-                    top: Mathf.LerpUnclamped(
+                .Offset(
+                    y: Mathf.LerpUnclamped(
                         a: _initialOffsetY(parentSize),
                         b: _targetOffsetY?.Invoke(parentSize) ?? 0,
                         t: resolvedProgress
