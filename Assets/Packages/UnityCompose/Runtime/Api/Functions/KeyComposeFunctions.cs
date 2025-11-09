@@ -5,7 +5,7 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [Composable, Compiled]
+    [Composable, DontGenerateComposeGroups]
     public static void Key(
         object key,
         [Composable] Action content

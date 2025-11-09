@@ -24,7 +24,6 @@ public partial class ComposeView : VisualElement
         ContentImpl(content);
     }
 
-    [Composable, Compiled]
     private void ContentImpl(Action content)
     {
         if (CurrentComposer.BeginRootComposeGroup(this)) return;

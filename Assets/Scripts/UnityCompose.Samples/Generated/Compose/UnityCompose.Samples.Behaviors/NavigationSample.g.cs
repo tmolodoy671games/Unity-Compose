@@ -112,5 +112,13 @@ namespace UnityCompose.Samples.Behaviors
 
     internal static partial class InputFunctions
     {
+        [Composable, DontGenerateComposeGroups]
+        [Compiled]
+        private static void __CollectSpace(Action onClick)
+        {
+            if (!IsActive)
+                return;
+            LaunchedEffect(1, CollectSpaceEnumerator(onClick));
+        }
     }
 }

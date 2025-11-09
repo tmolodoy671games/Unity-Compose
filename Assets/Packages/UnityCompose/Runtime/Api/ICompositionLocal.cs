@@ -28,7 +28,7 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
 
     public T Current
     {
-        [Composable, Compiled] get => ComposeFunctions.CurrentComposer.GetCompositionLocal(this, _defaultValueFactory);
+        [Composable] get => CurrentComposer.GetCompositionLocal(this, _defaultValueFactory);
     }
 }
 

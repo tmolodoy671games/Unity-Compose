@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
     private static readonly Func<Vector2, Vector2, float, Vector2> Vector2Interpolator =
         (startValue, targetValue, progress) => startValue + (targetValue - startValue) * progress;
 
-    [Composable, Compiled]
+    [Composable]
     public static IState<float> AnimateFloatAsState(
         float targetValue,
         Optional<AnimationSpec> animationSpec = default
@@ -27,7 +27,7 @@ public static partial class ComposeFunctions
         );
     }
     
-    [Composable, Compiled]
+    [Composable]
     public static IState<float> AnimateFloatAsState(
         object key,
         Func<float> targetValueFactory,
@@ -42,7 +42,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, Compiled]
+    [Composable]
     public static IState<Vector2> AnimateVector2AsState(
         Vector2 targetValue,
         Optional<AnimationSpec> animationSpec = default
@@ -68,7 +68,7 @@ public static partial class ComposeFunctions
         );
     }
     
-    [Composable, Compiled]
+    [Composable]
     public static IState<Vector2> AnimateVector2AsState(
         object key,
         Func<Vector2> targetValueFactory,
@@ -83,7 +83,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, Compiled]
+    [Composable]
     public static IState<T> AnimateValueAsState<T>(
         T targetValue,
         Func<T, T, float, T> interpolator,
@@ -118,7 +118,7 @@ public static partial class ComposeFunctions
         }
     }
     
-    [Composable, Compiled]
+    [Composable]
     public static IState<T> AnimateValueAsState<T>(
         object key,
         Func<T> targetValueFactory,

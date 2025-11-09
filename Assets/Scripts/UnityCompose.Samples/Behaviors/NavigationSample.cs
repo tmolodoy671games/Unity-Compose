@@ -119,7 +119,7 @@ namespace UnityCompose.Samples.Behaviors
 
     internal static partial class InputFunctions
     {
-        [Composable, Compiled]
+        [Composable, DontGenerateComposeGroups]
         public static void CollectSpace(Action onClick)
         {
             if (!IsActive)

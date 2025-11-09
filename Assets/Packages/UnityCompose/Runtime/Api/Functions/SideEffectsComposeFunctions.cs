@@ -41,6 +41,7 @@ public static partial class ComposeFunctions
         }
     }
 
+    [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
         IEnumerator coroutine,
@@ -50,6 +51,7 @@ public static partial class ComposeFunctions
         CurrentComposer.LaunchedEffect(lineNumber, key, coroutine);
     }
         
+    [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
         Action body,
@@ -59,6 +61,7 @@ public static partial class ComposeFunctions
         CurrentComposer.LaunchedEffect(lineNumber, key, body);
     }
 
+    [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
         TimeSpan delay,
@@ -69,6 +72,7 @@ public static partial class ComposeFunctions
         CurrentComposer.LaunchedEffect(lineNumber, key, RunDelayed(delay, body));
     }
 
+    [Composable, DontGenerateComposeGroups]
     public static void DisposableEffect(
         object? key,
         Func<IDisposableEffectScope, IDisposable> body,

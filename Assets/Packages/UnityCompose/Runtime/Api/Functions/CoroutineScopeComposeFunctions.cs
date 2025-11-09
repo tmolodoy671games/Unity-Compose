@@ -24,7 +24,7 @@ public static partial class ComposeFunctions
         }
     }
 
-    [Composable, Compiled]
+    [Composable]
     public static IComposeCoroutineScope RememberCoroutineScope()
     {
         return Remember(() => new ComposeCoroutineScopeImpl());
