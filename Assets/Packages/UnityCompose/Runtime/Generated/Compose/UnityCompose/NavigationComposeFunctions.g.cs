@@ -44,7 +44,7 @@ public static partial class ComposeFunctions
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
             var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
-            ReusableComposeView<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration), () =>
+            ReusableComposeView<Navigation>(modifier: modifier, content: RememberComposable<global::System.Action>((coordinator, onTransitionProgressChanged, content, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration), () =>
             {
                 LaunchedEffect(resolvedProgress, Remember<global::System.Action>((onTransitionProgressChanged, resolvedProgress), () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                 if (IsInPreview)
@@ -56,7 +56,7 @@ public static partial class ComposeFunctions
                         continue;
                     if (screenState == ContentState.Entering && isTransitionFinished)
                         screenState = ContentState.Idle;
-                    Key(key: screen, content: RememberComposable<global::System.Action>((coordinator, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState), () =>
+                    Key(key: screen, content: RememberComposable<global::System.Action>((coordinator, content, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState), () =>
                     {
                         var parent = LocalVisualElement.Current;
                         var isCurrentScreen = screen.Equals(currentBackStack[^1]);
@@ -69,7 +69,13 @@ public static partial class ComposeFunctions
                         var state = TransitionState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                         var isActive = LocalIsActive.Current;
                         var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
-                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: Remember(scope, scope.Content));
+                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: RememberComposable<global::System.Action>((content, scope), () =>
+                        {
+                            if (content != null)
+                                content(scope);
+                            else
+                                scope.Content();
+                        }));
                     }));
                 }
             }));

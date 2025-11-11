@@ -169,7 +169,13 @@ public static partial class ComposeFunctions
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                                 LocalTransitionDuration.Provides(state.Duration),
-                                content: Remember(scope, scope.Content)
+                                content: () =>
+                                {
+                                    if (content != null)
+                                        content(scope);
+                                    else
+                                        scope.Content();
+                                }
                             );
                         }
                     );
