@@ -109,4 +109,107 @@ public static partial class ComposeFunctions
         );
         CompositionLocalProvider(provides, content, lineNumber);
     }
+
+    [Composable, DontGenerateComposeGroups]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    public static void CompositionLocalProvider(
+        CompositionLocalProvides provides1,
+        CompositionLocalProvides provides2,
+        CompositionLocalProvides provides3,
+        CompositionLocalProvides provides4,
+        CompositionLocalProvides provides5,
+        CompositionLocalProvides provides6,
+        [Composable] Action content,
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6), () =>
+            IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6)
+        );
+        CompositionLocalProvider(provides, content, lineNumber);
+    }
+
+    [Composable, DontGenerateComposeGroups]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    public static void CompositionLocalProvider(
+        CompositionLocalProvides provides1,
+        CompositionLocalProvides provides2,
+        CompositionLocalProvides provides3,
+        CompositionLocalProvides provides4,
+        CompositionLocalProvides provides5,
+        CompositionLocalProvides provides6,
+        CompositionLocalProvides provides7,
+        [Composable] Action content,
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6, provides7), () =>
+            IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6, provides7)
+        );
+        CompositionLocalProvider(provides, content, lineNumber);
+    }
+
+    [Composable, DontGenerateComposeGroups]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    public static void CompositionLocalProvider(
+        CompositionLocalProvides provides1,
+        CompositionLocalProvides provides2,
+        CompositionLocalProvides provides3,
+        CompositionLocalProvides provides4,
+        CompositionLocalProvides provides5,
+        CompositionLocalProvides provides6,
+        CompositionLocalProvides provides7,
+        CompositionLocalProvides provides8,
+        [Composable] Action content,
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        var provides = Remember(
+            (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8),
+            () => IImmutableStableList.Create(
+                provides1,
+                provides2,
+                provides3,
+                provides4,
+                provides5,
+                provides6,
+                provides7,
+                provides8
+            )
+        );
+        CompositionLocalProvider(provides, content, lineNumber);
+    }
+
+    [Composable, DontGenerateComposeGroups]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    public static void CompositionLocalProvider(
+        CompositionLocalProvides provides1,
+        CompositionLocalProvides provides2,
+        CompositionLocalProvides provides3,
+        CompositionLocalProvides provides4,
+        CompositionLocalProvides provides5,
+        CompositionLocalProvides provides6,
+        CompositionLocalProvides provides7,
+        CompositionLocalProvides provides8,
+        CompositionLocalProvides provides9,
+        [Composable] Action content,
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        var provides = Remember(
+            (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9),
+            () => IImmutableStableList.Create(
+                provides1,
+                provides2,
+                provides3,
+                provides4,
+                provides5,
+                provides6,
+                provides7,
+                provides8,
+                provides9
+            )
+        );
+        CompositionLocalProvider(provides, content, lineNumber);
+    }
 }

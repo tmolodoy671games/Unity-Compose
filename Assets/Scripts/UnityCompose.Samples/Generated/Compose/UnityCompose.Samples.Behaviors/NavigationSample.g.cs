@@ -79,7 +79,7 @@ namespace UnityCompose.Samples.Behaviors
                 CollectSpace(Remember<global::System.Action>(coordinator, () => coordinator.ShowSecondScreen()));
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: RememberComposable<global::System.Action>(null, () =>
                 {
-                    Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionState.Current.Progress));
+                    Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
             }
             finally

@@ -147,26 +147,30 @@ public static partial class ComposeFunctions
                                             .Float(),
                                         _ => throw new ArgumentOutOfRangeException()
                                     };
+                                    var state = TransitionState.Create(
+                                        state: screenState,
+                                        absoluteProgress: resolvedProgress,
+                                        duration: resolvedTransition.TotalDuration
+                                    );
+                                    var isActive = LocalIsActive.Current;
                                     CompositionLocalProvider(
-                                        provides: IImmutableStableList.Create(
-                                            LocalIsActive.Provides(
-                                                new IsActiveEntry(
-                                                    IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f),
-                                                    Parent: LocalIsActive.Current
-                                                )
-                                            ),
-                                            LocalModifier.Provides(
-                                                after: LocalModifier.Current.After.OrEmpty()
-                                                    .Then(contentStyle)
-                                            ),
-                                            LocalTransitionState.Provides(
-                                                TransitionState.Create(
-                                                    state: screenState,
-                                                    absoluteProgress: resolvedProgress,
-                                                    duration: resolvedTransition.TotalDuration
-                                                )
+                                        LocalIsActive.Provides(
+                                            new IsActiveEntry(
+                                                IsActiveSelf: isCurrentScreen &&
+                                                              resolvedProgress.AlmostEquals(1f),
+                                                Parent: isActive
                                             )
                                         ),
+                                        LocalModifier.Provides(
+                                            after: LocalModifier.Current.After.OrEmpty()
+                                                .Then(contentStyle)
+                                        ),
+                                        LocalContentState.Provides(state.State),
+                                        LocalTransitionProgress.Provides(state.Progress),
+                                        LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                                        LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                                        LocalTransitionDuration.Provides(state.Duration)
+                                        ,
                                         content: screen.Content
                                     );
                                 }

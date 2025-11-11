@@ -4,7 +4,7 @@ using System;
 
 namespace UnityCompose;
 
-public readonly record struct TransitionState(
+internal readonly record struct TransitionState(
     ContentState State,
     float Progress,
     float AbsoluteProgress,

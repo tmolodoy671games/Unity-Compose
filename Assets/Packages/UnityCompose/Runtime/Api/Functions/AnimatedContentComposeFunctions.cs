@@ -8,13 +8,13 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static readonly ICompositionLocal<TransitionState> LocalTransitionState = CompositionLocalOf(() =>
-        TransitionState.Create(
-            state: ContentState.Idle,
-            absoluteProgress: 1,
-            duration: 100
-        )
-    );
+    public static readonly ICompositionLocal<ContentState> LocalContentState =
+        CompositionLocalOf(() => ContentState.Idle);
+
+    public static readonly ICompositionLocal<float> LocalTransitionProgress = CompositionLocalOf(() => 1f);
+    public static readonly ICompositionLocal<float> LocalTransitionAbsoluteProgress = CompositionLocalOf(() => 1f);
+    public static readonly ICompositionLocal<float> LocalTransitionAbsoluteTimeElapsed = CompositionLocalOf(() => 0f);
+    public static readonly ICompositionLocal<float> LocalTransitionDuration = CompositionLocalOf(() => 0f);
 
     [Composable]
     public static void AnimatedContent<T>(
@@ -93,15 +93,18 @@ public static partial class ComposeFunctions
                         key: "First",
                         content: () =>
                         {
+                            var state = TransitionState.Create(
+                                state: pair.First.ContentState,
+                                absoluteProgress: resolvedProgress,
+                                duration: resolvedTransition.TotalDuration
+                            );
                             CompositionLocalProvider(
                                 LocalModifier.Provides(after: pair.First.Style),
-                                LocalTransitionState.Provides(
-                                    TransitionState.Create(
-                                        state: pair.First.ContentState,
-                                        absoluteProgress: resolvedProgress,
-                                        duration: resolvedTransition.TotalDuration
-                                    )
-                                ),
+                                LocalContentState.Provides(state.State),
+                                LocalTransitionProgress.Provides(state.Progress),
+                                LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                                LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                                LocalTransitionDuration.Provides(state.Duration),
                                 content: () => content(pair.First.Value)
                             );
                         }
@@ -114,15 +117,18 @@ public static partial class ComposeFunctions
                         key: "Second",
                         content: () =>
                         {
+                            var state = TransitionState.Create(
+                                state: pair.Second.ContentState,
+                                absoluteProgress: resolvedProgress,
+                                duration: resolvedTransition.TotalDuration
+                            );
                             CompositionLocalProvider(
                                 LocalModifier.Provides(after: pair.Second.Style),
-                                LocalTransitionState.Provides(
-                                    TransitionState.Create(
-                                        state: pair.First.ContentState,
-                                        absoluteProgress: resolvedProgress,
-                                        duration: resolvedTransition.TotalDuration
-                                    )
-                                ),
+                                LocalContentState.Provides(state.State),
+                                LocalTransitionProgress.Provides(state.Progress),
+                                LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                                LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                                LocalTransitionDuration.Provides(state.Duration),
                                 content: () => content(pair.Second.Value)
                             );
                         }

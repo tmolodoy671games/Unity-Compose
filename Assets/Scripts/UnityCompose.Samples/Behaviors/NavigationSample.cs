@@ -95,7 +95,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Size(100)
                             .Background(Color.blue)
-                            .Scale(1 + 2 * LocalTransitionState.Current.Progress)
+                            .Scale(1 + 2 * LocalTransitionProgress.Current)
                     );
                 }
             );

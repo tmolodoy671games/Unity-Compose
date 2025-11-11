@@ -47,7 +47,8 @@ public static partial class ComposeFunctions
                 {
                     Key(key: "First", content: RememberComposable<global::System.Action>((content, resolvedTransition, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(LocalModifier.Provides(after: pair.First.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
+                        var state = TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.First.Style), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.First.Value)));
                     }));
                 }
 
@@ -55,7 +56,8 @@ public static partial class ComposeFunctions
                 {
                     Key(key: "Second", content: RememberComposable<global::System.Action>((content, resolvedTransition, resolvedProgress, pair), () =>
                     {
-                        CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(TransitionState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration)), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
+                        var state = TransitionState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: RememberComposable<global::System.Action>((content, pair), () => content(pair.Second.Value)));
                     }));
                 }
             }));
