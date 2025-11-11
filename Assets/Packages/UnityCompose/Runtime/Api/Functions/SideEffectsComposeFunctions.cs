@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -45,20 +46,22 @@ public static partial class ComposeFunctions
     public static void LaunchedEffect(
         object? key,
         IEnumerator coroutine,
+        [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(lineNumber, key, coroutine);
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, coroutine);
     }
         
     [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
         Action body,
+        [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(lineNumber, key, body);
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, body);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -66,21 +69,23 @@ public static partial class ComposeFunctions
         object? key,
         TimeSpan delay,
         Action body,
+        [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(lineNumber, key, RunDelayed(delay, body));
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, body));
     }
 
     [Composable, DontGenerateComposeGroups]
     public static void DisposableEffect(
         object? key,
         Func<IDisposableEffectScope, IDisposable> body,
+        [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         CurrentComposer.DisposableEffect(
-            lineNumber,
+            new RememberId(filePath, lineNumber),
             key,
             () => body(DisposableEffectScopeImpl.Instance)
         );

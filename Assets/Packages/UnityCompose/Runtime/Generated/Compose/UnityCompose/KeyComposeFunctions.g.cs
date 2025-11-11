@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.CompilerServices;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
@@ -7,9 +9,9 @@ public static partial class ComposeFunctions
 {
     [Composable, DontGenerateComposeGroups]
     [Compiled]
-    private static void __Key(object key, [Composable] Action content)
+    private static void __Key(object key, [Composable] Action content, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
     {
-        if (CurrentComposer.BeginComposeGroup((key, content), key: key))
+        if (CurrentComposer.BeginComposeGroup((key, content), key: new RememberId(filePath, lineNumber, AdditionalKey: key)))
             return;
         try
         {

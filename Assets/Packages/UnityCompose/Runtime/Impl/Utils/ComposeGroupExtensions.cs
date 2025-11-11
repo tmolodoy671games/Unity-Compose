@@ -35,7 +35,7 @@ internal static class ComposeGroupExtensions
             DisposeRecursively(child.ComposeGroup);
     }
 
-    public static ComposeGroup GetOrCreateSubGroup(this ComposeGroup parent, object key)
+    public static ComposeGroup GetOrCreateSubGroup(this ComposeGroup parent, RememberId key)
     {
         if (parent.Children.TryGet(key, out var cachedGroup))
         {
@@ -52,7 +52,7 @@ internal static class ComposeGroupExtensions
         return group;
     }
 
-    public static object ResolveKey(this ComposeGroup parent, object key)
+    public static RememberId ResolveKey(this ComposeGroup parent, RememberId key)
     {
         var invocationState = parent.GetOrCreateInvocationState(key);
         if (invocationState.InvocationCount == 0)
@@ -62,13 +62,13 @@ internal static class ComposeGroupExtensions
         }
 
         invocationState.InvocationCount++;
-        var newKey = (key, invocationState.InvocationCount - 1);
+        var newKey = key with { Increment = invocationState.InvocationCount - 1 };
         invocationState = parent.GetOrCreateInvocationState(newKey);
         invocationState.InvocationCount++;
         return newKey;
     }
 
-    private static ComposeInvocationState GetOrCreateInvocationState(this ComposeGroup parent, object key)
+    private static ComposeInvocationState GetOrCreateInvocationState(this ComposeGroup parent, RememberId key)
     {
         if (parent.Invocations.TryGet(key, out var cachedInvocationState))
             return cachedInvocationState;

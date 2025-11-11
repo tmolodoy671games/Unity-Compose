@@ -19,19 +19,19 @@ internal class ComposeGroup
 
     private static readonly Action EmptyAction = () => { };
 
-    public readonly IMutableStableDictionary<object, ComposeGroupState> Children =
-        IMutableStableDictionary.Create<object, ComposeGroupState>();
+    public readonly IMutableStableDictionary<RememberId, ComposeGroupState> Children =
+        IMutableStableDictionary.Create<RememberId, ComposeGroupState>();
 
-    public readonly IMutableStableDictionary<object, ComposeInvocationState> Invocations =
-        IMutableStableDictionary.Create<object, ComposeInvocationState>();
+    public readonly IMutableStableDictionary<RememberId, ComposeInvocationState> Invocations =
+        IMutableStableDictionary.Create<RememberId, ComposeInvocationState>();
 
-    public readonly IMutableStableDictionary<object, ComposeRememberState> RememberedValues =
-        IMutableStableDictionary.Create<object, ComposeRememberState>();
+    public readonly IMutableStableDictionary<RememberId, ComposeRememberState> RememberedValues =
+        IMutableStableDictionary.Create<RememberId, ComposeRememberState>();
 
     public readonly IMutableStableSet<BaseMutableStateImpl> CapturedStates = IMutableStableSet.Create<BaseMutableStateImpl>();
     public CompositionLocal? CompositionLocal;
 
-    public readonly object Key;
+    public readonly RememberId Key;
     public readonly ComposeGroup? Parent;
     public int IndexInParent = -1;
 
@@ -42,7 +42,7 @@ internal class ComposeGroup
     public int ElementIndex = 0;
     public int ElementsCount = 0;
 
-    public ComposeGroup(object key, ComposeGroup? parent)
+    public ComposeGroup(RememberId key, ComposeGroup? parent)
     {
         Key = key;
         Parent = parent;

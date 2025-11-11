@@ -31,7 +31,7 @@ public class Composer
             return false;
         }
 
-        var group = new ComposeGroup("Root", null)
+        var group = new ComposeGroup(new RememberId("Root", 34), null)
         {
             Element = element
         };
@@ -41,7 +41,7 @@ public class Composer
         return false;
     }
 
-    internal bool BeginComposeGroup(object? state, object key)
+    internal bool BeginComposeGroup(object? state, RememberId key)
     {
         if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
         var groupEntry = _groups.Peek();
@@ -104,9 +104,13 @@ public class Composer
         return false;
     }
 
-    public bool BeginComposeGroup(object? state, [CallerLineNumber] int key = 0)
+    public bool BeginComposeGroup(
+        object? state,
+        [CallerFilePath] string filePath = "",
+        [CallerLineNumber] int key = 0
+    )
     {
-        return BeginComposeGroup(state, (object)key);
+        return BeginComposeGroup(state, new RememberId(filePath, key));
     }
 
     public void EndComposeGroup(Action restart)
@@ -229,7 +233,7 @@ public class Composer
         if (_compositionLocals.IsEmpty()) return null;
         var currentCompositionLocal = _compositionLocals.Peek();
         return Remember(
-            compositionLocal,
+            new RememberId("CompositionLocal", 232, compositionLocal),
             0,
             () =>
             {
@@ -278,7 +282,7 @@ public class Composer
         return newElement;
     }
 
-    internal T Remember<T>(object id, object? key, Func<T> defaultValueFactory)
+    internal T Remember<T>(RememberId id, object? key, Func<T> defaultValueFactory)
     {
         if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
         var currentGroup = _groups.Peek().Group;
@@ -308,13 +312,13 @@ public class Composer
         return value;
     }
 
-    internal void LaunchedEffect(int id, object? key, IEnumerator coroutine)
+    internal void LaunchedEffect(RememberId id, object? key, IEnumerator coroutine)
     {
         if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
         Remember(id, key, () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine));
     }
 
-    internal void LaunchedEffect(int id, object? key, Action body)
+    internal void LaunchedEffect(RememberId id, object? key, Action body)
     {
         if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
         Remember<object?>(id, key, () =>
@@ -324,7 +328,7 @@ public class Composer
         });
     }
 
-    internal void DisposableEffect(int id, object? key, Func<IDisposable> disposable)
+    internal void DisposableEffect(RememberId id, object? key, Func<IDisposable> disposable)
     {
         if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
         Remember(id, key, disposable);
