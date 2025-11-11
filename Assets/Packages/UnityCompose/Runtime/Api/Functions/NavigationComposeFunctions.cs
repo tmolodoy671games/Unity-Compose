@@ -41,6 +41,7 @@ public static partial class ComposeFunctions
         Func<ContentTransform>? transition = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
         Action<float>? onTransitionProgressChanged = null,
+        Action<INavigationScope>? content = null,
         IModifier? modifier = null
     )
     {
@@ -109,75 +110,70 @@ public static partial class ComposeFunctions
             modifier: modifier,
             content: () =>
             {
-                CompositionLocalProvider(
-                    LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
-                    content: () =>
-                    {
-                        LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
-                        if (IsInPreview)
-                            return;
-                        foreach (var screen in allScreens)
+                LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
+                if (IsInPreview)
+                    return;
+                foreach (var screen in allScreens)
+                {
+                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
+                        () => Switch()
+                            .Case(appearingScreens.Contains(screen), ContentState.Entering)
+                            .Case(disappearingScreens.Contains(screen), ContentState.Exiting)
+                            .Default(ContentState.Idle)
+                            .Get()
+                    );
+                    if (screenState == ContentState.Exiting && isTransitionFinished)
+                        continue;
+                    if (screenState == ContentState.Entering && isTransitionFinished)
+                        screenState = ContentState.Idle;
+                    Key(
+                        key: screen,
+                        content: () =>
                         {
-                            var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
-                                () => Switch()
-                                    .Case(appearingScreens.Contains(screen), ContentState.Entering)
-                                    .Case(disappearingScreens.Contains(screen), ContentState.Exiting)
-                                    .Default(ContentState.Idle)
-                                    .Get()
+                            var parent = LocalVisualElement.Current;
+                            var isCurrentScreen = screen.Equals(currentBackStack[^1]);
+                            var contentStyle = screenState switch
+                            {
+                                ContentState.Idle => Modifier
+                                    .Float(!isCurrentScreen),
+                                ContentState.Entering => resolvedTransition.Enter
+                                    .Get(resolvedDuration, parent)
+                                    .Float(!isCurrentScreen),
+                                ContentState.Exiting => resolvedTransition.Exit
+                                    .Get(resolvedDuration, parent)
+                                    .Float(),
+                                _ => throw new ArgumentOutOfRangeException()
+                            };
+                            var state = TransitionState.Create(
+                                state: screenState,
+                                absoluteProgress: resolvedProgress,
+                                duration: resolvedTransition.TotalDuration
                             );
-                            if (screenState == ContentState.Exiting && isTransitionFinished)
-                                continue;
-                            if (screenState == ContentState.Entering && isTransitionFinished)
-                                screenState = ContentState.Idle;
-                            Key(
-                                key: screen,
-                                content: () =>
-                                {
-                                    var parent = LocalVisualElement.Current;
-                                    var isCurrentScreen = screen.Equals(currentBackStack[^1]);
-                                    var contentStyle = screenState switch
-                                    {
-                                        ContentState.Idle => Modifier
-                                            .Float(!isCurrentScreen),
-                                        ContentState.Entering => resolvedTransition.Enter
-                                            .Get(resolvedDuration, parent)
-                                            .Float(!isCurrentScreen),
-                                        ContentState.Exiting => resolvedTransition.Exit
-                                            .Get(resolvedDuration, parent)
-                                            .Float(),
-                                        _ => throw new ArgumentOutOfRangeException()
-                                    };
-                                    var state = TransitionState.Create(
-                                        state: screenState,
-                                        absoluteProgress: resolvedProgress,
-                                        duration: resolvedTransition.TotalDuration
-                                    );
-                                    var isActive = LocalIsActive.Current;
-                                    CompositionLocalProvider(
-                                        LocalIsActive.Provides(
-                                            new IsActiveEntry(
-                                                IsActiveSelf: isCurrentScreen &&
-                                                              resolvedProgress.AlmostEquals(1f),
-                                                Parent: isActive
-                                            )
-                                        ),
-                                        LocalModifier.Provides(
-                                            after: LocalModifier.Current.After.OrEmpty()
-                                                .Then(contentStyle)
-                                        ),
-                                        LocalContentState.Provides(state.State),
-                                        LocalTransitionProgress.Provides(state.Progress),
-                                        LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                                        LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                                        LocalTransitionDuration.Provides(state.Duration)
-                                        ,
-                                        content: screen.Content
-                                    );
-                                }
+                            var isActive = LocalIsActive.Current;
+                            var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
+                            CompositionLocalProvider(
+                                LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
+                                LocalIsActive.Provides(
+                                    new IsActiveEntry(
+                                        IsActiveSelf: isCurrentScreen &&
+                                                      resolvedProgress.AlmostEquals(1f),
+                                        Parent: isActive
+                                    )
+                                ),
+                                LocalModifier.Provides(
+                                    after: LocalModifier.Current.After.OrEmpty()
+                                        .Then(contentStyle)
+                                ),
+                                LocalContentState.Provides(state.State),
+                                LocalTransitionProgress.Provides(state.Progress),
+                                LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                                LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                                LocalTransitionDuration.Provides(state.Duration),
+                                content: Remember(scope, scope.Content)
                             );
                         }
-                    }
-                );
+                    );
+                }
             }
         );
         if (isTransitionFinished)
@@ -205,6 +201,46 @@ public static partial class ComposeFunctions
         }
 
         return transition?.Invoke() ?? ContentTransform.Instant;
+    }
+}
+
+public interface INavigationScope
+{
+    [Composable]
+    void Content();
+}
+
+internal partial class NavigationScopeImpl : INavigationScope, IEquatable<NavigationScopeImpl>
+{
+    [Composable] private readonly Action _content;
+
+    public NavigationScopeImpl(Action content)
+    {
+        _content = content;
+    }
+
+    [Composable]
+    public void Content()
+    {
+        _content();
+    }
+
+    public bool Equals(NavigationScopeImpl other)
+    {
+        return _content.Equals(other._content);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((NavigationScopeImpl)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return _content.GetHashCode();
     }
 }
 
