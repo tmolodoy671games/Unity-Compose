@@ -52,7 +52,7 @@ public static partial class ComposeFunctions
         var contentStyle = Modifier;
         var containerStyle = Modifier
             .Clip()
-            .OnGloballyPositioned(it =>
+            .OnLocallyPositioned(it =>
             {
                 containerPaddings.Value = new Vector2(
                     it.PaddingLeft + it.PaddingRight,
@@ -63,7 +63,7 @@ public static partial class ComposeFunctions
         if (!IsInPreview)
         {
             contentStyle = contentStyle
-                .OnGloballyPositioned(it =>
+                .OnLocallyPositioned(it =>
                 {
                     var resolvedSize = it.Size;
                     resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);

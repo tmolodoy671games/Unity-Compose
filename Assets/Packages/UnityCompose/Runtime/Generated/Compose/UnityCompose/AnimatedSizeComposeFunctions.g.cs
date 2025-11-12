@@ -45,13 +45,13 @@ public static partial class ComposeFunctions
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentStyle = Modifier;
-        var containerStyle = Modifier.Clip().OnGloballyPositioned(Remember<global::System.Action<global::UnityCompose.OnGloballyPositionedInfo>>(containerPaddings, it =>
+        var containerStyle = Modifier.Clip().OnLocallyPositioned(Remember<global::System.Action<global::UnityCompose.OnLocallyPositionedInfo>>(containerPaddings, it =>
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         }));
         if (!IsInPreview)
         {
-            contentStyle = contentStyle.OnGloballyPositioned(Remember<global::System.Action<global::UnityCompose.OnGloballyPositionedInfo>>(contentSize, it =>
+            contentStyle = contentStyle.OnLocallyPositioned(Remember<global::System.Action<global::UnityCompose.OnLocallyPositionedInfo>>(contentSize, it =>
             {
                 var resolvedSize = it.Size;
                 resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
