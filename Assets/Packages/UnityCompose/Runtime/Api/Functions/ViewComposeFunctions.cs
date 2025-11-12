@@ -64,10 +64,9 @@ public static partial class ComposeFunctions
         if (content != null)
         {
             CompositionLocalProvider(
-                provides: IImmutableStableList.Create(
-                    LocalModifier.Provides((null, null)),
-                    LocalVisualElement.Provides(visualElement)
-                ),
+                LocalModifier.Provides((null, null)),
+                LocalVisualElement.Provides(visualElement),
+                LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))),
                 content: content
             );
         }
@@ -162,7 +161,7 @@ public static partial class ComposeFunctions
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
-                
+
                 // FontStyle
                 FontStyle resolvedFontStyle;
                 if (fontStyle.HasValue)
@@ -173,7 +172,7 @@ public static partial class ComposeFunctions
                     resolvedFontStyle = localTextStyle.Value.FontStyle;
                 else
                     resolvedFontStyle = FontStyle.Normal;
-                
+
                 // FontWeight
                 FontWeight resolvedFontWeight;
                 if (fontWeight.HasValue)
@@ -184,11 +183,11 @@ public static partial class ComposeFunctions
                     resolvedFontWeight = localTextStyle.Value.FontWeight;
                 else
                     resolvedFontWeight = FontWeight.Normal;
-                
+
                 it.style.unityFontStyleAndWeight =
                     FontStyleUtils.ToUnityFontStyle(resolvedFontStyle, resolvedFontWeight);
                 it.style.unityTextAlign = textAlign.ToTextAnchor();
-                
+
                 // FontSize
                 if (fontSize.HasValue)
                     it.style.fontSize = fontSize.Value;

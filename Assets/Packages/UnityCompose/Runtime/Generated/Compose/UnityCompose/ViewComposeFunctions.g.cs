@@ -58,7 +58,7 @@ public static partial class ComposeFunctions
 
             if (content != null)
             {
-                CompositionLocalProvider(provides: IImmutableStableList.Create(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement)), content: content);
+                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))), content: content);
             }
         }
         finally
