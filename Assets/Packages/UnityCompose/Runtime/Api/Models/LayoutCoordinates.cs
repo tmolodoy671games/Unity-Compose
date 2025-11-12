@@ -70,6 +70,9 @@ public readonly record struct LayoutCoordinates(
         );
     }
 
+    public Vector2 LocalPosition => new(LocalLeft, LocalRight);
+    public Vector2 GlobalPosition => new(GlobalLeft, GlobalRight);
+
     public Vector2 LocalCenter => new(
         x: (LocalLeft + LocalRight) / 2,
         y: (LocalTop + LocalBottom) / 2
