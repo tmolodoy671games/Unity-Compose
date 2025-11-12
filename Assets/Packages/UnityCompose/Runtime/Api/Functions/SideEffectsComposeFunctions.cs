@@ -56,30 +56,30 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
-        Action body,
+        Action block,
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, body);
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, block);
     }
 
     [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect(
         object? key,
         TimeSpan delay,
-        Action body,
+        Action block,
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, body));
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, block));
     }
 
     [Composable, DontGenerateComposeGroups]
     public static void DisposableEffect(
         object? key,
-        Func<IDisposableEffectScope, IDisposable> body,
+        Func<IDisposableEffectScope, IDisposable> effect,
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0
     )
@@ -87,7 +87,7 @@ public static partial class ComposeFunctions
         CurrentComposer.DisposableEffect(
             new RememberId(filePath, lineNumber),
             key,
-            () => body(DisposableEffectScopeImpl.Instance)
+            () => effect(DisposableEffectScopeImpl.Instance)
         );
     }
 

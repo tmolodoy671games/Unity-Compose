@@ -19,22 +19,22 @@ public static partial class ComposeFunctions
 
     [Composable, DontGenerateComposeGroups]
     [Compiled]
-    private static void __LaunchedEffect(object? key, Action body, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+    private static void __LaunchedEffect(object? key, Action block, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, body);
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, block);
     }
 
     [Composable, DontGenerateComposeGroups]
     [Compiled]
-    private static void __LaunchedEffect(object? key, TimeSpan delay, Action body, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+    private static void __LaunchedEffect(object? key, TimeSpan delay, Action block, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, body));
+        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, block));
     }
 
     [Composable, DontGenerateComposeGroups]
     [Compiled]
-    private static void __DisposableEffect(object? key, Func<IDisposableEffectScope, IDisposable> body, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+    private static void __DisposableEffect(object? key, Func<IDisposableEffectScope, IDisposable> effect, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
     {
-        CurrentComposer.DisposableEffect(new RememberId(filePath, lineNumber), key, Remember<global::System.Func<global::System.IDisposable>>(body, () => body(DisposableEffectScopeImpl.Instance)));
+        CurrentComposer.DisposableEffect(new RememberId(filePath, lineNumber), key, Remember<global::System.Func<global::System.IDisposable>>(effect, () => effect(DisposableEffectScopeImpl.Instance)));
     }
 }

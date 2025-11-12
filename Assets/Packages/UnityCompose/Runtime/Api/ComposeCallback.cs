@@ -47,7 +47,7 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
     }
 }
 
-public static class VisualElementExtensions
+public static partial class VisualElementExtensions
 {
     public static ComposeCallback<T> GetComposeCallback<T>(this VisualElement element) where T : EventBase<T>, new()
     {

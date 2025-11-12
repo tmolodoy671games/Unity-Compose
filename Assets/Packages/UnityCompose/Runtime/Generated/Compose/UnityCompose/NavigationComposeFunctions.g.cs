@@ -23,7 +23,7 @@ public static partial class ComposeFunctions
             var coordinatorEntry = LocalCoordinator.Current;
             var parentCoordinator = coordinatorEntry.Coordinator;
             var navigator = Remember<IComposeNavigator>((parentCoordinator, backStack), () => new ComposeNavigatorImpl(backStack, parentCoordinator));
-            DisposableEffect(key: coordinator, body: Remember<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::System.IDisposable>>((coordinator, navigator), it =>
+            DisposableEffect(key: coordinator, effect: Remember<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::System.IDisposable>>((coordinator, navigator), it =>
             {
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());

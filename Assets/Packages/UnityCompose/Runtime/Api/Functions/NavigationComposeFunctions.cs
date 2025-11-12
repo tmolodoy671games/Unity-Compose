@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
 
         DisposableEffect(
             key: coordinator,
-            body: it =>
+            effect: it =>
             {
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());
