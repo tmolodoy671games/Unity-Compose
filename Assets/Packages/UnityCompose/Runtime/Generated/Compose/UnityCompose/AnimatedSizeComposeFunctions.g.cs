@@ -53,7 +53,7 @@ public static partial class ComposeFunctions
         {
             contentStyle = contentStyle.OnLocallyPositioned(Remember<global::System.Action<global::UnityCompose.LayoutCoordinates>>(contentSize, it =>
             {
-                var resolvedSize = it.Size;
+                var resolvedSize = it.SizeWithPaddings;
                 resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
                 resolvedSize += Vector2.up * (it.MarginTop + it.MarginBottom);
                 contentSize.Value = resolvedSize.Approximate();

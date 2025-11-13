@@ -38,9 +38,9 @@ public readonly record struct LayoutCoordinates(
     public static LayoutCoordinates Create(VisualElement element)
     {
         var resolvedStyle = element.resolvedStyle;
-        // var worldBound = element.worldBound;
-        var globalMin = element.parent.LocalToWorld(new Vector2(resolvedStyle.top, resolvedStyle.left));
-        var globalMax = element.parent.LocalToWorld(new Vector2(resolvedStyle.bottom, resolvedStyle.right));
+        var worldBound = element.worldBound;
+        // var globalMin = element.parent.LocalToWorld(new Vector2(resolvedStyle.top, resolvedStyle.left));
+        // var globalMax = element.parent.LocalToWorld(new Vector2(resolvedStyle.bottom, resolvedStyle.right));
         return new LayoutCoordinates(
             // Size:
             Width: resolvedStyle.width - resolvedStyle.paddingLeft - resolvedStyle.paddingRight,
@@ -65,14 +65,14 @@ public readonly record struct LayoutCoordinates(
             LocalRight: resolvedStyle.right,
 
             // Global:
-            // GlobalTop: worldBound.yMin,
-            // GlobalBottom: worldBound.yMax,
-            // GlobalLeft: worldBound.xMin,
-            // GlobalRight: worldBound.xMax
-            GlobalTop: globalMin.y,
-            GlobalBottom: globalMax.y,
-            GlobalLeft: globalMin.x,
-            GlobalRight: globalMax.x
+            GlobalTop: worldBound.yMin,
+            GlobalBottom: worldBound.yMax,
+            GlobalLeft: worldBound.xMin,
+            GlobalRight: worldBound.xMax
+            // GlobalTop: globalMin.y,
+            // GlobalBottom: globalMax.y,
+            // GlobalLeft: globalMin.x,
+            // GlobalRight: globalMax.x
         );
     }
 

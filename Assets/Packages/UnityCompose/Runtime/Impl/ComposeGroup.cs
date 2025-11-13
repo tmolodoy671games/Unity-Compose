@@ -28,7 +28,6 @@ internal class ComposeGroup
     public readonly IMutableStableDictionary<RememberId, ComposeRememberState> RememberedValues =
         IMutableStableDictionary.Create<RememberId, ComposeRememberState>();
 
-    public readonly IMutableStableSet<BaseMutableStateImpl> CapturedStates = IMutableStableSet.Create<BaseMutableStateImpl>();
     public CompositionLocal? CompositionLocal;
 
     public readonly RememberId Key;

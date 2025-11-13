@@ -57,12 +57,6 @@ internal class MutableStateListImpl<T> : BaseMutableStateImpl, IMutableStateList
         }
     }
 
-    public override string ToString()
-    {
-        Capture();
-        return _mutableList.ToString();
-    }
-
     public IEnumerator<T> GetEnumerator()
     {
         Capture();
@@ -198,5 +192,21 @@ internal class MutableStateListImpl<T> : BaseMutableStateImpl, IMutableStateList
     {
         _mutableList.RemoveAt(index);
         Notify();
+    }
+
+    public override string ToString()
+    {
+        Capture();
+        return _mutableList.ToString();
+    }
+
+    public override int GetHashCode()
+    {
+        return _mutableList.GetHashCode();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is IStableList<T> other && _mutableList.Equals(other);
     }
 }

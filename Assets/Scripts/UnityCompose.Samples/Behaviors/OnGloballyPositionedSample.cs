@@ -55,8 +55,7 @@ namespace UnityCompose.Samples.Behaviors
                                                 Modifier
                                                     .Background(Color.green)
                                                     .Size(20)
-                                                    .OnGloballyPositioned(it =>
-                                                        layout.Value = it.GlobalPosition)
+                                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
                                             );
                                         });
                                     });
@@ -79,7 +78,7 @@ namespace UnityCompose.Samples.Behaviors
                         var measurer = LocalLayoutMeasurer.Current;
                         Spacer(
                             modifier: Modifier
-                                .Size(8)
+                                .Size(10)
                                 .Background(Color.red)
                                 .Float()
                                 .Position(

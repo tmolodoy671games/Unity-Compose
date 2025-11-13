@@ -42,12 +42,6 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
         }
     }
 
-    public override string ToString()
-    {
-        Capture();
-        return _set.ToString();
-    }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -77,7 +71,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public bool RemoveFirst(Func<T, bool> predicate)
     {
-        var result =  _set.RemoveFirst(predicate);
+        var result = _set.RemoveFirst(predicate);
         if (result)
             Notify();
         return result;
@@ -93,7 +87,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public int AddRange(IEnumerable<T> items)
     {
-        var result =  _set.AddRange(items);
+        var result = _set.AddRange(items);
         if (result != 0)
             Notify();
         return result;
@@ -101,7 +95,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public int AddRange(params T[] items)
     {
-        var result =  _set.AddRange(items);
+        var result = _set.AddRange(items);
         if (result != 0)
             Notify();
         return result;
@@ -109,7 +103,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public int RemoveRange(IEnumerable<T> items)
     {
-        var result =  _set.RemoveRange(items);
+        var result = _set.RemoveRange(items);
         if (result != 0)
             Notify();
         return result;
@@ -117,7 +111,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public int RemoveRange(params T[] items)
     {
-        var result =  _set.RemoveRange(items);
+        var result = _set.RemoveRange(items);
         if (result != 0)
             Notify();
         return result;
@@ -141,7 +135,7 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
 
     public int UnionWith(IEnumerable<T> other)
     {
-        var result =  _set.UnionWith(other);
+        var result = _set.UnionWith(other);
         if (result != 0)
             Notify();
         return result;
@@ -168,5 +162,21 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
     {
         Capture();
         return _set.Contains(item);
+    }
+
+    public override string ToString()
+    {
+        Capture();
+        return _set.ToString();
+    }
+
+    public override int GetHashCode()
+    {
+        return _set.GetHashCode();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is IStableSet<T> other && _set.Equals(other);
     }
 }

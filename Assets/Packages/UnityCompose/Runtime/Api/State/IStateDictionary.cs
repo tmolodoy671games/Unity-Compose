@@ -76,12 +76,6 @@ internal class MutableStateDictionaryImpl<TKey, TValue> : BaseMutableStateImpl,
         return _dictionary.GetEnumerator();
     }
 
-    public override string ToString()
-    {
-        Capture();
-        return _dictionary.ToString();
-    }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -153,5 +147,22 @@ internal class MutableStateDictionaryImpl<TKey, TValue> : BaseMutableStateImpl,
         if (result != 0)
             Notify();
         return result;
+    }
+
+    public override string ToString()
+    {
+        Capture();
+        return _dictionary.ToString();
+    }
+
+    public override int GetHashCode()
+    {
+        Capture();
+        return _dictionary.GetHashCode();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is IStableDictionary<TKey, TValue> other && _dictionary.Equals(other);
     }
 }

@@ -60,7 +60,7 @@ namespace UnityCompose.Samples.Behaviors
                             {
                                 Box(RememberComposable<global::System.Action>(layout, () =>
                                 {
-                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(Remember<global::System.Action<global::UnityCompose.LayoutCoordinates>>(layout, it => layout.Value = it.GlobalPosition)));
+                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(Remember<global::System.Action<global::UnityCompose.LayoutCoordinates>>(layout, it => layout.Value = it.GlobalCenter)));
                                 }));
                             }));
                         }));
@@ -69,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
                     if (layout.Value.HasValue)
                     {
                         var measurer = LocalLayoutMeasurer.Current;
-                        Spacer(modifier: Modifier.Size(8).Background(Color.red).Float().Position(left: measurer.GlobalToLocal(layout.Value.Value).x, top: measurer.GlobalToLocal(layout.Value.Value).y));
+                        Spacer(modifier: Modifier.Size(10).Background(Color.red).Float().Position(left: measurer.GlobalToLocal(layout.Value.Value).x, top: measurer.GlobalToLocal(layout.Value.Value).y));
                     }
                 }));
             }

@@ -338,8 +338,6 @@ public class Composer
     {
         if (_groups.IsEmpty()) return;
         var currentGroup = _groups.Peek().Group;
-        if (!currentGroup.CapturedStates.Add(mutableState))
-            return;
         mutableState.Add(currentGroup);
     }
 
