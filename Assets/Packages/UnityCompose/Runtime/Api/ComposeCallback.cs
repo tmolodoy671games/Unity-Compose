@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -16,15 +17,20 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
     private readonly IMutableStableList<Action<T>> _callbacks = IMutableStableList.Create<Action<T>>();
 
     public readonly EventCallback<T> Callback;
+    private T? _lastEvent;
 
     public ComposeCallback()
     {
         Callback = it =>
         {
+            InvokedAtFrame = Time.frameCount;
+            _lastEvent = it;
             foreach (var callback in _callbacks)
                 callback(it);
         };
     }
+    
+    public int InvokedAtFrame { get; private set; }
 
     public void Add(Action<T> callback)
     {
@@ -44,6 +50,13 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
     public override void Clear()
     {
         _callbacks.Clear();
+    }
+
+    public void ReInvoke()
+    {
+        if (_lastEvent == null) 
+            return;
+        Callback(_lastEvent);
     }
 }
 

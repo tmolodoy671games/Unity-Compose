@@ -5,6 +5,7 @@ using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityCompose.GloballyPositionedComposeFunctions;
 using Box = UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box;
 using Column = UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column;
 
@@ -50,6 +51,7 @@ public static partial class ComposeFunctions
         visualElement.pickingMode = PickingMode.Ignore;
         visualElement.style.overflow = Overflow.Visible;
         resolvedModifier?.Apply(visualElement);
+        FireOnGloballyPositionedCallback(visualElement);
 
         if (initializer != null)
         {

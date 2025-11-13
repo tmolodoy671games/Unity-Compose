@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using SharpExtensions;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityCompose.ComposeFunctions;
 
@@ -33,6 +34,30 @@ internal partial class OnGloballyPositionedModifierImpl
                 foreach (var ancestor in ancestors)
                     ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
             });
+        }));
+    }
+}
+
+internal static partial class GloballyPositionedComposeFunctions
+{
+    [Composable, DontGenerateComposeGroups]
+    [Compiled]
+    private static void __FireOnGloballyPositionedCallback(VisualElement element)
+    {
+        var callback = element.OnGloballyPositionedCallbackOrNull();
+        if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
+            return;
+        var style = element.style;
+        var lastTranslate = Remember(() => IMutableStableProperty.Create(style.translate));
+        var lastScale = Remember(() => IMutableStableProperty.Create(style.scale));
+        LaunchedEffect((style.translate, style.scale), Remember<global::System.Action>((callback, style, lastTranslate, lastScale), () =>
+        {
+            if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)
+            {
+                lastTranslate.Value = style.translate;
+                lastScale.Value = style.scale;
+                callback.ReInvoke();
+            }
         }));
     }
 }

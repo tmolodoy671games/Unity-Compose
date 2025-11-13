@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using SharpExtensions;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -99,5 +100,37 @@ public static partial class VisualElementExtensions
         userData["__OnGloballyPositioned"] = newCallback;
         element.RegisterCallback(newCallback.Callback);
         return newCallback;
+    }
+    
+    internal static ComposeCallback<GeometryChangedEvent>? OnGloballyPositionedCallbackOrNull(this VisualElement element)
+    {
+        var userData = element.UserData();
+        if (userData.TryGet("__OnGloballyPositioned", out var cached) &&
+            cached is ComposeCallback<GeometryChangedEvent> onGloballyPositioned)
+            return onGloballyPositioned;
+        return null;
+    }
+}
+
+internal static partial class GloballyPositionedComposeFunctions
+{
+    [Composable, DontGenerateComposeGroups]
+    public static void FireOnGloballyPositionedCallback(VisualElement element)
+    {
+        var callback = element.OnGloballyPositionedCallbackOrNull();
+        if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
+            return;
+        var style = element.style;
+        var lastTranslate = Remember(() => IMutableStableProperty.Create(style.translate));
+        var lastScale = Remember(() => IMutableStableProperty.Create(style.scale));
+        LaunchedEffect((style.translate, style.scale), () =>
+        {
+            if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)
+            {
+                lastTranslate.Value = style.translate;
+                lastScale.Value = style.scale;
+                callback.ReInvoke();
+            }
+        });
     }
 }

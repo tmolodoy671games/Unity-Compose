@@ -34,22 +34,19 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier.FillMaxSize(),
                         content: () =>
                         {
-                            var transitionSpec = Tween(
-                                duration: 1f
-                            );
+                            var transitionSpec = Tween();
                             Box(
                                 horizontalAlignment: Alignment.Horizontal.Center,
                                 verticalAlignment: Alignment.Vertical.Center,
                                 modifier: Modifier
                                     .Size(40)
                                     .Background(Color.blue)
-                                    .Margin(left: AnimateFloatAsState(
+                                    .Offset(x: AnimateFloatAsState(
                                         targetValue: 500 * isSwitched.Value.ToInt(),
                                         animationSpec: transitionSpec
                                     ).Value),
                                 content: () =>
                                 {
-                                    var measurer = LocalLayoutMeasurer.Current;
                                     Box(() =>
                                     {
                                         Box(() =>

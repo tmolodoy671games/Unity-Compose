@@ -53,10 +53,9 @@ namespace UnityCompose.Samples.Behaviors
                     var layout = Remember(static () => MutableStateOf(Optional.Empty<Vector2>()));
                     Box(modifier: Modifier.FillMaxSize(), content: RememberComposable<global::System.Action>((isSwitched, layout), () =>
                     {
-                        var transitionSpec = Tween(duration: 1f);
-                        Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Size(40).Background(Color.blue).Margin(left: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value), content: RememberComposable<global::System.Action>(layout, () =>
+                        var transitionSpec = Tween();
+                        Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Size(40).Background(Color.blue).Offset(x: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value), content: RememberComposable<global::System.Action>(layout, () =>
                         {
-                            var measurer = LocalLayoutMeasurer.Current;
                             Box(RememberComposable<global::System.Action>(layout, () =>
                             {
                                 Box(RememberComposable<global::System.Action>(layout, () =>
