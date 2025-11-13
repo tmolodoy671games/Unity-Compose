@@ -51,11 +51,8 @@ public static partial class VisualElementExtensions
 {
     public static ComposeCallback<T> GetComposeCallback<T>(this VisualElement element) where T : EventBase<T>, new()
     {
-        var cachedDictionary = element.userData as IMutableStableDictionary<Type, ComposeCallback>;
-        if (cachedDictionary == null)
-            cachedDictionary = IMutableStableDictionary.Create<Type, ComposeCallback>();
-        element.userData = cachedDictionary;
-        if (cachedDictionary.TryGet(typeof(T), out ComposeCallback callback))
+        var cachedDictionary = element.Callbacks();
+        if (cachedDictionary.TryGet(typeof(T), out var callback))
             return (ComposeCallback<T>)callback;
         var newCallback = new ComposeCallback<T>();
         cachedDictionary[typeof(T)] = newCallback;
@@ -70,8 +67,9 @@ public static partial class VisualElementExtensions
 
     public static void ClearCallbacks(this VisualElement element)
     {
-        var cachedDictionary = element.userData as IMutableStableDictionary<Type, ComposeCallback>;
-        if (cachedDictionary == null) return;
+        var cachedDictionary = element.CallbacksOrNull();
+        if (cachedDictionary == null)
+            return;
         foreach (var callback in cachedDictionary.Values)
             callback.Clear();
     }
@@ -95,5 +93,34 @@ public static partial class VisualElementExtensions
     {
         foreach (var name in names)
             element.AddTransition(transition, name);
+    }
+
+    public static IMutableStableDictionary<string, object?> UserData(this VisualElement element)
+    {
+        if (element.userData is IMutableStableDictionary<string, object?> cachedUserData)
+            return cachedUserData;
+        var newUserData = IMutableStableDictionary.Create<string, object?>();
+        element.userData = newUserData;
+        return newUserData;
+    }
+
+    private static IMutableStableDictionary<Type, ComposeCallback> Callbacks(this VisualElement element)
+    {
+        var userData = element.UserData();
+        if (userData.TryGet("__Callbacks", out var cached) &&
+            cached is IMutableStableDictionary<Type, ComposeCallback> cachedCallbacks)
+            return cachedCallbacks;
+        var newCallbacks = IMutableStableDictionary.Create<Type, ComposeCallback>();
+        userData["__Callbacks"] = newCallbacks;
+        return newCallbacks;
+    }
+    
+    private static IMutableStableDictionary<Type, ComposeCallback>? CallbacksOrNull(this VisualElement element)
+    {
+        var userData = element.UserData();
+        if (userData.TryGet("__Callbacks", out var cached) &&
+            cached is IMutableStableDictionary<Type, ComposeCallback> cachedCallbacks)
+            return cachedCallbacks;
+        return null;
     }
 }

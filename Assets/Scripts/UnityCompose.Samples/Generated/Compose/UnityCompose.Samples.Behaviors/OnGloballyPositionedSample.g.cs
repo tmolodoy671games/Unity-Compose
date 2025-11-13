@@ -1,5 +1,6 @@
 // ReSharper disable ArrangeNamespaceBody
 using SharpExtensions;
+using UnityEngine.UIElements;
 using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors
@@ -60,16 +61,12 @@ namespace UnityCompose.Samples.Behaviors
                             {
                                 Box(RememberComposable<global::System.Action>(layout, () =>
                                 {
-                                    Spacer(Modifier.Background(Color.green).Size(20).OnLocallyPositioned(Remember<global::System.Action<global::UnityCompose.LayoutCoordinates>>(layout, it => layout.Value = it.GlobalPosition)));
+                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(Remember<global::System.Action<global::UnityCompose.LayoutCoordinates>>(layout, it => layout.Value = it.GlobalPosition)));
                                 }));
                             }));
                         }));
                     }));
-                    Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(Remember<global::System.Action>(isSwitched, () =>
-                    {
-                        Debug.Log("OnClick()");
-                        isSwitched.Value = !isSwitched.Value;
-                    })), color: Color.white, text: "Switch");
+                    Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(Remember<global::System.Action>(isSwitched, () => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
                     if (layout.Value.HasValue)
                     {
                         var measurer = LocalLayoutMeasurer.Current;

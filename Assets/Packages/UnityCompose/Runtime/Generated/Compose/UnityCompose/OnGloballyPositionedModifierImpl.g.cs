@@ -13,15 +13,25 @@ internal partial class OnGloballyPositionedModifierImpl
     [Compiled]
     private void __Apply(VisualElement element)
     {
-        DisposableEffect(key: element, effect: Remember<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::System.IDisposable>>((this, element), it =>
+        var previousLayoutCoordinates = Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+        Action<GeometryChangedEvent> onGeometryChanged = Remember<global::System.Action<global::UnityEngine.UIElements.GeometryChangedEvent>>((this, element, previousLayoutCoordinates), _ =>
+        {
+            var newLayoutCoordinates = LayoutCoordinates.Create(element);
+            if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
+            {
+                previousLayoutCoordinates.Value = newLayoutCoordinates;
+                _onGloballyPositioned(newLayoutCoordinates);
+            }
+        });
+        DisposableEffect(key: element, effect: Remember<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::System.IDisposable>>((element, onGeometryChanged), it =>
         {
             var ancestors = element.Ancestors().ToImmutableStableList();
             foreach (var ancestor in ancestors)
-                ancestor.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
+                ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
             return it.OnDispose(() =>
             {
                 foreach (var ancestor in ancestors)
-                    ancestor.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged);
+                    ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
             });
         }));
     }

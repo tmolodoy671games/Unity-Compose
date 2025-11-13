@@ -21,36 +21,38 @@ public static partial class ModifierExtensions
 
 internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
 {
-    private readonly Action<GeometryChangedEvent> _onGeometryChanged;
+    private readonly Action<LayoutCoordinates> _onGloballyPositioned;
 
     public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
     {
-        var previousLayoutCoordinates = Optional.Empty<LayoutCoordinates>();
-        _onGeometryChanged = it =>
-        {
-            var newLayoutCoordinates = LayoutCoordinates.Create(it.VisualElement());
-            if (previousLayoutCoordinates != newLayoutCoordinates)
-            {
-                onGloballyPositioned(newLayoutCoordinates);
-                previousLayoutCoordinates = newLayoutCoordinates;
-            }
-        };
+        _onGloballyPositioned = onGloballyPositioned;
     }
 
     [Composable, DontGenerateComposeGroups]
     public override void Apply(VisualElement element)
     {
+        var previousLayoutCoordinates =
+            Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+        Action<GeometryChangedEvent> onGeometryChanged = _ =>
+        {
+            var newLayoutCoordinates = LayoutCoordinates.Create(element);
+            if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
+            {
+                previousLayoutCoordinates.Value = newLayoutCoordinates;
+                _onGloballyPositioned(newLayoutCoordinates);
+            }
+        };
         DisposableEffect(
             key: element,
             effect: it =>
             {
                 var ancestors = element.Ancestors().ToImmutableStableList();
                 foreach (var ancestor in ancestors)
-                    ancestor.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
+                    ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
                 return it.OnDispose(() =>
                 {
                     foreach (var ancestor in ancestors)
-                        ancestor.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged);
+                        ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
                 });
             }
         );
@@ -66,7 +68,7 @@ internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloball
 
     protected override bool Equals(OnGloballyPositionedModifierImpl other)
     {
-        return _onGeometryChanged == other._onGeometryChanged;
+        return _onGloballyPositioned == other._onGloballyPositioned;
     }
 }
 
@@ -82,5 +84,20 @@ public static partial class VisualElementExtensions
             yield return parent;
             parent = parent.parent;
         }
+    }
+}
+
+public static partial class VisualElementExtensions
+{
+    internal static ComposeCallback<GeometryChangedEvent> OnGloballyPositionedCallback(this VisualElement element)
+    {
+        var userData = element.UserData();
+        if (userData.TryGet("__OnGloballyPositioned", out var cached) &&
+            cached is ComposeCallback<GeometryChangedEvent> onGloballyPositioned)
+            return onGloballyPositioned;
+        var newCallback = new ComposeCallback<GeometryChangedEvent>();
+        userData["__OnGloballyPositioned"] = newCallback;
+        element.RegisterCallback(newCallback.Callback);
+        return newCallback;
     }
 }

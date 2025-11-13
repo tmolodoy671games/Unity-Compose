@@ -1,6 +1,7 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
 using SharpExtensions;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -57,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                                                 Modifier
                                                     .Background(Color.green)
                                                     .Size(20)
-                                                    .OnLocallyPositioned(it =>
+                                                    .OnGloballyPositioned(it =>
                                                         layout.Value = it.GlobalPosition)
                                             );
                                         });
@@ -71,11 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.blue)
                             .Padding(32)
                             .Border(32)
-                            .OnClick(() =>
-                            {
-                                Debug.Log("OnClick()");
-                                isSwitched.Value = !isSwitched.Value;
-                            }),
+                            .OnClick(() => isSwitched.Value = !isSwitched.Value),
                         color: Color.white,
                         text: "Switch"
                     );
