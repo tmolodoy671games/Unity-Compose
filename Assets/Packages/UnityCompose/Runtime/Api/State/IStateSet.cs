@@ -169,14 +169,4 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
         Capture();
         return _set.ToString();
     }
-
-    public override int GetHashCode()
-    {
-        return _set.GetHashCode();
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is IStableSet<T> other && _set.Equals(other);
-    }
 }

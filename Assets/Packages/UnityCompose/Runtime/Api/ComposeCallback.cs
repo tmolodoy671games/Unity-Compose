@@ -34,6 +34,8 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
 
     public void Add(Action<T> callback)
     {
+        if (_callbacks.Contains(callback))
+            return;
         _callbacks.Add(callback);
     }
 

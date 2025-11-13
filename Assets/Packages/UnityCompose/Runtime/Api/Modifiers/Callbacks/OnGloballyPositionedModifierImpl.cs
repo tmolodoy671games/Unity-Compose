@@ -47,7 +47,7 @@ internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloball
             key: element,
             effect: it =>
             {
-                var ancestors = element.Ancestors().ToImmutableStableList();
+                var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
                 foreach (var ancestor in ancestors)
                     ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
                 return it.OnDispose(() =>

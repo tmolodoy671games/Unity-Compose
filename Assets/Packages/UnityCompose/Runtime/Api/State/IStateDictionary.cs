@@ -43,8 +43,23 @@ internal class MutableStateDictionaryImpl<TKey, TValue> : BaseMutableStateImpl,
         }
     }
 
-    public IEnumerable<TKey> Keys => _dictionary.Keys;
-    public IEnumerable<TValue> Values => _dictionary.Values;
+    public IEnumerable<TKey> Keys
+    {
+        get
+        {
+            Capture();
+            return _dictionary.Keys;
+        }
+    }
+
+    public IEnumerable<TValue> Values
+    {
+        get
+        {
+            Capture();
+            return _dictionary.Values;
+        }
+    }
 
     public TValue this[TKey key]
     {
@@ -153,16 +168,5 @@ internal class MutableStateDictionaryImpl<TKey, TValue> : BaseMutableStateImpl,
     {
         Capture();
         return _dictionary.ToString();
-    }
-
-    public override int GetHashCode()
-    {
-        Capture();
-        return _dictionary.GetHashCode();
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is IStableDictionary<TKey, TValue> other && _dictionary.Equals(other);
     }
 }

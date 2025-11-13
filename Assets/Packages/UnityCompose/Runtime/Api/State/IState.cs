@@ -74,17 +74,4 @@ internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
         var valueStr = _value?.ToString() ?? "null";
         return $"MutableState({valueStr})";
     }
-
-    public override int GetHashCode()
-    {
-        Capture();
-        return _value != null ? _value.GetHashCode() : 0;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is T value)
-            return EqualityUtils.FastEquals(_value, value);
-        return obj is MutableStateImpl<T> other && EqualityUtils.FastEquals(_value, other._value);
-    }
 }

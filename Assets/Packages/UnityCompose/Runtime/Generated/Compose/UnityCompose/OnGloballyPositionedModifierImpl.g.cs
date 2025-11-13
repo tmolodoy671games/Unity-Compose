@@ -26,7 +26,7 @@ internal partial class OnGloballyPositionedModifierImpl
         });
         DisposableEffect(key: element, effect: Remember<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::System.IDisposable>>((element, onGeometryChanged), it =>
         {
-            var ancestors = element.Ancestors().ToImmutableStableList();
+            var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
             foreach (var ancestor in ancestors)
                 ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
             return it.OnDispose(() =>
