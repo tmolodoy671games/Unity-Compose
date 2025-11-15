@@ -8,6 +8,7 @@ using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -343,12 +344,31 @@ public class Composer
 
     internal void Invalidate(ComposeGroup group)
     {
+        PushInvalidatedElementRoot(group);
         _groups.Push(new ComposeGroupIndex(group));
         _invalidationRoot = group;
         group.Restart();
         _groups.Clear();
         _elements.Clear();
         _compositionLocals.Clear();
+    }
+
+    private void PushInvalidatedElementRoot(ComposeGroup group)
+    {
+        var element = group.Element ?? group.NestedElements.FirstOrDefault();
+        if (element == null)
+            return;
+        var parent = element.parent;
+        if (parent == null)
+            return;
+        var elementEntry = new ComposeElementIndex(parent)
+        {
+            Index = parent.IndexOf(element)
+        };
+        if (elementEntry.Index < 0)
+            Debug.Log("Something is wrong");
+
+        _elements.Push(elementEntry);
     }
 
     internal static string FormatTreeStructure(ComposeGroup root)
