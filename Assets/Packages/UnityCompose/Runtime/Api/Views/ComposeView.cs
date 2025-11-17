@@ -30,10 +30,4 @@ public partial class ComposeView : VisualElement
         content();
         CurrentComposer.EndComposeGroup(() => ContentImpl(content));
     }
-
-    public string TreeStructureAsString()
-    {
-        if (userData == null) return "";
-        return Composer.FormatTreeStructure((ComposeGroup)userData);
-    }
 }

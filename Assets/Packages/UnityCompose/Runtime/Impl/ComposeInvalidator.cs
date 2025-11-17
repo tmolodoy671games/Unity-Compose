@@ -55,8 +55,8 @@ namespace UnityCompose
             }
         }
 
-        private readonly ISet<ComposeGroup> _invalidatedGroups = new HashSet<ComposeGroup>();
-        private readonly ISet<ComposeGroup> _instantInvalidatedGroups = new HashSet<ComposeGroup>();
+        private readonly ISet<IComposeGroup> _invalidatedGroups = new HashSet<IComposeGroup>();
+        private readonly ISet<IComposeGroup> _instantInvalidatedGroups = new HashSet<IComposeGroup>();
 
         public ComposeInvalidator()
         {
@@ -86,13 +86,13 @@ namespace UnityCompose
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        public static void RequestInvalidate(ComposeGroup group)
+        public static void RequestInvalidate(IComposeGroup group)
         {
             if (!ApplicationUtils.IsPlaying) return;
             Instance._invalidatedGroups.Add(group);
         }
 
-        public static void RequestInstantInvalidate(ComposeGroup group)
+        public static void RequestInstantInvalidate(IComposeGroup group)
         {
             // if (!ApplicationUtils.IsPlaying) return;
             Instance._instantInvalidatedGroups.Add(group);

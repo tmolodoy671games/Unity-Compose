@@ -19,10 +19,11 @@ public static partial class ComposeFunctions
         IImmutableStableList<CompositionLocalProvides> provides,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -31,11 +32,12 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides1,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember(provides1, () => IImmutableStableList.Create(provides1));
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -44,11 +46,12 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides2,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2), () => IImmutableStableList.Create(provides1, provides2));
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -58,13 +61,14 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides3,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2, provides3), () =>
             IImmutableStableList.Create(provides1, provides2, provides3)
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -75,13 +79,14 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides4,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4), () =>
             IImmutableStableList.Create(provides1, provides2, provides3, provides4)
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -93,13 +98,14 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides5,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5), () =>
             IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5)
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -112,13 +118,14 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides6,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6), () =>
             IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6)
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -132,13 +139,14 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides7,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6, provides7), () =>
             IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6, provides7)
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -153,6 +161,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides8,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
@@ -169,7 +178,7 @@ public static partial class ComposeFunctions
                 provides8
             )
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -185,6 +194,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides9,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerFilePath] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
@@ -202,7 +212,7 @@ public static partial class ComposeFunctions
                 provides9
             )
         );
-        CompositionLocalProviderImpl(provides, content, filePath, lineNumber);
+        CompositionLocalProviderImpl(provides, content, filePath, memberName, lineNumber);
     }
 
     [Composable, DontGenerateComposeGroups]
@@ -211,10 +221,12 @@ public static partial class ComposeFunctions
         IImmutableStableList<CompositionLocalProvides> provides,
         [Composable] Action content,
         string filePath,
+        string memberName,
         int lineNumber
     )
     {
-        var compositionLocal = Remember(() => new CompositionLocal(), filePath, lineNumber);
+        ICompositionLocalProvider compositionLocal =
+            Remember(() => new CompositionLocalProvider(), filePath, memberName, lineNumber);
         CurrentComposer.BeginCompositionLocal(compositionLocal, provides);
         try
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -50,8 +51,8 @@ namespace UnityCompose.Samples.Behaviors
                         }
 
                         LaunchedEffect(
-                            key: null,
-                            EffectCoroutine()
+                            key: string.Empty,
+                            CurrentComposer.WithState(EffectCoroutine).Remember<Func<IEnumerator>>(static __ => () => __())
                         );
                     }
 

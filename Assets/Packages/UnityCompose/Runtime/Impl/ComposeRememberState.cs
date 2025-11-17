@@ -1,15 +1,39 @@
-﻿namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
+﻿using System;
+using SharpExtensions;
 
-internal class ComposeRememberState
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
+
+internal interface IComposeRememberState : IDisposable
 {
-    public bool InvokedThisStep;
-    public object Key;
-    public object? Value;
+    bool InvokedThisStep { get; set; }
+}
 
-    public ComposeRememberState(object key, object? value)
+internal class ComposeRememberState<TKey, TValue> : IComposeRememberState
+{
+    private TKey _key;
+    private TValue _value;
+
+    public ComposeRememberState(TKey key, TValue value)
     {
-        Key = key;
-        Value = value;
+        _key = key;
+        _value = value;
+    }
+
+    public bool InvokedThisStep { get; set; }
+
+    public TValue Get(TKey key, Func<TKey, TValue> defaultValueFactory)
+    {
         InvokedThisStep = true;
+        if (EqualityUtils.FastEquals(_key, key))
+            return _value;
+        _key = key;
+        _value = defaultValueFactory(key);
+        return _value;
+    }
+
+    public void Dispose()
+    {
+        if (_value is IDisposable disposable)
+            disposable.Dispose();
     }
 }

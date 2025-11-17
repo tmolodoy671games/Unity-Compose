@@ -18,7 +18,7 @@ public interface IMutableState<T> : IState<T>
 
 public abstract class BaseMutableStateImpl
 {
-    private readonly IMutableStableSet<ComposeGroup> _groups = IMutableStableSet.Create<ComposeGroup>();
+    private readonly IMutableStableSet<IComposeGroup> _groups = IMutableStableSet.Create<IComposeGroup>();
     private readonly bool _isCompositionLocal;
 
     protected BaseMutableStateImpl(bool isCompositionLocal = false)
@@ -42,7 +42,7 @@ public abstract class BaseMutableStateImpl
         }
     }
 
-    internal void Add(ComposeGroup group) => _groups.Add(group);
+    internal void Add(IComposeGroup group) => _groups.Add(group);
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>

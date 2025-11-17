@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
-using UnityEngine;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -18,370 +13,173 @@ public class Composer
 {
     public static readonly Composer Instance = new();
 
-    private ComposeGroup? _invalidationRoot;
-    private readonly Stack<ComposeGroupIndex> _groups = new();
-    private readonly Stack<ComposeElementIndex> _elements = new();
-    private readonly Stack<CompositionLocal> _compositionLocals = new();
+    private readonly IMutableStableStack<IComposeGroup> _groups = IMutableStableStack.Create<IComposeGroup>();
 
-    public bool BeginRootComposeGroup(VisualElement element)
+    private readonly IMutableStableStack<ComposeElementIndex> _elements =
+        IMutableStableStack.Create<ComposeElementIndex>();
+
+    private readonly IMutableStableStack<ICompositionLocalProvider> _compositionLocalProviders =
+        IMutableStableStack.Create<ICompositionLocalProvider>();
+
+    public bool BeginRootComposeGroup(
+        VisualElement element,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
+        [CallerLineNumber] int lineNumber = 0
+    )
     {
-        if (element.userData is ComposeGroup cachedGroup)
+        if (element.userData is IComposeGroup cachedGroup)
         {
-            _groups.Push(new ComposeGroupIndex(cachedGroup));
-            _elements.Push(new(element));
+            _groups.Push(cachedGroup);
+            _elements.Push(new ComposeElementIndex(element));
             return false;
         }
 
-        var group = new ComposeGroup(new RememberId("Root", 34), null)
-        {
-            Element = element
-        };
-        _groups.Push(new ComposeGroupIndex(group));
-        _elements.Push(new(element));
-        element.userData = group;
+        var composeKey = new ComposeKey(filePath, memberName, lineNumber);
+        var newGroup = new ComposeGroup<int>(ResolvedComposeKey.Create(composeKey, 0), null, 0);
+        element.userData = newGroup;
+        _groups.Push(newGroup);
+        _elements.Push(new ComposeElementIndex(element));
         return false;
     }
 
-    internal bool BeginComposeGroup(object? state, RememberId key)
+    internal bool BeginComposeGroup<TState>(
+        TState state,
+        ComposeKey key
+    )
     {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        var groupEntry = _groups.Peek();
-        var currentGroup = groupEntry.Group;
-        if (_invalidationRoot != null)
-        {
-            if (currentGroup.CompositionLocal != null)
-                _compositionLocals.Push(currentGroup.CompositionLocal);
-            _invalidationRoot = null;
-            return false;
-        }
+        RequireCompositionContext();
+        var parentGroup = _groups.Peek();
+        var group = parentGroup.GetOrCreateChild(key, state);
+        if (_compositionLocalProviders.IsNotEmpty())
+            group.ParentCompositionLocalProvider = _compositionLocalProviders.Peek();
 
-        var resolvedKey = currentGroup.ResolveKey(key);
-        var group = currentGroup.GetOrCreateSubGroup(resolvedKey);
-        if (group.IndexInParent >= 0 && group.IndexInParent != groupEntry.Index && _elements.IsNotEmpty())
-        {
-            var lastElement = _elements.Peek();
-            if (group.Element != null)
-            {
-                lastElement.Element.FastReinsert(lastElement.Index, group.Element);
-            }
-            else if (group.NestedElements.IsNotEmpty())
-            {
-                foreach (var element in group.NestedElements.AsEnumerable().Reverse())
-                {
-                    if (!lastElement.Element.FastReinsert(lastElement.Index, element))
-                        break;
-                }
-            }
-        }
-
-        group.IndexInParent = groupEntry.Index;
-        groupEntry.Index++;
-        if (_compositionLocals.IsNotEmpty())
-            group.CompositionLocal = _compositionLocals.Peek();
-        if (_elements.IsNotEmpty())
-            group.ElementIndex = _elements.Peek().Index;
-
-        if (Equals(group.State, state))
+        // Try skipping:
+        if (EqualityUtils.FastEquals(group.State, state))
         {
             if (_elements.IsNotEmpty())
             {
-                // Insert
-                var entry = _elements.Peek();
-                var element = group.Element;
-                if (element != null && entry.Element.GetOrNull(entry.Index) != element)
-                {
-                    element.RemoveFromHierarchy();
-                    entry.Element.Insert(entry.Index, element);
-                }
-
-                entry.Index += group.ElementsCount;
+                var elementIndex = _elements.Peek();
+                elementIndex.CurrentIndex += group.ElementsCount;
             }
 
             return true;
         }
 
-        group.State = state;
-        _groups.Push(new ComposeGroupIndex(group));
+        _groups.Push(group);
+        if (group.Element != null)
+            _elements.Push(new ComposeElementIndex(group.Element));
         return false;
     }
 
-    public bool BeginComposeGroup(
-        object? state,
+    public bool BeginComposeGroup<TState>(
+        TState state,
         [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int key = 0
+        [CallerMemberName] string memberName = "",
+        [CallerLineNumber] int lineNumber = 0
     )
     {
-        return BeginComposeGroup(state, new RememberId(filePath, key));
+        return BeginComposeGroup(state, new ComposeKey(filePath, memberName, lineNumber));
     }
 
     public void EndComposeGroup(Action restart)
     {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        var currentGroup = _groups.Peek().Group;
+        RequireCompositionContext();
+        var currentGroup = _groups.Pop();
         currentGroup.Restart = restart;
-        if (currentGroup.Children.Count > 0)
-        {
-            foreach (var entry in currentGroup.Children.ToList())
-            {
-                if (!entry.Value.InvokedThisStep)
-                    currentGroup.RemoveSubGroup(entry.Value.ComposeGroup);
-                else
-                    entry.Value.InvokedThisStep = false;
-            }
-        }
-
-        if (currentGroup.RememberedValues.Count > 0)
-        {
-            foreach (var entry in currentGroup.RememberedValues.ToList())
-            {
-                if (!entry.Value.InvokedThisStep)
-                {
-                    if (entry.Value.Value is IDisposable disposable)
-                        disposable.Dispose();
-                    currentGroup.RememberedValues.Remove(entry.Key);
-                }
-                else
-                    entry.Value.InvokedThisStep = false;
-            }
-        }
-
-        if (currentGroup.Invocations.Count > 0)
-        {
-            foreach (var entry in currentGroup.Invocations.Values)
-            {
-                entry.InvocationCount = 0;
-            }
-        }
-
         if (currentGroup.Element != null)
-        {
-            _elements.Pop().Index = 0;
-        }
-
-        if (_elements.IsNotEmpty())
-            currentGroup.ElementsCount = _elements.Peek().Index - currentGroup.ElementIndex;
-
-        _groups.Pop();
-        if (_groups.IsEmpty())
-            ComposeInvalidator.InstantInvalidate();
-    }
-
-    internal T GetOrCreateVisualElement<T>() where T : VisualElement, new()
-    {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        var element = GetOrCreateVisualElementImpl<T>();
-
-        if (_elements.Count > 0)
-        {
-            // Insert
-            var entry = _elements.Peek();
-            entry.Element.FastReinsert(entry.Index, element);
-            // Increment
-            entry.Index++;
-        }
-
-        // Push
-        _elements.Push(new ComposeElementIndex(element));
-
-        return element;
+            _elements.Pop();
+        if (_elements.IsNotEmpty() && currentGroup.ElementsCount > 0)
+            _elements.Peek().CurrentIndex += currentGroup.ElementsCount;
+        currentGroup.Reset();
     }
 
     internal void BeginCompositionLocal(
-        CompositionLocal compositionLocal,
+        ICompositionLocalProvider provider,
         IImmutableStableList<CompositionLocalProvides> provides
     )
     {
-        if (_compositionLocals.IsNotEmpty())
-            compositionLocal.Parent = _compositionLocals.Peek();
-        _compositionLocals.Push(compositionLocal);
-        var providedKeys = provides.Select(it => it.CompositionLocal).ToImmutableStableSet();
-        foreach (var existingEntry in compositionLocal.Provides.ToImmutableStableList())
-        {
-            if (providedKeys.Contains(existingEntry.Key))
-                continue;
-            if (existingEntry.Value.Value is IDisposable disposable)
-                disposable.Dispose();
-            compositionLocal.Provides.Remove(existingEntry.Key);
-        }
-
-        foreach (var newEntry in provides)
-        {
-            if (compositionLocal.Provides.TryGet(newEntry.CompositionLocal, out var cachedProperty))
-                cachedProperty.Value = newEntry.Value;
-            else
-            {
-                compositionLocal.Provides[newEntry.CompositionLocal] =
-                    new MutableStateImpl<object?>(newEntry.Value, true);
-            }
-        }
+        provider.Update(provides);
+        _compositionLocalProviders.Push(provider);
     }
 
     internal void EndCompositionLocal()
     {
-        _compositionLocals.Pop();
+        _compositionLocalProviders.Pop();
     }
 
-    internal T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
+    internal TElement GetOrCreateVisualElement<TElement>() where TElement : VisualElement, new()
     {
-        var property = FindCompositionLocalProperty(compositionLocal);
-        if (property != null)
-            return (T)property.Value!;
-        return defaultValueFactory();
-    }
-
-    private IMutableState<object?>? FindCompositionLocalProperty(ICompositionLocal compositionLocal)
-    {
-        if (_compositionLocals.IsEmpty()) return null;
-        var currentCompositionLocal = _compositionLocals.Peek();
-        return Remember(
-            new RememberId("CompositionLocal", 232, compositionLocal),
-            0,
-            () =>
-            {
-                while (currentCompositionLocal != null)
-                {
-                    if (currentCompositionLocal.Provides.TryGet(compositionLocal, out var cachedProperty))
-                        return cachedProperty;
-
-                    currentCompositionLocal = currentCompositionLocal.Parent;
-                }
-
-                return null;
-            }
-        );
-    }
-
-    private T GetOrCreateVisualElementImpl<T>() where T : VisualElement, new()
-    {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        var currentGroup = _groups.Peek().Group;
-        var existingElement = currentGroup.Element;
-        if (existingElement is T element)
-            return element;
-        var newElement = new T();
-        ComposeGroup? currentParent;
-        if (currentGroup.Element != null)
-        {
-            currentGroup.Element.RemoveFromHierarchy();
-            currentParent = currentGroup.Parent;
-            while (currentParent is { Element: null })
-            {
-                currentParent.NestedElements.Remove(currentGroup.Element);
-                currentParent = currentParent.Parent;
-            }
-        }
-
+        RequireCompositionContext();
+        var currentGroup = _groups.Peek();
+        if (currentGroup.Element is TElement cachedElement)
+            return cachedElement;
+        var newElement = new TElement();
         currentGroup.Element = newElement;
         currentGroup.NestedElements.Clear();
-        currentParent = currentGroup.Parent;
-        while (currentParent is { Element: null })
+        foreach (var ancestor in currentGroup.Ancestors())
         {
-            currentParent.NestedElements.Add(newElement);
-            currentParent = currentParent.Parent;
+            if (ancestor.Element != null)
+                break;
+            ancestor.NestedElements.Add(currentGroup.Element);
+        }
+
+        if (_elements.IsNotEmpty())
+        {
+            var elementIndex = _elements.Peek();
+            elementIndex.Element.Insert(elementIndex.CurrentIndex++, newElement);
         }
 
         return newElement;
     }
 
-    internal T Remember<T>(RememberId id, object? key, Func<T> defaultValueFactory)
+    internal TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory)
     {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        var currentGroup = _groups.Peek().Group;
-        var rememberKey = currentGroup.ResolveKey(id);
-        key ??= new Optional<object?>(key);
-        var isCached = currentGroup.RememberedValues.TryGet(rememberKey, out var cachedValue) &&
-                       // cachedValue?.Value is T &&
-                       Equals(cachedValue.Key, key);
-        if (isCached)
-        {
-            cachedValue.InvokedThisStep = true;
-            return (T)cachedValue.Value!;
-        }
-
-        var value = defaultValueFactory();
-        if (cachedValue != null!)
-        {
-            if (cachedValue.Value is IDisposable disposable)
-                disposable.Dispose();
-            cachedValue.Key = key;
-            cachedValue.Value = value;
-            cachedValue.InvokedThisStep = true;
-        }
-        else
-            currentGroup.RememberedValues[rememberKey] = new ComposeRememberState(key, value);
-
-        return value;
+        RequireCompositionContext();
+        var currentGroup = _groups.Peek();
+        return currentGroup.Remember(key, compareKey, defaultValueFactory);
     }
 
-    internal void LaunchedEffect(RememberId id, object? key, IEnumerator coroutine)
+    public RememberBuilder<TState> WithState<TState>(TState state) => new(state);
+
+    internal TValue GetCompositionLocal<TValue>(
+        ICompositionLocal<TValue> compositionLocal,
+        Func<TValue> defaultValueFactory
+    )
     {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        Remember(id, key, () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine));
+        RequireCompositionContext();
+        var currentGroup = _groups.Peek();
+        var currentProvider = currentGroup.ParentCompositionLocalProvider;
+        if (currentProvider == null)
+            return defaultValueFactory();
+        return currentProvider.Get(compositionLocal, defaultValueFactory);
     }
 
-    internal void LaunchedEffect(RememberId id, object? key, Action body)
+    internal void Capture(BaseMutableStateImpl state)
     {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        Remember<object?>(id, key, () =>
-        {
-            body();
-            return null;
-        });
-    }
-
-    internal void DisposableEffect(RememberId id, object? key, Func<IDisposable> disposable)
-    {
-        if (_groups.IsEmpty()) throw new ArgumentException("Not in composition context!");
-        Remember(id, key, disposable);
-    }
-
-    internal void Capture(BaseMutableStateImpl mutableState)
-    {
-        if (_groups.IsEmpty()) return;
-        var currentGroup = _groups.Peek().Group;
-        mutableState.Add(currentGroup);
-    }
-
-    internal void Invalidate(ComposeGroup group)
-    {
-        PushInvalidatedElementRoot(group);
-        _groups.Push(new ComposeGroupIndex(group));
-        _invalidationRoot = group;
-        group.Restart();
-        _groups.Clear();
-        _elements.Clear();
-        _compositionLocals.Clear();
-    }
-
-    private void PushInvalidatedElementRoot(ComposeGroup group)
-    {
-        var element = group.Element ?? group.NestedElements.FirstOrDefault();
-        if (element == null)
+        if (_groups.IsEmpty())
             return;
-        var parent = element.parent;
-        if (parent == null)
-            return;
-        var elementEntry = new ComposeElementIndex(parent)
-        {
-            Index = parent.IndexOf(element)
-        };
-        if (elementEntry.Index < 0)
-            Debug.Log("Something is wrong");
-
-        _elements.Push(elementEntry);
+        var currentGroup = _groups.Peek();
+        state.Add(currentGroup);
     }
 
-    internal static string FormatTreeStructure(ComposeGroup root)
+    internal void Invalidate(IComposeGroup composeGroup)
     {
-        var builder = new StringBuilder();
-        FormatTreeStructureRecursive(builder, "", root);
-        return builder.ToString();
+        // BRUH
     }
 
-    private static void FormatTreeStructureRecursive(StringBuilder builder, string indent, ComposeGroup group)
+    private void RequireCompositionContext()
     {
-        builder.AppendLine(indent + group);
-        foreach (var child in group.Children.OrderBy(it => it.Value.ComposeGroup.IndexInParent))
-            FormatTreeStructureRecursive(builder, indent + "  ", child.Value.ComposeGroup);
+        if (_groups.IsEmpty())
+            throw new IllegalStateException("Not in composition context!");
+    }
+}
+
+public readonly record struct RememberBuilder<TState>(TState State)
+{
+    [Composable]
+    public TValue Remember<TValue>(Func<TState, TValue> defaultValueFactory)
+    {
+        return ComposeFunctions.Remember(State, defaultValueFactory);
     }
 }

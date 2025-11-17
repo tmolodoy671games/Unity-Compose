@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
             animationSpec: animationSpec
         );
     }
-    
+
     [Composable]
     public static IState<float> AnimateFloatAsState(
         object key,
@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
             animationSpec: animationSpec
         );
     }
-    
+
     [Composable]
     public static IState<Color> AnimateColorAsState(
         Color targetValue,
@@ -67,7 +67,7 @@ public static partial class ComposeFunctions
             animationSpec: animationSpec
         );
     }
-    
+
     [Composable]
     public static IState<Vector2> AnimateVector2AsState(
         object key,
@@ -96,7 +96,7 @@ public static partial class ComposeFunctions
 
         LaunchedEffect(
             key: targetValue!,
-            coroutine: UpdatePropertyCoroutine(targetValue)
+            coroutine: () => UpdatePropertyCoroutine(targetValue)
         );
         return property;
 
@@ -117,7 +117,7 @@ public static partial class ComposeFunctions
             property.Value = newValue;
         }
     }
-    
+
     [Composable]
     public static IState<T> AnimateValueAsState<T>(
         object key,
@@ -133,7 +133,7 @@ public static partial class ComposeFunctions
 
         LaunchedEffect(
             key: key,
-            coroutine: UpdatePropertyCoroutine(targetValueFactory)
+            coroutine: () => UpdatePropertyCoroutine(targetValueFactory)
         );
         return property;
 
@@ -147,7 +147,8 @@ public static partial class ComposeFunctions
             while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
-                property.Value = interpolator(startValue, newValueFactory(), resolvedAnimationSpec.GetProgress(elapsed));
+                property.Value = interpolator(startValue, newValueFactory(),
+                    resolvedAnimationSpec.GetProgress(elapsed));
                 yield return null;
             }
 

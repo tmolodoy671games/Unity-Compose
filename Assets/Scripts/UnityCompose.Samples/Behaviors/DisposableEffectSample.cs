@@ -29,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                     if (isEffectRunning.Value)
                     {
                         DisposableEffect(
-                            null,
+                            string.Empty,
                             it =>
                             {
                                 Debug.Log("DisposableEffect()");

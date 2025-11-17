@@ -8,55 +8,45 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static T Remember<T>(
-        Func<T> defaultValueFactory,
+    public static TValue Remember<TKey, TValue>(
+        TKey key,
+        Func<TKey, TValue> defaultValueFactory,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        return CurrentComposer.Remember(new RememberId(filePath, lineNumber), -1337, defaultValueFactory);
+        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, defaultValueFactory);
     }
 
     [Composable]
-    public static T Remember<T>(
-        T defaultValueFactory,
+    public static TValue Remember<TKey, TValue>(
+        TKey key,
+        Func<TValue> defaultValueFactory,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        return CurrentComposer.Remember(new RememberId(filePath, lineNumber), -1337, () => defaultValueFactory);
+        return CurrentComposer.Remember(
+            new ComposeKey(filePath, memberName, lineNumber),
+            key,
+            _ => defaultValueFactory()
+        );
     }
-
+    
     [Composable]
-    public static T Remember<T>(
-        object? key,
-        Func<T> defaultValueFactory,
+    public static TValue Remember<TValue>(
+        Func<TValue> defaultValueFactory,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        return CurrentComposer.Remember(new RememberId(filePath, lineNumber), key, defaultValueFactory);
-    }
-
-    [Composable]
-    public static T Remember<T>(
-        object? key,
-        T defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
-    )
-    {
-        return CurrentComposer.Remember(new RememberId(filePath, lineNumber), key, () => defaultValueFactory);
-    }
-
-    [Composable]
-    public static T RememberComposable<T>(
-        object? key,
-        [Composable] T defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
-    )
-    {
-        return CurrentComposer.Remember(new RememberId(filePath, lineNumber), key, () => defaultValueFactory);
+        return CurrentComposer.Remember<int, TValue>(
+            new ComposeKey(filePath, memberName, lineNumber),
+            0,
+            _ => defaultValueFactory()
+        );
     }
 }

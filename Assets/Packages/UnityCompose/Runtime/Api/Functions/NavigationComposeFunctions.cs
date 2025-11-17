@@ -48,7 +48,7 @@ public static partial class ComposeFunctions
         var backStack = Remember(() => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
         var coordinatorEntry = LocalCoordinator.Current;
         var parentCoordinator = coordinatorEntry.Coordinator;
-        var navigator = Remember<IComposeNavigator>((parentCoordinator, backStack),
+        IComposeNavigator navigator = Remember((parentCoordinator, backStack),
             () => new ComposeNavigatorImpl(backStack, parentCoordinator)
         );
 

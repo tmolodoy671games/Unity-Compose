@@ -12,11 +12,12 @@ public static partial class ComposeFunctions
         object key,
         [Composable] Action content,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
         if (CurrentComposer.BeginComposeGroup((key, content),
-                key: new RememberId(filePath, lineNumber, AdditionalKey: key))) return;
+                key: new ComposeKey(filePath, memberName, lineNumber, AdditionalKey: key))) return;
         try
         {
             content();

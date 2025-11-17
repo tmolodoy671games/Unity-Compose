@@ -43,51 +43,105 @@ public static partial class ComposeFunctions
     }
 
     [Composable, DontGenerateComposeGroups]
-    public static void LaunchedEffect(
-        object? key,
-        IEnumerator coroutine,
+    public static void LaunchedEffect<TKey>(
+        TKey key,
+        Func<IEnumerator> coroutine,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, coroutine);
-    }
-        
-    [Composable, DontGenerateComposeGroups]
-    public static void LaunchedEffect(
-        object? key,
-        Action block,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
-    )
-    {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, block);
+        CurrentComposer.Remember(
+            key: new ComposeKey(
+                FileName: filePath,
+                MemberName: memberName,
+                LineNumber: lineNumber
+            ),
+            compareKey: key,
+            defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
+        );
     }
 
     [Composable, DontGenerateComposeGroups]
-    public static void LaunchedEffect(
-        object? key,
+    public static void LaunchedEffect<TKey>(
+        TKey key,
+        Action block,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        CurrentComposer.Remember(
+            key: new ComposeKey(
+                FileName: filePath,
+                MemberName: memberName,
+                LineNumber: lineNumber
+            ),
+            compareKey: key,
+            defaultValueFactory: _ =>
+            {
+                block();
+                return string.Empty;
+            }
+        );
+    }
+
+    [Composable, DontGenerateComposeGroups]
+    public static void LaunchedEffect<TKey>(
+        TKey key,
         TimeSpan delay,
         Action block,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.LaunchedEffect(new RememberId(filePath, lineNumber), key, RunDelayed(delay, block));
+        CurrentComposer.Remember(
+            key: new ComposeKey(
+                FileName: filePath,
+                MemberName: memberName,
+                LineNumber: lineNumber
+            ),
+            compareKey: key,
+            defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
+        );
     }
 
     [Composable, DontGenerateComposeGroups]
-    public static void DisposableEffect(
-        object? key,
-        Func<IDisposableEffectScope, IDisposable> effect,
+    public static void LaunchedEffect<TKey>(
+        TKey key,
+        float delay,
+        Action block,
         [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.DisposableEffect(
-            new RememberId(filePath, lineNumber),
-            key,
-            () => effect(DisposableEffectScopeImpl.Instance)
+        CurrentComposer.Remember(
+            key: new ComposeKey(
+                FileName: filePath,
+                MemberName: memberName,
+                LineNumber: lineNumber
+            ),
+            compareKey: key,
+            defaultValueFactory: _ =>
+                ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
+        );
+    }
+
+    [Composable, DontGenerateComposeGroups]
+    public static void DisposableEffect<TKey>(
+        TKey key,
+        Func<IDisposableEffectScope, IDisposable> effect,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
+        [CallerLineNumber] int lineNumber = 0
+    )
+    {
+        CurrentComposer.Remember(
+            key: new ComposeKey(filePath, memberName, lineNumber),
+            compareKey: key,
+            defaultValueFactory: _ => effect(DisposableEffectScopeImpl.Instance)
         );
     }
 

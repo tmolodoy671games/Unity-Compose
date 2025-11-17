@@ -1,63 +1,113 @@
 ﻿using System;
-using System.Text;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
 
-internal class ComposeGroup
+internal interface IComposeGroup : IDisposable
 {
-    private class EmptyState
-    {
-        public static readonly EmptyState Instance = new();
+    IComposeGroup? Parent { get; }
+    ResolvedComposeKey Key { get; }
+    VisualElement? Element { get; set; }
+    int ElementsCount { get; }
+    IMutableStableCollection<VisualElement> NestedElements { get; }
+    Action? Restart { get; set; }
+    bool CalledThisStep { get; set; }
+    ICompositionLocalProvider? ParentCompositionLocalProvider { get; set; }
 
-        private EmptyState()
-        {
-        }
-    }
+    ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key, TChild state);
+    TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory);
+    void Reset();
+}
 
-    private static readonly Action EmptyAction = () => { };
+internal class ComposeGroup<T> : IComposeGroup
+{
+    private readonly IRememberStorage _rememberStorage = new RememberStorage();
+    
+    private readonly IMutableStableDictionary<ResolvedComposeKey, IComposeGroup> _children =
+        IMutableStableDictionary.Create<ResolvedComposeKey, IComposeGroup>();
 
-    public readonly IMutableStableDictionary<RememberId, ComposeGroupState> Children =
-        IMutableStableDictionary.Create<RememberId, ComposeGroupState>();
+    private readonly IInvocationState _groupInvocationState = new InvocationState();
 
-    public readonly IMutableStableDictionary<RememberId, ComposeInvocationState> Invocations =
-        IMutableStableDictionary.Create<RememberId, ComposeInvocationState>();
-
-    public readonly IMutableStableDictionary<RememberId, ComposeRememberState> RememberedValues =
-        IMutableStableDictionary.Create<RememberId, ComposeRememberState>();
-
-    public CompositionLocal? CompositionLocal;
-
-    public readonly RememberId Key;
-    public readonly ComposeGroup? Parent;
-    public int IndexInParent = -1;
-
-    public Action Restart = EmptyAction;
-    public VisualElement? Element;
-    public readonly IMutableStableList<VisualElement> NestedElements = IMutableStableList.Create<VisualElement>();
-    public object? State = EmptyState.Instance;
-    public int ElementIndex = 0;
-    public int ElementsCount = 0;
-
-    public ComposeGroup(RememberId key, ComposeGroup? parent)
+    public ComposeGroup(ResolvedComposeKey key, IComposeGroup? parent, T initialState)
     {
         Key = key;
         Parent = parent;
+        State = initialState;
     }
 
-    public override string ToString()
+    public T State { get; }
+    public ResolvedComposeKey Key { get; }
+    public VisualElement? Element { get; set; }
+    public Action? Restart { get; set; }
+    public IComposeGroup? Parent { get; }
+
+    public int ElementsCount => Element != null ? 1 : NestedElements.Count;
+    public IMutableStableCollection<VisualElement> NestedElements { get; } = IMutableStableSet.Create<VisualElement>();
+
+    public bool CalledThisStep { get; set; }
+    public ICompositionLocalProvider? ParentCompositionLocalProvider { get; set; }
+
+    public ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key, TChild state)
     {
-        var builder = new StringBuilder($"{Key}[{IndexInParent}]");
-        if (Element != null)
+        var resolvedKey = _groupInvocationState.ResolveKey(key);
+        if (_children.TryGet(resolvedKey, out var cachedChild))
         {
-            builder.Append($" {Element.Format()}");
+            if (cachedChild is ComposeGroup<TChild> castedChild)
+            {
+                castedChild.CalledThisStep = true;
+                return castedChild;
+            }
+
+            cachedChild.Dispose();
         }
 
-        builder.Append($", ElementIndex={ElementIndex}");
-        builder.Append($", ElementsCount={ElementsCount}");
+        var result = new ComposeGroup<TChild>(resolvedKey, this, state);
+        result.CalledThisStep = true;
+        _children[resolvedKey] = result;
+        return result;
+    }
 
-        return builder.ToString();
+    public TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory)
+    {
+        return _rememberStorage.Get(key, compareKey, defaultValueFactory);
+    }
+
+    public void Reset()
+    {
+        foreach (var child in _children.Values.ToImmutableStableList())
+        {
+            if (!child.CalledThisStep)
+            {
+                child.Dispose();
+                _children.Remove(child.Key);
+            }
+            else
+                child.CalledThisStep = false;
+        }
+
+        CalledThisStep = false;
+        _groupInvocationState.Reset();
+        _rememberStorage.Reset();
+    }
+
+    public void Dispose()
+    {
+        if (Element != null)
+        {
+            foreach (var ancestor in this.Ancestors())
+            {
+                if (ancestor.Element != null)
+                    break;
+                ancestor.NestedElements.Remove(Element);
+            }
+
+            Element.parent?.Remove(Element);
+        }
+        _rememberStorage.Dispose();
+
+        foreach (var child in _children.Values)
+            child.Dispose();
     }
 }

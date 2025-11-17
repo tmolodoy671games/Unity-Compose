@@ -124,7 +124,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!IsActive)
                 return;
-            LaunchedEffect(1, CollectSpaceEnumerator(onClick));
+            LaunchedEffect(1, () => CollectSpaceEnumerator(onClick));
         }
 
         private static IEnumerator CollectSpaceEnumerator(Action onClick)
