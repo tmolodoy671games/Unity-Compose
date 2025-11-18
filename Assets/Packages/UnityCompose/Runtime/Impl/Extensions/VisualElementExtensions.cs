@@ -1,6 +1,7 @@
-﻿using UnityEngine.UIElements;
+﻿using UnityEngine;
+using UnityEngine.UIElements;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 
 internal static class VisualElementExtensions
 {

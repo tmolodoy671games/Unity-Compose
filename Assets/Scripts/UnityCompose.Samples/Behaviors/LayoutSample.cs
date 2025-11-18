@@ -37,6 +37,13 @@ namespace UnityCompose.Samples.Behaviors
                                     .Background(Color.yellow)
                                     .Position(top: 5)
                             );
+                            Spacer(
+                                modifier: Modifier
+                                    .Size(100)
+                                    .Float()
+                                    .Background(Color.yellow)
+                                    .Position(bottom: 5)
+                            );
                         }
                     );
                 }

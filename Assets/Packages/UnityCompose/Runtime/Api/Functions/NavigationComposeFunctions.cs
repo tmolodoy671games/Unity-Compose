@@ -117,34 +117,34 @@ public static partial class ComposeFunctions
                 {
                     var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
                         () => Switch()
-                            .Case(appearingScreens.Contains(screen), ContentState.Entering)
-                            .Case(disappearingScreens.Contains(screen), ContentState.Exiting)
-                            .Default(ContentState.Idle)
+                            .Case(appearingScreens.Contains(screen), TransitionState.Entering)
+                            .Case(disappearingScreens.Contains(screen), TransitionState.Exiting)
+                            .Default(TransitionState.Idle)
                             .Get()
                     );
-                    if (screenState == ContentState.Exiting && isTransitionFinished)
+                    if (screenState == TransitionState.Exiting && isTransitionFinished)
                         continue;
-                    if (screenState == ContentState.Entering && isTransitionFinished)
-                        screenState = ContentState.Idle;
+                    if (screenState == TransitionState.Entering && isTransitionFinished)
+                        screenState = TransitionState.Idle;
                     Key(
                         key: screen,
                         content: () =>
                         {
                             var parent = LocalVisualElement.Current;
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
-                            var contentStyle = screenState switch
+                            var contentModifier = screenState switch
                             {
-                                ContentState.Idle => Modifier
+                                TransitionState.Idle => Modifier
                                     .Float(!isCurrentScreen),
-                                ContentState.Entering => resolvedTransition.Enter
+                                TransitionState.Entering => resolvedTransition.Enter
                                     .Get(resolvedDuration, parent)
                                     .Float(!isCurrentScreen),
-                                ContentState.Exiting => resolvedTransition.Exit
+                                TransitionState.Exiting => resolvedTransition.Exit
                                     .Get(resolvedDuration, parent)
                                     .Float(),
                                 _ => throw new ArgumentOutOfRangeException()
                             };
-                            var state = TransitionState.Create(
+                            var state = TransitionResolvedState.Create(
                                 state: screenState,
                                 absoluteProgress: resolvedProgress,
                                 duration: resolvedTransition.TotalDuration
@@ -162,9 +162,9 @@ public static partial class ComposeFunctions
                                 ),
                                 LocalModifier.Provides(
                                     after: LocalModifier.Current.After.OrEmpty()
-                                        .Then(contentStyle)
+                                        .Then(contentModifier)
                                 ),
-                                LocalContentState.Provides(state.State),
+                                LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),

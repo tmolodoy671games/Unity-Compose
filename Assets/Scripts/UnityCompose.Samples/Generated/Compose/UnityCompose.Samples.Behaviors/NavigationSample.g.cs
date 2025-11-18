@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class NavigationSample : ComposeUI
     {
         [Composable]
-        protected override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -21,12 +21,12 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
 
         [Composable]
-        protected override void __Preview()
+        private void __Preview()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Preview());
+                CurrentComposer.EndComposeGroup(() => __Preview());
             }
         }
 
@@ -48,17 +48,17 @@ namespace UnityCompose.Samples.Behaviors
             try
             {
                 var animationSpec = Tween(duration: 1f);
-                Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(animationSpec).Remember<Action>(__ => () =>
+                Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(animationSpec).Remember<System.Action>(__ => () =>
                 {
-                    Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(__.animationSpec).Remember<Action>(__ => () =>
+                    Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(animationSpec).Remember<System.Action>(__ => () =>
                     {
-                        Navigation(coordinator: Remember(static () => new SampleCoordinatorImpl()), transition: CurrentComposer.WithState(__.animationSpec).Remember<Func>(__ => () => ((FadeIn() + SlideInHorizontally(static it => -it)).TogetherWith(FadeOut() + SlideOutHorizontally(static it => it)).With(animationSpec))), initialScreens: Remember(static () => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>>(__ => () => new SampleCoordinatorImpl())), transition: CurrentComposer.WithState(animationSpec).Remember<System.Func<UnityCompose.ContentTransform>?>(__ => () => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(__ => () => IImmutableStableList.Create<ComposeScreen>(new FirstScreen()))), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
     }
@@ -66,22 +66,22 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class FirstScreen : ComposeScreen
     {
         [Composable]
-        public override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
             try
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(CurrentComposer.WithState(coordinator).Remember<Action>(__ => () => coordinator.ShowSecondScreen()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: static () =>
+                CollectSpace(CurrentComposer.WithState(coordinator).Remember<System.Action>(__ => () => coordinator.ShowSecondScreen()));
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
                     Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
-                });
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
     }
@@ -89,19 +89,19 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class SecondScreen : ComposeScreen
     {
         [Composable]
-        public override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
             try
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(CurrentComposer.WithState(coordinator).Remember<Action>(__ => () => coordinator.ShowFirstScreen()));
+                CollectSpace(CurrentComposer.WithState(coordinator).Remember<System.Action>(__ => () => coordinator.ShowFirstScreen()));
                 Spacer(modifier: Modifier.FillMaxSize().Background(Color.red));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
     }
@@ -109,11 +109,11 @@ namespace UnityCompose.Samples.Behaviors
     internal static partial class InputFunctions
     {
         [Composable, DontGenerateComposeGroups]
-        public static void __CollectSpace(Action onClick)
+        private static void __CollectSpace(Action onClick)
         {
             if (!IsActive)
                 return;
-            LaunchedEffect(1, CurrentComposer.WithState(onClick).Remember<Func>(__ => () => CollectSpaceEnumerator(onClick)));
+            LaunchedEffect(1, CurrentComposer.WithState(onClick).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => CollectSpaceEnumerator(onClick)));
         }
     }
 }

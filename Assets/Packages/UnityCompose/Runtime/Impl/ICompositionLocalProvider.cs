@@ -1,11 +1,13 @@
-﻿using System;
-using StableCollections;
+﻿using StableCollections;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
 
 internal interface ICompositionLocalProvider
 {
-    TValue Get<TValue>(ICompositionLocal<TValue> compositionLocal, Func<TValue> defaultValueFactory);
+    bool TryGet<TValue>(
+        ICompositionLocal<TValue> compositionLocal,
+        out IMutableState<object?> state
+    );
 
     void Update(IStableList<CompositionLocalProvides> provides);
 }
@@ -15,23 +17,25 @@ internal class CompositionLocalProvider : ICompositionLocalProvider
     private readonly IMutableStableDictionary<ICompositionLocal, IMutableState<object?>> _customValues =
         IMutableStableDictionary.Create<ICompositionLocal, IMutableState<object?>>();
 
-    public TValue Get<TValue>(ICompositionLocal<TValue> compositionLocal, Func<TValue> defaultValueFactory)
+    public bool TryGet<TValue>(
+        ICompositionLocal<TValue> compositionLocal,
+        out IMutableState<object?> state
+    )
     {
-        if (_customValues.TryGet(compositionLocal, out var cachedValue))
-            return (TValue)cachedValue.Value!;
-        return defaultValueFactory();
+        if (_customValues.TryGet(compositionLocal, out state))
+            return true;
+        return false;
     }
 
     public void Update(IStableList<CompositionLocalProvides> provides)
     {
-        foreach (var provide in provides)
+        for (var i = 0; i < provides.Count; i++)
         {
-            if (_customValues.TryGet(provide.CompositionLocal, out var state))
-                state.Value = provide.Value;
+            var provider = provides[i];
+            if (_customValues.TryGet(provider.CompositionLocal, out IMutableState<object?> state))
+                state.Value = provider.Value;
             else
-            {
-                _customValues[provide.CompositionLocal] = MutableStateOf(provide.Value);
-            }
+                _customValues[provider.CompositionLocal] = MutableStateOf(provider.Value, true);
         }
     }
 }

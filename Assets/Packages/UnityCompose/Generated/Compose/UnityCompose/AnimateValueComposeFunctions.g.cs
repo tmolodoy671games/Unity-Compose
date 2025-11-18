@@ -10,43 +10,43 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default)
+    private static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default)
     {
         return AnimateValueAsState(targetValue: targetValue, interpolator: FloatInterpolator, animationSpec: animationSpec);
     }
 
     [Composable]
-    public static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
+    private static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
     {
         return AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: FloatInterpolator, animationSpec: animationSpec);
     }
 
     [Composable]
-    public static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default)
+    private static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default)
     {
         return AnimateValueAsState(targetValue: targetValue, interpolator: Vector2Interpolator, animationSpec: animationSpec);
     }
 
     [Composable]
-    public static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default)
+    private static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default)
     {
         return AnimateValueAsState(targetValue: targetValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec);
     }
 
     [Composable]
-    public static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
+    private static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
     {
         return AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: Vector2Interpolator, animationSpec: animationSpec);
     }
 
     [Composable]
-    public static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
+    private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        var property = Remember(CurrentComposer.WithState(targetValue).Remember<Func>(__ => () => MutableStateOf(targetValue)));
+        var property = Remember(CurrentComposer.WithState(targetValue).Remember<System.Func<UnityCompose.IMutableState<T>>>(__ => () => MutableStateOf(targetValue)));
         if (Equals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: targetValue!, coroutine: CurrentComposer.WithState((targetValue, property)).Remember<Func>(__ => () => UpdatePropertyCoroutine(targetValue)));
+        LaunchedEffect(key: targetValue!, coroutine: CurrentComposer.WithState((targetValue, property)).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => UpdatePropertyCoroutine(targetValue)));
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
@@ -68,14 +68,14 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    public static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
+    private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
         var targetValue = targetValueFactory();
-        var property = Remember(CurrentComposer.WithState(targetValue).Remember<Func>(__ => () => MutableStateOf(targetValue)));
+        var property = Remember(CurrentComposer.WithState(targetValue).Remember<System.Func<UnityCompose.IMutableState<T>>>(__ => () => MutableStateOf(targetValue)));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: key, coroutine: CurrentComposer.WithState((targetValueFactory, property)).Remember<Func>(__ => () => UpdatePropertyCoroutine(targetValueFactory)));
+        LaunchedEffect(key: key, coroutine: CurrentComposer.WithState((targetValueFactory, property)).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => UpdatePropertyCoroutine(targetValueFactory)));
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {

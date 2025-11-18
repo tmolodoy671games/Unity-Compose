@@ -24,10 +24,15 @@ public partial class ComposeView : VisualElement
         ContentImpl(content);
     }
 
+    [Composable, Compiled]
     private void ContentImpl(Action content)
     {
         if (CurrentComposer.BeginRootComposeGroup(this)) return;
-        content();
+        CompositionLocalProvider(
+            LocalVisualElement.Provides(this),
+            LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)),
+            content: content
+        );
         CurrentComposer.EndComposeGroup(() => ContentImpl(content));
     }
 }

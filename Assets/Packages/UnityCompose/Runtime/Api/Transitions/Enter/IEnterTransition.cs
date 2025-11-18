@@ -36,6 +36,8 @@ internal class EmptyEnterTransitionImpl : IEnterTransition
 
     public IModifier Get(float timeElapsed, VisualElement parent)
     {
+        if (timeElapsed < _animationSpec.Delay)
+            return Modifier.Alpha(0f);
         return Modifier;
     }
 

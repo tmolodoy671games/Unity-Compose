@@ -23,11 +23,16 @@ internal class RememberStorage : IRememberStorage
         if (_rememberStates.TryGet(resolvedKey, out var cachedRememberState))
         {
             if (cachedRememberState is ComposeRememberState<TKey, TValue> castedCachedRememberState)
+            {
+                castedCachedRememberState.InvokedThisStep = true;
                 return castedCachedRememberState.Get(compareKey, defaultValueFactory);
+            }
+
             cachedRememberState.Dispose();
         }
         var newValue = defaultValueFactory(compareKey);
         var newRememberState = new ComposeRememberState<TKey, TValue>(compareKey, newValue);
+        newRememberState.InvokedThisStep = true;
         _rememberStates[resolvedKey] = newRememberState;
         return newValue;
     }
@@ -37,7 +42,11 @@ internal class RememberStorage : IRememberStorage
         foreach (var rememberState in _rememberStates.ToImmutableStableList())
         {
             if (!rememberState.Value.InvokedThisStep)
+            {
                 _rememberStates.Remove(rememberState.Key);
+                if (rememberState.Value is IDisposable disposable)
+                    disposable.Dispose();
+            }
             else
                 rememberState.Value.InvokedThisStep = false;
         }

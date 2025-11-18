@@ -1,15 +1,16 @@
 using System;
-using Microsoft.CodeAnalysis;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+using SharpExtensions;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static readonly ICompositionLocal<ContentState> LocalContentState =
-        CompositionLocalOf(() => ContentState.Idle);
+    public static readonly ICompositionLocal<TransitionState> LocalTransitionState =
+        CompositionLocalOf(() => TransitionState.Idle);
 
     public static readonly ICompositionLocal<float> LocalTransitionProgress = CompositionLocalOf(() => 1f);
     public static readonly ICompositionLocal<float> LocalTransitionAbsoluteProgress = CompositionLocalOf(() => 1f);
@@ -57,7 +58,7 @@ public static partial class ComposeFunctions
 
         // Animating size:
         var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
-            ? AnimateSizeModifiers(sizeAnimationSpec.Value)
+            ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState)
             : (Modifier, Modifier);
 
         // Layout:
@@ -76,12 +77,12 @@ public static partial class ComposeFunctions
                 var next = (
                     Value: targetState,
                     Style: nextModifier,
-                    ContentState: isAnimationRunning ? ContentState.Idle : ContentState.Entering
+                    ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering
                 );
                 var previous = (
                     Value: previousValue.Value,
                     Style: previousModifier,
-                    ContentState: ContentState.Exiting
+                    ContentState: TransitionState.Exiting
                 );
                 var pair = isSwitched.Value
                     ? (First: next, Second: previous)
@@ -93,14 +94,14 @@ public static partial class ComposeFunctions
                         key: "First",
                         content: () =>
                         {
-                            var state = TransitionState.Create(
+                            var state = TransitionResolvedState.Create(
                                 state: pair.First.ContentState,
                                 absoluteProgress: resolvedProgress,
                                 duration: resolvedTransition.TotalDuration
                             );
                             CompositionLocalProvider(
                                 LocalModifier.Provides(after: pair.First.Style),
-                                LocalContentState.Provides(state.State),
+                                LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
@@ -117,14 +118,14 @@ public static partial class ComposeFunctions
                         key: "Second",
                         content: () =>
                         {
-                            var state = TransitionState.Create(
+                            var state = TransitionResolvedState.Create(
                                 state: pair.Second.ContentState,
                                 absoluteProgress: resolvedProgress,
                                 duration: resolvedTransition.TotalDuration
                             );
                             CompositionLocalProvider(
                                 LocalModifier.Provides(after: pair.Second.Style),
-                                LocalContentState.Provides(state.State),
+                                LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),

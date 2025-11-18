@@ -14,21 +14,21 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.white), content: static () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.white), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    var isHovered = Remember(static () => MutableStateOf(false));
-                    Box(modifier: Modifier.Padding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition()).Background(Color.blue).Border(radius: 16).OnMouseEnter(CurrentComposer.WithState(isHovered).Remember<Action>(__ => () => isHovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(isHovered).Remember<Action>(__ => () => isHovered.Value = false)), content: static () =>
+                    var isHovered = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                    Box(modifier: Modifier.Padding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition()).Background(Color.blue).Border(radius: 16).OnMouseEnter(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = false)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
-                        CompositionLocalProvider(LocalContentColor.Provides(Color.white), content: static () =>
+                        CompositionLocalProvider(LocalContentColor.Provides(Color.white), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                         {
                             Text(text: "Click me", fontSize: 24);
-                        });
-                    });
-                });
+                        }));
+                    }));
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
     }

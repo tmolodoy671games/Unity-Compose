@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors
                     var isSwitched = Remember(() => MutableStateOf(false));
 
                     CompositionLocalProvider(
-                        provides: IImmutableStableList.Create(LocalIsSwitched.Provides(isSwitched.Value)),
+                        LocalIsSwitched.Provides(isSwitched.Value),
                         content: SampleReader
                     );
 
@@ -63,7 +63,8 @@ namespace UnityCompose.Samples.Behaviors
                     Spacer(
                         modifier: Modifier
                             .Background(
-                                LocalIsSwitched.Current ? Color.green : Color.red, Transition()
+                                LocalIsSwitched.Current ? Color.green : Color.red,
+                                transition: Transition()
                             )
                             .Padding(all: 100)
                     );

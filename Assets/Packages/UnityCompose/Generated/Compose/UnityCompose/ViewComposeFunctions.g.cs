@@ -16,7 +16,7 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static void __ReusableComposeView<T>(IModifier? modifier = null, Action<T>? initializer = null, [Composable] Action? content = null)
+    private static void __ReusableComposeView<T>(IModifier? modifier = null, Action<T>? initializer = null, [Composable] Action? content = null)
         where T : VisualElement, new()
     {
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
@@ -31,11 +31,11 @@ public static partial class ComposeFunctions
             if (localStyle.After != null)
                 resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
             var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-            var currentModifier = Remember(static () => IMutableStableProperty.Create<IModifier?>(null));
-            var currentProperties = Remember(static () => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
+            var currentModifier = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>>(__ => () => IMutableStableProperty.Create<IModifier?>(null)));
+            var currentProperties = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>>(__ => () => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>())));
             var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
             resolvedModifier?.Apply(newProperties);
-            var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.WithState(newProperties).Remember<Func>(__ => it => !newProperties.Contains(it)));
+            var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.WithState(newProperties).Remember<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(__ => it => !newProperties.Contains(it)));
             foreach (var property in propertiesToRevert)
                 property.Revert(visualElement);
             currentProperties.Value = newProperties;
@@ -51,7 +51,7 @@ public static partial class ComposeFunctions
             FireOnGloballyPositionedCallback(visualElement);
             if (initializer != null)
             {
-                var currentInitializer = Remember(static () => IMutableStableProperty.Create<Action<T>?>(null));
+                var currentInitializer = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<System.Action<T>?>>>(__ => () => IMutableStableProperty.Create<Action<T>?>(null)));
                 if (currentInitializer.Value != initializer)
                 {
                     currentInitializer.Value = initializer;
@@ -61,24 +61,24 @@ public static partial class ComposeFunctions
 
             if (content != null)
             {
-                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, CurrentComposer.WithState(visualElement).Remember<Func>(__ => () => new LayoutMeasurerImpl(visualElement)))), content: content);
+                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, CurrentComposer.WithState(visualElement).Remember<System.Func<UnityCompose.LayoutMeasurerImpl>>(__ => () => new LayoutMeasurerImpl(visualElement)))), content: content);
             }
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__modifier, __initializer, __content)).Remember<Action>(static __ => () => __ReusableComposeView(__.__modifier, __.__initializer, __.__content)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__modifier, __initializer, __content)).Remember<Action>(__ => () => __ReusableComposeView(__.__modifier, __.__initializer, __.__content)));
         }
     }
 
     [Composable]
-    public static void __Column([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    private static void __Column([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         if (CurrentComposer.BeginComposeGroup((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Column>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<Action>(__ => it =>
+            ReusableComposeView<Column>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(__ => it =>
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
@@ -86,19 +86,19 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(static __ => () => __Column(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(__ => () => __Column(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
         }
     }
 
     [Composable]
-    public static void __Row([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    private static void __Row([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         if (CurrentComposer.BeginComposeGroup((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Row>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<Action>(__ => it =>
+            ReusableComposeView<Row>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(__ => it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
                 it.style.alignItems = verticalAlignment.ToAlign();
@@ -107,19 +107,19 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(static __ => () => __Row(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(__ => () => __Row(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
         }
     }
 
     [Composable]
-    public static void __Box([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
+    private static void __Box([Composable] Action content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         if (CurrentComposer.BeginComposeGroup((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
             return;
         try
         {
-            ReusableComposeView<Box>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<Action>(__ => it =>
+            ReusableComposeView<Box>(modifier: modifier, initializer: CurrentComposer.WithState((horizontalAlignment, verticalAlignment)).Remember<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(__ => it =>
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
@@ -127,12 +127,12 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(static __ => () => __Box(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__content, __modifier, __horizontalAlignment, __verticalAlignment)).Remember<Action>(__ => () => __Box(__.__content, __.__modifier, __.__horizontalAlignment, __.__verticalAlignment)));
         }
     }
 
     [Composable]
-    public static void __Spacer(IModifier modifier)
+    private static void __Spacer(IModifier modifier)
     {
         var __modifier = (modifier);
         if (CurrentComposer.BeginComposeGroup(__modifier))
@@ -143,12 +143,12 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__modifier).Remember<Action>(static __ => () => __Spacer(__)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__modifier).Remember<Action>(__ => () => __Spacer(__)));
         }
     }
 
     [Composable]
-    public static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
+    private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         if (CurrentComposer.BeginComposeGroup((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
@@ -157,7 +157,7 @@ public static partial class ComposeFunctions
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
-            ReusableComposeView<Text>(modifier: modifier, initializer: CurrentComposer.WithState((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)).Remember<Action>(__ => it =>
+            ReusableComposeView<Text>(modifier: modifier, initializer: CurrentComposer.WithState((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)).Remember<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>(__ => it =>
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
@@ -207,19 +207,19 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)).Remember<Action>(static __ => () => __Text(__.__text, __.__color, __.__fontSize, __.__style, __.__fontStyle, __.__fontWeight, __.__softWrap, __.__textAlign, __.__modifier)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)).Remember<Action>(__ => () => __Text(__.__text, __.__color, __.__fontSize, __.__style, __.__fontStyle, __.__fontWeight, __.__softWrap, __.__textAlign, __.__modifier)));
         }
     }
 
     [Composable]
-    public static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null)
+    private static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null)
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
         if (CurrentComposer.BeginComposeGroup((__image, __tint, __modifier)))
             return;
         try
         {
-            ReusableComposeView<Image>(initializer: CurrentComposer.WithState((image, tint)).Remember<Action>(__ => it =>
+            ReusableComposeView<Image>(initializer: CurrentComposer.WithState((image, tint)).Remember<System.Action<UnityEngine.UIElements.Image>?>(__ => it =>
             {
                 it.sprite = image.Sprite;
                 it.vectorImage = image.VectorImage;
@@ -229,7 +229,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__image, __tint, __modifier)).Remember<Action>(static __ => () => __Image(__.__image, __.__tint, __.__modifier)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__image, __tint, __modifier)).Remember<Action>(__ => () => __Image(__.__image, __.__tint, __.__modifier)));
         }
     }
 }

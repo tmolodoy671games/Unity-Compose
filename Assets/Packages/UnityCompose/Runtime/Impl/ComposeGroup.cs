@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
@@ -11,14 +15,18 @@ internal interface IComposeGroup : IDisposable
     ResolvedComposeKey Key { get; }
     VisualElement? Element { get; set; }
     int ElementsCount { get; }
-    IMutableStableCollection<VisualElement> NestedElements { get; }
+    IEnumerable<IComposeGroup> Children { get; }
+    IMutableStableList<VisualElement> NestedElements { get; }
     Action? Restart { get; set; }
     bool CalledThisStep { get; set; }
     ICompositionLocalProvider? ParentCompositionLocalProvider { get; set; }
+    int ElementIndexInParent { get; set; }
 
-    ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key, TChild state);
+    ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key);
     TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory);
     void Reset();
+
+    string ToString(bool recursive);
 }
 
 internal class ComposeGroup<T> : IComposeGroup
@@ -30,26 +38,28 @@ internal class ComposeGroup<T> : IComposeGroup
 
     private readonly IInvocationState _groupInvocationState = new InvocationState();
 
-    public ComposeGroup(ResolvedComposeKey key, IComposeGroup? parent, T initialState)
+    public ComposeGroup(ResolvedComposeKey key, IComposeGroup? parent)
     {
         Key = key;
         Parent = parent;
-        State = initialState;
     }
 
-    public T State { get; }
+    public Optional<T> State { get; set; }
     public ResolvedComposeKey Key { get; }
     public VisualElement? Element { get; set; }
     public Action? Restart { get; set; }
     public IComposeGroup? Parent { get; }
 
     public int ElementsCount => Element != null ? 1 : NestedElements.Count;
-    public IMutableStableCollection<VisualElement> NestedElements { get; } = IMutableStableSet.Create<VisualElement>();
+    public IEnumerable<IComposeGroup> Children => _children.Values;
+    public IMutableStableList<VisualElement> NestedElements { get; } = IMutableStableList.Create<VisualElement>();
 
     public bool CalledThisStep { get; set; }
     public ICompositionLocalProvider? ParentCompositionLocalProvider { get; set; }
 
-    public ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key, TChild state)
+    public int ElementIndexInParent { get; set; }
+
+    public ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key)
     {
         var resolvedKey = _groupInvocationState.ResolveKey(key);
         if (_children.TryGet(resolvedKey, out var cachedChild))
@@ -63,7 +73,7 @@ internal class ComposeGroup<T> : IComposeGroup
             cachedChild.Dispose();
         }
 
-        var result = new ComposeGroup<TChild>(resolvedKey, this, state);
+        var result = new ComposeGroup<TChild>(resolvedKey, this);
         result.CalledThisStep = true;
         _children[resolvedKey] = result;
         return result;
@@ -87,9 +97,24 @@ internal class ComposeGroup<T> : IComposeGroup
                 child.CalledThisStep = false;
         }
 
-        CalledThisStep = false;
         _groupInvocationState.Reset();
         _rememberStorage.Reset();
+    }
+
+    public string ToString(bool recursive)
+    {
+        if (!recursive)
+            return ToString();
+        var builder = new StringBuilder();
+        ToStringRecursive(builder, "", this);
+        return builder.ToString();
+    }
+
+    private static void ToStringRecursive(StringBuilder builder, string indent, IComposeGroup group)
+    {
+        builder.Append(indent + group + "\n");
+        foreach (var child in group.Children)
+            ToStringRecursive(builder, indent + '\t', child);
     }
 
     public void Dispose()
@@ -109,5 +134,10 @@ internal class ComposeGroup<T> : IComposeGroup
 
         foreach (var child in _children.Values)
             child.Dispose();
+    }
+
+    public override string ToString()
+    {
+        return $"ComposeGroup(Key={Key}, Element={Element?.GetType().Name})";
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -21,6 +23,8 @@ public class Composer
     private readonly IMutableStableStack<ICompositionLocalProvider> _compositionLocalProviders =
         IMutableStableStack.Create<ICompositionLocalProvider>();
 
+    private IComposeGroup? _invalidationRoot;
+
     public bool BeginRootComposeGroup(
         VisualElement element,
         [CallerFilePath] string filePath = "",
@@ -36,7 +40,8 @@ public class Composer
         }
 
         var composeKey = new ComposeKey(filePath, memberName, lineNumber);
-        var newGroup = new ComposeGroup<int>(ResolvedComposeKey.Create(composeKey, 0), null, 0);
+        var newGroup = new ComposeGroup<int>(ResolvedComposeKey.Create(composeKey, 0), null);
+        newGroup.Element = element;
         element.userData = newGroup;
         _groups.Push(newGroup);
         _elements.Push(new ComposeElementIndex(element));
@@ -50,12 +55,19 @@ public class Composer
     {
         RequireCompositionContext();
         var parentGroup = _groups.Peek();
-        var group = parentGroup.GetOrCreateChild(key, state);
+        var group = _invalidationRoot != null
+            ? (ComposeGroup<TState>)_invalidationRoot
+            : parentGroup.GetOrCreateChild<TState>(key);
+        ComposeInvalidator.CancelInvalidate(group);
         if (_compositionLocalProviders.IsNotEmpty())
             group.ParentCompositionLocalProvider = _compositionLocalProviders.Peek();
+        if (_elements.IsNotEmpty())
+            group.ElementIndexInParent = _elements.Peek().CurrentIndex;
+        if (_invalidationRoot == null)
+            Reinsert(group);
 
         // Try skipping:
-        if (EqualityUtils.FastEquals(group.State, state))
+        if (_invalidationRoot == null && group.State.Equals(state))
         {
             if (_elements.IsNotEmpty())
             {
@@ -66,9 +78,9 @@ public class Composer
             return true;
         }
 
+        _invalidationRoot = null;
         _groups.Push(group);
-        if (group.Element != null)
-            _elements.Push(new ComposeElementIndex(group.Element));
+        group.State = state;
         return false;
     }
 
@@ -89,8 +101,11 @@ public class Composer
         currentGroup.Restart = restart;
         if (currentGroup.Element != null)
             _elements.Pop();
-        if (_elements.IsNotEmpty() && currentGroup.ElementsCount > 0)
-            _elements.Peek().CurrentIndex += currentGroup.ElementsCount;
+        if (_elements.IsNotEmpty() && currentGroup.Element != null)
+        {
+            _elements.Peek().CurrentIndex++;
+        }
+
         currentGroup.Reset();
     }
 
@@ -103,6 +118,32 @@ public class Composer
         _compositionLocalProviders.Push(provider);
     }
 
+    private void Reinsert(IComposeGroup currentGroup)
+    {
+        if (_elements.IsEmpty())
+            return;
+        var elementIndex = _elements.Peek();
+        currentGroup.ElementIndexInParent = Math.Clamp(
+            currentGroup.ElementIndexInParent,
+            0,
+            elementIndex.Element.childCount > 0
+                ? elementIndex.Element.childCount - 1
+                : 0
+        );
+        if (currentGroup.Element != null)
+            elementIndex.Element.FastReinsert(elementIndex.CurrentIndex, currentGroup.Element);
+        else
+        {
+            for (var i = 0; i < currentGroup.NestedElements.Count; i++)
+            {
+                var insertResult =
+                    elementIndex.Element.FastReinsert(elementIndex.CurrentIndex + i, currentGroup.NestedElements[i]);
+                if (!insertResult)
+                    break;
+            }
+        }
+    }
+
     internal void EndCompositionLocal()
     {
         _compositionLocalProviders.Pop();
@@ -113,7 +154,12 @@ public class Composer
         RequireCompositionContext();
         var currentGroup = _groups.Peek();
         if (currentGroup.Element is TElement cachedElement)
+        {
+            Reinsert(currentGroup);
+            _elements.Push(new ComposeElementIndex(cachedElement));
             return cachedElement;
+        }
+
         var newElement = new TElement();
         currentGroup.Element = newElement;
         currentGroup.NestedElements.Clear();
@@ -124,12 +170,8 @@ public class Composer
             ancestor.NestedElements.Add(currentGroup.Element);
         }
 
-        if (_elements.IsNotEmpty())
-        {
-            var elementIndex = _elements.Peek();
-            elementIndex.Element.Insert(elementIndex.CurrentIndex++, newElement);
-        }
-
+        Reinsert(currentGroup);
+        _elements.Push(new ComposeElementIndex(newElement));
         return newElement;
     }
 
@@ -148,11 +190,34 @@ public class Composer
     )
     {
         RequireCompositionContext();
+        var currentCompositionLocal = _compositionLocalProviders.IsNotEmpty()
+            ? _compositionLocalProviders.Peek()
+            : null;
         var currentGroup = _groups.Peek();
-        var currentProvider = currentGroup.ParentCompositionLocalProvider;
-        if (currentProvider == null)
-            return defaultValueFactory();
-        return currentProvider.Get(compositionLocal, defaultValueFactory);
+        var state = Remember(
+            key: new ComposeKey(
+                FileName: "CompositionLocal",
+                MemberName: "CompositionLocal",
+                LineNumber: 0
+            ),
+            compareKey: string.Empty,
+            defaultValueFactory: _ =>
+            {
+                if (currentCompositionLocal != null &&
+                    currentCompositionLocal.TryGet(compositionLocal, out var rootState))
+                    return rootState;
+                var providers = currentGroup.Ancestors(includeSelf: true)
+                    .SelectNotNull(static it => it.ParentCompositionLocalProvider);
+                foreach (var provider in providers)
+                {
+                    if (provider.TryGet(compositionLocal, out var providedState))
+                        return providedState;
+                }
+
+                return null;
+            }
+        );
+        return state?.Value is TValue value ? value : defaultValueFactory();
     }
 
     internal void Capture(BaseMutableStateImpl state)
@@ -165,7 +230,53 @@ public class Composer
 
     internal void Invalidate(IComposeGroup composeGroup)
     {
-        // BRUH
+        var parent = composeGroup.Parent;
+        if (parent != null)
+            _groups.Push(parent);
+        var parentElement = FindElement(composeGroup);
+        if (parentElement != null)
+        {
+            var index = new ComposeElementIndex(parentElement)
+            {
+                CurrentIndex = composeGroup.ElementIndexInParent
+            };
+            _elements.Push(index);
+        }
+
+        if (composeGroup.ParentCompositionLocalProvider != null)
+            _compositionLocalProviders.Push(composeGroup.ParentCompositionLocalProvider);
+        _invalidationRoot = composeGroup;
+        try
+        {
+            composeGroup.Restart?.Invoke();
+            if (composeGroup.ParentCompositionLocalProvider != null)
+                _compositionLocalProviders.Pop();
+            if (parent != null)
+                _groups.Pop();
+            if (parentElement != null)
+                _elements.Pop();
+        }
+        finally
+        {
+            while (_groups.IsNotEmpty())
+                _groups.Pop();
+            while (_elements.IsNotEmpty())
+                _elements.Pop();
+            while (_compositionLocalProviders.IsNotEmpty())
+                _compositionLocalProviders.Pop();
+            ComposeInvalidator.InstantInvalidate();
+        }
+    }
+
+    private static VisualElement? FindElement(IComposeGroup composeGroup)
+    {
+        var group = composeGroup.Parent;
+        while (group != null && group.Element == null)
+        {
+            group = group.Parent;
+        }
+
+        return group?.Element.NotNull();
     }
 
     private void RequireCompositionContext()
@@ -178,8 +289,21 @@ public class Composer
 public readonly record struct RememberBuilder<TState>(TState State)
 {
     [Composable]
-    public TValue Remember<TValue>(Func<TState, TValue> defaultValueFactory)
+    public TValue Remember<TValue>(
+        Func<TState, TValue> defaultValueFactory,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string memberName = "",
+        [CallerLineNumber] int lineNumber = 0
+    )
     {
-        return ComposeFunctions.Remember(State, defaultValueFactory);
+        return CurrentComposer.Remember(
+            key: new ComposeKey(
+                FileName: filePath,
+                MemberName: memberName,
+                LineNumber: lineNumber
+            ),
+            State,
+            defaultValueFactory
+        );
     }
 }

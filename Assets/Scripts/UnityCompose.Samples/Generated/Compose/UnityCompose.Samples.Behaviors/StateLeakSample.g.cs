@@ -14,26 +14,26 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: static () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    Column(modifier: Modifier, content: static () =>
+                    Column(modifier: Modifier, content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
-                        var showFirst = Remember(static () => MutableStateOf(false));
+                        var showFirst = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
                         if (showFirst.Value)
                         {
-                            var firstCount = Remember(static () => MutableStateOf(0));
-                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.red).Padding(all: 20).Border(radius: 16).OnClick(CurrentComposer.WithState(firstCount).Remember<Action>(__ => () => firstCount.Value++)).Name("first-button"));
+                            var firstCount = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<int>>>(__ => () => MutableStateOf(0)));
+                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.red).Padding(all: 20).Border(radius: 16).OnClick(CurrentComposer.WithState(firstCount).Remember<System.Action>(__ => () => firstCount.Value++)).Name("first-button"));
                         }
 
-                        var secondCount = Remember(static () => MutableStateOf(0));
-                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.green).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(CurrentComposer.WithState(secondCount).Remember<Action>(__ => () => secondCount.Value++)).Name("second-button"));
-                        Text(text: "Switch", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.blue).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(CurrentComposer.WithState(showFirst).Remember<Action>(__ => () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
-                    });
-                });
+                        var secondCount = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<int>>>(__ => () => MutableStateOf(0)));
+                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.green).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(CurrentComposer.WithState(secondCount).Remember<System.Action>(__ => () => secondCount.Value++)).Name("second-button"));
+                        Text(text: "Switch", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.blue).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(CurrentComposer.WithState(showFirst).Remember<System.Action>(__ => () => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                    }));
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
     }

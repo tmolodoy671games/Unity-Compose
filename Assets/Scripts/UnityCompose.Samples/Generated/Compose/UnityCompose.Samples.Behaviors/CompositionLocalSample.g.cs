@@ -9,7 +9,7 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class CompositionLocalSample : ComposeUI
     {
         [Composable]
-        protected override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -19,12 +19,12 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
 
         [Composable]
-        protected override void __Preview()
+        private void __Preview()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Preview());
+                CurrentComposer.EndComposeGroup(() => __Preview());
             }
         }
 
@@ -45,16 +45,16 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: static () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    var isSwitched = Remember(static () => MutableStateOf(false));
-                    CompositionLocalProvider(provides: IImmutableStableList.Create(LocalIsSwitched.Provides(isSwitched.Value)), content: SampleReader);
-                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(CurrentComposer.WithState(isSwitched).Remember<Action>(__ => () => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
-                });
+                    var isSwitched = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                    CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: SampleReader);
+                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(CurrentComposer.WithState(isSwitched).Remember<System.Action>(__ => () => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
 
@@ -65,17 +65,17 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(static () =>
+                Box(CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    Box(static () =>
+                    Box(CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
-                        Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, Transition()).Padding(all: 100));
-                    });
-                });
+                        Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100));
+                    }));
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __SampleReader());
+                CurrentComposer.EndComposeGroup(() => __SampleReader());
             }
         }
     }

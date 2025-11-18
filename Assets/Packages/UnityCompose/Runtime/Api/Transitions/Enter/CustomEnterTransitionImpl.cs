@@ -35,7 +35,7 @@ internal class CustomEnterTransitionImpl : IEnterTransition
     public IModifier Get(float timeElapsed, VisualElement parent)
     {
         if (timeElapsed < _animationSpec.Delay)
-            return Modifier;
+            return Modifier.Alpha(0f);
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return _transition(resolvedProgress, parent);
     }

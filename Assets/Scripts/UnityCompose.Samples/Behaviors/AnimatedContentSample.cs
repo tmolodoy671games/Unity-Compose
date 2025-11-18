@@ -19,7 +19,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
-            const int Duration = 1;
+            const float Duration = 0.5f;
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
@@ -42,20 +42,20 @@ namespace UnityCompose.Samples.Behaviors
                                 targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short",
                                 transitionSpec: _ =>
                                     isSwitched.Value
-                                        ? SlideInVertically(it => -it, animationSpec: animationSpec)
-                                            .TogetherWith(
-                                                SlideOutVertically(it => it, animationSpec: animationSpec)
-                                            )
-                                        : SlideInVertically(it => it, animationSpec: animationSpec)
-                                            .TogetherWith(
-                                                SlideOutVertically(it => -it, animationSpec: animationSpec)
-                                            ),
+                                        ? SlideInVertically(it => -it)
+                                            .TogetherWith(SlideOutVertically(it => it))
+                                            .With(animationSpec: animationSpec)
+                                        : SlideInVertically(it => it)
+                                            .TogetherWith(SlideOutVertically(it => -it))
+                                            .With(animationSpec: animationSpec),
                                 sizeAnimationSpec: animationSpec,
                                 modifier: Modifier
                                     .Name("animated-content")
                                     .Background(
-                                        isSwitched.Value ? Color.green : Color.red,
-                                        Transition(Duration)
+                                        AnimateColorAsState(
+                                            targetValue: isSwitched.Value ? Color.green : Color.red,
+                                            animationSpec: animationSpec
+                                        ).Value
                                     ),
                                 content: state =>
                                 {

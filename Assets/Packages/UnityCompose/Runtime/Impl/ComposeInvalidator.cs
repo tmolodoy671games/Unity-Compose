@@ -80,25 +80,34 @@ namespace UnityCompose
                 CurrentComposer.Invalidate(group);
         }
 
-        public static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
+        internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
         {
             if (!ApplicationUtils.IsPlaying) return new EmptyDisposableImpl();
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        public static void RequestInvalidate(IComposeGroup group)
+        internal static void RequestInvalidate(IComposeGroup group)
         {
             if (!ApplicationUtils.IsPlaying) return;
+            if (Instance._instantInvalidatedGroups.Contains(group)) return;
             Instance._invalidatedGroups.Add(group);
         }
 
-        public static void RequestInstantInvalidate(IComposeGroup group)
+        internal static void CancelInvalidate(IComposeGroup group)
         {
-            // if (!ApplicationUtils.IsPlaying) return;
-            Instance._instantInvalidatedGroups.Add(group);
+            if (!ApplicationUtils.IsPlaying) return;
+            Instance._instantInvalidatedGroups.Remove(group);
+            Instance._invalidatedGroups.Remove(group);
         }
 
-        public static void InstantInvalidate()
+        internal static void RequestInstantInvalidate(IComposeGroup group)
+        {
+            Instance._instantInvalidatedGroups.Add(group);
+            Instance._invalidatedGroups.Remove(group);
+            // CurrentComposer.Invalidate(group);
+        }
+
+        internal static void InstantInvalidate()
         {
             // if (!ApplicationUtils.IsPlaying) return;
             if (Instance._instantInvalidatedGroups.Count == 0) return;

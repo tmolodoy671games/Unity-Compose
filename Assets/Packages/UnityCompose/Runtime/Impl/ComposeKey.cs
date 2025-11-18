@@ -5,7 +5,13 @@ internal readonly record struct ComposeKey(
     string MemberName,
     int LineNumber,
     object? AdditionalKey = null
-);
+)
+{
+    public override string ToString()
+    {
+        return $"(MemberName: {MemberName})";
+    }
+}
 
 internal readonly record struct ResolvedComposeKey(
     string FileName,
@@ -24,5 +30,10 @@ internal readonly record struct ResolvedComposeKey(
             AdditionalKey: key.AdditionalKey,
             Increment: increment
         );
+    }
+    
+    public override string ToString()
+    {
+        return $"(MemberName: {MemberName}, Increment: {Increment})";
     }
 }

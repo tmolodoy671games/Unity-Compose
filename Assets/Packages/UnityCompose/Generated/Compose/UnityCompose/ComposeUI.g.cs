@@ -1,28 +1,17 @@
+using System;
+using SharpExtensions;
+using Sirenix.OdinInspector;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
-[DisallowMultipleComponent, ExecuteAlways]
 public abstract partial class ComposeUI : MonoBehaviour
 {
-    [Composable]
-    protected abstract void __Content()
-    {
-        if (CurrentComposer.BeginComposeGroup(string.Empty))
-            return;
-        try
-        {
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(static () => __Content());
-        }
-    };
     [Composable]
     private void __ContentImpl()
     {
@@ -36,12 +25,12 @@ public abstract partial class ComposeUI : MonoBehaviour
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(static () => __ContentImpl());
+            CurrentComposer.EndComposeGroup(() => __ContentImpl());
         }
     }
 
     [Composable]
-    protected virtual void __Preview()
+    private void __Preview()
     {
         if (CurrentComposer.BeginComposeGroup(string.Empty))
             return;
@@ -50,7 +39,7 @@ public abstract partial class ComposeUI : MonoBehaviour
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(static () => __Preview());
+            CurrentComposer.EndComposeGroup(() => __Preview());
         }
     }
 }

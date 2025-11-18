@@ -43,8 +43,8 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
 
     public IModifier Get(float timeElapsed, VisualElement parent)
     {
-        if (timeElapsed < _animationSpec.Delay)
-            return Modifier;
+        if (timeElapsed <= _animationSpec.Delay)
+            return Modifier.Alpha(0f);
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         return Modifier
             .Scale(

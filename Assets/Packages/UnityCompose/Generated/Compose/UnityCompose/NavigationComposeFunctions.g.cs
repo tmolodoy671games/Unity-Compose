@@ -13,59 +13,64 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, Action<INavigationScope>? content = null, IModifier? modifier = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, IImmutableStableList<ComposeScreen>? initialScreens = null, Action<float>? onTransitionProgressChanged = null, Action<INavigationScope>? content = null, IModifier? modifier = null)
     {
         var(__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier) = (coordinator, transition, initialScreens, onTransitionProgressChanged, content, modifier);
         if (CurrentComposer.BeginComposeGroup((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)))
             return;
         try
         {
-            var backStack = Remember(CurrentComposer.WithState(initialScreens).Remember<Func>(__ => () => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList())));
+            var backStack = Remember(CurrentComposer.WithState(initialScreens).Remember<System.Func<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>>(__ => () => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList())));
             var coordinatorEntry = LocalCoordinator.Current;
             var parentCoordinator = coordinatorEntry.Coordinator;
-            IComposeNavigator navigator = Remember((parentCoordinator, backStack), CurrentComposer.WithState((backStack, parentCoordinator)).Remember<Func>(__ => () => new ComposeNavigatorImpl(backStack, parentCoordinator)));
-            DisposableEffect(key: coordinator, effect: CurrentComposer.WithState((coordinator, navigator)).Remember<Func>(__ => it =>
+            IComposeNavigator navigator = Remember((parentCoordinator, backStack), CurrentComposer.WithState((backStack, parentCoordinator)).Remember<System.Func<UnityCompose.ComposeNavigatorImpl>>(__ => () => new ComposeNavigatorImpl(backStack, parentCoordinator)));
+            DisposableEffect(key: coordinator, effect: CurrentComposer.WithState((coordinator, navigator)).Remember<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(__ => it =>
             {
                 coordinator.CommandBuffer.SetNavigator(navigator);
-                return it.OnDispose(CurrentComposer.WithState(__.coordinator).Remember<Action>(__ => () => coordinator.CommandBuffer.RemoveNavigator()));
+                return it.OnDispose(CurrentComposer.WithState(coordinator).Remember<System.Action>(__ => () => coordinator.CommandBuffer.RemoveNavigator()));
             }));
-            var isSwitched = Remember(static () => MutableStateOf(false));
+            var isSwitched = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
             var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, IImmutableStableList.Empty<ComposeScreen>());
-            var previousBackStack = Remember(CurrentComposer.WithState(initialScreens).Remember<Func>(__ => () => IMutableStableProperty.Create(initialScreens.OrEmpty().ToImmutableStableList())));
-            LaunchedEffect(currentBackStack, CurrentComposer.WithState((isSwitched, currentBackStack, previousBackStack)).Remember<Action>(__ => () =>
+            var previousBackStack = Remember(CurrentComposer.WithState(initialScreens).Remember<System.Func<StableCollections.IMutableStableProperty<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>>(__ => () => IMutableStableProperty.Create(initialScreens.OrEmpty().ToImmutableStableList())));
+            LaunchedEffect(currentBackStack, CurrentComposer.WithState((isSwitched, currentBackStack, previousBackStack)).Remember<System.Action>(__ => () =>
             {
                 if (!Equals(currentBackStack, previousBackStack.Value))
                     isSwitched.Value = !isSwitched.Value;
             }));
-            var appearingScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<Func>(__ => () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList()));
-            var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<Func>(__ => () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList()));
-            var allScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<Func>(__ => () => previousBackStack.Value.Union(currentBackStack).Distinct().OrderBy(CurrentComposer.WithState((__.transition, __.appearingScreens, __.disappearingScreens)).Remember<Func>(__ => () => ResolveTransition(transition, appearingScreens, disappearingScreens))).ToImmutableStableList()));
-            var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), CurrentComposer.WithState((coordinator, onTransitionProgressChanged, content, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration)).Remember<Action>(__ => () =>
+            var appearingScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<System.Func<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(__ => () => currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList()));
+            var disappearingScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<System.Func<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(__ => () => previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList()));
+            var allScreens = Remember((currentBackStack, previousBackStack.Value), CurrentComposer.WithState((currentBackStack, previousBackStack)).Remember<System.Func<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(__ => () => previousBackStack.Value.Union(currentBackStack).Distinct().OrderBy(static it => it.Priority).ToImmutableStableList()));
+            var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), CurrentComposer.WithState((transition, appearingScreens, disappearingScreens)).Remember<System.Func<UnityCompose.ContentTransform>>(__ => () => ResolveTransition(transition, appearingScreens, disappearingScreens)));
+            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
+            var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
+            var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
+            var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
+            ReusableComposeView<Navigation>(modifier: modifier, content: CurrentComposer.WithState((coordinator, onTransitionProgressChanged, content, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration)).Remember<System.Action?>(__ => () =>
             {
-                LaunchedEffect(resolvedProgress, CurrentComposer.WithState((__.onTransitionProgressChanged, __.resolvedProgress)).Remember<Action>(__ => () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
+                LaunchedEffect(resolvedProgress, CurrentComposer.WithState((onTransitionProgressChanged, resolvedProgress)).Remember<System.Action>(__ => () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                 if (IsInPreview)
                     return;
                 foreach (var screen in allScreens)
                 {
-                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value), CurrentComposer.WithState((__.appearingScreens, __.disappearingScreens, __.screen)).Remember<Func>(__ => () => Switch().Case(appearingScreens.Contains(screen), ContentState.Entering).Case(disappearingScreens.Contains(screen), ContentState.Exiting).Default(ContentState.Idle).Get()));
-                    if (screenState == ContentState.Exiting && isTransitionFinished)
+                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value), CurrentComposer.WithState((appearingScreens, disappearingScreens, screen)).Remember<System.Func<UnityCompose.TransitionState>>(__ => () => Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get()));
+                    if (screenState == TransitionState.Exiting && isTransitionFinished)
                         continue;
-                    if (screenState == ContentState.Entering && isTransitionFinished)
-                        screenState = ContentState.Idle;
-                    Key(key: screen, content: CurrentComposer.WithState((__.coordinator, __.content, __.coordinatorEntry, __.currentBackStack, __.resolvedTransition, __.resolvedProgress, __.resolvedDuration, __.screen, __.screenState)).Remember<Action>(__ => () =>
+                    if (screenState == TransitionState.Entering && isTransitionFinished)
+                        screenState = TransitionState.Idle;
+                    Key(key: screen, content: CurrentComposer.WithState((coordinator, content, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState)).Remember<System.Action>(__ => () =>
                     {
                         var parent = LocalVisualElement.Current;
                         var isCurrentScreen = screen.Equals(currentBackStack[^1]);
-                        var contentStyle = screenState switch
+                        var contentModifier = screenState switch
                         {
-                            ContentState.Idle => Modifier.Float(!isCurrentScreen),
-                            ContentState.Entering => resolvedTransition.Enter.Get(resolvedDuration, parent).Float(!isCurrentScreen),
-                            ContentState.Exiting => resolvedTransition.Exit.Get(resolvedDuration, parent).Float(),
+                            TransitionState.Idle => Modifier.Float(!isCurrentScreen),
+                            TransitionState.Entering => resolvedTransition.Enter.Get(resolvedDuration, parent).Float(!isCurrentScreen),
+                            TransitionState.Exiting => resolvedTransition.Exit.Get(resolvedDuration, parent).Float(),
                             _ => throw new ArgumentOutOfRangeException()};
-                        var state = TransitionState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
+                        var state = TransitionResolvedState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                         var isActive = LocalIsActive.Current;
-                        var scope = Remember(screen, CurrentComposer.WithState(__.screen).Remember<Func>(__ => () => new NavigationScopeImpl(screen.Content)));
-                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: CurrentComposer.WithState((__.content, __.scope)).Remember<Action>(__ => () =>
+                        var scope = Remember(screen, CurrentComposer.WithState(screen).Remember<System.Func<UnityCompose.NavigationScopeImpl>>(__ => () => new NavigationScopeImpl(screen.Content)));
+                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentModifier)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: CurrentComposer.WithState((content, scope)).Remember<System.Action>(__ => () =>
                         {
                             if (content != null)
                                 content(scope);
@@ -75,51 +80,12 @@ public static partial class ComposeFunctions
                     }));
                 }
             }));
-            var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
-            var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
-            var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
-            var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
-            ReusableComposeView<Navigation>(modifier: modifier, content: () =>
-            {
-                LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
-                if (IsInPreview)
-                    return;
-                foreach (var screen in allScreens)
-                {
-                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value), () => Switch().Case(appearingScreens.Contains(screen), ContentState.Entering).Case(disappearingScreens.Contains(screen), ContentState.Exiting).Default(ContentState.Idle).Get());
-                    if (screenState == ContentState.Exiting && isTransitionFinished)
-                        continue;
-                    if (screenState == ContentState.Entering && isTransitionFinished)
-                        screenState = ContentState.Idle;
-                    Key(key: screen, content: () =>
-                    {
-                        var parent = LocalVisualElement.Current;
-                        var isCurrentScreen = screen.Equals(currentBackStack[^1]);
-                        var contentStyle = screenState switch
-                        {
-                            ContentState.Idle => Modifier.Float(!isCurrentScreen),
-                            ContentState.Entering => resolvedTransition.Enter.Get(resolvedDuration, parent).Float(!isCurrentScreen),
-                            ContentState.Exiting => resolvedTransition.Exit.Get(resolvedDuration, parent).Float(),
-                            _ => throw new ArgumentOutOfRangeException()};
-                        var state = TransitionState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
-                        var isActive = LocalIsActive.Current;
-                        var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
-                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentStyle)), LocalContentState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: () =>
-                        {
-                            if (content != null)
-                                content(scope);
-                            else
-                                scope.Content();
-                        });
-                    });
-                }
-            });
             if (isTransitionFinished)
                 previousBackStack.Value = currentBackStack;
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)).Remember<Action>(static __ => () => __Navigation(__.__coordinator, __.__transition, __.__initialScreens, __.__onTransitionProgressChanged, __.__content, __.__modifier)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)).Remember<Action>(__ => () => __Navigation(__.__coordinator, __.__transition, __.__initialScreens, __.__onTransitionProgressChanged, __.__content, __.__modifier)));
         }
     }
 }
@@ -127,7 +93,7 @@ public static partial class ComposeFunctions
 internal partial class NavigationScopeImpl : INavigationScope, IEquatable<NavigationScopeImpl>
 {
     [Composable]
-    public void __Content()
+    private void __Content()
     {
         if (CurrentComposer.BeginComposeGroup(string.Empty))
             return;
@@ -137,7 +103,7 @@ internal partial class NavigationScopeImpl : INavigationScope, IEquatable<Naviga
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(static () => __Content());
+            CurrentComposer.EndComposeGroup(() => __Content());
         }
     }
 }

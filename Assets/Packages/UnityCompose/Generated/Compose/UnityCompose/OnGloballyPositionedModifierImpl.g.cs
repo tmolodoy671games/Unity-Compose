@@ -11,9 +11,10 @@ namespace UnityCompose;
 internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
 {
     [Composable, DontGenerateComposeGroups]
-    public override void __Apply(VisualElement element)
+    private void __Apply(VisualElement element)
     {
-        var previousLayoutCoordinates = Remember(CurrentComposer.WithState((this, element, previousLayoutCoordinates)).Remember<Action>(__ => _ =>
+        var previousLayoutCoordinates = Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+        Action<GeometryChangedEvent> onGeometryChanged = CurrentComposer.WithState((this, element, previousLayoutCoordinates)).Remember<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>(__ => _ =>
         {
             var newLayoutCoordinates = LayoutCoordinates.Create(element);
             if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
@@ -21,44 +22,33 @@ internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloball
                 previousLayoutCoordinates.Value = newLayoutCoordinates;
                 _onGloballyPositioned(newLayoutCoordinates);
             }
-        }));
-        Action<GeometryChangedEvent> onGeometryChanged = CurrentComposer.WithState((element, onGeometryChanged)).Remember<Func>(__ => it =>
+        });
+        DisposableEffect(key: element, effect: CurrentComposer.WithState((element, onGeometryChanged)).Remember<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(__ => it =>
         {
             var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
             foreach (var ancestor in ancestors)
                 ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-            return it.OnDispose(CurrentComposer.WithState((__.onGeometryChanged, __.ancestors)).Remember<Action>(__ => () =>
+            return it.OnDispose(CurrentComposer.WithState((onGeometryChanged, ancestors)).Remember<System.Action>(__ => () =>
             {
                 foreach (var ancestor in ancestors)
                     ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
             }));
-        });
-        DisposableEffect(key: element, effect: it =>
-        {
-            var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
-            foreach (var ancestor in ancestors)
-                ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-            return it.OnDispose(() =>
-            {
-                foreach (var ancestor in ancestors)
-                    ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
-            });
-        });
+        }));
     }
 }
 
 internal static partial class GloballyPositionedComposeFunctions
 {
     [Composable, DontGenerateComposeGroups]
-    public static void __FireOnGloballyPositionedCallback(VisualElement element)
+    private static void __FireOnGloballyPositionedCallback(VisualElement element)
     {
         var callback = element.OnGloballyPositionedCallbackOrNull();
         if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
             return;
         var style = element.style;
-        var lastTranslate = Remember(CurrentComposer.WithState(style).Remember<Func>(__ => () => IMutableStableProperty.Create(style.translate)));
-        var lastScale = Remember(CurrentComposer.WithState(style).Remember<Func>(__ => () => IMutableStableProperty.Create(style.scale)));
-        LaunchedEffect((style.translate, style.scale), CurrentComposer.WithState((callback, style, lastTranslate, lastScale)).Remember<Action>(__ => () =>
+        var lastTranslate = Remember(CurrentComposer.WithState(style).Remember<System.Func<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleTranslate>>>(__ => () => IMutableStableProperty.Create(style.translate)));
+        var lastScale = Remember(CurrentComposer.WithState(style).Remember<System.Func<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleScale>>>(__ => () => IMutableStableProperty.Create(style.scale)));
+        LaunchedEffect((style.translate, style.scale), CurrentComposer.WithState((callback, style, lastTranslate, lastScale)).Remember<System.Action>(__ => () =>
         {
             if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)
             {

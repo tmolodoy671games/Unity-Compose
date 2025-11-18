@@ -1,4 +1,8 @@
-﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+﻿using System;
+using SharpExtensions;
+using Sirenix.OdinInspector;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +14,8 @@ public abstract partial class ComposeUI : MonoBehaviour
 {
     private void Awake()
     {
+        if (!ApplicationUtils.IsPlaying)
+            return;
         GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(ContentImpl);
     }
 
@@ -27,6 +33,23 @@ public abstract partial class ComposeUI : MonoBehaviour
     [Composable]
     protected virtual void Preview()
     {
+    }
+
+    private void OnEnable()
+    {
+        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(ContentImpl);
+    }
+
+    private void OnDisable()
+    {
+        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(static () => {});
+    }
+
+    [Button]
+    private void PrintTreeStructure()
+    {
+        var group = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().userData.CastTo<IComposeGroup>();
+        Debug.Log(group.ToString(recursive: true));
     }
 }
 

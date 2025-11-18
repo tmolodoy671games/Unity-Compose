@@ -2,6 +2,7 @@
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;

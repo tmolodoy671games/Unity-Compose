@@ -51,7 +51,7 @@ public static partial class ComposeFunctions
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        CurrentComposer.Remember(
+        CurrentComposer.Remember<TKey, IDisposable>(
             key: new ComposeKey(
                 FileName: filePath,
                 MemberName: memberName,

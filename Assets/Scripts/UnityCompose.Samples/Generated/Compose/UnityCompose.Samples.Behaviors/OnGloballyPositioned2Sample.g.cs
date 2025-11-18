@@ -8,7 +8,7 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class OnGloballyPositioned2Sample : ComposeUI
     {
         [Composable]
-        protected override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -18,12 +18,12 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
 
         [Composable]
-        protected override void __Preview()
+        private void __Preview()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Preview());
+                CurrentComposer.EndComposeGroup(() => __Preview());
             }
         }
 
@@ -44,34 +44,27 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: static () =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    var positions = Remember(CurrentComposer.WithState(positions).Remember<Action>(__ => () =>
-                    {
-                        var selectionIndex = Remember(CurrentComposer.WithState(__.selectionIndex).Remember<Action>(__ => () => selectionIndex.Value = 0));
-                        Tab(selected: selectionIndex.Value == 0, modifier: Modifier.OnClick(CurrentComposer.WithState(__.positions).Remember<Action>(__ => it => positions[0] = it.GlobalPosition)).OnGloballyPositioned(static () => Text(text: "First")), content: CurrentComposer.WithState(__.selectionIndex).Remember<Action>(__ => () => selectionIndex.Value = 1));
-                        Tab(selected: selectionIndex.Value == 1, modifier: Modifier.OnClick(CurrentComposer.WithState(__.positions).Remember<Action>(__ => it => positions[1] = it.GlobalPosition)).OnGloballyPositioned(static () => Text(text: "Second")), content: CurrentComposer.WithState(__.selectionIndex).Remember<Action>(__ => () => selectionIndex.Value = 2));
-                        Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick(CurrentComposer.WithState(__.positions).Remember<Action>(__ => it => positions[2] = it.GlobalPosition)).OnGloballyPositioned(static () => Text(text: "Third")), content: CurrentComposer.WithState(__.selectionIndex).Remember<Action>(__ => () => selectionIndex.Value = 3));
-                        Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick(CurrentComposer.WithState(__.positions).Remember<Action>(__ => it => positions[3] = it.GlobalPosition)).OnGloballyPositioned(static () => Text(text: "Fourth")), content: () => Text(text: "Fourth"));
-                    }));
-                    Row(() =>
+                    var positions = Remember(static () => MutableStateDictionaryOf<int, Vector2>());
+                    Row(CurrentComposer.WithState(positions).Remember<System.Action>(__ => () =>
                     {
                         var selectionIndex = Remember(static () => MutableStateOf(0));
-                        Tab(selected: selectionIndex.Value == 0, modifier: Modifier.OnClick(() => selectionIndex.Value = 0).OnGloballyPositioned(it => positions[0] = it.GlobalPosition), content: () => Text(text: "First"));
-                        Tab(selected: selectionIndex.Value == 1, modifier: Modifier.OnClick(() => selectionIndex.Value = 1).OnGloballyPositioned(it => positions[1] = it.GlobalPosition), content: () => Text(text: "Second"));
-                        Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick(() => selectionIndex.Value = 2).OnGloballyPositioned(it => positions[2] = it.GlobalPosition), content: () => Text(text: "Third"));
-                        Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick(() => selectionIndex.Value = 3).OnGloballyPositioned(it => positions[3] = it.GlobalPosition), content: () => Text(text: "Fourth"));
-                    });
+                        Tab(selected: selectionIndex.Value == 0, modifier: Modifier.OnClick(CurrentComposer.WithState(selectionIndex).Remember<System.Action>(__ => () => selectionIndex.Value = 0)).OnGloballyPositioned(CurrentComposer.WithState(positions).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => positions[0] = it.GlobalPosition)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () => Text(text: "First")));
+                        Tab(selected: selectionIndex.Value == 1, modifier: Modifier.OnClick(CurrentComposer.WithState(selectionIndex).Remember<System.Action>(__ => () => selectionIndex.Value = 1)).OnGloballyPositioned(CurrentComposer.WithState(positions).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => positions[1] = it.GlobalPosition)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () => Text(text: "Second")));
+                        Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick(CurrentComposer.WithState(selectionIndex).Remember<System.Action>(__ => () => selectionIndex.Value = 2)).OnGloballyPositioned(CurrentComposer.WithState(positions).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => positions[2] = it.GlobalPosition)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () => Text(text: "Third")));
+                        Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick(CurrentComposer.WithState(selectionIndex).Remember<System.Action>(__ => () => selectionIndex.Value = 3)).OnGloballyPositioned(CurrentComposer.WithState(positions).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => positions[3] = it.GlobalPosition)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () => Text(text: "Fourth")));
+                    }));
                     foreach (var position in positions.Values)
                     {
                         var measurer = LocalLayoutMeasurer.Current;
                         Spacer(modifier: Modifier.Background(Color.red).Size(16).Border(4, topLeftRadius: 0).Float().Position(left: measurer.GlobalToLocal(position).x, top: measurer.GlobalToLocal(position).y));
                     }
-                });
+                }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
 
@@ -83,14 +76,14 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: CurrentComposer.WithState(content).Remember<Action>(__ => () =>
+                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: CurrentComposer.WithState(content).Remember<System.Action>(__ => () =>
                 {
                     CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content);
                 }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__selected, __content, __modifier)).Remember<Action>(static __ => () => __Tab(__.__selected, __.__content, __.__modifier)));
+                CurrentComposer.EndComposeGroup(CurrentComposer.WithState((__selected, __content, __modifier)).Remember<Action>(__ => () => __Tab(__.__selected, __.__content, __.__modifier)));
             }
         }
     }

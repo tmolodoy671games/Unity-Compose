@@ -82,8 +82,8 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 
     public IModifier Get(float timeElapsed, VisualElement parent)
     {
-        if (timeElapsed < _animationSpec.Delay)
-            return Modifier;
+        if (timeElapsed <= _animationSpec.Delay)
+            return Modifier.Alpha(0f);
         var resolvedProgress = _animationSpec.GetProgress(timeElapsed);
         var result = Modifier;
         var parentSize = new Vector2(
@@ -104,6 +104,12 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
 
         if (_initialOffsetY != null)
         {
+            // var offset = Mathf.LerpUnclamped(
+            //     a: _initialOffsetY(parentSize),
+            //     b: _targetOffsetY?.Invoke(parentSize) ?? 0,
+            //     t: resolvedProgress
+            // );
+            // Debug.Log($"{_initialOffsetY(parentSize)} vs {parent.layout.size.y} -> {offset}");
             result = result
                 .Offset(
                     y: Mathf.LerpUnclamped(

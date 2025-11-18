@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(5))
                                     .Padding(all: 16),
                                 animationSpec: Tween(
-                                    duration: 5
+                                    duration: 2
                                 ),
                                 content: () =>
                                 {

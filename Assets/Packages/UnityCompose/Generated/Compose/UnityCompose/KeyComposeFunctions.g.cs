@@ -9,7 +9,7 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable, DontGenerateComposeGroups]
-    public static void __Key(object key, [Composable] Action content, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    private static void __Key(object key, [Composable] Action content, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
         if (CurrentComposer.BeginComposeGroup((key, content), key: new ComposeKey(filePath, memberName, lineNumber, AdditionalKey: key)))
             return;
@@ -19,7 +19,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((key, content)).Remember<Action>(__ => () => Key(key, content)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((key, content)).Remember<System.Action>(__ => () => Key(key, content)));
         }
     }
 }

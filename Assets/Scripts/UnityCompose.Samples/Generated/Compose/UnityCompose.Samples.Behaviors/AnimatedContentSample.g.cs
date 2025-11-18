@@ -8,7 +8,7 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class AnimatedContentSample : ComposeUI
     {
         [Composable]
-        protected override void __Content()
+        private void __Content()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -18,12 +18,12 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Content());
+                CurrentComposer.EndComposeGroup(() => __Content());
             }
         }
 
         [Composable]
-        protected override void __Preview()
+        private void __Preview()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Preview());
+                CurrentComposer.EndComposeGroup(() => __Preview());
             }
         }
 
@@ -44,24 +44,24 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                const int Duration = 1;
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(Duration).Remember<Action>(__ => () =>
+                const float Duration = 0.5f;
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(Duration).Remember<System.Action>(__ => () =>
                 {
-                    Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("animated-content-sample"), content: CurrentComposer.WithState(__.Duration).Remember<Action>(__ => () =>
+                    Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("animated-content-sample"), content: CurrentComposer.WithState(Duration).Remember<System.Action>(__ => () =>
                     {
                         var animationSpec = Tween(easing: EaseInOutEasing, duration: Duration);
-                        var isSwitched = Remember(static () => MutableStateOf(false));
-                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: CurrentComposer.WithState((__.animationSpec, __.isSwitched)).Remember<Func>(__ => _ => isSwitched.Value ? SlideInVertically(static it => -it, animationSpec: animationSpec).TogetherWith(SlideOutVertically(static it => it, animationSpec: animationSpec)) : SlideInVertically(static it => it, animationSpec: animationSpec).TogetherWith(SlideOutVertically(static it => -it, animationSpec: animationSpec))), sizeAnimationSpec: animationSpec, modifier: Modifier.Name("animated-content").Background(isSwitched.Value ? Color.green : Color.red, Transition(Duration)), content: static state =>
+                        var isSwitched = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: CurrentComposer.WithState((animationSpec, isSwitched)).Remember<System.Func<UnityCompose.IAnimatedContentTransitionScope<string>, UnityCompose.ContentTransform>>(__ => _ => isSwitched.Value ? SlideInVertically(CurrentComposer.WithState(string.Empty).Remember<System.Func<float, float>>(__ => it => -it)).TogetherWith(SlideOutVertically(CurrentComposer.WithState(string.Empty).Remember<System.Func<float, float>>(__ => it => it))).With(animationSpec: animationSpec) : SlideInVertically(CurrentComposer.WithState(string.Empty).Remember<System.Func<float, float>>(__ => it => it)).TogetherWith(SlideOutVertically(CurrentComposer.WithState(string.Empty).Remember<System.Func<float, float>>(__ => it => -it))).With(animationSpec: animationSpec)), sizeAnimationSpec: animationSpec, modifier: Modifier.Name("animated-content").Background(AnimateColorAsState(targetValue: isSwitched.Value ? Color.green : Color.red, animationSpec: animationSpec).Value), content: CurrentComposer.WithState(string.Empty).Remember<System.Action<string>>(__ => state =>
                         {
                             Text(text: state.ToString(), color: Color.white, fontSize: 64);
-                        });
-                        Text(text: "Switch", color: Color.white, fontSize: 64, modifier: Modifier.Padding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(CurrentComposer.WithState(__.isSwitched).Remember<Action>(__ => () => isSwitched.Value = !isSwitched.Value)));
+                        }));
+                        Text(text: "Switch", color: Color.white, fontSize: 64, modifier: Modifier.Padding(horizontal: 100, vertical: 32).Background(Color.blue).Margin(top: 16).Border(radius: 16).OnClick(CurrentComposer.WithState(isSwitched).Remember<System.Action>(__ => () => isSwitched.Value = !isSwitched.Value)));
                     }));
                 }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(static () => __Layout());
+                CurrentComposer.EndComposeGroup(() => __Layout());
             }
         }
     }

@@ -9,20 +9,20 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static TValue __Remember<TKey, TValue>(TKey key, Func<TKey, TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    private static TValue __Remember<TKey, TValue>(TKey key, Func<TKey, TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
         return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, defaultValueFactory);
     }
 
     [Composable]
-    public static TValue __Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    private static TValue __Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
-        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, CurrentComposer.WithState(defaultValueFactory).Remember<Func>(__ => _ => defaultValueFactory()));
+        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, CurrentComposer.WithState(defaultValueFactory).Remember<System.Func<TKey, TValue>>(__ => _ => defaultValueFactory()));
     }
 
     [Composable]
-    public static TValue __Remember<TValue>(Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    private static TValue __Remember<TValue>(Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
-        return CurrentComposer.Remember<int, TValue>(new ComposeKey(filePath, memberName, lineNumber), 0, CurrentComposer.WithState(defaultValueFactory).Remember<Func>(__ => _ => defaultValueFactory()));
+        return CurrentComposer.Remember<int, TValue>(new ComposeKey(filePath, memberName, lineNumber), 0, CurrentComposer.WithState(defaultValueFactory).Remember<System.Func<int, TValue>>(__ => _ => defaultValueFactory()));
     }
 }

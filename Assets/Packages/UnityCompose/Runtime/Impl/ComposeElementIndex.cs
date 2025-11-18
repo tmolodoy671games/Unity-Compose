@@ -1,4 +1,5 @@
-﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;

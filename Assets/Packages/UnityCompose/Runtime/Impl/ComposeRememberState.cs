@@ -26,6 +26,8 @@ internal class ComposeRememberState<TKey, TValue> : IComposeRememberState
         InvokedThisStep = true;
         if (EqualityUtils.FastEquals(_key, key))
             return _value;
+        if (_value is IDisposable disposable)
+            disposable.Dispose();
         _key = key;
         _value = defaultValueFactory(key);
         return _value;
