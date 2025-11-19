@@ -53,35 +53,38 @@ public class Composer
         ComposeKey key
     )
     {
-        RequireCompositionContext();
-        var parentGroup = _groups.Peek();
-        var group = _invalidationRoot != null
-            ? (ComposeGroup<TState>)_invalidationRoot
-            : parentGroup.GetOrCreateChild<TState>(key);
-        ComposeInvalidator.CancelInvalidate(group);
-        if (_compositionLocalProviders.IsNotEmpty())
-            group.ParentCompositionLocalProvider = _compositionLocalProviders.Peek();
-        if (_elements.IsNotEmpty())
-            group.ElementIndexInParent = _elements.Peek().CurrentIndex;
-        if (_invalidationRoot == null)
-            Reinsert(group);
-
-        // Try skipping:
-        if (_invalidationRoot == null && group.State.Equals(state))
+        return PerformanceMetrics.MeasureBeginComposeGroup(() =>
         {
+            RequireCompositionContext();
+            var parentGroup = _groups.Peek();
+            var group = _invalidationRoot != null
+                ? (ComposeGroup<TState>)_invalidationRoot
+                : parentGroup.GetOrCreateChild<TState>(key);
+            ComposeInvalidator.CancelInvalidate(group);
+            if (_compositionLocalProviders.IsNotEmpty())
+                group.ParentCompositionLocalProvider = _compositionLocalProviders.Peek();
             if (_elements.IsNotEmpty())
+                group.ElementIndexInParent = _elements.Peek().CurrentIndex;
+            if (_invalidationRoot == null)
+                Reinsert(group);
+
+            // Try skipping:
+            if (_invalidationRoot == null && group.State.Equals(state))
             {
-                var elementIndex = _elements.Peek();
-                elementIndex.CurrentIndex += group.ElementsCount;
+                if (_elements.IsNotEmpty())
+                {
+                    var elementIndex = _elements.Peek();
+                    elementIndex.CurrentIndex += group.ElementsCount;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        _invalidationRoot = null;
-        _groups.Push(group);
-        group.State = state;
-        return false;
+            _invalidationRoot = null;
+            _groups.Push(group);
+            group.State = state;
+            return false;
+        });
     }
 
     public bool BeginComposeGroup<TState>(
@@ -96,17 +99,20 @@ public class Composer
 
     public void EndComposeGroup(Action restart)
     {
-        RequireCompositionContext();
-        var currentGroup = _groups.Pop();
-        currentGroup.Restart = restart;
-        if (currentGroup.Element != null)
-            _elements.Pop();
-        if (_elements.IsNotEmpty() && currentGroup.Element != null)
+        PerformanceMetrics.MeasureEndComposeGroup(() =>
         {
-            _elements.Peek().CurrentIndex++;
-        }
+            RequireCompositionContext();
+            var currentGroup = _groups.Pop();
+            currentGroup.Restart = restart;
+            if (currentGroup.Element != null)
+                _elements.Pop();
+            if (_elements.IsNotEmpty() && currentGroup.Element != null)
+            {
+                _elements.Peek().CurrentIndex++;
+            }
 
-        currentGroup.Reset();
+            currentGroup.Reset();
+        });
     }
 
     internal void BeginCompositionLocal(
@@ -176,9 +182,12 @@ public class Composer
 
     internal TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory)
     {
-        RequireCompositionContext();
-        var currentGroup = _groups.Peek();
-        return currentGroup.Remember(key, compareKey, defaultValueFactory);
+        return PerformanceMetrics.MeasureRemember(() =>
+        {
+            RequireCompositionContext();
+            var currentGroup = _groups.Peek();
+            return currentGroup.Remember(key, compareKey, defaultValueFactory);
+        });
     }
 
     public RememberBuilder<TState> WithState<TState>(TState state) => new(state);
@@ -229,42 +238,48 @@ public class Composer
 
     internal void Invalidate(IComposeGroup composeGroup)
     {
-        var parent = composeGroup.Parent;
-        if (parent != null)
-            _groups.Push(parent);
-        var parentElement = FindElement(composeGroup);
-        if (parentElement != null)
+        PerformanceMetrics.MeasureInvalidate(() =>
         {
-            var index = new ComposeElementIndex(parentElement)
-            {
-                CurrentIndex = composeGroup.ElementIndexInParent
-            };
-            _elements.Push(index);
-        }
-
-        if (composeGroup.ParentCompositionLocalProvider != null)
-            _compositionLocalProviders.Push(composeGroup.ParentCompositionLocalProvider);
-        _invalidationRoot = composeGroup;
-        try
-        {
-            composeGroup.Restart?.Invoke();
-            if (composeGroup.ParentCompositionLocalProvider != null)
-                _compositionLocalProviders.Pop();
+            var parent = composeGroup.Parent;
             if (parent != null)
-                _groups.Pop();
+                _groups.Push(parent);
+            var parentElement = FindElement(composeGroup);
             if (parentElement != null)
-                _elements.Pop();
-        }
-        finally
-        {
-            while (_groups.IsNotEmpty())
-                _groups.Pop();
-            while (_elements.IsNotEmpty())
-                _elements.Pop();
-            while (_compositionLocalProviders.IsNotEmpty())
-                _compositionLocalProviders.Pop();
-            ComposeInvalidator.InstantInvalidate();
-        }
+            {
+                var index = new ComposeElementIndex(parentElement)
+                {
+                    CurrentIndex = composeGroup.ElementIndexInParent
+                };
+                _elements.Push(index);
+            }
+
+            if (composeGroup.ParentCompositionLocalProvider != null)
+                _compositionLocalProviders.Push(composeGroup.ParentCompositionLocalProvider);
+            _invalidationRoot = composeGroup;
+            try
+            {
+                PerformanceMetrics.MeasureTry(() =>
+                {
+                    composeGroup.Restart?.Invoke();
+                    if (composeGroup.ParentCompositionLocalProvider != null)
+                        _compositionLocalProviders.Pop();
+                    if (parent != null)
+                        _groups.Pop();
+                    if (parentElement != null)
+                        _elements.Pop();
+                });
+            }
+            finally
+            {
+                while (_groups.IsNotEmpty())
+                    _groups.Pop();
+                while (_elements.IsNotEmpty())
+                    _elements.Pop();
+                while (_compositionLocalProviders.IsNotEmpty())
+                    _compositionLocalProviders.Pop();
+                ComposeInvalidator.InstantInvalidate();
+            }
+        });
     }
 
     private static VisualElement? FindElement(IComposeGroup composeGroup)

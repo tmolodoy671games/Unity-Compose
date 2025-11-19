@@ -21,57 +21,60 @@ public static partial class ComposeFunctions
         [Composable] Action? content = null
     ) where T : VisualElement, new()
     {
-        var resolvedModifier = modifier;
-        var localStyle = LocalModifier.Current;
-        if (localStyle.Before != null)
-            resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
-        if (localStyle.After != null)
-            resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
-        var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-
-        var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
-        var currentProperties = Remember(() =>
-            IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
-                IImmutableStableSet.Empty<ComposeModifiedProperty>()
-            )
-        );
-        var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
-        resolvedModifier?.Apply(newProperties);
-        var propertiesToRevert = currentProperties.Value
-            .Where(it => !newProperties.Contains(it));
-        foreach (var property in propertiesToRevert)
-            property.Revert(visualElement);
-        currentProperties.Value = newProperties;
-        currentModifier.Value = resolvedModifier;
-        visualElement.ClearCallbacks();
-        visualElement.style.transitionDelay.value?.Clear();
-        visualElement.style.transitionDuration.value?.Clear();
-        visualElement.style.transitionProperty.value?.Clear();
-        visualElement.style.transitionTimingFunction.value?.Clear();
-        visualElement.pickingMode = PickingMode.Ignore;
-        visualElement.style.overflow = Overflow.Visible;
-        resolvedModifier?.Apply(visualElement);
-        FireOnGloballyPositionedCallback(visualElement);
-
-        if (initializer != null)
+        PerformanceMetrics.MeasureReusableComposeView(() =>
         {
-            var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
-            if (currentInitializer.Value != initializer)
-            {
-                currentInitializer.Value = initializer;
-                initializer(visualElement);
-            }
-        }
+            var resolvedModifier = modifier;
+            var localStyle = LocalModifier.Current;
+            if (localStyle.Before != null)
+                resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
+            if (localStyle.After != null)
+                resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
+            var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
 
-        if (content != null)
-        {
-            CompositionLocalProvider(
-                LocalModifier.Provides((null, null)),
-                LocalVisualElement.Provides(visualElement),
-                LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))),
-                content: content
+            var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
+            var currentProperties = Remember(() =>
+                IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
+                    IImmutableStableSet.Empty<ComposeModifiedProperty>()
+                )
             );
-        }
+            var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
+            resolvedModifier?.Apply(newProperties);
+            var propertiesToRevert = currentProperties.Value
+                .Where(it => !newProperties.Contains(it));
+            foreach (var property in propertiesToRevert)
+                property.Revert(visualElement);
+            currentProperties.Value = newProperties;
+            currentModifier.Value = resolvedModifier;
+            visualElement.ClearCallbacks();
+            visualElement.style.transitionDelay.value?.Clear();
+            visualElement.style.transitionDuration.value?.Clear();
+            visualElement.style.transitionProperty.value?.Clear();
+            visualElement.style.transitionTimingFunction.value?.Clear();
+            visualElement.pickingMode = PickingMode.Ignore;
+            visualElement.style.overflow = Overflow.Visible;
+            resolvedModifier?.Apply(visualElement);
+            FireOnGloballyPositionedCallback(visualElement);
+
+            if (initializer != null)
+            {
+                var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
+                if (currentInitializer.Value != initializer)
+                {
+                    currentInitializer.Value = initializer;
+                    initializer(visualElement);
+                }
+            }
+
+            if (content != null)
+            {
+                CompositionLocalProvider(
+                    LocalModifier.Provides((null, null)),
+                    LocalVisualElement.Provides(visualElement),
+                    LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))),
+                    content: content
+                );
+            }
+        });
     }
 
     [Composable]

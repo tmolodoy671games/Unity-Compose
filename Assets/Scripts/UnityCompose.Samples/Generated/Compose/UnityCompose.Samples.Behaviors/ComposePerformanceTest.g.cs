@@ -1,3 +1,4 @@
+using System.Collections;
 using StableCollections;
 using UnityEngine.UIElements;
 using System;
@@ -18,7 +19,7 @@ namespace UnityCompose.Samples.Behaviors
                 var parentSize = Remember(() => IMutableStableProperty.Create(Vector2.zero));
                 Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(CurrentComposer.WithState(parentSize).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => parentSize.Value = it.SizeWithPaddings)), content: CurrentComposer.WithState(parentSize).Remember<System.Action>(__ => () =>
                 {
-                    for (var i = 0; i < 10; i++)
+                    for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
                         Key(key: currentI, content: CurrentComposer.WithState((parentSize, currentI)).Remember<System.Action>(__ => () =>
@@ -33,6 +34,7 @@ namespace UnityCompose.Samples.Behaviors
                     LaunchedEffect(string.Empty, CurrentComposer.WithState(fps).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => PerformanceUtils.MeasureFpsCoroutine(CurrentComposer.WithState(fps).Remember<System.Action<int>>(__ => it => fps.Value = it))));
                     Text(text: fps.Value.ToString(), color: Color.white, modifier: Modifier.Float().Background(Color.black).Position(right: 40, top: 40));
                 }));
+                LaunchedEffect(string.Empty, static () => PrintStats());
             }
             finally
             {

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
+using System.Collections;
 using StableCollections;
 using UnityEngine.UIElements;
 
@@ -17,7 +18,7 @@ namespace UnityCompose.Samples.Behaviors
                     .OnGloballyPositioned(it => parentSize.Value = it.SizeWithPaddings),
                 content: () =>
                 {
-                    for (var i = 0; i < 10; i++)
+                    for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
                         Key(
@@ -64,6 +65,19 @@ namespace UnityCompose.Samples.Behaviors
                     );
                 }
             );
+
+            LaunchedEffect(string.Empty, static () => PrintStats());
+        }
+
+        private static IEnumerator PrintStats()
+        {
+            var i = 0;
+            while (true)
+            {
+                i++;
+                yield return new WaitForSeconds(2);
+                Debug.Log($"{i} {PerformanceMetrics.Format()}");
+            }
         }
     }
 }
