@@ -18,7 +18,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("reordarable-list-sample").Padding(top: 100).FillMaxHeight().Width(800), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
-                        var items = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableStateList<int>>>(__ => () => MutableStateListOf(1, 2)));
+                        var items = Remember(() => MutableStateListOf(1, 2));
                         Text(text: "Add Item", color: Color.white, fontSize: 40, modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32, vertical: 16).Border(radius: 16).OnClick(CurrentComposer.WithState(items).Remember<System.Action>(__ => () =>
                         {
                             for (var i = 1; i <= items.Count + 1; i++)

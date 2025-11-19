@@ -45,14 +45,14 @@ public static partial class ComposeFunctions
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
             var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
-            ReusableComposeView<Navigation>(modifier: modifier, content: CurrentComposer.WithState((coordinator, onTransitionProgressChanged, content, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration)).Remember<System.Action?>(__ => () =>
+            ReusableComposeView<Navigation>(modifier: modifier, content: CurrentComposer.WithState((coordinator, onTransitionProgressChanged, content, coordinatorEntry, currentBackStack, previousBackStack, appearingScreens, disappearingScreens, allScreens, resolvedTransition, resolvedProgress, isTransitionFinished, resolvedDuration)).Remember<System.Action>(__ => () =>
             {
                 LaunchedEffect(resolvedProgress, CurrentComposer.WithState((onTransitionProgressChanged, resolvedProgress)).Remember<System.Action>(__ => () => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                 if (IsInPreview)
                     return;
                 foreach (var screen in allScreens)
                 {
-                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value), CurrentComposer.WithState((appearingScreens, disappearingScreens, screen)).Remember<System.Func<UnityCompose.TransitionState>>(__ => () => Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get()));
+                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value), CurrentComposer.WithState((appearingScreens, disappearingScreens, screen)).Remember<System.Func<TransitionState>>(__ => () => Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get()));
                     if (screenState == TransitionState.Exiting && isTransitionFinished)
                         continue;
                     if (screenState == TransitionState.Entering && isTransitionFinished)

@@ -16,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.white), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                 {
-                    var isHovered = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                    var isHovered = Remember(() => MutableStateOf(false));
                     Box(modifier: Modifier.Padding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition()).Background(Color.blue).Border(radius: 16).OnMouseEnter(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = false)), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
                         CompositionLocalProvider(LocalContentColor.Provides(Color.white), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
