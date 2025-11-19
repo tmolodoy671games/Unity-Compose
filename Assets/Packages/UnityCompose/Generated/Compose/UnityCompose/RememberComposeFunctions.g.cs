@@ -17,12 +17,12 @@ public static partial class ComposeFunctions
     [Composable]
     private static TValue __Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
-        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, CurrentComposer.WithState(defaultValueFactory).Remember<System.Func<TKey, TValue>>(__ => _ => defaultValueFactory()));
+        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, _ => defaultValueFactory());
     }
 
     [Composable]
     private static TValue __Remember<TValue>(Func<TValue> defaultValueFactory, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
-        return CurrentComposer.Remember<int, TValue>(new ComposeKey(filePath, memberName, lineNumber), 0, CurrentComposer.WithState(defaultValueFactory).Remember<System.Func<int, TValue>>(__ => _ => defaultValueFactory()));
+        return CurrentComposer.Remember<int, TValue>(new ComposeKey(filePath, memberName, lineNumber), 0, _ => defaultValueFactory());
     }
 }

@@ -5,7 +5,7 @@ using static UnityCompose.ComposeFunctions;
 // ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class SquareComposeSample : ComposeUI
+    internal partial class SquareComposeSample
     {
         [Composable]
         private void __Content()
@@ -44,8 +44,8 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                var isHovered = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
-                var isPressed = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                var isHovered = Remember(() => MutableStateOf(false));
+                var isPressed = Remember(() => MutableStateOf(false));
                 Box(modifier: Modifier.FillMaxSize(), horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, content: CurrentComposer.WithState((isHovered, isPressed)).Remember<System.Action>(__ => () =>
                 {
                     Spacer(modifier: Modifier.Size(100).Background(isPressed.Value ? Color.cyan : Color.blue, Transition()).Border(radius: 32).Scale(isHovered.Value ? 2 : 1, transition: Transition()).OnMouseEnter(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = true)).OnMouseLeave(CurrentComposer.WithState((isHovered, isPressed)).Remember<System.Action>(__ => () =>

@@ -31,8 +31,8 @@ public static partial class ComposeFunctions
             if (localStyle.After != null)
                 resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
             var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-            var currentModifier = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>>(__ => () => IMutableStableProperty.Create<IModifier?>(null)));
-            var currentProperties = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>>(__ => () => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>())));
+            var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
+            var currentProperties = Remember(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
             var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
             resolvedModifier?.Apply(newProperties);
             var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.WithState(newProperties).Remember<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(__ => it => !newProperties.Contains(it)));
@@ -51,7 +51,7 @@ public static partial class ComposeFunctions
             FireOnGloballyPositionedCallback(visualElement);
             if (initializer != null)
             {
-                var currentInitializer = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IMutableStableProperty<System.Action<T>?>>>(__ => () => IMutableStableProperty.Create<Action<T>?>(null)));
+                var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
                 if (currentInitializer.Value != initializer)
                 {
                     currentInitializer.Value = initializer;
@@ -61,7 +61,7 @@ public static partial class ComposeFunctions
 
             if (content != null)
             {
-                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, CurrentComposer.WithState(visualElement).Remember<System.Func<UnityCompose.LayoutMeasurerImpl>>(__ => () => new LayoutMeasurerImpl(visualElement)))), content: content);
+                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))), content: content);
             }
         }
         finally

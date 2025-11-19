@@ -5,7 +5,7 @@ using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class OnGloballyPositioned2Sample : ComposeUI
+    internal partial class OnGloballyPositioned2Sample
     {
         [Composable]
         private void __Content()

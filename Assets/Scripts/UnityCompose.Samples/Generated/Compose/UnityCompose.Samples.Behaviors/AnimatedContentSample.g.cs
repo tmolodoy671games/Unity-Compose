@@ -5,7 +5,7 @@ using static UnityCompose.ComposeFunctions;
 // ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class AnimatedContentSample : ComposeUI
+    internal partial class AnimatedContentSample
     {
         [Composable]
         private void __Content()

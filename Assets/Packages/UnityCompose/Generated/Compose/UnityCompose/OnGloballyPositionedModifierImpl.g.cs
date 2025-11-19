@@ -8,7 +8,7 @@ using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose;
-internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
+internal partial class OnGloballyPositionedModifierImpl
 {
     [Composable, DontGenerateComposeGroups]
     private void __Apply(VisualElement element)
@@ -46,8 +46,8 @@ internal static partial class GloballyPositionedComposeFunctions
         if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
             return;
         var style = element.style;
-        var lastTranslate = Remember(CurrentComposer.WithState(style).Remember<System.Func<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleTranslate>>>(__ => () => IMutableStableProperty.Create(style.translate)));
-        var lastScale = Remember(CurrentComposer.WithState(style).Remember<System.Func<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleScale>>>(__ => () => IMutableStableProperty.Create(style.scale)));
+        var lastTranslate = Remember(() => IMutableStableProperty.Create(style.translate));
+        var lastScale = Remember(() => IMutableStableProperty.Create(style.scale));
         LaunchedEffect((style.translate, style.scale), CurrentComposer.WithState((callback, style, lastTranslate, lastScale)).Remember<System.Action>(__ => () =>
         {
             if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)

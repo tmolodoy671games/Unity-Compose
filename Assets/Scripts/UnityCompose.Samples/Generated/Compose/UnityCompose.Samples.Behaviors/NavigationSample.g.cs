@@ -8,7 +8,7 @@ using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class NavigationSample : ComposeUI
+    internal partial class NavigationSample
     {
         [Composable]
         private void __Content()
@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.WithState(animationSpec).Remember<System.Action>(__ => () =>
                     {
-                        Navigation(coordinator: Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>>(__ => () => new SampleCoordinatorImpl())), transition: CurrentComposer.WithState(animationSpec).Remember<System.Func<UnityCompose.ContentTransform>?>(__ => () => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(__ => () => IImmutableStableList.Create<ComposeScreen>(new FirstScreen()))), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: Remember(() => new SampleCoordinatorImpl()), transition: CurrentComposer.WithState(animationSpec).Remember<System.Func<UnityCompose.ContentTransform>?>(__ => () => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: Remember(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
@@ -63,7 +63,7 @@ namespace UnityCompose.Samples.Behaviors
         }
     }
 
-    internal partial class FirstScreen : ComposeScreen
+    internal partial class FirstScreen
     {
         [Composable]
         private void __Content()
@@ -86,7 +86,7 @@ namespace UnityCompose.Samples.Behaviors
         }
     }
 
-    internal partial class SecondScreen : ComposeScreen
+    internal partial class SecondScreen
     {
         [Composable]
         private void __Content()

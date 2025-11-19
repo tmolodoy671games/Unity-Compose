@@ -42,8 +42,8 @@ public static partial class ComposeFunctions
     private static (IModifier ContainerModifier, IModifier ContentModifier) __AnimateSizeModifiers(AnimationSpec animationSpec, object? key = null)
     {
         var resolvedAnimationSpec = animationSpec;
-        var containerPaddings = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<UnityEngine.Vector2>>>(__ => () => MutableStateOf(new Vector2(-1, -1))));
-        var contentSize = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<UnityEngine.Vector2>>>(__ => () => MutableStateOf(new Vector2(-1, -1))));
+        var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
+        var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentStyle = Modifier;
         var containerStyle = Modifier.Clip().OnLocallyPositioned(CurrentComposer.WithState(containerPaddings).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it =>
         {

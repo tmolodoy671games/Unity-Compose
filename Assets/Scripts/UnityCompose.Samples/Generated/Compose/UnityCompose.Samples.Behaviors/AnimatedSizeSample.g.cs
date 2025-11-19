@@ -5,7 +5,7 @@ using static UnityCompose.ComposeFunctions;
 // ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class AnimatedSizeSample : ComposeUI
+    internal partial class AnimatedSizeSample
     {
         [Composable]
         private static void __Layout()
@@ -18,7 +18,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("animated-size-sample"), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
                     {
-                        var isSwitched = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+                        var isSwitched = Remember(() => MutableStateOf(false));
                         var text = isSwitched.Value ? "Short" : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
                         AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(5)).Padding(all: 16), animationSpec: Tween(duration: 2), content: CurrentComposer.WithState(text).Remember<System.Action>(__ => () =>
                         {

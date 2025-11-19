@@ -10,6 +10,6 @@ public static partial class ComposeFunctions
     [Composable]
     private static IComposeCoroutineScope __RememberCoroutineScope()
     {
-        return Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>>(__ => () => new ComposeCoroutineScopeImpl()));
+        return Remember(() => new ComposeCoroutineScopeImpl());
     }
 }

@@ -19,16 +19,16 @@ public static partial class ComposeFunctions
         try
         {
             // Progress:
-            var isSwitched = Remember(CurrentComposer.WithState(string.Empty).Remember<System.Func<UnityCompose.IMutableState<bool>>>(__ => () => MutableStateOf(false)));
+            var isSwitched = Remember(() => MutableStateOf(false));
             LaunchedEffect(targetState!, CurrentComposer.WithState(isSwitched).Remember<System.Action>(__ => () => isSwitched.Value = !isSwitched.Value));
-            var previousValue = Remember(CurrentComposer.WithState(targetState).Remember<System.Func<StableCollections.IMutableStableProperty<T>>>(__ => () => IMutableStableProperty.Create(targetState)));
-            var targetValue = Remember(CurrentComposer.WithState(targetState).Remember<System.Func<StableCollections.IMutableStableProperty<T>>>(__ => () => IMutableStableProperty.Create(targetState)));
+            var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
+            var targetValue = Remember(() => IMutableStableProperty.Create(targetState));
             LaunchedEffect(targetState!, CurrentComposer.WithState((targetState, previousValue, targetValue)).Remember<System.Action>(__ => () =>
             {
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
             }));
-            var resolvedTransition = Remember(targetState!, CurrentComposer.WithState((targetState, transitionSpec, previousValue)).Remember<System.Func<UnityCompose.ContentTransform>>(__ => () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
+            var resolvedTransition = Remember(targetState!, () => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
             // Animating size:
             var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState) : (Modifier, Modifier);
             // Layout:
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: CurrentComposer.WithState((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)).Remember<System.Action>(__ => () =>
+            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: CurrentComposer.WithState((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)).Remember<System.Action?>(__ => () =>
             {
                 var parent = LocalVisualElement.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);

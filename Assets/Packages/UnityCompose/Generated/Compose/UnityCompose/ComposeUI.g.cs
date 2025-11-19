@@ -10,7 +10,7 @@ using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
-public abstract partial class ComposeUI : MonoBehaviour
+public abstract partial class ComposeUI
 {
     [Composable]
     private void __ContentImpl()

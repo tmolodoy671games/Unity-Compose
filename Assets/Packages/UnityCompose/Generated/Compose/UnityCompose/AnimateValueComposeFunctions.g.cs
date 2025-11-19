@@ -42,7 +42,7 @@ public static partial class ComposeFunctions
     [Composable]
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        var property = Remember(CurrentComposer.WithState(targetValue).Remember<System.Func<UnityCompose.IMutableState<T>>>(__ => () => MutableStateOf(targetValue)));
+        var property = Remember(() => MutableStateOf(targetValue));
         if (Equals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
@@ -71,7 +71,7 @@ public static partial class ComposeFunctions
     private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
         var targetValue = targetValueFactory();
-        var property = Remember(CurrentComposer.WithState(targetValue).Remember<System.Func<UnityCompose.IMutableState<T>>>(__ => () => MutableStateOf(targetValue)));
+        var property = Remember(() => MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();

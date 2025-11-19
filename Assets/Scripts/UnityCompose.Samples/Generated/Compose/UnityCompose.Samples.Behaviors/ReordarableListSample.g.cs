@@ -5,7 +5,7 @@ using static UnityCompose.ComposeFunctions;
 // ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class ReordarableListSample : ComposeUI
+    internal partial class ReordarableListSample
     {
         [Composable]
         private static void __Layout()
