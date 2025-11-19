@@ -120,10 +120,15 @@ public class Composer
 
     private void Reinsert(IComposeGroup currentGroup)
     {
-        // return;
         if (_elements.IsEmpty())
             return;
         var elementIndex = _elements.Peek();
+        var elementsCount = elementIndex.Element.childCount;
+        currentGroup.ElementIndexInParent = Math.Clamp(
+            currentGroup.ElementIndexInParent,
+            0,
+            elementsCount > 0 ? elementsCount - 1 : 0
+        );
         if (currentGroup.Element != null)
             elementIndex.Element.FastReinsert(elementIndex.CurrentIndex, currentGroup.Element);
         else
