@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
