@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SharpExtensions;
 using StableCollections;
@@ -86,6 +87,7 @@ internal class ComposeGroup<T> : IComposeGroup
 
     public void Reset()
     {
+        var initialChildrenCount = _children.Count;
         foreach (var child in _children.Values.ToImmutableStableList())
         {
             if (!child.CalledThisStep)
@@ -96,9 +98,23 @@ internal class ComposeGroup<T> : IComposeGroup
             else
                 child.CalledThisStep = false;
         }
+        var newChildrenCount = _children.Count;
+        if (newChildrenCount < initialChildrenCount)
+            UpdateChildIndices();
 
         _groupInvocationState.Reset();
         _rememberStorage.Reset();
+    }
+
+    private void UpdateChildIndices()
+    {
+        foreach (var child in _children.Values)
+        {
+            var element = child.Element ?? child.NestedElements.FirstOrDefault();
+            if (element == null)
+                continue;
+            child.ElementIndexInParent = element.parent.IndexOf(element);
+        }
     }
 
     public string ToString(bool recursive)
