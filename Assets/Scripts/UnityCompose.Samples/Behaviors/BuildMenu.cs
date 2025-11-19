@@ -1,26 +1,21 @@
+#if UNITY_EDITOR
 using UnityEditor;
-using Sirenix.OdinInspector;
-#if UNITY_EDITOR
 using Packages.UnityCompose.Editor.Compilation.Release;
-#endif
 
-// ReSharper disable ArrangeNamespaceBody
-namespace UnityCompose.Samples.Behaviors
+namespace UnityCompose.Samples.Behaviors;
+
+internal static class BuildMenu
 {
-    internal class BuildMenu : MonoBehaviour
+    [MenuItem("Tools/Unity Compose/Build OS X")]
+    private static void BuildOsX()
     {
-        [Button]
-        private void Build()
-        {
-#if UNITY_EDITOR
-            ComposeReleaseCompiler.Compile(() => BuildPipeline.BuildPlayer(
-                buildPlayerOptions: new BuildPlayerOptions
-                {
-                    target = BuildTarget.StandaloneOSX,
-                    locationPathName = "Build/OsX/UnityCompose.app",
-                }
-            ));
-#endif
-        }
+        ComposeReleaseCompiler.Compile(() => BuildPipeline.BuildPlayer(
+            buildPlayerOptions: new BuildPlayerOptions
+            {
+                target = BuildTarget.StandaloneOSX,
+                locationPathName = "Build/OsX/UnityCompose.app",
+            }
+        ));
     }
 }
+#endif

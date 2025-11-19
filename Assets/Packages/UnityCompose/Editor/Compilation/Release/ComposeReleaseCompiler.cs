@@ -18,7 +18,6 @@ public static class ComposeReleaseCompiler
         var filePairs = FindFiles()
             .ToImmutableStableList();
         var originalFileContents = filePairs
-            .Select(it => it.Original)
             .Select(it => (FullName: it.FullName, Content: File.ReadAllText(it.FullName)))
             .ToImmutableStableList();
         var unityComposeDirectory = new DirectoryInfo("UnityCompose");

@@ -12,7 +12,7 @@ namespace Packages.UnityCompose.Editor.Compilation.Release;
 
 internal static class ComposeReleaseAssembliesFinder
 {
-    public static IEnumerable<ComposeSourcePair> FindFiles()
+    public static IEnumerable<FileInfo> FindFiles()
     {
         return FindComposeDirectories()
             .SelectMany(FindComposeSources);
@@ -20,16 +20,12 @@ internal static class ComposeReleaseAssembliesFinder
 
     public static IEnumerable<DirectoryInfo> FindComposeDirectories()
     {
-        var searchDirectories = Enumerables.Of(
-            new DirectoryInfo(Application.dataPath),
-            new DirectoryInfo(Path.Combine("Library", "PackageCache"))
-        );
-        return searchDirectories
-            .SelectMany(static it => it.EnumerateDirectories("*", SearchOption.AllDirectories))
+        return new DirectoryInfo(".")
+            .EnumerateDirectories("*", SearchOption.AllDirectories)
             .Where(static it => it.IsComposeDirectory());
     }
 
-    private static IEnumerable<ComposeSourcePair> FindComposeSources(DirectoryInfo directory)
+    private static IEnumerable<FileInfo> FindComposeSources(DirectoryInfo directory)
     {
         var generatedFiles = directory.GetFiles("*.g.cs", SearchOption.AllDirectories)
             .Where(file => file.IsComposeGeneratedFile(directory))
@@ -53,7 +49,7 @@ internal static class ComposeReleaseAssembliesFinder
                     .Where(it => it.Name == originalFile.Name.Replace(".cs", ".g.cs"))
                     .Where(it => it.Directory?.Name == (namespaceName ?? "Compose"))
                     .FirstOrDefault();
-                return generatedFile == null ? null : new ComposeSourcePair(originalFile, generatedFile);
+                return generatedFile == null ? null : originalFile;
             });
     }
 

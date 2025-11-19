@@ -17,13 +17,22 @@ internal static class MethodDeclarationSyntaxExtensions
 
     public static bool ShouldBeCompiled(this MethodDeclarationSyntax method)
     {
-        return method.ReturnsVoid() &&
-               method.IsComposable() &&
+        return method.IsComposable() &&
                !method.IsAbstract() &&
-               method.GenerateImplementation();
+               !method.IsCompiled() &&
+               method.HasBody() &&
+               !method.IsReleaseCompiled();
+    }
+    
+    public static bool ShouldBeCompiledOrSkipped(this MethodDeclarationSyntax method)
+    {
+        return method.IsComposable() &&
+               !method.IsAbstract() &&
+               method.HasBody() &&
+               !method.IsCompiled();
     }
 
-    private static bool ReturnsVoid(this MethodDeclarationSyntax method)
+    public static bool IsVoid(this MethodDeclarationSyntax method)
     {
         return method.ReturnType is PredefinedTypeSyntax predefinedType &&
                predefinedType.Keyword.IsKind(SyntaxKind.VoidKeyword);
@@ -34,10 +43,22 @@ internal static class MethodDeclarationSyntaxExtensions
         return method.Modifiers.Any(m => m.IsKind(SyntaxKind.AbstractKeyword));
     }
 
-    private static bool GenerateImplementation(this MethodDeclarationSyntax method)
+    private static bool IsCompiled(this MethodDeclarationSyntax method)
     {
         return method.AttributeLists
             .SelectMany(it => it.Attributes)
-            .None(static it => it.IsReleaseCompiled() || it.IsCompiled());
+            .Any(static it => it.IsCompiled());
+    }
+
+    private static bool IsReleaseCompiled(this MethodDeclarationSyntax method)
+    {
+        return method.AttributeLists
+            .SelectMany(it => it.Attributes)
+            .Any(static it => it.IsReleaseCompiled());
+    }
+    
+    private static bool HasBody(this MethodDeclarationSyntax method)
+    {
+        return method.Body != null || method.ExpressionBody != null;
     }
 }
