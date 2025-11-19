@@ -18,7 +18,7 @@ namespace UnityCompose.Samples.Behaviors
                 var parentSize = Remember(() => IMutableStableProperty.Create(Vector2.zero));
                 Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(CurrentComposer.WithState(parentSize).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => parentSize.Value = it.SizeWithPaddings)), content: CurrentComposer.WithState(parentSize).Remember<System.Action>(__ => () =>
                 {
-                    for (var i = 0; i < 1000; i++)
+                    for (var i = 0; i < 10; i++)
                     {
                         var currentI = i;
                         Key(key: currentI, content: CurrentComposer.WithState((parentSize, currentI)).Remember<System.Action>(__ => () =>

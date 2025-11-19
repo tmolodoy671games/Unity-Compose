@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
                     .OnGloballyPositioned(it => parentSize.Value = it.SizeWithPaddings),
                 content: () =>
                 {
-                    for (var i = 0; i < 1000; i++)
+                    for (var i = 0; i < 10; i++)
                     {
                         var currentI = i;
                         Key(
@@ -36,7 +36,8 @@ namespace UnityCompose.Samples.Behaviors
                                 Spacer(
                                     modifier: Modifier
                                         .Size(50)
-                                        .Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
+                                        .Background(
+                                            PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
                                         .Float()
                                         .Position(
                                             left: position.Value.x,
