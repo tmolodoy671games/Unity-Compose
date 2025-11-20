@@ -19,7 +19,7 @@ public interface IMutableState<T> : IState<T>
 
 public abstract class BaseMutableStateImpl
 {
-    private readonly IMutableStableSet<IComposeGroup> _groups = IMutableStableSet.Create<IComposeGroup>();
+    private readonly IMutableStableSet<IComposeGroupDeprecated> _groups = IMutableStableSet.Create<IComposeGroupDeprecated>();
     private readonly bool _isCompositionLocal;
 
     protected BaseMutableStateImpl(bool isCompositionLocal = false)
@@ -43,7 +43,7 @@ public abstract class BaseMutableStateImpl
         }
     }
 
-    internal void Add(IComposeGroup group) => _groups.Add(group);
+    internal void Add(IComposeGroupDeprecated groupDeprecated) => _groups.Add(groupDeprecated);
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>

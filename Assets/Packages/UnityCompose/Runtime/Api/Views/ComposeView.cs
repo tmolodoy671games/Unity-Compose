@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
@@ -15,16 +16,16 @@ public partial class ComposeView : VisualElement
 
     public void SetContent([Composable] Action content)
     {
-        if (_content == content || _content?.Method == content.Method &&
-            _content.Target?.GetType() == content.Target?.GetType())
+        if (_content == content)
             return;
         _content = content;
         userData = null;
         Clear();
+        CurrentComposer.Reset();
         ContentImpl(content);
     }
 
-    [Composable, Compiled]
+    [Composable, DontGenerateComposeGroups]
     private void ContentImpl(Action content)
     {
         if (CurrentComposer.BeginRootComposeGroup(this)) return;
@@ -33,6 +34,8 @@ public partial class ComposeView : VisualElement
             LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)),
             content: content
         );
-        CurrentComposer.EndComposeGroup(() => ContentImpl(content));
+        CurrentComposer.EndRootComposeGroup(() => ContentImpl(content));
     }
+
+    public override string ToString() => "ComposeView";
 }

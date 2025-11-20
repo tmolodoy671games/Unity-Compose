@@ -2,7 +2,6 @@ using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
-// ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class SquareComposeSample
@@ -29,11 +28,42 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Layout();
+                Spacer(Modifier);
             }
             finally
             {
                 CurrentComposer.EndComposeGroup(() => __Preview());
+            }
+        }
+
+        [Composable]
+        private static void __EmptyColumn([Composable] Action action)
+        {
+            var __action = (action);
+            if (CurrentComposer.BeginComposeGroup(__action))
+                return;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__action).Remember<Action>(__ => () => __EmptyColumn(__)));
+            }
+        }
+
+        [Composable]
+        private static void __EmptySpacer(IModifier modifier)
+        {
+            var __modifier = (modifier);
+            if (CurrentComposer.BeginComposeGroup(__modifier))
+                return;
+            try
+            {
+            }
+            finally
+            {
+                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__modifier).Remember<Action>(__ => () => __EmptySpacer(__)));
             }
         }
 
@@ -44,16 +74,11 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                var isHovered = Remember(() => MutableStateOf(false));
-                var isPressed = Remember(() => MutableStateOf(false));
-                Box(modifier: Modifier.FillMaxSize(), horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, content: CurrentComposer.WithState((isHovered, isPressed)).Remember<System.Action>(__ => () =>
-                {
-                    Spacer(modifier: Modifier.Size(100).Background(isPressed.Value ? Color.cyan : Color.blue, Transition()).Border(radius: 32).Scale(isHovered.Value ? 2 : 1, transition: Transition()).OnMouseEnter(CurrentComposer.WithState(isHovered).Remember<System.Action>(__ => () => isHovered.Value = true)).OnMouseLeave(CurrentComposer.WithState((isHovered, isPressed)).Remember<System.Action>(__ => () =>
-                    {
-                        isPressed.Value = false;
-                        isHovered.Value = false;
-                    })).OnMouseDown(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = true)).OnMouseUp(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = false)));
-                }));
+                // var value1 = Remember(static () => MutableStateOf(false));
+                // var value2 = Remember(static () => MutableStateOf(0));
+                // var value3 = Remember(static () => MutableStateOf(1.2));
+                // var value4 = Remember(static () => MutableStateOf("text"));
+                Spacer(Modifier);
             }
             finally
             {

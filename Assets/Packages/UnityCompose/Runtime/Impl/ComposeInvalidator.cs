@@ -55,8 +55,8 @@ namespace UnityCompose
             }
         }
 
-        private readonly ISet<IComposeGroup> _invalidatedGroups = new HashSet<IComposeGroup>();
-        private readonly ISet<IComposeGroup> _instantInvalidatedGroups = new HashSet<IComposeGroup>();
+        private readonly ISet<IComposeGroupDeprecated> _invalidatedGroups = new HashSet<IComposeGroupDeprecated>();
+        private readonly ISet<IComposeGroupDeprecated> _instantInvalidatedGroups = new HashSet<IComposeGroupDeprecated>();
 
         public ComposeInvalidator()
         {
@@ -86,24 +86,24 @@ namespace UnityCompose
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        internal static void RequestInvalidate(IComposeGroup group)
+        internal static void RequestInvalidate(IComposeGroupDeprecated groupDeprecated)
         {
             if (!ApplicationUtils.IsPlaying) return;
-            if (Instance._instantInvalidatedGroups.Contains(group)) return;
-            Instance._invalidatedGroups.Add(group);
+            if (Instance._instantInvalidatedGroups.Contains(groupDeprecated)) return;
+            Instance._invalidatedGroups.Add(groupDeprecated);
         }
 
-        internal static void CancelInvalidate(IComposeGroup group)
+        internal static void CancelInvalidate(IComposeGroupDeprecated groupDeprecated)
         {
             if (!ApplicationUtils.IsPlaying) return;
-            Instance._instantInvalidatedGroups.Remove(group);
-            Instance._invalidatedGroups.Remove(group);
+            Instance._instantInvalidatedGroups.Remove(groupDeprecated);
+            Instance._invalidatedGroups.Remove(groupDeprecated);
         }
 
-        internal static void RequestInstantInvalidate(IComposeGroup group)
+        internal static void RequestInstantInvalidate(IComposeGroupDeprecated groupDeprecated)
         {
-            Instance._instantInvalidatedGroups.Add(group);
-            Instance._invalidatedGroups.Remove(group);
+            Instance._instantInvalidatedGroups.Add(groupDeprecated);
+            Instance._invalidatedGroups.Remove(groupDeprecated);
             // CurrentComposer.Invalidate(group);
         }
 

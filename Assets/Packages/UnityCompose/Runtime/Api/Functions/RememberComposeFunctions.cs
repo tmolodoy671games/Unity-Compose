@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -10,43 +10,32 @@ public static partial class ComposeFunctions
     [Composable]
     public static TValue Remember<TKey, TValue>(
         TKey key,
-        Func<TKey, TValue> defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<TKey, TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.Remember(new ComposeKey(filePath, memberName, lineNumber), key, defaultValueFactory);
+        return CurrentComposer.Remember(key, defaultValueFactory);
     }
 
     [Composable]
     public static TValue Remember<TKey, TValue>(
         TKey key,
-        Func<TValue> defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<TValue> defaultValueFactory
     )
     {
         return CurrentComposer.Remember(
-            new ComposeKey(filePath, memberName, lineNumber),
             key,
-            _ => defaultValueFactory()
+            defaultValueFactory
         );
     }
-    
+
     [Composable]
     public static TValue Remember<TValue>(
-        Func<TValue> defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.Remember<int, TValue>(
-            new ComposeKey(filePath, memberName, lineNumber),
-            0,
-            _ => defaultValueFactory()
+        return CurrentComposer.Remember(
+            ComposeRememberKey.None,
+            defaultValueFactory
         );
     }
 }

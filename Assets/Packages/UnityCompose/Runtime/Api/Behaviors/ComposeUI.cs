@@ -12,23 +12,24 @@ namespace UnityCompose;
 [DisallowMultipleComponent, ExecuteAlways]
 public abstract partial class ComposeUI : MonoBehaviour
 {
+    private readonly Action ContentLambda;
+    private readonly Action PreviewLambda;
+
+    protected ComposeUI()
+    {
+        ContentLambda = Content;
+        PreviewLambda = Preview;
+    }
+
     private void Awake()
     {
         if (!ApplicationUtils.IsPlaying)
             return;
-        GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(ContentImpl);
+        GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(ContentLambda);
     }
 
     [Composable]
     protected abstract void Content();
-
-    [Composable]
-    private void ContentImpl()
-    {
-        if (!ApplicationUtils.IsPlaying)
-            return;
-        Content();
-    }
 
     [Composable]
     protected virtual void Preview()
@@ -37,33 +38,15 @@ public abstract partial class ComposeUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(ContentImpl);
-    }
-
-    private void OnDisable()
-    {
-        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(static () => {});
+        if (ApplicationUtils.IsPlaying)
+            return;
+        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(PreviewLambda);
     }
 
     [Button]
     private void PrintTreeStructure()
     {
-        var group = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().userData.CastTo<IComposeGroup>();
+        var group = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().userData.CastTo<IComposeGroupDeprecated>();
         Debug.Log(group.ToString(recursive: true));
     }
-}
-
-public abstract partial class ComposeUI
-{
-#if UNITY_EDITOR
-
-    private void Update()
-    {
-        if (ApplicationUtils.IsPlaying) return;
-        var document = GetComponent<UIDocument>();
-        if (!document) return;
-        var composeView = document.rootVisualElement?.Q<ComposeView>();
-        composeView?.SetContent(Preview);
-    }
-#endif
 }

@@ -13,23 +13,6 @@ namespace UnityCompose;
 public abstract partial class ComposeUI
 {
     [Composable]
-    private void __ContentImpl()
-    {
-        if (CurrentComposer.BeginComposeGroup(string.Empty))
-            return;
-        try
-        {
-            if (!ApplicationUtils.IsPlaying)
-                return;
-            Content();
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => __ContentImpl());
-        }
-    }
-
-    [Composable]
     private void __Preview()
     {
         if (CurrentComposer.BeginComposeGroup(string.Empty))

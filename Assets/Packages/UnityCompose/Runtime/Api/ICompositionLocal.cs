@@ -30,6 +30,11 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
     {
         [Composable] get => CurrentComposer.GetCompositionLocal(this, _defaultValueFactory);
     }
+
+    public override string ToString()
+    {
+        return typeof(T).Name;
+    }
 }
 
 internal class MappedCompositionLocalImpl<T1, T2> : ICompositionLocal<T2>

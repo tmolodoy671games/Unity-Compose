@@ -16,8 +16,8 @@ public static partial class ComposeFunctions
         [CallerLineNumber] int lineNumber = 0
     )
     {
-        if (CurrentComposer.BeginComposeGroup((key, content),
-                key: new ComposeKey(filePath, memberName, lineNumber, AdditionalKey: key))) return;
+        // BRUH
+        if (CurrentComposer.BeginComposeGroup((key, content))) return;
         try
         {
             content();

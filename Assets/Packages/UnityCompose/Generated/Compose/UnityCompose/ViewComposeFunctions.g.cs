@@ -24,48 +24,52 @@ public static partial class ComposeFunctions
             return;
         try
         {
-            PerformanceMetrics.MeasureReusableComposeView(CurrentComposer.WithState((modifier, initializer, content)).Remember<System.Action>(__ => () =>
+            var resolvedModifier = modifier;
+            var localStyle = LocalModifier.Current;
+            if (localStyle.Before != null)
+                resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
+            if (localStyle.After != null)
+                resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
+            var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
+            var parent = LocalVisualElement.Current;
+            var index = CurrentComposer.GetElementIndex();
+            DisposableEffect((visualElement, parent, index), CurrentComposer.WithState((visualElement, parent, index)).Remember<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(__ => it =>
             {
-                var resolvedModifier = modifier;
-                var localStyle = LocalModifier.Current;
-                if (localStyle.Before != null)
-                    resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
-                if (localStyle.After != null)
-                    resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
-                var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-                var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
-                var currentProperties = Remember(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
-                var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
-                resolvedModifier?.Apply(newProperties);
-                var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.WithState(newProperties).Remember<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(__ => it => !newProperties.Contains(it)));
-                foreach (var property in propertiesToRevert)
-                    property.Revert(visualElement);
-                currentProperties.Value = newProperties;
-                currentModifier.Value = resolvedModifier;
-                visualElement.ClearCallbacks();
-                visualElement.style.transitionDelay.value?.Clear();
-                visualElement.style.transitionDuration.value?.Clear();
-                visualElement.style.transitionProperty.value?.Clear();
-                visualElement.style.transitionTimingFunction.value?.Clear();
-                visualElement.pickingMode = PickingMode.Ignore;
-                visualElement.style.overflow = Overflow.Visible;
-                resolvedModifier?.Apply(visualElement);
-                FireOnGloballyPositionedCallback(visualElement);
-                if (initializer != null)
-                {
-                    var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
-                    if (currentInitializer.Value != initializer)
-                    {
-                        currentInitializer.Value = initializer;
-                        initializer(visualElement);
-                    }
-                }
-
-                if (content != null)
-                {
-                    CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))), content: content);
-                }
+                parent.Insert(index, visualElement);
+                return it.OnDispose(CurrentComposer.WithState((visualElement, parent)).Remember<System.Action>(__ => () => parent.Remove(visualElement)));
             }));
+            var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
+            var currentProperties = Remember(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
+            var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
+            resolvedModifier?.Apply(newProperties);
+            var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.WithState(newProperties).Remember<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(__ => it => !newProperties.Contains(it)));
+            foreach (var property in propertiesToRevert)
+                property.Revert(visualElement);
+            currentProperties.Value = newProperties;
+            currentModifier.Value = resolvedModifier;
+            visualElement.ClearCallbacks();
+            visualElement.style.transitionDelay.value?.Clear();
+            visualElement.style.transitionDuration.value?.Clear();
+            visualElement.style.transitionProperty.value?.Clear();
+            visualElement.style.transitionTimingFunction.value?.Clear();
+            visualElement.pickingMode = PickingMode.Ignore;
+            visualElement.style.overflow = Overflow.Visible;
+            resolvedModifier?.Apply(visualElement);
+            FireOnGloballyPositionedCallback(visualElement);
+            if (initializer != null)
+            {
+                var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
+                if (currentInitializer.Value != initializer)
+                {
+                    currentInitializer.Value = initializer;
+                    initializer(visualElement);
+                }
+            }
+
+            if (content != null)
+            {
+                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))), content: content);
+            }
         }
         finally
         {

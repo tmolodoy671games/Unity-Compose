@@ -10,36 +10,36 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl;
 
-internal interface IComposeGroup : IDisposable
+internal interface IComposeGroupDeprecated : IDisposable
 {
-    IComposeGroup? Parent { get; }
+    IComposeGroupDeprecated? Parent { get; }
     ResolvedComposeKey Key { get; }
     VisualElement? Element { get; set; }
     int ElementsCount { get; }
-    IEnumerable<IComposeGroup> Children { get; }
+    IEnumerable<IComposeGroupDeprecated> Children { get; }
     IMutableStableList<VisualElement> NestedElements { get; }
     Action? Restart { get; set; }
     bool CalledThisStep { get; set; }
     ICompositionLocalProvider? ParentCompositionLocalProvider { get; set; }
     int ElementIndexInParent { get; set; }
 
-    ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key);
+    ComposeGroupDeprecated<TChild> GetOrCreateChild<TChild>(ComposeKey key);
     TValue Remember<TKey, TValue>(ComposeKey key, TKey compareKey, Func<TKey, TValue> defaultValueFactory);
     void Reset();
 
     string ToString(bool recursive);
 }
 
-internal class ComposeGroup<T> : IComposeGroup
+internal class ComposeGroupDeprecated<T> : IComposeGroupDeprecated
 {
     private readonly IRememberStorage _rememberStorage = new RememberStorage();
     
-    private readonly IMutableStableDictionary<ResolvedComposeKey, IComposeGroup> _children =
-        IMutableStableDictionary.Create<ResolvedComposeKey, IComposeGroup>();
+    private readonly IMutableStableDictionary<ResolvedComposeKey, IComposeGroupDeprecated> _children =
+        IMutableStableDictionary.Create<ResolvedComposeKey, IComposeGroupDeprecated>();
 
     private readonly IInvocationState _groupInvocationState = new InvocationState();
 
-    public ComposeGroup(ResolvedComposeKey key, IComposeGroup? parent)
+    public ComposeGroupDeprecated(ResolvedComposeKey key, IComposeGroupDeprecated? parent)
     {
         Key = key;
         Parent = parent;
@@ -49,10 +49,10 @@ internal class ComposeGroup<T> : IComposeGroup
     public ResolvedComposeKey Key { get; }
     public VisualElement? Element { get; set; }
     public Action? Restart { get; set; }
-    public IComposeGroup? Parent { get; }
+    public IComposeGroupDeprecated? Parent { get; }
 
     public int ElementsCount => Element != null ? 1 : NestedElements.Count;
-    public IEnumerable<IComposeGroup> Children => _children.Values;
+    public IEnumerable<IComposeGroupDeprecated> Children => _children.Values;
     public IMutableStableList<VisualElement> NestedElements { get; } = IMutableStableList.Create<VisualElement>();
 
     public bool CalledThisStep { get; set; }
@@ -60,12 +60,12 @@ internal class ComposeGroup<T> : IComposeGroup
 
     public int ElementIndexInParent { get; set; }
 
-    public ComposeGroup<TChild> GetOrCreateChild<TChild>(ComposeKey key)
+    public ComposeGroupDeprecated<TChild> GetOrCreateChild<TChild>(ComposeKey key)
     {
         var resolvedKey = _groupInvocationState.ResolveKey(key);
         if (_children.TryGet(resolvedKey, out var cachedChild))
         {
-            if (cachedChild is ComposeGroup<TChild> castedChild)
+            if (cachedChild is ComposeGroupDeprecated<TChild> castedChild)
             {
                 castedChild.CalledThisStep = true;
                 return castedChild;
@@ -74,7 +74,7 @@ internal class ComposeGroup<T> : IComposeGroup
             cachedChild.Dispose();
         }
 
-        var result = new ComposeGroup<TChild>(resolvedKey, this);
+        var result = new ComposeGroupDeprecated<TChild>(resolvedKey, this);
         result.CalledThisStep = true;
         _children[resolvedKey] = result;
         return result;
@@ -126,10 +126,10 @@ internal class ComposeGroup<T> : IComposeGroup
         return builder.ToString();
     }
 
-    private static void ToStringRecursive(StringBuilder builder, string indent, IComposeGroup group)
+    private static void ToStringRecursive(StringBuilder builder, string indent, IComposeGroupDeprecated groupDeprecated)
     {
-        builder.Append(indent + group + "\n");
-        foreach (var child in group.Children)
+        builder.Append(indent + groupDeprecated + "\n");
+        foreach (var child in groupDeprecated.Children)
             ToStringRecursive(builder, indent + '\t', child);
     }
 

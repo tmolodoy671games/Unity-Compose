@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using SharpExtensions;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -45,19 +44,11 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect<TKey>(
         TKey key,
-        Func<IEnumerator> coroutine,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<IEnumerator> coroutine
     )
     {
         CurrentComposer.Remember<TKey, IDisposable>(
-            key: new ComposeKey(
-                FileName: filePath,
-                MemberName: memberName,
-                LineNumber: lineNumber
-            ),
-            compareKey: key,
+            key: key,
             defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
         );
     }
@@ -65,19 +56,11 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     public static void LaunchedEffect<TKey>(
         TKey key,
-        Action block,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Action block
     )
     {
         CurrentComposer.Remember(
-            key: new ComposeKey(
-                FileName: filePath,
-                MemberName: memberName,
-                LineNumber: lineNumber
-            ),
-            compareKey: key,
+            key: key,
             defaultValueFactory: _ =>
             {
                 block();
@@ -90,19 +73,11 @@ public static partial class ComposeFunctions
     public static void LaunchedEffect<TKey>(
         TKey key,
         TimeSpan delay,
-        Action block,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Action block
     )
     {
         CurrentComposer.Remember(
-            key: new ComposeKey(
-                FileName: filePath,
-                MemberName: memberName,
-                LineNumber: lineNumber
-            ),
-            compareKey: key,
+            key: key,
             defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
         );
     }
@@ -111,19 +86,11 @@ public static partial class ComposeFunctions
     public static void LaunchedEffect<TKey>(
         TKey key,
         float delay,
-        Action block,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Action block
     )
     {
         CurrentComposer.Remember(
-            key: new ComposeKey(
-                FileName: filePath,
-                MemberName: memberName,
-                LineNumber: lineNumber
-            ),
-            compareKey: key,
+            key: key,
             defaultValueFactory: _ =>
                 ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
         );
@@ -132,15 +99,11 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     public static void DisposableEffect<TKey>(
         TKey key,
-        Func<IDisposableEffectScope, IDisposable> effect,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<IDisposableEffectScope, IDisposable> effect
     )
     {
         CurrentComposer.Remember(
-            key: new ComposeKey(filePath, memberName, lineNumber),
-            compareKey: key,
+            key: key,
             defaultValueFactory: _ => effect(DisposableEffectScopeImpl.Instance)
         );
     }
