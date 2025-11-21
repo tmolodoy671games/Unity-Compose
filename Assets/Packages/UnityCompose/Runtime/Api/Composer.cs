@@ -54,13 +54,13 @@ public class Composer
         Action restart
     )
     {
-        _writer.EndGroup();
+        _writer.EndGroup(restart);
     }
 
     public void EndRootComposeGroup(Action restart)
     {
         // Debug.Log("EndRootComposeGroup()");
-        _writer.EndGroup();
+        _writer.EndGroup(restart);
         _writer.ResetTo(0);
     }
 
@@ -133,10 +133,13 @@ public class Composer
 
     internal void Capture(BaseMutableStateImpl state)
     {
+        var scope = _writer.GetRestartScope();
+        state.Add(scope);
     }
 
-    internal void Invalidate(IComposeGroupDeprecated composeGroupDeprecated)
+    internal void Invalidate(ComposeGroupRestartScope scope)
     {
+        scope.PerformRestart();
     }
 
     private void RequireCompositionContext()

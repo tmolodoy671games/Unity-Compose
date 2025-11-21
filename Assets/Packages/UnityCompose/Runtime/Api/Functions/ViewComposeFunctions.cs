@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -33,7 +34,7 @@ public static partial class ComposeFunctions
         var index = CurrentComposer.GetElementIndex();
         DisposableEffect((visualElement, parent, index), it =>
         {
-            parent.Insert(index, visualElement);
+            parent.FastReinsert(index, visualElement);
             return it.OnDispose(() => parent.Remove(visualElement));
         });
 

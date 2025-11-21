@@ -3,8 +3,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 
@@ -55,8 +57,8 @@ namespace UnityCompose
             }
         }
 
-        private readonly ISet<IComposeGroupDeprecated> _invalidatedGroups = new HashSet<IComposeGroupDeprecated>();
-        private readonly ISet<IComposeGroupDeprecated> _instantInvalidatedGroups = new HashSet<IComposeGroupDeprecated>();
+        private readonly HashSet<ComposeGroupRestartScope> _invalidatedGroups = new();
+        private readonly HashSet<ComposeGroupRestartScope> _instantInvalidatedGroups = new();
 
         public ComposeInvalidator()
         {
@@ -74,7 +76,7 @@ namespace UnityCompose
         private void Update()
         {
             if (_invalidatedGroups.Count == 0) return;
-            var groupsToInvalidate = _invalidatedGroups.ToImmutableStableList();
+            var groupsToInvalidate = _invalidatedGroups.ToList();
             _invalidatedGroups.Clear();
             foreach (var group in groupsToInvalidate)
                 CurrentComposer.Invalidate(group);
@@ -86,25 +88,26 @@ namespace UnityCompose
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        internal static void RequestInvalidate(IComposeGroupDeprecated groupDeprecated)
+        internal static void RequestInvalidate(ComposeGroupRestartScope scope)
         {
             if (!ApplicationUtils.IsPlaying) return;
-            if (Instance._instantInvalidatedGroups.Contains(groupDeprecated)) return;
-            Instance._invalidatedGroups.Add(groupDeprecated);
+            if (Instance._instantInvalidatedGroups.Contains(scope)) return;
+            Instance._invalidatedGroups.Add(scope);
         }
 
-        internal static void CancelInvalidate(IComposeGroupDeprecated groupDeprecated)
+        internal static void CancelInvalidate(ComposeGroupRestartScope scope)
         {
             if (!ApplicationUtils.IsPlaying) return;
-            Instance._instantInvalidatedGroups.Remove(groupDeprecated);
-            Instance._invalidatedGroups.Remove(groupDeprecated);
+            Instance._instantInvalidatedGroups.Remove(scope);
+            Instance._invalidatedGroups.Remove(scope);
         }
 
-        internal static void RequestInstantInvalidate(IComposeGroupDeprecated groupDeprecated)
+        internal static void RequestInstantInvalidate(ComposeGroupRestartScope scope)
         {
-            Instance._instantInvalidatedGroups.Add(groupDeprecated);
-            Instance._invalidatedGroups.Remove(groupDeprecated);
-            // CurrentComposer.Invalidate(group);
+            RequestInvalidate(scope);
+            // Instance._instantInvalidatedGroups.Add(groupDeprecated);
+            // Instance._invalidatedGroups.Remove(groupDeprecated);
+            // // CurrentComposer.Invalidate(group);
         }
 
         internal static void InstantInvalidate()

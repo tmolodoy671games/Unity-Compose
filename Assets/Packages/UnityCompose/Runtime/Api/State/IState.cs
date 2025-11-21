@@ -2,6 +2,7 @@
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -19,7 +20,7 @@ public interface IMutableState<T> : IState<T>
 
 public abstract class BaseMutableStateImpl
 {
-    private readonly IMutableStableSet<IComposeGroupDeprecated> _groups = IMutableStableSet.Create<IComposeGroupDeprecated>();
+    private readonly HashSet<ComposeGroupRestartScope> _scopes = new();
     private readonly bool _isCompositionLocal;
 
     protected BaseMutableStateImpl(bool isCompositionLocal = false)
@@ -34,7 +35,7 @@ public abstract class BaseMutableStateImpl
 
     protected void Notify()
     {
-        foreach (var group in _groups)
+        foreach (var group in _scopes)
         {
             if (_isCompositionLocal)
                 ComposeInvalidator.RequestInstantInvalidate(group);
@@ -43,7 +44,7 @@ public abstract class BaseMutableStateImpl
         }
     }
 
-    internal void Add(IComposeGroupDeprecated groupDeprecated) => _groups.Add(groupDeprecated);
+    internal void Add(ComposeGroupRestartScope restartScope) => _scopes.Add(restartScope);
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>

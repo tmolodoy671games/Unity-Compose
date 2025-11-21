@@ -44,9 +44,8 @@ public abstract partial class ComposeUI : MonoBehaviour
     }
 
     [Button]
-    private void PrintTreeStructure()
+    protected void PrintTreeStructure()
     {
-        var group = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().userData.CastTo<IComposeGroupDeprecated>();
-        Debug.Log(group.ToString(recursive: true));
+        Debug.Log(CurrentComposer.Table);
     }
 }

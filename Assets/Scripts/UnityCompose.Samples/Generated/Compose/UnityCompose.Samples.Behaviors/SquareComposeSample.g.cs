@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
@@ -28,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Spacer(Modifier.Size(100).Background(Color.white));
+                Layout();
             }
             finally
             {
@@ -37,48 +38,28 @@ namespace UnityCompose.Samples.Behaviors
         }
 
         [Composable]
-        private static void __EmptyColumn([Composable] Action action)
-        {
-            var __action = (action);
-            if (CurrentComposer.BeginComposeGroup(__action))
-                return;
-            try
-            {
-                action();
-            }
-            finally
-            {
-                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__action).Remember<Action>(__ => () => __EmptyColumn(__)));
-            }
-        }
-
-        [Composable]
-        private static void __EmptySpacer(IModifier modifier)
-        {
-            var __modifier = (modifier);
-            if (CurrentComposer.BeginComposeGroup(__modifier))
-                return;
-            try
-            {
-            }
-            finally
-            {
-                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__modifier).Remember<Action>(__ => () => __EmptySpacer(__)));
-            }
-        }
-
-        [Composable]
-        private static void __Layout()
+        private void __Layout()
         {
             if (CurrentComposer.BeginComposeGroup(string.Empty))
                 return;
             try
             {
-                // var value1 = Remember(static () => MutableStateOf(false));
-                // var value2 = Remember(static () => MutableStateOf(0));
-                // var value3 = Remember(static () => MutableStateOf(1.2));
-                // var value4 = Remember(static () => MutableStateOf("text"));
-                Spacer(Modifier);
+                Box(modifier: Modifier.FillMaxSize(), horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, content: CurrentComposer.WithState(this).Remember<System.Action>(__ => () =>
+                {
+                    var isHovered = Remember(() => MutableStateOf(false));
+                    var isPressed = Remember(() => MutableStateOf(false));
+                    Spacer(modifier: Modifier.Size(100).Background(isPressed.Value ? Color.cyan : Color.blue, Transition()).Border(radius: 32)// .Scale(isHovered.Value ? 2 : 1, transition: Transition())
+                    .Scale(AnimateFloatAsState(isHovered.Value ? 2 : 1).Value).OnMouseEnter(CurrentComposer.WithState((this, isHovered)).Remember<System.Action>(__ => () =>
+                    {
+                        isHovered.Value = true;
+                        PrintTreeStructureDelayed();
+                    })).OnMouseLeave(CurrentComposer.WithState((this, isHovered, isPressed)).Remember<System.Action>(__ => () =>
+                    {
+                        isPressed.Value = false;
+                        isHovered.Value = false;
+                        PrintTreeStructureDelayed();
+                    })).OnMouseDown(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = true)).OnMouseUp(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = false)));
+                }));
             }
             finally
             {

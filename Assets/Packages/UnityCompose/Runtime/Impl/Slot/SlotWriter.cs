@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine;
@@ -74,9 +75,14 @@ internal class SlotWriter
         EnterGroup();
     }
 
-    public void EndGroup()
+    public void EndGroup(Action restart)
     {
         var parentGroup = _groups[_parentGroupIndex];
+        
+        var data = GetData();
+        data.RestartScope.GroupIndex = _parentGroupIndex;
+        data.RestartScope.Restart = restart;
+        
         var oldSize = parentGroup.Size;
         var newSize = _currentGroupIndex - _parentGroupIndex;
         if (newSize != parentGroup.Size)
@@ -205,6 +211,12 @@ internal class SlotWriter
         return _compositionLocalMaps.Peek().Get(compositionLocal, defaultValueFactory);
     }
 
+    public ComposeGroupRestartScope GetRestartScope()
+    {
+        var currentGroup = ParentGroup;
+        return _slots[currentGroup.SlotIndex].NotNull().CastTo<ComposeGroupData>().RestartScope;
+    }
+
     private ComposeGroupData GetData()
     {
         var currentGroup = _groups[_parentGroupIndex];
@@ -252,5 +264,49 @@ internal class SlotWriter
             var group = _groups[i];
             _groups[i] = group with { SlotIndex = group.SlotIndex + offset };
         }
+    }
+}
+
+internal static class CastToExtensions
+{
+    public static T CastTo<T>(this object value)
+    {
+        return value is T obj ? obj : throw new InvalidCastException($"{value} is not a {typeof (T).GetReadableName()}");
+    }
+    
+    public static string GetReadableName(this Type type, bool includeNamespace = false)
+    {
+        if (type.IsGenericType)
+        {
+            return GetGenericName(type, includeNamespace);
+        }
+
+        // Handle arrays
+        if (type.IsArray)
+        {
+            return type.GetElementType()!.GetReadableName(includeNamespace) + "[]";
+        }
+
+        // Non-generic type
+        return includeNamespace ? type.FullName ?? type.Name : type.Name;
+    }
+
+    private static string GetGenericName(Type type, bool includeNamespace)
+    {
+        string name = includeNamespace
+            ? type.Namespace + "." + StripArity(type.Name)
+            : StripArity(type.Name);
+
+        Type[] args = type.GetGenericArguments();
+
+        string argsJoined = string.Join(", ", args.Select(t => t.GetReadableName(includeNamespace)));
+
+        return $"{name}<{argsJoined}>";
+    }
+
+    private static string StripArity(string name)
+    {
+        int index = name.IndexOf('`');
+        return index < 0 ? name : name.Substring(0, index);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
@@ -15,6 +16,7 @@ internal class ComposeGroupRestartScope
 
     public void PerformRestart()
     {
+        Debug.Log($"ResetTo({GroupIndex})");
         _writer.ResetTo(GroupIndex);
         Restart?.Invoke();
     }

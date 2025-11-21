@@ -43,7 +43,7 @@ public static partial class ComposeFunctions
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
         var property = Remember(() => MutableStateOf(targetValue));
-        if (Equals(property.Value, targetValue))
+        if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: targetValue!, coroutine: CurrentComposer.WithState((targetValue, property)).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => UpdatePropertyCoroutine(targetValue)));
@@ -51,7 +51,7 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
             var startValue = property.Value;
-            if (Equals(startValue, targetValue))
+            if (EqualityUtils.FastEquals(startValue, targetValue))
                 yield break;
             if (resolvedAnimationSpec.Delay > 0)
                 yield return new WaitForSeconds(resolvedAnimationSpec.Delay);

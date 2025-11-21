@@ -16,7 +16,7 @@ internal static class VisualElementExtensions
         if (element.name is { Length: > 0 })
             result += $"({element.name})";
         if (element.parent != null)
-            result += $"[{element.parent.IndexOf(element)}]";
+            result += $"[{element.parent.IndexOf(element)}]({element.GetHashCode()})";
         if (element is Label label)
             result += $".text={label.text}";
         return result;

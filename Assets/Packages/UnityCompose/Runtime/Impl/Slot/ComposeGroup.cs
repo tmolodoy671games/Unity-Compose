@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
@@ -41,8 +43,9 @@ internal static partial class GroupsExtensions
             var indent = "*".Multiply(group.ParentsCount(groups));
 
             builder.Append($"[{i}] ");
-            var hasElement = HasElement(group, slots);
-            builder.AppendLine(indent + group + $" HasElement = {hasElement}");
+            var hasElement = slots[group.SlotIndex + SlotTable.MetadataOffset].NotNull().CastTo<ComposeGroupData>()
+                .Element?.Format();
+            builder.AppendLine(indent + group + $" Element = {hasElement}");
         }
 
         return builder.ToString();

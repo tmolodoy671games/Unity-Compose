@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -35,7 +36,7 @@ public static partial class ComposeFunctions
             var index = CurrentComposer.GetElementIndex();
             DisposableEffect((visualElement, parent, index), CurrentComposer.WithState((visualElement, parent, index)).Remember<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(__ => it =>
             {
-                parent.Insert(index, visualElement);
+                parent.FastReinsert(index, visualElement);
                 return it.OnDispose(CurrentComposer.WithState((visualElement, parent)).Remember<System.Action>(__ => () => parent.Remove(visualElement)));
             }));
             var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));

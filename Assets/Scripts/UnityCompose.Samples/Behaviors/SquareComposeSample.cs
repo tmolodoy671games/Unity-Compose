@@ -1,6 +1,7 @@
 // ReSharper disable ArrangeNamespaceBody
 
 using System;
+using System.Collections;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -10,82 +11,54 @@ namespace UnityCompose.Samples.Behaviors
         protected override void Content() => Layout();
 
         [Composable]
-        protected override void Preview()
+        protected override void Preview() => Layout();
+
+        [Composable]
+        private  void Layout()
         {
-            Spacer(
-                Modifier
-                    .Size(100)
-                    .Background(Color.white)
+            Box(
+                modifier: Modifier
+                    .FillMaxSize(),
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
+                content: () =>
+                {
+                    var isHovered = Remember(() => MutableStateOf(false));
+                    var isPressed = Remember(() => MutableStateOf(false));
+                    Spacer(
+                        modifier: Modifier
+                            .Size(100)
+                            .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
+                            .Border(radius: 32)
+                            // .Scale(isHovered.Value ? 2 : 1, transition: Transition())
+                            .Scale(AnimateFloatAsState(isHovered.Value ? 2 : 1).Value)
+                            .OnMouseEnter(() =>
+                            {
+                                isHovered.Value = true;
+                                PrintTreeStructureDelayed();
+                            })
+                            .OnMouseLeave(() =>
+                            {
+                                isPressed.Value = false;
+                                isHovered.Value = false;
+                                PrintTreeStructureDelayed();
+                            })
+                            .OnMouseDown(() => isPressed.Value = true)
+                            .OnMouseUp(() => isPressed.Value = false)
+                    );
+                }
             );
         }
 
-        [Composable]
-        private static void EmptyColumn([Composable] Action action)
+        private void PrintTreeStructureDelayed()
         {
-            action();
+            StartCoroutine(PrintTreeStructureDelayedCoroutine());
         }
 
-        [Composable]
-        private static void EmptySpacer(IModifier modifier)
+        private IEnumerator PrintTreeStructureDelayedCoroutine()
         {
-        }
-
-        [Composable]
-        private static void Layout()
-        {
-            // var value1 = Remember(static () => MutableStateOf(false));
-            // var value2 = Remember(static () => MutableStateOf(0));
-            // var value3 = Remember(static () => MutableStateOf(1.2));
-            // var value4 = Remember(static () => MutableStateOf("text"));
-
-            Spacer(Modifier);
-            // EmptySpacer(Modifier);
-
-            // EmptyColumn(() =>
-            // {
-            //     EmptySpacer(Modifier);
-            //     EmptySpacer(Modifier);
-            // });
-            //
-            // EmptyColumn(() =>
-            // {
-            //     EmptySpacer(Modifier);
-            //     EmptySpacer(Modifier);
-            // });
-
-            // Spacer(
-            //     modifier: Modifier
-            //         .Size(100)
-            //         .Background(Color.cyan)
-            //         .Border(radius: 32)
-            // );
-
-            // var isHovered = Remember(() => MutableStateOf(false));
-            // var isPressed = Remember(() => MutableStateOf(false));
-            // Box(
-            //     modifier: Modifier
-            //         .FillMaxSize(),
-            //     horizontalAlignment: Alignment.Horizontal.Center,
-            //     verticalAlignment: Alignment.Vertical.Center,
-            //     content: () =>
-            //     {
-            //         Spacer(
-            //             modifier: Modifier
-            //                 .Size(100)
-            //                 .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
-            //                 .Border(radius: 32)
-            //                 .Scale(isHovered.Value ? 2 : 1, transition: Transition())
-            //                 .OnMouseEnter(() => isHovered.Value = true)
-            //                 .OnMouseLeave(() =>
-            //                 {
-            //                     isPressed.Value = false;
-            //                     isHovered.Value = false;
-            //                 })
-            //                 .OnMouseDown(() => isPressed.Value = true)
-            //                 .OnMouseUp(() => isPressed.Value = false)
-            //         );
-            //     }
-            // );
+            yield return new WaitForSeconds(0.1f);
+            // PrintTreeStructure();
         }
     }
 }
