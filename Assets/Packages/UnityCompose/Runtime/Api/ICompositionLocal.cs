@@ -37,20 +37,6 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
     }
 }
 
-internal class MappedCompositionLocalImpl<T1, T2> : ICompositionLocal<T2>
-{
-    private readonly ICompositionLocal<T1> _original;
-    private readonly Func<T1, T2> _selector;
-
-    public MappedCompositionLocalImpl(ICompositionLocal<T1> original, Func<T1, T2> selector)
-    {
-        _original = original;
-        _selector = selector;
-    }
-
-    public T2 Current => _selector(_original.Current);
-}
-
 public readonly struct CompositionLocalProvides
 {
     public readonly ICompositionLocal CompositionLocal;
@@ -61,15 +47,9 @@ public readonly struct CompositionLocalProvides
         CompositionLocal = compositionLocal;
         Value = value;
     }
-}
 
-public static class CompositionLocalExtensions
-{
-    public static ICompositionLocal<T2> Select<T1, T2>(
-        this ICompositionLocal<T1> compositionLocal,
-        Func<T1, T2> selector
-    )
+    public override string ToString()
     {
-        return new MappedCompositionLocalImpl<T1, T2>(compositionLocal, selector);
+        return $"{CompositionLocal.GetType().Name} Provides {Value}";
     }
 }

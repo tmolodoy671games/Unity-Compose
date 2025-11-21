@@ -12,7 +12,11 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         protected override void Preview()
         {
-            Spacer(Modifier);
+            Spacer(
+                Modifier
+                    .Size(100)
+                    .Background(Color.white)
+            );
         }
 
         [Composable]

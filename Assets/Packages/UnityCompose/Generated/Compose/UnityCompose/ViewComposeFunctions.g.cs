@@ -56,9 +56,9 @@ public static partial class ComposeFunctions
             visualElement.style.overflow = Overflow.Visible;
             resolvedModifier?.Apply(visualElement);
             FireOnGloballyPositionedCallback(visualElement);
+            var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
             if (initializer != null)
             {
-                var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
                 if (currentInitializer.Value != initializer)
                 {
                     currentInitializer.Value = initializer;

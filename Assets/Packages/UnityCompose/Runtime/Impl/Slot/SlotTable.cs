@@ -5,12 +5,9 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotTable
 {
-    public const int GroupMetadataSlots = 4;
-    public const int ObjectKeySlotOffset = 0;
-    // public const int StateSlotOffset = 1;
-    public const int RestartCallbackSlotOffset = 1;
-    public const int CompositionLocalSlotOffset = 2;
-    public const int ElementSlotOffset = 3;
+    public const int GroupSize = 1;
+    public const int GroupDataSlots = 1;
+    public const int MetadataOffset = 0;
     
     public readonly List<object?> Slots;
 
@@ -24,7 +21,7 @@ internal class SlotTable
 
     public override string ToString()
     {
-        return $"Groups:\n{Groups.Format()}\n" +
+        return $"Groups:\n{Groups.Format(Slots)}\n" +
                $"Slots:\n{Slots.Format()}";
     }
 }

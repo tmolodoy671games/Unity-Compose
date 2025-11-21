@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using StableCollections;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityEngine;

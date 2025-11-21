@@ -16,36 +16,37 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
             root.SetContent(static () => {});
             root.SetContent(() =>
             {
-                var columnModifier = Modifier
-                    .Margin(vertical: 4);
+                var rowModifier = Modifier
+                    .Margin(vertical: 2);
                 var spacerModifier = Modifier
-                    .Size(10)
+                    .Size(4)
                     .Background(Color.white)
-                    .Margin(horizontal: 4);
+                    .Margin(horizontal: 2);
+                GC.Collect();
                 var time = TimeUtils.Measure(() =>
                 {
-                    for (var i = 0; i < 40_000; i++)
-                    {
-                        CurrentComposer.BeginComposeGroup(0);
-                        CurrentComposer.EndComposeGroup(static () => {});
-                        // var a = Remember(static () => 1);
-                    }
-                    
-                    // for (var i = 0; i < 100; i++)
+                    // for (var i = 0; i < 40_000; i++)
                     // {
-                    //     Column(
-                    //         modifier: columnModifier,
-                    //         content: () =>
-                    //         {
-                    //             for (var j = 0; j < 100; j++)
-                    //             {
-                    //                 Spacer(
-                    //                     modifier: spacerModifier
-                    //                 );
-                    //             }
-                    //         }
-                    //     );
+                    //     CurrentComposer.BeginComposeGroup(0);
+                    //     CurrentComposer.EndComposeGroup(static () => {});
+                    //     // var a = Remember(static () => 1);
                     // }
+                    
+                    for (var i = 0; i < 100; i++)
+                    {
+                        Row(
+                            modifier: rowModifier,
+                            content: () =>
+                            {
+                                for (var j = 0; j < 100; j++)
+                                {
+                                    Spacer(
+                                        modifier: spacerModifier
+                                    );
+                                }
+                            }
+                        );
+                    }
                 });
 
                 Debug.Log(time.TotalSeconds.ToString("F3"));

@@ -1,8 +1,10 @@
 ﻿namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
-internal class ComposeGroupState<T>
+internal interface IComposeGroupState {}
+
+internal class ComposeGroupState<T> : IComposeGroupState
 {
-    public T Value { get; set; }
+    public T Value;
 
     public ComposeGroupState(T value)
     {

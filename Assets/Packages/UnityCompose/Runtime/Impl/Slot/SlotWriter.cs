@@ -27,7 +27,7 @@ internal class SlotWriter
         _currentGroupIndex = 0;
     }
 
-    private ComposeGroup CurrentGroup => _groups[_parentGroupIndex];
+    private ComposeGroup ParentGroup => _groups[_parentGroupIndex];
 
     public void StartGroup(int key)
     {
@@ -68,13 +68,9 @@ internal class SlotWriter
             ElementsCount: 0
         );
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.Insert(_currentSlotIndex + SlotTable.ObjectKeySlotOffset, null);
-        // _slots.Insert(_currentSlotIndex + SlotTable.StateSlotOffset, new ComposeGroupState<TState>(state));
-        _slots.Insert(_currentSlotIndex + SlotTable.RestartCallbackSlotOffset, null);
-        _slots.Insert(_currentSlotIndex + SlotTable.CompositionLocalSlotOffset, null);
-        _slots.Insert(_currentSlotIndex + SlotTable.ElementSlotOffset, null);
+        _slots.Insert(_currentSlotIndex + SlotTable.MetadataOffset, new ComposeGroupData(this));
         ShiftParentIndices(1);
-        ShiftSlotIndices(_currentGroupIndex + 1, SlotTable.GroupMetadataSlots);
+        ShiftSlotIndices(_currentGroupIndex + 1, SlotTable.GroupDataSlots);
         EnterGroup();
     }
 
@@ -94,12 +90,13 @@ internal class SlotWriter
                 _groups.RemoveRange(_parentGroupIndex + newSize + 1, removedGroupsCount);
                 var removeCount = lastRemovedGroup.SlotIndex + lastRemovedGroup.SlotsSize - firstRemovedGroup.SlotIndex;
                 _slots.RemoveRange(firstRemovedGroup.SlotIndex, removeCount);
-                
+
                 ShiftSlotIndices(_currentSlotIndex + 1, -removeCount);
                 ShiftParentIndices(-removedGroupsCount);
             }
 
             _groups[_parentGroupIndex] = parentGroup with { Size = newSize };
+            parentGroup = ParentGroup;
         }
 
         var oldSlotsCount = parentGroup.SlotsSize;
@@ -107,21 +104,23 @@ internal class SlotWriter
         if (newSlotsCount != oldSlotsCount)
         {
             _groups[_parentGroupIndex] = parentGroup with { SlotsSize = newSlotsCount };
-        }
-
-        var newElementsCount = _currentElementIndex - parentGroup.ElementIndex;
-        if (newElementsCount != parentGroup.ElementsCount)
-        {
-            _groups[_parentGroupIndex] = parentGroup with { ElementsCount = newElementsCount };
+            parentGroup = ParentGroup;
         }
 
         if (parentGroup.HasElement(_slots))
         {
             _currentElementIndex = parentGroup.ElementIndex + 1;
         }
+        
+        var newElementsCount = _currentElementIndex - parentGroup.ElementIndex;
+        if (newElementsCount != parentGroup.ElementsCount)
+        {
+            _groups[_parentGroupIndex] = parentGroup with { ElementsCount = newElementsCount };
+            parentGroup = ParentGroup;
+        }
 
         // Write(SlotTable.RestartCallbackSlotOffset, restart);
-        if (Read<CompositionLocalMap>(SlotTable.CompositionLocalSlotOffset) != null)
+        if (GetData().CompositionLocalMap != null)
             _compositionLocalMaps.Pop();
         _parentGroupIndex = parentGroup.ParentIndex;
     }
@@ -165,15 +164,15 @@ internal class SlotWriter
 
     public int GetElementIndex()
     {
-        var currentGroup = CurrentGroup;
+        var currentGroup = ParentGroup;
         return currentGroup.ElementIndex;
     }
 
     public TVisualElement? ReadVisualElement<TVisualElement>() where TVisualElement : VisualElement =>
-        Read<TVisualElement>(SlotTable.ElementSlotOffset);
+        GetData().Element as TVisualElement;
 
-    public void WriteVisualElement<TVisualElement>(TVisualElement element) =>
-        Write(element, SlotTable.ElementSlotOffset);
+    public void WriteVisualElement<TVisualElement>(TVisualElement element) where TVisualElement : VisualElement =>
+        GetData().Element = element;
 
     public void ResetElementIndex()
     {
@@ -184,14 +183,15 @@ internal class SlotWriter
         IImmutableStableList<CompositionLocalProvides> provides
     )
     {
-        var compositionLocalMap = Read<CompositionLocalMap>(SlotTable.CompositionLocalSlotOffset);
+        var metadata = GetData();
+        var compositionLocalMap = metadata.CompositionLocalMap;
         if (compositionLocalMap == null)
         {
             var parent = _compositionLocalMaps.IsNotEmpty() ? _compositionLocalMaps.Peek() : null;
             compositionLocalMap = new CompositionLocalMap(
                 parent, provides
             );
-            Write(compositionLocalMap, SlotTable.CompositionLocalSlotOffset);
+            metadata.CompositionLocalMap = compositionLocalMap;
         }
 
         compositionLocalMap.Update(provides);
@@ -205,17 +205,11 @@ internal class SlotWriter
         return _compositionLocalMaps.Peek().Get(compositionLocal, defaultValueFactory);
     }
 
-    private TValue? Read<TValue>(int index)
+    private ComposeGroupData GetData()
     {
         var currentGroup = _groups[_parentGroupIndex];
-        var value = _slots[currentGroup.SlotIndex + index];
-        return value != null ? value.CastTo<TValue>() : default;
-    }
-
-    private void Write<TValue>(TValue value, int offset)
-    {
-        var currentGroup = _groups[_parentGroupIndex];
-        _slots[currentGroup.SlotIndex + offset] = value;
+        var value = _slots[currentGroup.SlotIndex + SlotTable.MetadataOffset];
+        return (ComposeGroupData)value.NotNull();
     }
 
     public void IncrementSlotIndex()
@@ -226,7 +220,7 @@ internal class SlotWriter
     private void EnterGroup()
     {
         _parentGroupIndex = _currentGroupIndex;
-        _currentSlotIndex = _groups[_currentGroupIndex].SlotIndex + SlotTable.GroupMetadataSlots;
+        _currentSlotIndex = _groups[_currentGroupIndex].SlotIndex + SlotTable.GroupDataSlots;
         _currentGroupIndex++;
     }
 
@@ -243,7 +237,7 @@ internal class SlotWriter
     private void ShiftParentIndices(int offset)
     {
         var startIndex = _currentGroupIndex;
-        for (var i = startIndex + 1; i < _groups.Count; i++)
+        for (var i = startIndex + 1; i < _groups.Count; i += SlotTable.GroupSize)
         {
             var group = _groups[i];
             if (group.ParentIndex >= startIndex)
@@ -253,7 +247,7 @@ internal class SlotWriter
 
     private void ShiftSlotIndices(int startIndex, int offset)
     {
-        for (var i = startIndex; i < _groups.Count; i++)
+        for (var i = startIndex; i < _groups.Count; i += SlotTable.GroupSize)
         {
             var group = _groups[i];
             _groups[i] = group with { SlotIndex = group.SlotIndex + offset };

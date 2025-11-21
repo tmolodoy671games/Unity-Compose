@@ -28,7 +28,7 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Spacer(Modifier);
+                Spacer(Modifier.Size(100).Background(Color.white));
             }
             finally
             {

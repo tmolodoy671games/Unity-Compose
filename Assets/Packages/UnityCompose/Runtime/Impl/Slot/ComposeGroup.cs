@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
@@ -31,7 +32,7 @@ internal readonly record struct ComposeGroup(
 
 internal static partial class GroupsExtensions
 {
-    public static string Format(this List<ComposeGroup> groups)
+    public static string Format(this List<ComposeGroup> groups, List<object?> slots)
     {
         var builder = new StringBuilder();
         for (var i = 0; i < groups.Count; i++)
@@ -40,7 +41,8 @@ internal static partial class GroupsExtensions
             var indent = "*".Multiply(group.ParentsCount(groups));
 
             builder.Append($"[{i}] ");
-            builder.AppendLine(indent + group);
+            var hasElement = HasElement(group, slots);
+            builder.AppendLine(indent + group + $" HasElement = {hasElement}");
         }
 
         return builder.ToString();
@@ -49,7 +51,7 @@ internal static partial class GroupsExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool HasElement(this ComposeGroup group, List<object?> slots)
     {
-        return slots[group.SlotIndex + SlotTable.ElementSlotOffset] != null;
+        return ((ComposeGroupData) slots[group.SlotIndex + SlotTable.MetadataOffset]!).Element != null;
     }
 
     private static int ParentsCount(this ComposeGroup group, List<ComposeGroup> groups)
