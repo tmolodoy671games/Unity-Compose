@@ -12,7 +12,7 @@ public static partial class ComposeFunctions
     private static void __Key(object key, [Composable] Action content, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
         // BRUH
-        if (CurrentComposer.BeginComposeGroup((key, content)))
+        if (CurrentComposer.BeginComposeGroup(0))
             return;
         try
         {

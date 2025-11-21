@@ -5,12 +5,12 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotTable
 {
-    public const int GroupMetadataSlots = 5;
+    public const int GroupMetadataSlots = 4;
     public const int ObjectKeySlotOffset = 0;
-    public const int StateSlotOffset = 1;
-    public const int RestartCallbackSlotOffset = 2;
-    public const int CompositionLocalSlotOffset = 3;
-    public const int ElementSlotOffset = 4;
+    // public const int StateSlotOffset = 1;
+    public const int RestartCallbackSlotOffset = 1;
+    public const int CompositionLocalSlotOffset = 2;
+    public const int ElementSlotOffset = 3;
     
     public readonly List<object?> Slots;
 

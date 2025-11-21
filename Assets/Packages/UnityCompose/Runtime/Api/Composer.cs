@@ -40,16 +40,13 @@ public class Composer
     )
     {
         // Debug.Log("BeginRootComposeGroup()");
-        _writer.StartGroup(key, element);
+        _writer.StartGroup(key);
         return false;
     }
 
-    public bool BeginComposeGroup<TState>(
-        TState state,
-        [CallerLineNumber] int key = 0
-    )
+    public bool BeginComposeGroup<TState>(TState state, [CallerLineNumber] int key = 0)
     {
-        _writer.StartGroup(key, state);
+        _writer.StartGroup(key);
         return false;
     }
 
@@ -57,13 +54,13 @@ public class Composer
         Action restart
     )
     {
-        _writer.EndGroup(restart);
+        _writer.EndGroup();
     }
 
     public void EndRootComposeGroup(Action restart)
     {
         // Debug.Log("EndRootComposeGroup()");
-        _writer.EndGroup(restart);
+        _writer.EndGroup();
         _writer.ResetTo(0);
     }
 
@@ -102,12 +99,13 @@ public class Composer
             _writer.IncrementSlotIndex();
             return existingValue.Value;
         }
-        var newValue =  defaultValueFactory();
+
+        var newValue = defaultValueFactory();
         _writer.Write(key, newValue);
         _writer.IncrementSlotIndex();
         return newValue;
     }
-    
+
     internal TValue Remember<TKey, TValue>(TKey key, Func<TKey, TValue> defaultValueFactory)
     {
         var existingValue = _writer.Read<TKey, TValue>();
@@ -116,7 +114,8 @@ public class Composer
             _writer.IncrementSlotIndex();
             return existingValue.Value;
         }
-        var newValue =  defaultValueFactory(key);
+
+        var newValue = defaultValueFactory(key);
         _writer.Write(key, newValue);
         _writer.IncrementSlotIndex();
         return newValue;

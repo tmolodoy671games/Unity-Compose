@@ -29,27 +29,27 @@ internal class SlotWriter
 
     private ComposeGroup CurrentGroup => _groups[_parentGroupIndex];
 
-    public void StartGroup<TState>(int key, TState state)
+    public void StartGroup(int key)
     {
         var currentGroup = _currentGroupIndex < _groups.Count
             ? _groups[_currentGroupIndex]
             : Optional.Empty<ComposeGroup>();
         if (currentGroup.HasValue && currentGroup.Value.Key == key)
         {
-            var currentState = _slots[_currentSlotIndex + SlotTable.StateSlotOffset] as ComposeGroupState<TState>;
-            if (currentState != null && EqualityUtils.FastEquals(currentState.Value, state))
-            {
-                _currentElementIndex += currentGroup.Value.ElementsCount;
-                _currentSlotIndex += currentGroup.Value.SlotsSize;
-            }
-
-            if (currentState == null)
-            {
-                // _slots[_currentSlotIndex + SlotTable.StateSlotOffset]; // Dispose
-                currentState = new ComposeGroupState<TState>(state);
-                _slots[_currentSlotIndex + SlotTable.StateSlotOffset] = currentState;
-            }
-            currentState.Value = state;
+            // var currentState = _slots[_currentSlotIndex + SlotTable.StateSlotOffset] as ComposeGroupState<TState>;
+            // if (currentState != null && EqualityUtils.FastEquals(currentState.Value, state))
+            // {
+            //     _currentElementIndex += currentGroup.Value.ElementsCount;
+            //     _currentSlotIndex += currentGroup.Value.SlotsSize;
+            // }
+            //
+            // if (currentState == null)
+            // {
+            //     // _slots[_currentSlotIndex + SlotTable.StateSlotOffset]; // Dispose
+            //     currentState = new ComposeGroupState<TState>(state);
+            //     _slots[_currentSlotIndex + SlotTable.StateSlotOffset] = currentState;
+            // }
+            // currentState.Value = state;
             EnterGroup();
             return;
         }
@@ -69,7 +69,7 @@ internal class SlotWriter
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.Insert(_currentSlotIndex + SlotTable.ObjectKeySlotOffset, null);
-        _slots.Insert(_currentSlotIndex + SlotTable.StateSlotOffset, new ComposeGroupState<TState>(state));
+        // _slots.Insert(_currentSlotIndex + SlotTable.StateSlotOffset, new ComposeGroupState<TState>(state));
         _slots.Insert(_currentSlotIndex + SlotTable.RestartCallbackSlotOffset, null);
         _slots.Insert(_currentSlotIndex + SlotTable.CompositionLocalSlotOffset, null);
         _slots.Insert(_currentSlotIndex + SlotTable.ElementSlotOffset, null);
@@ -78,7 +78,7 @@ internal class SlotWriter
         EnterGroup();
     }
 
-    public void EndGroup(Action restart)
+    public void EndGroup()
     {
         var parentGroup = _groups[_parentGroupIndex];
         var oldSize = parentGroup.Size;
@@ -120,7 +120,7 @@ internal class SlotWriter
             _currentElementIndex = parentGroup.ElementIndex + 1;
         }
 
-        Write(SlotTable.RestartCallbackSlotOffset, restart);
+        // Write(SlotTable.RestartCallbackSlotOffset, restart);
         if (Read<CompositionLocalMap>(SlotTable.CompositionLocalSlotOffset) != null)
             _compositionLocalMaps.Pop();
         _parentGroupIndex = parentGroup.ParentIndex;

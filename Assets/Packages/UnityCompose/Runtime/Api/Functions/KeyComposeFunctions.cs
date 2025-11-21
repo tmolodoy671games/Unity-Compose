@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
     )
     {
         // BRUH
-        if (CurrentComposer.BeginComposeGroup((key, content))) return;
+        if (CurrentComposer.BeginComposeGroup(0)) return;
         try
         {
             content();
