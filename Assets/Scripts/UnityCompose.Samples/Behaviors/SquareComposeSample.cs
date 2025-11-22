@@ -11,7 +11,10 @@ namespace UnityCompose.Samples.Behaviors
         protected override void Content() => Layout();
 
         [Composable]
-        protected override void Preview() => Layout();
+        protected override void Preview()
+        {
+            
+        }
 
         [Composable]
         private  void Layout()

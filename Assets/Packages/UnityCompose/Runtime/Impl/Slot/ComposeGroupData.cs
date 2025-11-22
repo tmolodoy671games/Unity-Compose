@@ -1,20 +1,30 @@
 ﻿using System.Text;
+using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
-internal class ComposeGroupData
+internal abstract class ComposeGroupData
 {
     public object? ObjectKey;
-    public IComposeGroupState? PreviousState;
     public readonly ComposeGroupRestartScope RestartScope;
     public CompositionLocalMap? CompositionLocalMap;
     public VisualElement? Element;
 
-    public ComposeGroupData(SlotWriter writer)
+    protected ComposeGroupData(SlotWriter writer)
     {
         RestartScope = new ComposeGroupRestartScope(writer);
+    }
+}
+
+internal class ComposeGroupData<T> : ComposeGroupData
+{
+    public Optional<T> PreviousState;
+
+    public ComposeGroupData(SlotWriter writer, T initialState) : base(writer)
+    {
+        PreviousState = initialState;
     }
 
     public override string ToString()

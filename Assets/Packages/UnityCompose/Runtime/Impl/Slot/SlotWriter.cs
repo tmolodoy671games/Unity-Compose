@@ -10,53 +10,46 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotWriter
 {
+    private readonly SlotTable _table;
     private readonly List<ComposeGroup> _groups;
     private readonly List<object?> _slots;
     private readonly Stack<CompositionLocalMap> _compositionLocalMaps = new();
+    private readonly Stack<(int GroupIndex, int StartIndex, int Count)> _skippedGroups = new();
 
     private int _parentGroupIndex = -1;
     private int _currentGroupIndex;
-
     private int _currentElementIndex;
-
     private int _currentSlotIndex = 0;
 
     public SlotWriter(SlotTable table)
     {
+        _table = table;
         _groups = table.Groups;
         _slots = table.Slots;
         _currentGroupIndex = 0;
     }
 
+    public int CurrentGroupIndex => _currentGroupIndex;
+    public int ParentGroupIndex => _parentGroupIndex;
+    public int CurrentSlotIndex => _currentSlotIndex;
+    public bool IsInCompositionContext => _parentGroupIndex != -1;
+
     private ComposeGroup ParentGroup => _groups[_parentGroupIndex];
 
-    public void StartGroup(int key)
+    #region Reusable Group
+
+    public void StartReusableGroup<T>(int key, T state, VisualElement? element = null)
     {
+        _currentGroupIndex = FindMatchingKeyIndex(key);
+
         var currentGroup = _currentGroupIndex < _groups.Count
             ? _groups[_currentGroupIndex]
             : Optional.Empty<ComposeGroup>();
         if (currentGroup.HasValue && currentGroup.Value.Key == key)
         {
-            // var currentState = _slots[_currentSlotIndex + SlotTable.StateSlotOffset] as ComposeGroupState<TState>;
-            // if (currentState != null && EqualityUtils.FastEquals(currentState.Value, state))
-            // {
-            //     _currentElementIndex += currentGroup.Value.ElementsCount;
-            //     _currentSlotIndex += currentGroup.Value.SlotsSize;
-            // }
-            //
-            // if (currentState == null)
-            // {
-            //     // _slots[_currentSlotIndex + SlotTable.StateSlotOffset]; // Dispose
-            //     currentState = new ComposeGroupState<TState>(state);
-            //     _slots[_currentSlotIndex + SlotTable.StateSlotOffset] = currentState;
-            // }
-            // currentState.Value = state;
-            EnterGroup();
+            EnterReusableGroup();
             return;
         }
-
-        if (currentGroup.HasValue && currentGroup.Value.Key != key)
-            RemoveGroup();
 
         // Write new group
         var newGroup = new ComposeGroup(
@@ -66,107 +59,124 @@ internal class SlotWriter
             SlotIndex: _currentSlotIndex,
             SlotsSize: 0,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 0
+            ElementsCount: element != null ? 1 : 0
         );
+        var newData = new ComposeGroupData<T>(this, state)
+        {
+            Element = element
+        };
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.Insert(_currentSlotIndex + SlotTable.MetadataOffset, new ComposeGroupData(this));
-        ShiftParentIndices(1);
-        ShiftSlotIndices(_currentGroupIndex + 1, SlotTable.GroupDataSlots);
-        EnterGroup();
+        _slots.Insert(_currentSlotIndex + GroupIndex.MetadataOffset, newData);
+        ShiftParentIndices(_currentGroupIndex + 1, 1);
+        ShiftSlotIndices(_currentGroupIndex + 1, SlotIndex.DataSize);
+        EnterReusableGroup();
     }
 
-    public void EndGroup(Action restart)
+    public void EndReusableGroup(Action restart)
     {
+        RemoveSkippedGroups();
         var parentGroup = _groups[_parentGroupIndex];
-        
+
         var data = GetData();
         data.RestartScope.GroupIndex = _parentGroupIndex;
         data.RestartScope.Restart = restart;
-        
-        var oldSize = parentGroup.Size;
+
         var newSize = _currentGroupIndex - _parentGroupIndex;
-        if (newSize != parentGroup.Size)
-        {
-            // Removing unused groups and slots
-            if (newSize < oldSize)
-            {
-                var firstRemovedGroup = _groups[_parentGroupIndex + 1];
-                var lastRemovedGroup = _groups[_parentGroupIndex + 1 + (oldSize - newSize - 1)];
-                var removedGroupsCount = oldSize - newSize;
-                _groups.RemoveRange(_parentGroupIndex + newSize + 1, removedGroupsCount);
-                var removeCount = lastRemovedGroup.SlotIndex + lastRemovedGroup.SlotsSize - firstRemovedGroup.SlotIndex;
-                _slots.RemoveRange(firstRemovedGroup.SlotIndex, removeCount);
-
-                ShiftSlotIndices(_currentSlotIndex + 1, -removeCount);
-                ShiftParentIndices(-removedGroupsCount);
-            }
-
-            _groups[_parentGroupIndex] = parentGroup with { Size = newSize };
-            parentGroup = ParentGroup;
-        }
-
-        var oldSlotsCount = parentGroup.SlotsSize;
-        var newSlotsCount = _currentSlotIndex - parentGroup.SlotIndex;
-        if (newSlotsCount != oldSlotsCount)
-        {
-            _groups[_parentGroupIndex] = parentGroup with { SlotsSize = newSlotsCount };
-            parentGroup = ParentGroup;
-        }
 
         if (parentGroup.HasElement(_slots))
-        {
             _currentElementIndex = parentGroup.ElementIndex + 1;
-        }
-        
+
+        var newSlotsCount = _currentSlotIndex - parentGroup.SlotIndex;
         var newElementsCount = _currentElementIndex - parentGroup.ElementIndex;
-        if (newElementsCount != parentGroup.ElementsCount)
+        var anyFieldChanged = newElementsCount != parentGroup.ElementsCount ||
+                              newSlotsCount != parentGroup.SlotsSize ||
+                              newSize != parentGroup.Size;
+        if (anyFieldChanged)
         {
-            _groups[_parentGroupIndex] = parentGroup with { ElementsCount = newElementsCount };
-            parentGroup = ParentGroup;
+            parentGroup = parentGroup with
+            {
+                ElementsCount = newElementsCount,
+                SlotsSize = newSlotsCount,
+                Size = newSize
+            };
+            if (parentGroup.Key == 0)
+                Debug.Log(newSize);
+            _groups[_parentGroupIndex] = parentGroup;
         }
 
-        // Write(SlotTable.RestartCallbackSlotOffset, restart);
-        if (GetData().CompositionLocalMap != null)
-            _compositionLocalMaps.Pop();
         _parentGroupIndex = parentGroup.ParentIndex;
     }
 
-    public void ResetTo(int groupIndex)
+    private void EnterReusableGroup()
     {
-        _currentGroupIndex = groupIndex;
-        var group = _groups[_currentGroupIndex];
-        _parentGroupIndex = group.ParentIndex;
-        _currentSlotIndex = group.SlotIndex;
-        _currentElementIndex = group.ElementIndex;
+        _parentGroupIndex = _currentGroupIndex;
+        _currentSlotIndex += SlotIndex.DataSize;
+        _currentGroupIndex++;
+    }
+
+    #endregion
+
+    #region Replaceable Group
+
+    public void StartReplaceableGroup<TKey, TValue>(int key)
+    {
+        _currentGroupIndex = FindMatchingKeyIndex(key);
+
+        var currentGroup = _currentGroupIndex < _groups.Count
+            ? _groups[_currentGroupIndex]
+            : Optional.Empty<ComposeGroup>();
+        if (currentGroup.HasValue && currentGroup.Value.Key == key)
+        {
+            EnterReplaceableGroup();
+            return;
+        }
+
+        var newGroup = new ComposeGroup(
+            Key: key,
+            ParentIndex: _parentGroupIndex,
+            Size: 1,
+            SlotIndex: _currentSlotIndex,
+            SlotsSize: 1,
+            ElementIndex: -1,
+            ElementsCount: 0
+        );
+        var newRememberedValue = new RememberedValue<TKey, TValue>();
+        _groups.Insert(_currentGroupIndex, newGroup);
+        _slots.Insert(_currentSlotIndex, newRememberedValue);
+        ShiftParentIndices(_currentGroupIndex + 1, 1);
+        ShiftSlotIndices(_currentGroupIndex + 1, 1);
+
+        EnterReplaceableGroup();
+    }
+
+    private void EnterReplaceableGroup()
+    {
+        _parentGroupIndex = _currentGroupIndex;
+        _currentGroupIndex++;
     }
 
     public RememberedValue<TKey, TValue>? Read<TKey, TValue>()
     {
-        var currentGroup = _groups[_parentGroupIndex];
-        var maxIndex = currentGroup.SlotIndex + currentGroup.SlotsSize - 1;
-        if (_currentSlotIndex < currentGroup.SlotIndex || _currentSlotIndex > maxIndex)
-            return null;
         var existingValue = _slots[_currentSlotIndex];
-        return existingValue as RememberedValue<TKey, TValue>;
+        return (RememberedValue<TKey, TValue>)existingValue!;
     }
 
-    public void Write<TKey, TValue>(TKey key, TValue value)
+    public void Write<TKey, TValue>(TValue value)
     {
-        var currentGroup = _groups[_parentGroupIndex];
-
-        var maxIndex = currentGroup.SlotIndex + currentGroup.SlotsSize - 1;
-        if (_currentSlotIndex < currentGroup.SlotIndex || _currentSlotIndex > maxIndex)
-        {
-            var newValue = new RememberedValue<TKey, TValue>(key, value);
-            _slots.Insert(_currentSlotIndex, newValue);
-            ShiftSlotIndices(_currentGroupIndex + 1, 1);
-            return;
-        }
-
-        var existingValue = _slots[_currentSlotIndex]!.CastTo<RememberedValue<TKey, TValue>>();
-        existingValue.Key = key;
-        existingValue.Value = value;
+        var rememberedValue = (RememberedValue<TKey, TValue>)_slots[_currentSlotIndex]!;
+        rememberedValue.Value = value;
     }
+
+    public void EndReplaceableGroup()
+    {
+        var parentGroup = ParentGroup;
+        _parentGroupIndex = parentGroup.ParentIndex;
+        _currentSlotIndex++;
+    }
+
+    #endregion
+
+    #region Elements
 
     public int GetElementIndex()
     {
@@ -185,7 +195,11 @@ internal class SlotWriter
         _currentElementIndex = 0;
     }
 
-    public void WriteCompositionLocal(
+    #endregion
+
+    #region CompositionLocal
+
+    public void StartCompositionLocal(
         IImmutableStableList<CompositionLocalProvides> provides
     )
     {
@@ -204,6 +218,11 @@ internal class SlotWriter
         _compositionLocalMaps.Push(compositionLocalMap);
     }
 
+    public void EndCompositionLocal()
+    {
+        _compositionLocalMaps.Pop();
+    }
+
     public T ReadCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
     {
         if (_compositionLocalMaps.IsEmpty())
@@ -211,45 +230,39 @@ internal class SlotWriter
         return _compositionLocalMaps.Peek().Get(compositionLocal, defaultValueFactory);
     }
 
-    public ComposeGroupRestartScope GetRestartScope()
+    #endregion
+
+    #region Restarting
+
+    public void ResetTo(int groupIndex)
     {
+        _currentGroupIndex = groupIndex;
+        var group = _groups[_currentGroupIndex];
+        _parentGroupIndex = group.ParentIndex;
+        _currentSlotIndex = group.SlotIndex;
+        _currentElementIndex = group.ElementIndex;
+    }
+
+    public ComposeGroupRestartScope? GetRestartScope()
+    {
+        if (!IsInCompositionContext)
+            return null;
         var currentGroup = ParentGroup;
         return _slots[currentGroup.SlotIndex].NotNull().CastTo<ComposeGroupData>().RestartScope;
     }
 
+    #endregion
+
     private ComposeGroupData GetData()
     {
         var currentGroup = _groups[_parentGroupIndex];
-        var value = _slots[currentGroup.SlotIndex + SlotTable.MetadataOffset];
+        var value = _slots[currentGroup.SlotIndex + GroupIndex.MetadataOffset];
         return (ComposeGroupData)value.NotNull();
     }
 
-    public void IncrementSlotIndex()
+    private void ShiftParentIndices(int startIndex, int offset)
     {
-        _currentSlotIndex++;
-    }
-
-    private void EnterGroup()
-    {
-        _parentGroupIndex = _currentGroupIndex;
-        _currentSlotIndex = _groups[_currentGroupIndex].SlotIndex + SlotTable.GroupDataSlots;
-        _currentGroupIndex++;
-    }
-
-    private void RemoveGroup()
-    {
-        var index = _currentGroupIndex;
-        var group = _groups[index];
-        _groups.RemoveRange(index, group.Size);
-        _slots.RemoveRange(group.SlotIndex, group.SlotsSize);
-        ShiftParentIndices(-group.Size);
-        ShiftSlotIndices(_currentGroupIndex, -group.SlotsSize);
-    }
-
-    private void ShiftParentIndices(int offset)
-    {
-        var startIndex = _currentGroupIndex;
-        for (var i = startIndex + 1; i < _groups.Count; i += SlotTable.GroupSize)
+        for (var i = startIndex + 1; i < _groups.Count; i += GroupIndex.MetadataSize)
         {
             var group = _groups[i];
             if (group.ParentIndex >= startIndex)
@@ -259,10 +272,60 @@ internal class SlotWriter
 
     private void ShiftSlotIndices(int startIndex, int offset)
     {
-        for (var i = startIndex; i < _groups.Count; i += SlotTable.GroupSize)
+        for (var i = startIndex; i < _groups.Count; i += GroupIndex.MetadataSize)
         {
             var group = _groups[i];
             _groups[i] = group with { SlotIndex = group.SlotIndex + offset };
+        }
+    }
+
+    private int FindMatchingKeyIndex(int key)
+    {
+        if (_parentGroupIndex < 0)
+            return _currentGroupIndex;
+        var parent = ParentGroup;
+        var maxIndex = _parentGroupIndex + parent.SlotsSize - 1;
+
+        var startRemoveIndex = _currentGroupIndex;
+        var removeCount = 0;
+        for (var i = _currentGroupIndex; i <= maxIndex; i++)
+        {
+            var group = _groups[i];
+            if (group.Key == key)
+            {
+                if (removeCount > 0)
+                    Debug.Log($"Marked {_parentGroupIndex}, {startRemoveIndex}, {removeCount} for deletion");
+                return i;
+            }
+
+            removeCount++;
+        }
+
+        return _currentGroupIndex;
+    }
+
+    private void RemoveSkippedGroups()
+    {
+        if (_skippedGroups.IsEmpty())
+            return;
+        while (_skippedGroups.IsNotEmpty())
+        {
+            var range = _skippedGroups.Peek();
+            if (range.GroupIndex != _parentGroupIndex)
+                return;
+            _skippedGroups.Pop();
+            var startGroup = _groups[range.StartIndex];
+            var endGroup = _groups[range.StartIndex + range.Count - 1];
+            var startSlotIndex = startGroup.SlotIndex;
+            var slotsCount = endGroup.SlotIndex + endGroup.SlotsSize - 1 - startSlotIndex;
+            if (slotsCount > 0)
+            {
+                _slots.RemoveRange(startSlotIndex, slotsCount);
+                ShiftSlotIndices(startSlotIndex, slotsCount);
+            }
+
+            _groups.RemoveRange(range.StartIndex, range.Count);
+            ShiftParentIndices(range.StartIndex, range.Count);
         }
     }
 }
@@ -271,10 +334,10 @@ internal static class CastToExtensions
 {
     public static T CastTo<T>(this object value)
     {
-        return value is T obj ? obj : throw new InvalidCastException($"{value} is not a {typeof (T).GetReadableName()}");
+        return value is T obj ? obj : throw new InvalidCastException($"{value} is not a {typeof(T).GetReadableName()}");
     }
-    
-    public static string GetReadableName(this Type type, bool includeNamespace = false)
+
+    private static string GetReadableName(this Type type, bool includeNamespace = false)
     {
         if (type.IsGenericType)
         {
@@ -293,13 +356,13 @@ internal static class CastToExtensions
 
     private static string GetGenericName(Type type, bool includeNamespace)
     {
-        string name = includeNamespace
+        var name = includeNamespace
             ? type.Namespace + "." + StripArity(type.Name)
             : StripArity(type.Name);
 
-        Type[] args = type.GetGenericArguments();
+        var args = type.GetGenericArguments();
 
-        string argsJoined = string.Join(", ", args.Select(t => t.GetReadableName(includeNamespace)));
+        var argsJoined = string.Join(", ", args.Select(t => t.GetReadableName(includeNamespace)));
 
         return $"{name}<{argsJoined}>";
     }

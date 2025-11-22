@@ -88,7 +88,6 @@ public static partial class ComposeFunctions
             return;
         try
         {
-            // ICompositionLocalProvider compositionLocal = Remember(() => new CompositionLocalProvider());
             CurrentComposer.BeginCompositionLocal(provides);
             content();
         }

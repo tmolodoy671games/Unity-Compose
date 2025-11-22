@@ -47,9 +47,9 @@ public static partial class ComposeFunctions
         Func<IEnumerator> coroutine
     )
     {
-        CurrentComposer.Remember<TKey, IDisposable>(
+        Remember(
             key: key,
-            defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
+            defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
         );
     }
 
@@ -59,9 +59,9 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        CurrentComposer.Remember(
+        Remember(
             key: key,
-            defaultValueFactory: _ =>
+            defaultValueFactory: () =>
             {
                 block();
                 return string.Empty;
@@ -76,9 +76,9 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        CurrentComposer.Remember(
+        Remember(
             key: key,
-            defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
+            defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
         );
     }
 
@@ -89,9 +89,9 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        CurrentComposer.Remember(
+        Remember(
             key: key,
-            defaultValueFactory: _ =>
+            defaultValueFactory: () =>
                 ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
         );
     }
@@ -102,9 +102,9 @@ public static partial class ComposeFunctions
         Func<IDisposableEffectScope, IDisposable> effect
     )
     {
-        CurrentComposer.Remember(
+        Remember(
             key: key,
-            defaultValueFactory: _ => effect(DisposableEffectScopeImpl.Instance)
+            defaultValueFactory: () => effect(DisposableEffectScopeImpl.Instance)
         );
     }
 

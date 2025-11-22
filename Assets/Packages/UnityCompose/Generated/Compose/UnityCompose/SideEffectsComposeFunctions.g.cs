@@ -13,13 +13,13 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     private static void __LaunchedEffect<TKey>(TKey key, Func<IEnumerator> coroutine)
     {
-        CurrentComposer.Remember<TKey, IDisposable>(key: key, defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
+        Remember(key: key, defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
     }
 
     [Composable, DontGenerateComposeGroups]
     private static void __LaunchedEffect<TKey>(TKey key, Action block)
     {
-        CurrentComposer.Remember(key: key, defaultValueFactory: _ =>
+        Remember(key: key, defaultValueFactory: () =>
         {
             block();
             return string.Empty;
@@ -29,18 +29,18 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     private static void __LaunchedEffect<TKey>(TKey key, TimeSpan delay, Action block)
     {
-        CurrentComposer.Remember(key: key, defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
+        Remember(key: key, defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
     }
 
     [Composable, DontGenerateComposeGroups]
     private static void __LaunchedEffect<TKey>(TKey key, float delay, Action block)
     {
-        CurrentComposer.Remember(key: key, defaultValueFactory: _ => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block)));
+        Remember(key: key, defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block)));
     }
 
     [Composable, DontGenerateComposeGroups]
     private static void __DisposableEffect<TKey>(TKey key, Func<IDisposableEffectScope, IDisposable> effect)
     {
-        CurrentComposer.Remember(key: key, defaultValueFactory: _ => effect(DisposableEffectScopeImpl.Instance));
+        Remember(key: key, defaultValueFactory: () => effect(DisposableEffectScopeImpl.Instance));
     }
 }

@@ -29,7 +29,6 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Layout();
             }
             finally
             {

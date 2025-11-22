@@ -1,0 +1,193 @@
+﻿using System;
+using Sirenix.OdinInspector;
+using UnityEngine.UIElements;
+
+namespace UnityCompose.Samples.Behaviors
+{
+    [DisallowMultipleComponent, HideMonoScript]
+    internal class ManualCompositionDemo : MonoBehaviour
+    {
+        [ShowInInspector] private int key;
+
+        [Button("BeginRootComposeGroup")]
+        private static void BeginRootComposeGroupButton()
+        {
+            CurrentComposer.BeginRootComposeGroup(new ComposeView(), "", 0);
+            Log();
+        }
+
+        [Button("EndRootComposeGroup")]
+        private static void EndRootComposeGroupButton()
+        {
+            CurrentComposer.EndRootComposeGroup(() => { });
+            Log();
+        }
+
+        [PropertySpace]
+        [Button("BeginComposeGroup")]
+        private void BeginComposeGroupButton()
+        {
+            CurrentComposer.BeginComposeGroup(true, "", key);
+            Log();
+        }
+
+        [Button("EndComposeGroup")]
+        private static void EndComposeGroupButton()
+        {
+            CurrentComposer.EndComposeGroup(() => { });
+            Log();
+        }
+
+        [PropertySpace]
+        [Button("Remember")]
+        private void RememberButton()
+        {
+            ComposeFunctions.Remember(() => 1, "", key);
+            Log();
+        }
+
+        // [Button("HasRememberedValue")]
+        public void HasRememberedValueButton()
+        {
+            CurrentComposer.HasRememberedValue<bool, int>(true, "", key);
+            Log();
+        }
+
+        // [Button("RememberedValue")]
+        public void RememberedValueButton()
+        {
+            CurrentComposer.RememberedValue<bool, int>();
+            Log();
+        }
+
+        // [Button("WriteValue")]
+        public void WriteValueButton()
+        {
+            CurrentComposer.WriteValue<bool, int>(() => 1);
+            Log();
+        }
+
+        [PropertySpace]
+        [Button("GetOrCreateVisualElement")]
+        private void GetOrCreateVisualElement()
+        {
+            CurrentComposer.GetOrCreateVisualElement<VisualElement>();
+            Log();
+        }
+
+        [PropertySpace]
+        [Button]
+        private void Clear()
+        {
+            CurrentComposer.Reset();
+            Log();
+        }
+
+        [PropertySpace]
+        [Button("Initial Layout")]
+        private static void InitialLayoutButton()
+        {
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 3);
+                {
+                    BeginComposeGroup(true, 4);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(true, 5);
+                    EndComposeGroup();
+                }
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            Log();
+        }
+
+        [Button("Layout With Inserted Group")]
+        private static void LayoutWithInsertedGroupButton()
+        {
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
+                EndComposeGroup();
+                
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 5);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 3);
+                {
+                    BeginComposeGroup(true, 4);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(true, 5);
+                    EndComposeGroup();
+                }
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            Log();
+        }
+
+        [Button("Layout With Removed Group")]
+        private static void LayoutWithRemovedGroupButton()
+        {
+            // BeginRootComposeGroup();
+            // {
+            //     BeginComposeGroup(true, 0);
+            //     EndComposeGroup();
+            //     
+            //     BeginComposeGroup(true, 2);
+            //     {
+            //         BeginComposeGroup(true, 0);
+            //         EndComposeGroup();
+            //
+            //         BeginComposeGroup(true, 1);
+            //         EndComposeGroup();
+            //     }
+            //     EndComposeGroup();
+            // }
+            // EndRootComposeGroup();
+            // Log();
+            CurrentComposer.Foo();
+        }
+
+        private static void BeginRootComposeGroup()
+        {
+            CurrentComposer.BeginRootComposeGroup(new ComposeView(), "", 0);
+        }
+
+        private static void EndRootComposeGroup()
+        {
+            CurrentComposer.EndRootComposeGroup(() => { });
+        }
+
+        private static void BeginComposeGroup<T>(T state, int lineNumber)
+        {
+            CurrentComposer.BeginComposeGroup(state, "", lineNumber);
+        }
+
+        private static void EndComposeGroup()
+        {
+            CurrentComposer.EndComposeGroup(() => { });
+        }
+
+        private static TValue Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, int lineNumber)
+        {
+            return ComposeFunctions.Remember(key, defaultValueFactory, "", lineNumber);
+        }
+
+        private static void Log()
+        {
+            Debug.Log(CurrentComposer);
+        }
+    }
+}

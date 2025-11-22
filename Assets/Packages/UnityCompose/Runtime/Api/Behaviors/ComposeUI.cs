@@ -46,6 +46,6 @@ public abstract partial class ComposeUI : MonoBehaviour
     [Button]
     protected void PrintTreeStructure()
     {
-        Debug.Log(CurrentComposer.Table);
+        Debug.Log(CurrentComposer);
     }
 }

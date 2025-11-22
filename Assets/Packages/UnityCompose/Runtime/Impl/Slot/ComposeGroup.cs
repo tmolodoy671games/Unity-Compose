@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
@@ -17,7 +18,6 @@ internal readonly record struct ComposeGroup(
     int ElementsCount
 )
 {
-
     public override string ToString()
     {
         var builder = new StringBuilder("(");
@@ -32,32 +32,70 @@ internal readonly record struct ComposeGroup(
     }
 }
 
-internal static partial class GroupsExtensions
+internal static class GroupExtensions
 {
-    public static string Format(this List<ComposeGroup> groups, List<object?> slots)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static VisualElement? ElementOrNull(this ComposeGroup group, IList<object?> slots)
+    {
+        return slots[group.SlotIndex + SlotIndex.DataOffset].NotNull().CastToOrNull<ComposeGroupData>()?.Element;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IRememberedValue? RememberedValueOrNull(this ComposeGroup group, IList<object?> slots)
+    {
+        return slots[group.SlotIndex + SlotIndex.DataOffset].NotNull().CastToOrNull<IRememberedValue>();
+    }
+}
+
+internal static partial class GroupsFormattingExtensions
+{
+    public static string Format(
+        this IList<ComposeGroup> groups,
+        IList<object?> slots,
+        int currentGroupIndex,
+        int parentGroupIndex
+    )
     {
         var builder = new StringBuilder();
+        if (currentGroupIndex < 0)
+            builder.AppendLine("< CURRENT_GROUP_INDEX");
+        if (parentGroupIndex < 0)
+            builder.AppendLine("< PARENT_GROUP_INDEX");
         for (var i = 0; i < groups.Count; i++)
         {
             var group = groups[i];
             var indent = "*".Multiply(group.ParentsCount(groups));
 
             builder.Append($"[{i}] ");
-            var hasElement = slots[group.SlotIndex + SlotTable.MetadataOffset].NotNull().CastTo<ComposeGroupData>()
-                .Element?.Format();
-            builder.AppendLine(indent + group + $" Element = {hasElement}");
+            builder.Append(indent);
+            builder.Append(group);
+            var element = group.ElementOrNull(slots);
+            var rememberedValue = group.RememberedValueOrNull(slots);
+            if (element != null)
+                builder.Append($", Element = {element.Format()}");
+            if (rememberedValue != null)
+                builder.Append($", RememberedValue = {rememberedValue}");
+            if (currentGroupIndex == i)
+                builder.Append(" < CURRENT_GROUP_INDEX");
+            if (parentGroupIndex == i)
+                builder.Append(" < PARENT_GROUP_INDEX");
+            builder.AppendLine();
         }
+        if (currentGroupIndex >= groups.Count)
+            builder.Append("< CURRENT_GROUP_INDEX");
+        if (parentGroupIndex >= groups.Count)
+            builder.Append("< PARENT_GROUP_INDEX");
 
         return builder.ToString();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool HasElement(this ComposeGroup group, List<object?> slots)
+    public static bool HasElement(this ComposeGroup group, IList<object?> slots)
     {
-        return ((ComposeGroupData) slots[group.SlotIndex + SlotTable.MetadataOffset]!).Element != null;
+        return ((ComposeGroupData)slots[group.SlotIndex + GroupIndex.MetadataOffset]!).Element != null;
     }
 
-    private static int ParentsCount(this ComposeGroup group, List<ComposeGroup> groups)
+    private static int ParentsCount(this ComposeGroup group, IList<ComposeGroup> groups)
     {
         var count = 0;
         var currentGroup = group;

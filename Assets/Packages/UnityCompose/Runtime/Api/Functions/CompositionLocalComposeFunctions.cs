@@ -191,7 +191,6 @@ public static partial class ComposeFunctions
         [Composable] Action content
     )
     {
-        // ICompositionLocalProvider compositionLocal = Remember(() => new CompositionLocalProvider());
         CurrentComposer.BeginCompositionLocal(provides);
         content();
     }

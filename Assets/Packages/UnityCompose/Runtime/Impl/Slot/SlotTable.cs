@@ -5,10 +5,6 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotTable
 {
-    public const int GroupSize = 1;
-    public const int GroupDataSlots = 1;
-    public const int MetadataOffset = 0;
-    
     public readonly List<object?> Slots;
 
     public readonly List<ComposeGroup> Groups;
@@ -19,41 +15,52 @@ internal class SlotTable
         Groups = new List<ComposeGroup>(initialGroupCapacity);
     }
 
-    public override string ToString()
+    public string ToString(
+        int currentGroupIndex,
+        int parentGroupIndex,
+        int currentSlotIndex
+    )
     {
-        return $"Groups:\n{Groups.Format(Slots)}\n" +
-               $"Slots:\n{Slots.Format()}";
+        var builder = new StringBuilder();
+        builder.AppendLine($"Groups:\n{Groups.Format(Slots, currentGroupIndex, parentGroupIndex)}");
+        builder.AppendLine();
+        builder.Append($"Slots:\n{Slots.Format(currentSlotIndex)}");
+        builder.AppendLine();
+        builder.AppendLine();
+        return builder.ToString();
     }
 }
 
-internal class RememberedValue<TKey, TValue>
+internal static class GroupIndex
 {
-    public RememberedValue(TKey key, TValue value)
-    {
-        Key = key;
-        Value = value;
-    }
+    public const int MetadataSize = 1;
+    public const int MetadataOffset = 0;
+}
 
-    public TKey Key { get; set; }
-    public TValue Value { get; set; }
-
-    public override string ToString()
-    {
-        return $"({Key}: {Value})";
-    }
+internal static class SlotIndex
+{
+    public const int DataSize = 1;
+    public const int DataOffset = 0;
 }
 
 internal static partial class SlotsExtensions
 {
-    public static string Format(this List<object?> slots)
+    public static string Format(this IList<object?> slots, int currentSlotIndex)
     {
         var builder = new StringBuilder();
+        if (currentSlotIndex < 0)
+            builder.AppendLine(" < CURRENT_SLOT_INDEX");
         for (var i = 0; i < slots.Count; i++)
         {
             var slot = slots[i];
             builder.Append($"[{i}] ");
-            builder.AppendLine(slot?.ToString() ?? "Null");
+            builder.Append(slot?.ToString() ?? "Null");
+            if (currentSlotIndex == i)
+                builder.Append(" < CURRENT_SLOT_INDEX");
+            builder.AppendLine();
         }
+        if (currentSlotIndex >= slots.Count)
+            builder.Append(" < CURRENT_SLOT_INDEX");
 
         return builder.ToString();
     }

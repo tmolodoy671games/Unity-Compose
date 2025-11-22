@@ -7,35 +7,28 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [Composable]
+    [Composable, Compiled]
     public static TValue Remember<TKey, TValue>(
         TKey key,
-        Func<TKey, TValue> defaultValueFactory
+        Func<TValue> defaultValueFactory,
+        [CallerFilePath] string filePath = "",
+        [CallerLineNumber] int lineNumber = 0
     )
     {
-        return CurrentComposer.Remember(key, defaultValueFactory);
+        return CurrentComposer.HasRememberedValue<TKey, TValue>(key, filePath, lineNumber)
+            ? CurrentComposer.RememberedValue<TKey, TValue>()
+            : CurrentComposer.WriteValue<TKey, TValue>(defaultValueFactory);
     }
 
-    [Composable]
-    public static TValue Remember<TKey, TValue>(
-        TKey key,
-        Func<TValue> defaultValueFactory
-    )
-    {
-        return CurrentComposer.Remember(
-            key,
-            defaultValueFactory
-        );
-    }
-
-    [Composable]
+    [Composable, Compiled]
     public static TValue Remember<TValue>(
-        Func<TValue> defaultValueFactory
+        Func<TValue> defaultValueFactory,
+        [CallerFilePath] string filePath = "",
+        [CallerLineNumber] int lineNumber = 0
     )
     {
-        return CurrentComposer.Remember(
-            ComposeRememberKey.None,
-            defaultValueFactory
-        );
+        return CurrentComposer.HasRememberedValue<bool, TValue>(true, filePath, lineNumber)
+            ? CurrentComposer.RememberedValue<bool, TValue>()
+            : CurrentComposer.WriteValue<bool, TValue>(defaultValueFactory);
     }
 }

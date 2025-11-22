@@ -16,7 +16,6 @@ internal class ComposeGroupRestartScope
 
     public void PerformRestart()
     {
-        Debug.Log($"ResetTo({GroupIndex})");
         _writer.ResetTo(GroupIndex);
         Restart?.Invoke();
     }
