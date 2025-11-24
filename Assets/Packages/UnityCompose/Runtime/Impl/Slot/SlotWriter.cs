@@ -99,8 +99,6 @@ internal class SlotWriter
                 SlotsSize = newSlotsCount,
                 Size = newSize
             };
-            if (parentGroup.Key == 0)
-                Debug.Log(newSize);
             _groups[_parentGroupIndex] = parentGroup;
         }
 
