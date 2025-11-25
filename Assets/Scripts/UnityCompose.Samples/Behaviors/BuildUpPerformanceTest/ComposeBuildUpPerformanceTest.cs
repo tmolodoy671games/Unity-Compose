@@ -25,13 +25,6 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
                 GC.Collect();
                 var time = TimeUtils.Measure(() =>
                 {
-                    // for (var i = 0; i < 40_000; i++)
-                    // {
-                    //     CurrentComposer.BeginComposeGroup(0);
-                    //     CurrentComposer.EndComposeGroup(static () => {});
-                    //     // var a = Remember(static () => 1);
-                    // }
-                    
                     for (var i = 0; i < 100; i++)
                     {
                         Row(

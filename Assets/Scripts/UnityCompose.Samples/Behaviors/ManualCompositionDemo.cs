@@ -46,21 +46,21 @@ namespace UnityCompose.Samples.Behaviors
             Log();
         }
 
-        // [Button("HasRememberedValue")]
+        [Button("HasRememberedValue")]
         public void HasRememberedValueButton()
         {
             CurrentComposer.HasRememberedValue<bool, int>(true, "", key);
             Log();
         }
 
-        // [Button("RememberedValue")]
+        [Button("RememberedValue")]
         public void RememberedValueButton()
         {
             CurrentComposer.RememberedValue<bool, int>();
             Log();
         }
 
-        // [Button("WriteValue")]
+        [Button("WriteValue")]
         public void WriteValueButton()
         {
             CurrentComposer.WriteValue<bool, int>(() => 1);
@@ -102,9 +102,19 @@ namespace UnityCompose.Samples.Behaviors
 
                     BeginComposeGroup(true, 5);
                     EndComposeGroup();
+            
+                    BeginComposeGroup(true, 6);
+                    EndComposeGroup();
                 }
                 EndComposeGroup();
             }
+            
+            BeginComposeGroup(true, 7);
+            EndComposeGroup();
+            
+            BeginComposeGroup(true, 8);
+            EndComposeGroup();
+            
             EndRootComposeGroup();
             Log();
         }
@@ -120,7 +130,16 @@ namespace UnityCompose.Samples.Behaviors
                 BeginComposeGroup(true, 2);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 5);
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 2);
                 EndComposeGroup();
 
                 BeginComposeGroup(true, 3);
@@ -140,24 +159,82 @@ namespace UnityCompose.Samples.Behaviors
         [Button("Layout With Removed Group")]
         private static void LayoutWithRemovedGroupButton()
         {
-            // BeginRootComposeGroup();
-            // {
-            //     BeginComposeGroup(true, 0);
-            //     EndComposeGroup();
-            //     
-            //     BeginComposeGroup(true, 2);
-            //     {
-            //         BeginComposeGroup(true, 0);
-            //         EndComposeGroup();
-            //
-            //         BeginComposeGroup(true, 1);
-            //         EndComposeGroup();
-            //     }
-            //     EndComposeGroup();
-            // }
-            // EndRootComposeGroup();
-            // Log();
-            CurrentComposer.Foo();
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
+                EndComposeGroup();
+                
+                BeginComposeGroup(true, 3);
+                {
+                    BeginComposeGroup(true, 4);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(true, 5);
+                    EndComposeGroup();
+            
+                    // BeginComposeGroup(true, 6);
+                    // EndComposeGroup();
+                }
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            Log();
+        }
+
+        [Button("Remember Layout")]
+        private static void RememberLayoutButton()
+        {
+            BeginRootComposeGroup();
+            {
+                Remember(1, () => 1, 1);
+                Remember(1, () => 1, 1);
+            }
+            EndRootComposeGroup();
+            Log();
+        }
+
+        [PropertySpace]
+        [Button("Test")]
+        private static void TestButton()
+        {
+            // CurrentComposer.Test();
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 2);
+                EndComposeGroup();
+
+                BeginComposeGroup(true, 3);
+                {
+                    BeginComposeGroup(true, 4);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(true, 5);
+                    EndComposeGroup();
+                }
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
+                EndComposeGroup();
+                
+                BeginComposeGroup(true, 3);
+                {
+                    BeginComposeGroup(true, 4);
+                    EndComposeGroup();
+            
+                    BeginComposeGroup(true, 5);
+                    EndComposeGroup();
+                }
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            Log();
         }
 
         private static void BeginRootComposeGroup()

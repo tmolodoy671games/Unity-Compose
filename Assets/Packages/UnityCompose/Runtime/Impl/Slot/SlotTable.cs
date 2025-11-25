@@ -1,30 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotTable
 {
-    public readonly List<object?> Slots;
-
     public readonly List<ComposeGroup> Groups;
 
     public SlotTable(int initialGroupCapacity = 64, int initialSlotCapacity = 64)
     {
-        Slots = new List<object?>(initialSlotCapacity);
-        Groups = new List<ComposeGroup>(initialGroupCapacity);
+        Groups = new List<ComposeGroup>();
     }
 
     public string ToString(
         int currentGroupIndex,
-        int parentGroupIndex,
-        int currentSlotIndex
+        int parentGroupIndex
     )
     {
         var builder = new StringBuilder();
-        builder.AppendLine($"Groups:\n{Groups.Format(Slots, currentGroupIndex, parentGroupIndex)}");
+        builder.AppendLine($"Groups:\n{Groups.Format(currentGroupIndex, parentGroupIndex)}");
         builder.AppendLine();
-        builder.Append($"Slots:\n{Slots.Format(currentSlotIndex)}");
         builder.AppendLine();
         builder.AppendLine();
         return builder.ToString();

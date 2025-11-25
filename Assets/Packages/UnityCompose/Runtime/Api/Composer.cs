@@ -114,9 +114,8 @@ public class Composer
         var groupKey = ComposeGroupUtils.GetKey(filePath, lineNumber);
         _writer.StartReplaceableGroup<TKey, TValue>(groupKey);
         var existingValue = _writer.Read<TKey, TValue>();
-        var result = existingValue != null && existingValue.Key.Equals(key);
-        if (existingValue != null)
-            existingValue.Key = key;
+        var result = existingValue.Key.Equals(key);
+        existingValue.Key = key;
         return result;
     }
 
@@ -179,17 +178,28 @@ public class Composer
     {
         return _table.ToString(
             currentGroupIndex: _writer.CurrentGroupIndex,
-            parentGroupIndex: _writer.ParentGroupIndex,
-            currentSlotIndex: _writer.CurrentSlotIndex
+            parentGroupIndex: _writer.ParentGroupIndex
         );
     }
 
-    public void Foo()
+    public void Test()
     {
         var list = _table.Groups;
-        list.Clear();
+        // list.Clear();
         var group = new ComposeGroup();
         list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.Add(group);
+        list.RemoveAt(list.Count - 1);
+        list.RemoveRange(1, 2);
+        list.Insert(1, group);
+        list.Clear();
     }
 }
 

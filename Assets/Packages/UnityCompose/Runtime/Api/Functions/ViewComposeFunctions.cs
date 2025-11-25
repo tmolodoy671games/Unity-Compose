@@ -32,11 +32,11 @@ public static partial class ComposeFunctions
         var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
         var parent = LocalVisualElement.Current;
         var index = CurrentComposer.GetElementIndex();
-        DisposableEffect((visualElement, parent, index), it =>
-        {
-            parent.FastReinsert(index, visualElement);
-            return it.OnDispose(() => parent.Remove(visualElement));
-        });
+        // DisposableEffect((visualElement, parent, index), it =>
+        // {
+        //     parent.FastReinsert(index, visualElement);
+        //     return it.OnDispose(() => parent.Remove(visualElement));
+        // });
 
         var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
         var currentProperties = Remember(() =>

@@ -10,42 +10,56 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 internal class SlotWriter
 {
-    private readonly SlotTable _table;
-    private readonly List<ComposeGroup> _groups;
-    private readonly List<object?> _slots;
-    private readonly Stack<CompositionLocalMap> _compositionLocalMaps = new();
-    private readonly Stack<(int GroupIndex, int StartIndex, int Count)> _skippedGroups = new();
+    private enum GroupType
+    {
+        Reusable,
+        Replaceable,
+    }
 
-    private int _parentGroupIndex = -1;
+    private readonly List<ComposeGroup> _groups;
+    private readonly Stack<CompositionLocalMap> _compositionLocalMaps = new();
+
+    private int _currentParentIndex = -1;
     private int _currentGroupIndex;
     private int _currentElementIndex;
-    private int _currentSlotIndex = 0;
+
 
     public SlotWriter(SlotTable table)
     {
-        _table = table;
         _groups = table.Groups;
-        _slots = table.Slots;
         _currentGroupIndex = 0;
     }
 
     public int CurrentGroupIndex => _currentGroupIndex;
-    public int ParentGroupIndex => _parentGroupIndex;
-    public int CurrentSlotIndex => _currentSlotIndex;
-    public bool IsInCompositionContext => _parentGroupIndex != -1;
+    public int ParentGroupIndex => _currentParentIndex;
+    public bool IsInCompositionContext => _currentParentIndex != -1;
 
-    private ComposeGroup ParentGroup => _groups[_parentGroupIndex];
+    private ComposeGroup ParentGroup
+    {
+        get
+        {
+            try
+            {
+                return _groups[_currentParentIndex];
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{_currentParentIndex} vs {_groups.Count}");
+                throw e;
+            }
+        }
+    }
 
     #region Reusable Group
 
     public void StartReusableGroup<T>(int key, T state, VisualElement? element = null)
     {
-        _currentGroupIndex = FindMatchingKeyIndex(key);
+        _currentGroupIndex = FindMatchingKeyIndex<T, T>(key, GroupType.Reusable);
 
         var currentGroup = _currentGroupIndex < _groups.Count
             ? _groups[_currentGroupIndex]
             : Optional.Empty<ComposeGroup>();
-        if (currentGroup.HasValue && currentGroup.Value.Key == key)
+        if (currentGroup.HasValue && currentGroup.Value.IsSameReusableGroup<T>(key))
         {
             EnterReusableGroup();
             return;
@@ -53,62 +67,52 @@ internal class SlotWriter
 
         // Write new group
         var newGroup = new ComposeGroup(
+            ParentIndex: ParentGroupIndex,
             Key: key,
-            ParentIndex: _parentGroupIndex,
             Size: 1,
-            SlotIndex: _currentSlotIndex,
-            SlotsSize: 0,
-            ElementIndex: _currentElementIndex,
-            ElementsCount: element != null ? 1 : 0
+            State: new IComposeGroupState.Reusable<T>(this, state)
+            {
+                Element = element
+            }
         );
-        var newData = new ComposeGroupData<T>(this, state)
-        {
-            Element = element
-        };
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.Insert(_currentSlotIndex + GroupIndex.MetadataOffset, newData);
-        ShiftParentIndices(_currentGroupIndex + 1, 1);
-        ShiftSlotIndices(_currentGroupIndex + 1, SlotIndex.DataSize);
         EnterReusableGroup();
     }
 
     public void EndReusableGroup(Action restart)
     {
-        RemoveSkippedGroups();
-        var parentGroup = _groups[_parentGroupIndex];
+        var parentGroupIndex = _currentParentIndex;
+        var parentGroup = ParentGroup;
+        var newSize = _currentGroupIndex - parentGroupIndex;
+        var oldSize = parentGroup.Size;
 
-        var data = GetData();
-        data.RestartScope.GroupIndex = _parentGroupIndex;
-        data.RestartScope.Restart = restart;
+        var currentGroupState = ParentGroup.State.CastTo<IComposeGroupState.Reusable>();
+        currentGroupState.RestartScope.GroupIndex = parentGroupIndex;
+        currentGroupState.RestartScope.Restart = restart;
 
-        var newSize = _currentGroupIndex - _parentGroupIndex;
+        if (currentGroupState.Element != null)
+            _currentElementIndex = currentGroupState.ElementIndex + 1;
 
-        if (parentGroup.HasElement(_slots))
-            _currentElementIndex = parentGroup.ElementIndex + 1;
-
-        var newSlotsCount = _currentSlotIndex - parentGroup.SlotIndex;
-        var newElementsCount = _currentElementIndex - parentGroup.ElementIndex;
-        var anyFieldChanged = newElementsCount != parentGroup.ElementsCount ||
-                              newSlotsCount != parentGroup.SlotsSize ||
-                              newSize != parentGroup.Size;
+        var newElementsCount = _currentElementIndex - currentGroupState.ElementIndex;
+        var anyFieldChanged = newSize != oldSize;
         if (anyFieldChanged)
         {
             parentGroup = parentGroup with
             {
-                ElementsCount = newElementsCount,
-                SlotsSize = newSlotsCount,
                 Size = newSize
             };
-            _groups[_parentGroupIndex] = parentGroup;
+            _groups[parentGroupIndex] = parentGroup;
         }
 
-        _parentGroupIndex = parentGroup.ParentIndex;
+        currentGroupState.ElementsCount = newElementsCount;
+        
+        _currentParentIndex = _groups[_currentParentIndex].ParentIndex;
     }
 
     private void EnterReusableGroup()
     {
-        _parentGroupIndex = _currentGroupIndex;
-        _currentSlotIndex += SlotIndex.DataSize;
+        _currentElementIndex = _groups[_currentGroupIndex].State.CastTo<IComposeGroupState.Reusable>().ElementIndex;
+        _currentParentIndex = _currentGroupIndex;
         _currentGroupIndex++;
     }
 
@@ -118,7 +122,7 @@ internal class SlotWriter
 
     public void StartReplaceableGroup<TKey, TValue>(int key)
     {
-        _currentGroupIndex = FindMatchingKeyIndex(key);
+        _currentGroupIndex = FindMatchingKeyIndex<TKey, TValue>(key, GroupType.Replaceable);
 
         var currentGroup = _currentGroupIndex < _groups.Count
             ? _groups[_currentGroupIndex]
@@ -130,46 +134,37 @@ internal class SlotWriter
         }
 
         var newGroup = new ComposeGroup(
+            ParentIndex: ParentGroupIndex,
             Key: key,
-            ParentIndex: _parentGroupIndex,
             Size: 1,
-            SlotIndex: _currentSlotIndex,
-            SlotsSize: 1,
-            ElementIndex: -1,
-            ElementsCount: 0
+            State: new IComposeGroupState.Replaceable<TKey, TValue>()
         );
-        var newRememberedValue = new RememberedValue<TKey, TValue>();
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.Insert(_currentSlotIndex, newRememberedValue);
-        ShiftParentIndices(_currentGroupIndex + 1, 1);
-        ShiftSlotIndices(_currentGroupIndex + 1, 1);
 
         EnterReplaceableGroup();
     }
 
     private void EnterReplaceableGroup()
     {
-        _parentGroupIndex = _currentGroupIndex;
+        _currentParentIndex = _currentGroupIndex;
         _currentGroupIndex++;
     }
 
-    public RememberedValue<TKey, TValue>? Read<TKey, TValue>()
+    public IComposeGroupState.Replaceable<TKey, TValue> Read<TKey, TValue>()
     {
-        var existingValue = _slots[_currentSlotIndex];
-        return (RememberedValue<TKey, TValue>)existingValue!;
+        var existingValue = ParentGroup;
+        return existingValue.State.CastTo<IComposeGroupState.Replaceable<TKey, TValue>>();
     }
 
     public void Write<TKey, TValue>(TValue value)
     {
-        var rememberedValue = (RememberedValue<TKey, TValue>)_slots[_currentSlotIndex]!;
+        var rememberedValue = ParentGroup.State.CastTo<IComposeGroupState.Replaceable<TKey, TValue>>();
         rememberedValue.Value = value;
     }
 
     public void EndReplaceableGroup()
     {
-        var parentGroup = ParentGroup;
-        _parentGroupIndex = parentGroup.ParentIndex;
-        _currentSlotIndex++;
+        _currentParentIndex = _groups[_currentParentIndex].ParentIndex;
     }
 
     #endregion
@@ -179,14 +174,14 @@ internal class SlotWriter
     public int GetElementIndex()
     {
         var currentGroup = ParentGroup;
-        return currentGroup.ElementIndex;
+        return currentGroup.State.CastTo<IComposeGroupState.Reusable>().ElementIndex;
     }
 
     public TVisualElement? ReadVisualElement<TVisualElement>() where TVisualElement : VisualElement =>
-        GetData().Element as TVisualElement;
+        ParentGroup.State.CastTo<IComposeGroupState.Reusable>().Element as TVisualElement;
 
     public void WriteVisualElement<TVisualElement>(TVisualElement element) where TVisualElement : VisualElement =>
-        GetData().Element = element;
+        ParentGroup.State.CastTo<IComposeGroupState.Reusable>().Element = element;
 
     public void ResetElementIndex()
     {
@@ -201,7 +196,7 @@ internal class SlotWriter
         IImmutableStableList<CompositionLocalProvides> provides
     )
     {
-        var metadata = GetData();
+        var metadata = ParentGroup.State.CastTo<IComposeGroupState.Reusable>();
         var compositionLocalMap = metadata.CompositionLocalMap;
         if (compositionLocalMap == null)
         {
@@ -236,95 +231,49 @@ internal class SlotWriter
     {
         _currentGroupIndex = groupIndex;
         var group = _groups[_currentGroupIndex];
-        _parentGroupIndex = group.ParentIndex;
-        _currentSlotIndex = group.SlotIndex;
-        _currentElementIndex = group.ElementIndex;
+        _currentElementIndex = group.State.CastTo<IComposeGroupState.Reusable>().ElementIndex;
     }
 
     public ComposeGroupRestartScope? GetRestartScope()
     {
         if (!IsInCompositionContext)
             return null;
-        var currentGroup = ParentGroup;
-        return _slots[currentGroup.SlotIndex].NotNull().CastTo<ComposeGroupData>().RestartScope;
+        return ParentGroup.State.CastTo<IComposeGroupState.Reusable>().RestartScope;
     }
 
     #endregion
 
-    private ComposeGroupData GetData()
+    private int FindMatchingKeyIndex<T1, T2>(int key, GroupType groupType)
     {
-        var currentGroup = _groups[_parentGroupIndex];
-        var value = _slots[currentGroup.SlotIndex + GroupIndex.MetadataOffset];
-        return (ComposeGroupData)value.NotNull();
-    }
-
-    private void ShiftParentIndices(int startIndex, int offset)
-    {
-        for (var i = startIndex + 1; i < _groups.Count; i += GroupIndex.MetadataSize)
-        {
-            var group = _groups[i];
-            if (group.ParentIndex >= startIndex)
-                _groups[i] = group with { ParentIndex = group.ParentIndex + offset };
-        }
-    }
-
-    private void ShiftSlotIndices(int startIndex, int offset)
-    {
-        for (var i = startIndex; i < _groups.Count; i += GroupIndex.MetadataSize)
-        {
-            var group = _groups[i];
-            _groups[i] = group with { SlotIndex = group.SlotIndex + offset };
-        }
-    }
-
-    private int FindMatchingKeyIndex(int key)
-    {
-        if (_parentGroupIndex < 0)
+        var parentGroupIndex = ParentGroupIndex;
+        if (parentGroupIndex < 0)
             return _currentGroupIndex;
         var parent = ParentGroup;
-        var maxIndex = _parentGroupIndex + parent.SlotsSize - 1;
-
-        var startRemoveIndex = _currentGroupIndex;
+        var maxIndex = parentGroupIndex + parent.Size - 1;
+        if (maxIndex >= _groups.Count)
+        {
+            Debug.LogError($"Something went wrong: maxIndex={maxIndex}, groups.count={_groups.Count}");
+        }
         var removeCount = 0;
-        for (var i = _currentGroupIndex; i <= maxIndex; i++)
+        for (var i = _currentGroupIndex; i <= maxIndex;)
         {
             var group = _groups[i];
-            if (group.Key == key)
+            var isMatching = groupType switch
             {
-                if (removeCount > 0)
-                    Debug.Log($"Marked {_parentGroupIndex}, {startRemoveIndex}, {removeCount} for deletion");
+                GroupType.Reusable => group.IsSameReusableGroup<T1>(key),
+                GroupType.Replaceable => group.IsSameReplaceableGroup<T1, T2>(key),
+                _ => throw new ArgumentOutOfRangeException(nameof(groupType), groupType, null)
+            };
+            if (isMatching)
+            {
                 return i;
             }
 
             removeCount++;
+            i += group.Size;
         }
 
         return _currentGroupIndex;
-    }
-
-    private void RemoveSkippedGroups()
-    {
-        if (_skippedGroups.IsEmpty())
-            return;
-        while (_skippedGroups.IsNotEmpty())
-        {
-            var range = _skippedGroups.Peek();
-            if (range.GroupIndex != _parentGroupIndex)
-                return;
-            _skippedGroups.Pop();
-            var startGroup = _groups[range.StartIndex];
-            var endGroup = _groups[range.StartIndex + range.Count - 1];
-            var startSlotIndex = startGroup.SlotIndex;
-            var slotsCount = endGroup.SlotIndex + endGroup.SlotsSize - 1 - startSlotIndex;
-            if (slotsCount > 0)
-            {
-                _slots.RemoveRange(startSlotIndex, slotsCount);
-                ShiftSlotIndices(startSlotIndex, slotsCount);
-            }
-
-            _groups.RemoveRange(range.StartIndex, range.Count);
-            ShiftParentIndices(range.StartIndex, range.Count);
-        }
     }
 }
 
