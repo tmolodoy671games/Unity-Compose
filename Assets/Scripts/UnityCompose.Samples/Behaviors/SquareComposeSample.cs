@@ -2,22 +2,50 @@
 
 using System;
 using System.Collections;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class SquareComposeSample : ComposeUI
     {
         [Composable]
-        protected override void Content() => Layout();
+        protected override void Content()
+        {
+            var hovered = Remember(() => MutableStateOf(false));
+            Spacer(
+                Modifier
+                    .Align(Alignment.CenterVertically)
+                    .Size(100)
+                    .Scale(hovered.Value ? 2 : 1, transition: Transition())
+                    .Background(Color.blue)
+                    .OnMouseEnter(() => hovered.Value = true)
+                    .OnMouseLeave(() => hovered.Value = false)
+            );
+        }
 
         [Composable]
         protected override void Preview()
         {
-            
+            var hovered = Remember(() => MutableStateOf(false));
+            Spacer(
+                Modifier
+                    .Align(Alignment.CenterVertically)
+                    .Size(100)
+                    .Scale(hovered.Value ? 2 : 1, transition: Transition())
+                    .Background(Color.blue)
+                    .OnMouseEnter(() => hovered.Value = true)
+                    .OnMouseLeave(() => hovered.Value = false)
+            );
         }
 
         [Composable]
-        private  void Layout()
+        private void EmptyWrapper([Composable] Action content)
+        {
+            content();
+        }
+
+        [Composable]
+        private void Layout()
         {
             Box(
                 modifier: Modifier

@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;

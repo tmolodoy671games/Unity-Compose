@@ -25,21 +25,27 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
                 GC.Collect();
                 var time = TimeUtils.Measure(() =>
                 {
-                    for (var i = 0; i < 100; i++)
+                    for (var i = 0; i < 1_000_000; i++)
                     {
-                        Row(
-                            modifier: rowModifier,
-                            content: () =>
-                            {
-                                for (var j = 0; j < 100; j++)
-                                {
-                                    Spacer(
-                                        modifier: spacerModifier
-                                    );
-                                }
-                            }
-                        );
+                        CurrentComposer.BeginComposeGroup(0);
+                        CurrentComposer.EndComposeGroup(static () => { }); 
                     }
+                    
+                    // for (var i = 0; i < 100; i++)
+                    // {
+                    //     Row(
+                    //         modifier: rowModifier,
+                    //         content: () =>
+                    //         {
+                    //             for (var j = 0; j < 100; j++)
+                    //             {
+                    //                 Spacer(
+                    //                     modifier: spacerModifier
+                    //                 );
+                    //             }
+                    //         }
+                    //     );
+                    // }
                 });
 
                 Debug.Log(time.TotalSeconds.ToString("F3"));

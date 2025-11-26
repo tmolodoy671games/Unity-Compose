@@ -5,8 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 
@@ -57,8 +56,8 @@ namespace UnityCompose
             }
         }
 
-        private readonly HashSet<ComposeGroupRestartScope> _invalidatedGroups = new();
-        private readonly HashSet<ComposeGroupRestartScope> _instantInvalidatedGroups = new();
+        private readonly HashSet<ReusableComposeGroup> _invalidatedGroups = new();
+        private readonly HashSet<ReusableComposeGroup> _instantInvalidatedGroups = new();
 
         public ComposeInvalidator()
         {
@@ -88,21 +87,21 @@ namespace UnityCompose
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        internal static void RequestInvalidate(ComposeGroupRestartScope scope)
+        internal static void RequestInvalidate(ReusableComposeGroup scope)
         {
             if (!ApplicationUtils.IsPlaying) return;
             if (Instance._instantInvalidatedGroups.Contains(scope)) return;
             Instance._invalidatedGroups.Add(scope);
         }
 
-        internal static void CancelInvalidate(ComposeGroupRestartScope scope)
+        internal static void CancelInvalidate(ReusableComposeGroup scope)
         {
             if (!ApplicationUtils.IsPlaying) return;
             Instance._instantInvalidatedGroups.Remove(scope);
             Instance._invalidatedGroups.Remove(scope);
         }
 
-        internal static void RequestInstantInvalidate(ComposeGroupRestartScope scope)
+        internal static void RequestInstantInvalidate(ReusableComposeGroup scope)
         {
             RequestInvalidate(scope);
             // Instance._instantInvalidatedGroups.Add(groupDeprecated);

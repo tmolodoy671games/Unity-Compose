@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEngine.UIElements;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
@@ -14,7 +15,8 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
-                Layout();
+                var hovered = Remember(() => MutableStateOf(false));
+                Spacer(Modifier.Align(Alignment.CenterVertically).Size(100).Scale(hovered.Value ? 2 : 1, transition: Transition()).Background(Color.blue).OnMouseEnter(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = false)));
             }
             finally
             {
@@ -29,10 +31,28 @@ namespace UnityCompose.Samples.Behaviors
                 return;
             try
             {
+                var hovered = Remember(() => MutableStateOf(false));
+                Spacer(Modifier.Align(Alignment.CenterVertically).Size(100).Scale(hovered.Value ? 2 : 1, transition: Transition()).Background(Color.blue).OnMouseEnter(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = false)));
             }
             finally
             {
                 CurrentComposer.EndComposeGroup(() => __Preview());
+            }
+        }
+
+        [Composable]
+        private void __EmptyWrapper([Composable] Action content)
+        {
+            var __content = (content);
+            if (CurrentComposer.BeginComposeGroup(__content))
+                return;
+            try
+            {
+                content();
+            }
+            finally
+            {
+                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__content).Remember<Action>(__ => () => __EmptyWrapper(__)));
             }
         }
 

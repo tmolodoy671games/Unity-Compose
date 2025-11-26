@@ -1,106 +1,87 @@
-﻿using System;
+﻿// ReSharper disable CheckNamespace
+
+using System;
 using System.Runtime.CompilerServices;
+using Packages.UnityCompose.Impl.Composition.Utils;
 using SharpExtensions;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Slot;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Core;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityEngine.UIElements;
 
-// ReSharper disable CheckNamespace
 namespace UnityCompose;
 
 public class Composer
 {
-    public static readonly Composer Instance = new();
+    private readonly SlotWriter _writer = new();
 
-    private SlotTable _table = new();
-    private SlotWriter _writer;
+    public static readonly Composer CurrentComposer = new();
 
     private Composer()
     {
-        _writer = new SlotWriter(_table);
     }
 
     public void Reset()
     {
-        var table = new SlotTable();
-        _table = table;
-        _writer = new SlotWriter(table);
+        _writer.Clear();
     }
 
-    public bool BeginRootComposeGroup(
-        ComposeView element,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
-    )
+    #region Root Group
+
+    public bool BeginRootComposeGroup(VisualElement root)
     {
-        var key = ComposeGroupUtils.GetKey(filePath, lineNumber);
-        _writer.StartReusableGroup(key, new ComposeUnskippableState(), element);
+        _writer.StartRootGroup(root);
         return false;
-    }
-
-    public bool BeginComposeGroup<TState>(
-        TState state,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
-    )
-    {
-        var key = ComposeGroupUtils.GetKey(filePath, lineNumber);
-        RequireCompositionContext();
-        _writer.StartReusableGroup(key, state);
-        return false;
-    }
-
-    public void EndComposeGroup(
-        Action restart
-    )
-    {
-        RequireCompositionContext();
-        _writer.EndReusableGroup(restart);
     }
 
     public void EndRootComposeGroup(Action restart)
     {
         RequireCompositionContext();
-        // Debug.Log("EndRootComposeGroup()");
-        _writer.EndReusableGroup(restart);
-        _writer.ResetTo(0);
+        _writer.EndRootGroup(restart);
+        _writer.ResetToRoot();
     }
 
-    internal void BeginCompositionLocal(
-        IImmutableStableList<CompositionLocalProvides> provides
+    #endregion
+
+    #region Compose Groups
+
+    public bool BeginComposeGroup<T>(
+        T state,
+        [CallerFilePath] string filePath = "",
+        [CallerLineNumber] int lineNumber = 0
     )
     {
         RequireCompositionContext();
-        _writer.StartCompositionLocal(provides);
+        var groupKey = ComposeGroupKey.Get(filePath, lineNumber);
+        _writer.StartReusableGroup(groupKey, state);
+        return false;
     }
 
-    internal void EndCompositionLocal()
+    public void EndComposeGroup(Action restart)
     {
         RequireCompositionContext();
-        _writer.EndCompositionLocal();
+        _writer.EndReusableGroup(restart);
     }
 
-    public TElement GetOrCreateVisualElement<TElement>() where TElement : VisualElement, new()
+    public T GetOrCreateVisualElement<T>() where T : VisualElement, new()
     {
         RequireCompositionContext();
-        var cachedValue = _writer.ReadVisualElement<TElement>();
-        if (cachedValue != null)
+        var existingElement = _writer.GetVisualElement();
+        if (existingElement == null)
         {
-            _writer.ResetElementIndex();
-            return cachedValue;
+            existingElement = new T();
+            _writer.SetVisualElement(existingElement);
         }
 
-        var newElement = new TElement();
-        _writer.WriteVisualElement(newElement);
-        _writer.ResetElementIndex();
-        return newElement;
+        return existingElement.CastTo<T>();
     }
 
-    internal int GetElementIndex()
+    public int GetElementIndex()
     {
-        RequireCompositionContext();
         return _writer.GetElementIndex();
     }
+
+    #endregion
 
     #region Remember
 
@@ -111,20 +92,17 @@ public class Composer
     )
     {
         RequireCompositionContext();
-        var groupKey = ComposeGroupUtils.GetKey(filePath, lineNumber);
+        var groupKey = ComposeGroupKey.Get(filePath, lineNumber);
         _writer.StartReplaceableGroup<TKey, TValue>(groupKey);
-        var existingValue = _writer.Read<TKey, TValue>();
-        var result = existingValue.Key.Equals(key);
-        existingValue.Key = key;
-        return result;
+        var storedKey = _writer.ReadAndSetKey<TKey, TValue>(key);
+        return storedKey.Equals(key);
     }
 
     public TValue RememberedValue<TKey, TValue>()
     {
         RequireCompositionContext();
-        var result = _writer.Read<TKey, TValue>().NotNull().Value;
-        _writer.EndReplaceableGroup();
-        return result;
+        var storedValue = _writer.ReadValue<TKey, TValue>();
+        return storedValue;
     }
 
     public TValue WriteValue<TKey, TValue>(Func<TValue> value)
@@ -133,7 +111,7 @@ public class Composer
         try
         {
             var newValue = value();
-            _writer.Write<TKey, TValue>(newValue);
+            _writer.Write<TKey, TValue>(value());
             return newValue;
         }
         finally
@@ -144,16 +122,24 @@ public class Composer
 
     #endregion
 
-    public RememberBuilder<TState> WithState<TState>(TState state) => new(state);
+    #region CompositionLocal
 
-    internal TValue GetCompositionLocal<TValue>(
-        ICompositionLocal<TValue> compositionLocal,
-        Func<TValue> defaultValueFactory
-    )
+    internal void BeginCompositionLocal(IImmutableStableList<CompositionLocalProvides> provides)
     {
         RequireCompositionContext();
-        return _writer.ReadCompositionLocal(compositionLocal, defaultValueFactory);
+        _writer.UpdateCompositionLocal(provides);
     }
+
+    internal T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
+    {
+        RequireCompositionContext();
+        var cachedValue = _writer.GetCompositionLocal(compositionLocal);
+        return cachedValue.HasValue ? cachedValue.Value : defaultValueFactory();
+    }
+
+    #endregion
+
+    #region Invalidation
 
     internal void Capture(BaseMutableStateImpl state)
     {
@@ -162,55 +148,28 @@ public class Composer
             state.Add(scope);
     }
 
-    internal void Invalidate(ComposeGroupRestartScope scope)
+    internal void Invalidate(ReusableComposeGroup scope)
     {
         scope.PerformRestart();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    #endregion
+
+    public ComposeRememberBuilder<T> WithState<T>(T state) => new(state);
+
     private void RequireCompositionContext()
     {
-        if (!_writer.IsInCompositionContext)
+        if (!_writer.IsInCompositionContext())
             throw new IllegalStateException("Not in composition context!");
     }
 
     public override string ToString()
     {
-        return _table.ToString(
-            currentGroupIndex: _writer.CurrentGroupIndex,
-            parentGroupIndex: _writer.ParentGroupIndex
-        );
-    }
-
-    public void Test()
-    {
-        var list = _table.Groups;
-        // list.Clear();
-        var group = new ComposeGroup();
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.Add(group);
-        list.RemoveAt(list.Count - 1);
-        list.RemoveRange(1, 2);
-        list.Insert(1, group);
-        list.Clear();
+        return _writer.ToString();
     }
 }
 
-// TODO Delete
-public readonly record struct RememberBuilder<TState>(TState State)
+public record ComposeRememberBuilder<T>(T State)
 {
-    [Composable]
-    public TValue Remember<TValue>(
-        Func<TState, TValue> defaultValueFactory
-    )
-    {
-        return defaultValueFactory(default!);
-    }
+    public TValue Remember<TValue>(Func<T, TValue> defaultValueFactory) => defaultValueFactory(State);
 }

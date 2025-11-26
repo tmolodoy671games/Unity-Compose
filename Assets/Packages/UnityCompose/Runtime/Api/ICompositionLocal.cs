@@ -50,6 +50,6 @@ public readonly struct CompositionLocalProvides
 
     public override string ToString()
     {
-        return $"{CompositionLocal.GetType().Name} Provides {Value}";
+        return $"{CompositionLocal} Provides {Value}";
     }
 }

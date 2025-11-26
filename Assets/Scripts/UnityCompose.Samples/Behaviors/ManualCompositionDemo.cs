@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         [Button("BeginRootComposeGroup")]
         private static void BeginRootComposeGroupButton()
         {
-            CurrentComposer.BeginRootComposeGroup(new ComposeView(), "", 0);
+            CurrentComposer.BeginRootComposeGroup(new ComposeView());
             Log();
         }
 
@@ -69,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
 
         [PropertySpace]
         [Button("GetOrCreateVisualElement")]
-        private void GetOrCreateVisualElement()
+        private void GetOrCreateVisualElementButton()
         {
             CurrentComposer.GetOrCreateVisualElement<VisualElement>();
             Log();
@@ -84,6 +84,13 @@ namespace UnityCompose.Samples.Behaviors
         }
 
         [PropertySpace]
+        [Button("Log")]
+        private void LogButton()
+        {
+            Log();
+        }
+
+        [PropertySpace]
         [Button("Initial Layout")]
         private static void InitialLayoutButton()
         {
@@ -91,30 +98,34 @@ namespace UnityCompose.Samples.Behaviors
             {
                 BeginComposeGroup(true, 1);
                 EndComposeGroup();
-
+                
                 BeginComposeGroup(true, 2);
                 EndComposeGroup();
-
+                
                 BeginComposeGroup(true, 3);
+                GetOrCreateVisualElement();
                 {
-                    BeginComposeGroup(true, 4);
+                    BeginComposeGroup(true, 1);
+                    GetOrCreateVisualElement();
                     EndComposeGroup();
-
-                    BeginComposeGroup(true, 5);
+                
+                    BeginComposeGroup(true, 2);
                     EndComposeGroup();
-            
-                    BeginComposeGroup(true, 6);
+                    
+                    BeginComposeGroup(true, 3);
+                    GetOrCreateVisualElement();
                     EndComposeGroup();
                 }
                 EndComposeGroup();
+                
+                BeginComposeGroup(true, 4);
+                GetOrCreateVisualElement();
+                EndComposeGroup();
+                
+                BeginComposeGroup(true, 5);
+                GetOrCreateVisualElement();
+                EndComposeGroup();
             }
-            
-            BeginComposeGroup(true, 7);
-            EndComposeGroup();
-            
-            BeginComposeGroup(true, 8);
-            EndComposeGroup();
-            
             EndRootComposeGroup();
             Log();
         }
@@ -129,11 +140,26 @@ namespace UnityCompose.Samples.Behaviors
                 
                 BeginComposeGroup(true, 2);
                 EndComposeGroup();
-
-                BeginComposeGroup(true, 2);
+                
+                BeginComposeGroup(true, 3);
                 EndComposeGroup();
-
-                BeginComposeGroup(true, 2);
+                
+                BeginComposeGroup(true, 4);
+                EndComposeGroup();
+                
+                BeginComposeGroup(true, 5);
+                EndComposeGroup();
+            }
+            EndRootComposeGroup();
+            Log();
+        }
+        
+        [Button("SkipTo7")]
+        private static void SkipTo7Button()
+        {
+            BeginRootComposeGroup();
+            {
+                BeginComposeGroup(true, 1);
                 EndComposeGroup();
 
                 BeginComposeGroup(true, 2);
@@ -149,10 +175,12 @@ namespace UnityCompose.Samples.Behaviors
 
                     BeginComposeGroup(true, 5);
                     EndComposeGroup();
+
+                    BeginComposeGroup(true, 6);
+                    EndComposeGroup();
                 }
                 EndComposeGroup();
             }
-            EndRootComposeGroup();
             Log();
         }
 
@@ -163,7 +191,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 BeginComposeGroup(true, 1);
                 EndComposeGroup();
-                
+
                 BeginComposeGroup(true, 3);
                 {
                     BeginComposeGroup(true, 4);
@@ -171,7 +199,7 @@ namespace UnityCompose.Samples.Behaviors
 
                     BeginComposeGroup(true, 5);
                     EndComposeGroup();
-            
+
                     // BeginComposeGroup(true, 6);
                     // EndComposeGroup();
                 }
@@ -217,17 +245,17 @@ namespace UnityCompose.Samples.Behaviors
                 EndComposeGroup();
             }
             EndRootComposeGroup();
-            
+
             BeginRootComposeGroup();
             {
                 BeginComposeGroup(true, 1);
                 EndComposeGroup();
-                
+
                 BeginComposeGroup(true, 3);
                 {
                     BeginComposeGroup(true, 4);
                     EndComposeGroup();
-            
+
                     BeginComposeGroup(true, 5);
                     EndComposeGroup();
                 }
@@ -239,7 +267,7 @@ namespace UnityCompose.Samples.Behaviors
 
         private static void BeginRootComposeGroup()
         {
-            CurrentComposer.BeginRootComposeGroup(new ComposeView(), "", 0);
+            CurrentComposer.BeginRootComposeGroup(new ComposeView());
         }
 
         private static void EndRootComposeGroup()
@@ -260,6 +288,11 @@ namespace UnityCompose.Samples.Behaviors
         private static TValue Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, int lineNumber)
         {
             return ComposeFunctions.Remember(key, defaultValueFactory, "", lineNumber);
+        }
+
+        private static VisualElement GetOrCreateVisualElement()
+        {
+            return CurrentComposer.GetOrCreateVisualElement<VisualElement>();
         }
 
         private static void Log()
