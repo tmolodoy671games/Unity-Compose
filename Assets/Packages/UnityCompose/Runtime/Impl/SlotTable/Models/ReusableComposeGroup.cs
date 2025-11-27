@@ -6,16 +6,18 @@ using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Core;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Utils;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 
 internal abstract class ReusableComposeGroup : ComposeGroup
 {
-    public readonly List<ComposeGroup> Children = new();
+    public readonly List<ComposeGroup> Children = new(0);
     public readonly CompositionLocalMap CompositionLocalMap;
     private readonly SlotWriter _writer;
 
+    public object? ObjectKey;
     public VisualElement? Element;
     public int ElementIndex;
     public int ElementsCount;
@@ -29,8 +31,10 @@ internal abstract class ReusableComposeGroup : ComposeGroup
 
     public void PerformRestart()
     {
+        // Debug.Log($"Restart {this}");
         _writer.ResetTo(this);
         Restart?.Invoke();
+        _writer.ResetToRoot();
     }
 }
 
@@ -59,6 +63,7 @@ internal class ReusableComposeGroup<T> : ReusableComposeGroup
         if (Element != null)
             builder.Append($", Element: {Element.GetType().Name}");
         builder.Append(")");
+        builder.Append($" {GetHashCode()}");
         return builder.ToString();
     }
 

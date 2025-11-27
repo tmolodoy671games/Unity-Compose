@@ -8,6 +8,8 @@ namespace UnityCompose.Samples.Behaviors
     internal class ManualCompositionDemo : MonoBehaviour
     {
         [ShowInInspector] private int key;
+        
+        private static readonly IMutableState<bool> _mutableState = MutableStateOf(false);
 
         [Button("BeginRootComposeGroup")]
         private static void BeginRootComposeGroupButton()
@@ -27,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
         [Button("BeginComposeGroup")]
         private void BeginComposeGroupButton()
         {
-            CurrentComposer.BeginComposeGroup(true, "", key);
+            CurrentComposer.BeginComposeGroup(key, true);
             Log();
         }
 
@@ -42,14 +44,14 @@ namespace UnityCompose.Samples.Behaviors
         [Button("Remember")]
         private void RememberButton()
         {
-            ComposeFunctions.Remember(() => 1, "", key);
+            ComposeFunctions.Remember(() => 1);
             Log();
         }
 
         [Button("HasRememberedValue")]
         public void HasRememberedValueButton()
         {
-            CurrentComposer.HasRememberedValue<bool, int>(true, "", key);
+            CurrentComposer.HasRememberedValue<bool, int>(key, true);
             Log();
         }
 
@@ -96,37 +98,35 @@ namespace UnityCompose.Samples.Behaviors
         {
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 2);
+
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 3);
-                GetOrCreateVisualElement();
+
+                BeginComposeGroup(3, true);
                 {
-                    BeginComposeGroup(true, 1);
-                    GetOrCreateVisualElement();
+                    BeginComposeGroup(4, true);
                     EndComposeGroup();
-                
-                    BeginComposeGroup(true, 2);
+
+                    BeginComposeGroup(5, true);
                     EndComposeGroup();
-                    
-                    BeginComposeGroup(true, 3);
-                    GetOrCreateVisualElement();
+
+                    BeginComposeGroup(6, true);
                     EndComposeGroup();
                 }
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 4);
-                GetOrCreateVisualElement();
+
+                BeginComposeGroup(7, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 5);
-                GetOrCreateVisualElement();
+
+                BeginComposeGroup(8, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(9, true);
                 EndComposeGroup();
             }
-            EndRootComposeGroup();
+            EndComposeGroup();
             Log();
         }
 
@@ -135,22 +135,50 @@ namespace UnityCompose.Samples.Behaviors
         {
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 2);
+
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 3);
+
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 4);
+
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
-                
-                BeginComposeGroup(true, 5);
+
+                BeginComposeGroup(3, true);
+                {
+                    BeginComposeGroup(4, true);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(5, true);
+                    EndComposeGroup();
+
+                    BeginComposeGroup(6, true);
+                    EndComposeGroup();
+                }
+                EndComposeGroup();
+
+                BeginComposeGroup(7, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(7, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(7, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(7, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(8, true);
+                EndComposeGroup();
+
+                BeginComposeGroup(9, true);
                 EndComposeGroup();
             }
-            EndRootComposeGroup();
+            EndComposeGroup();
             Log();
         }
         
@@ -159,24 +187,24 @@ namespace UnityCompose.Samples.Behaviors
         {
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 2);
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 2);
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 3);
+                BeginComposeGroup(3, true);
                 {
-                    BeginComposeGroup(true, 4);
+                    BeginComposeGroup(4, true);
                     EndComposeGroup();
 
-                    BeginComposeGroup(true, 5);
+                    BeginComposeGroup(5, true);
                     EndComposeGroup();
 
-                    BeginComposeGroup(true, 6);
+                    BeginComposeGroup(6, true);
                     EndComposeGroup();
                 }
                 EndComposeGroup();
@@ -189,18 +217,18 @@ namespace UnityCompose.Samples.Behaviors
         {
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 3);
+                BeginComposeGroup(3, true);
                 {
-                    BeginComposeGroup(true, 4);
+                    BeginComposeGroup(4, true);
                     EndComposeGroup();
 
-                    BeginComposeGroup(true, 5);
+                    BeginComposeGroup(5, true);
                     EndComposeGroup();
 
-                    // BeginComposeGroup(true, 6);
+                    // BeginComposeGroup(6, true);
                     // EndComposeGroup();
                 }
                 EndComposeGroup();
@@ -214,8 +242,8 @@ namespace UnityCompose.Samples.Behaviors
         {
             BeginRootComposeGroup();
             {
-                Remember(1, () => 1, 1);
-                Remember(1, () => 1, 1);
+                Remember(true, () => 1);
+                Remember(true, () => 1);
             }
             EndRootComposeGroup();
             Log();
@@ -228,18 +256,18 @@ namespace UnityCompose.Samples.Behaviors
             // CurrentComposer.Test();
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 2);
+                BeginComposeGroup(2, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 3);
+                BeginComposeGroup(3, true);
                 {
-                    BeginComposeGroup(true, 4);
+                    BeginComposeGroup(4, true);
                     EndComposeGroup();
 
-                    BeginComposeGroup(true, 5);
+                    BeginComposeGroup(5, true);
                     EndComposeGroup();
                 }
                 EndComposeGroup();
@@ -248,21 +276,27 @@ namespace UnityCompose.Samples.Behaviors
 
             BeginRootComposeGroup();
             {
-                BeginComposeGroup(true, 1);
+                BeginComposeGroup(1, true);
                 EndComposeGroup();
 
-                BeginComposeGroup(true, 3);
+                BeginComposeGroup(3, true);
                 {
-                    BeginComposeGroup(true, 4);
+                    BeginComposeGroup(4, true);
                     EndComposeGroup();
 
-                    BeginComposeGroup(true, 5);
+                    BeginComposeGroup(5, true);
                     EndComposeGroup();
                 }
                 EndComposeGroup();
             }
             EndRootComposeGroup();
             Log();
+        }
+
+        [Button("Restart")]
+        private static void RestartButton()
+        {
+            _mutableState.Value = !_mutableState.Value;
         }
 
         private static void BeginRootComposeGroup()
@@ -275,9 +309,9 @@ namespace UnityCompose.Samples.Behaviors
             CurrentComposer.EndRootComposeGroup(() => { });
         }
 
-        private static void BeginComposeGroup<T>(T state, int lineNumber)
+        private static void BeginComposeGroup<T>(int groupKey, T state)
         {
-            CurrentComposer.BeginComposeGroup(state, "", lineNumber);
+            CurrentComposer.BeginComposeGroup(groupKey, state);
         }
 
         private static void EndComposeGroup()
@@ -285,9 +319,9 @@ namespace UnityCompose.Samples.Behaviors
             CurrentComposer.EndComposeGroup(() => { });
         }
 
-        private static TValue Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory, int lineNumber)
+        private static TValue Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory)
         {
-            return ComposeFunctions.Remember(key, defaultValueFactory, "", lineNumber);
+            return ComposeFunctions.Remember(key, defaultValueFactory);
         }
 
         private static VisualElement GetOrCreateVisualElement()

@@ -11,11 +11,11 @@ using static UnityCompose.ComposeFunctions;
 public partial class ComposeView
 {
     [Composable, DontGenerateComposeGroups]
-    private void __ContentImpl(Action content)
+    private void __ContentImpl(ComposableContent content)
     {
         if (CurrentComposer.BeginRootComposeGroup(this))
             return;
         CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
-        CurrentComposer.EndRootComposeGroup(CurrentComposer.WithState((this, content)).Remember<System.Action>(__ => () => ContentImpl(content)));
+        CurrentComposer.EndRootComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(-41200726, (this, content)) ? CurrentComposer.RememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(() => ContentImpl(content)));
     }
 }

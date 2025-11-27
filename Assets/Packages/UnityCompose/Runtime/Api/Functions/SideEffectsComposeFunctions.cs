@@ -47,7 +47,7 @@ public static partial class ComposeFunctions
         Func<IEnumerator> coroutine
     )
     {
-        Remember(
+        var _ = Remember(
             key: key,
             defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
         );
@@ -59,7 +59,7 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        Remember(
+        var _ = Remember(
             key: key,
             defaultValueFactory: () =>
             {
@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        Remember(
+        var _ = Remember(
             key: key,
             defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
         );
@@ -89,7 +89,7 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        Remember(
+        var _ = Remember(
             key: key,
             defaultValueFactory: () =>
                 ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
@@ -102,7 +102,7 @@ public static partial class ComposeFunctions
         Func<IDisposableEffectScope, IDisposable> effect
     )
     {
-        Remember(
+        var _ = Remember(
             key: key,
             defaultValueFactory: () => effect(DisposableEffectScopeImpl.Instance)
         );

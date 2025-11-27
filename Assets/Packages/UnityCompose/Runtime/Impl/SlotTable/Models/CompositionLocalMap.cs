@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using SharpExtensions;
 using StableCollections;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 
 public class CompositionLocalMap
 {
     private readonly CompositionLocalMap? _parent;
-    private readonly Dictionary<ICompositionLocal, IMutableState<object?>> _customValues = new();
+    private readonly Dictionary<ICompositionLocal, IMutableState<object?>> _customValues = new(0);
 
     public CompositionLocalMap(CompositionLocalMap? parent)
     {
@@ -29,9 +30,9 @@ public class CompositionLocalMap
         {
             var provider = provides[i];
             if (_customValues.TryGetValue(provider.CompositionLocal, out var value))
-                value.Value = value.Value;
+                value.Value = provider.Value;
             else
-                _customValues[provider.CompositionLocal] = MutableStateOf(provider.Value, true);
+                _customValues[provider.CompositionLocal] = MutableStateOf(provider.Value); // BRUH
         }
     }
 }

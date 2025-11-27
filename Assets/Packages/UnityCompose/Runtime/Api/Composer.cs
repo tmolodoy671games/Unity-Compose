@@ -1,12 +1,11 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Runtime.CompilerServices;
-using Packages.UnityCompose.Impl.Composition.Utils;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Core;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -46,15 +45,13 @@ public class Composer
     #region Compose Groups
 
     public bool BeginComposeGroup<T>(
+        int groupKey,
         T state,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
+        object? objectKey = null
     )
     {
         RequireCompositionContext();
-        var groupKey = ComposeGroupKey.Get(filePath, lineNumber);
-        _writer.StartReusableGroup(groupKey, state);
-        return false;
+        return _writer.StartReusableGroup(groupKey, state, objectKey);
     }
 
     public void EndComposeGroup(Action restart)
@@ -86,22 +83,24 @@ public class Composer
     #region Remember
 
     public bool HasRememberedValue<TKey, TValue>(
-        TKey key,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
+        int groupKey,
+        TKey key
     )
     {
         RequireCompositionContext();
-        var groupKey = ComposeGroupKey.Get(filePath, lineNumber);
         _writer.StartReplaceableGroup<TKey, TValue>(groupKey);
-        var storedKey = _writer.ReadAndSetKey<TKey, TValue>(key);
-        return storedKey.Equals(key);
+        var storedKey = _writer.ReadKey<TKey, TValue>(key);
+        var result = storedKey.Equals(key);
+        if (!result)
+            _writer.SetKey<TKey, TValue>(key);
+        return result;
     }
 
     public TValue RememberedValue<TKey, TValue>()
     {
         RequireCompositionContext();
         var storedValue = _writer.ReadValue<TKey, TValue>();
+        _writer.EndReplaceableGroup();
         return storedValue;
     }
 
@@ -111,13 +110,29 @@ public class Composer
         try
         {
             var newValue = value();
-            _writer.Write<TKey, TValue>(value());
+            _writer.Write<TKey, TValue>(newValue);
             return newValue;
         }
         finally
         {
             _writer.EndReplaceableGroup();
         }
+    }
+
+    public TValue WriteLambda<TKey, TValue>(TValue value)
+    {
+        RequireCompositionContext();
+        _writer.Write<TKey, TValue>(value);
+        _writer.EndReplaceableGroup();
+        return value;
+    }
+
+    public TValue WriteComposableLambda<TKey, TValue>(TValue value)
+    {
+        RequireCompositionContext();
+        _writer.Write<TKey, TValue>(value);
+        _writer.EndReplaceableGroup();
+        return value;
     }
 
     #endregion
@@ -141,11 +156,17 @@ public class Composer
 
     #region Invalidation
 
-    internal void Capture(BaseMutableStateImpl state)
+    internal void Capture(BaseMutableStateImpl state, bool log = false)
     {
         var scope = _writer.GetRestartScope();
+
         if (scope != null)
-            state.Add(scope);
+        {
+            var result = state.Add(scope);
+            if (log && result)
+            {
+            }
+        }
     }
 
     internal void Invalidate(ReusableComposeGroup scope)

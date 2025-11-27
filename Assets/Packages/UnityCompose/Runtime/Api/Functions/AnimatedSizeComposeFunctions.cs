@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     public static void AnimatedSize(
-        Action content,
+        ComposableContent content,
         IModifier? modifier = null,
         Optional<AnimationSpec> animationSpec = default
     )

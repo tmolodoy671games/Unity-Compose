@@ -218,9 +218,9 @@ public interface INavigationScope
 
 internal partial class NavigationScopeImpl : INavigationScope, IEquatable<NavigationScopeImpl>
 {
-    [Composable] private readonly Action _content;
+    private readonly ComposableContent _content;
 
-    public NavigationScopeImpl(Action content)
+    public NavigationScopeImpl(ComposableContent content)
     {
         _content = content;
     }

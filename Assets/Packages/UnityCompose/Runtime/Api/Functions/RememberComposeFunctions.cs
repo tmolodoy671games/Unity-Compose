@@ -9,24 +9,20 @@ public static partial class ComposeFunctions
     [Composable, Compiled]
     public static TValue Remember<TKey, TValue>(
         TKey key,
-        Func<TValue> defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.HasRememberedValue<TKey, TValue>(key, filePath, lineNumber)
+        return CurrentComposer.HasRememberedValue<TKey, TValue>(-1337, key)
             ? CurrentComposer.RememberedValue<TKey, TValue>()
             : CurrentComposer.WriteValue<TKey, TValue>(defaultValueFactory);
     }
 
     [Composable, Compiled]
     public static TValue Remember<TValue>(
-        Func<TValue> defaultValueFactory,
-        [CallerFilePath] string filePath = "",
-        [CallerLineNumber] int lineNumber = 0
+        Func<TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.HasRememberedValue<bool, TValue>(true, filePath, lineNumber)
+        return CurrentComposer.HasRememberedValue<bool, TValue>(-1337, true)
             ? CurrentComposer.RememberedValue<bool, TValue>()
             : CurrentComposer.WriteValue<bool, TValue>(defaultValueFactory);
     }

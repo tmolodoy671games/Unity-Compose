@@ -85,7 +85,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Tab(
             bool selected,
-            [Composable] Action content,
+            ComposableContent content,
             IModifier? modifier = null
         )
         {

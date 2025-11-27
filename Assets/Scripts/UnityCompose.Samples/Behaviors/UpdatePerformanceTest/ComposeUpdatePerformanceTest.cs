@@ -47,36 +47,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                             }
                         );
                     }
-
-                    var fps = Remember(() => MutableStateOf(0));
-                    LaunchedEffect(string.Empty, () => PerformanceUtils.MeasureFpsCoroutine(it => fps.Value = it));
-
-                    Text(
-                        text: fps.Value.ToString(),
-                        color: Color.white,
-                        modifier: Modifier
-                            .Float()
-                            .Background(Color.black)
-                            .Position(
-                                right: 40,
-                                top: 40
-                            )
-                    );
                 }
             );
-
-            LaunchedEffect(string.Empty, static () => PrintStats());
-        }
-
-        private static IEnumerator PrintStats()
-        {
-            var i = 0;
-            while (true)
-            {
-                i++;
-                yield return new WaitForSeconds(2);
-                Debug.Log($"{i} {PerformanceMetrics.Format()}");
-            }
         }
     }
 }

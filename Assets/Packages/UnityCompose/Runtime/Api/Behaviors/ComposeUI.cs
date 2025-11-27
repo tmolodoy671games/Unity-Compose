@@ -12,8 +12,8 @@ namespace UnityCompose;
 [DisallowMultipleComponent, ExecuteAlways]
 public abstract partial class ComposeUI : MonoBehaviour
 {
-    private readonly Action ContentLambda;
-    private readonly Action PreviewLambda;
+    private readonly ComposableContent ContentLambda;
+    private readonly ComposableContent PreviewLambda;
 
     protected ComposeUI()
     {

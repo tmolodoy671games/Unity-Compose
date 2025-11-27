@@ -14,9 +14,9 @@ public partial class ComposeView : VisualElement
     {
     }
 
-    private Action? _content;
+    private ComposableContent? _content;
 
-    public void SetContent([Composable] Action content)
+    public void SetContent(ComposableContent content)
     {
         if (_content == content)
             return;
@@ -28,7 +28,7 @@ public partial class ComposeView : VisualElement
     }
 
     [Composable, DontGenerateComposeGroups]
-    private void ContentImpl(Action content)
+    private void ContentImpl(ComposableContent content)
     {
         if (CurrentComposer.BeginRootComposeGroup(this)) return;
         CompositionLocalProvider(

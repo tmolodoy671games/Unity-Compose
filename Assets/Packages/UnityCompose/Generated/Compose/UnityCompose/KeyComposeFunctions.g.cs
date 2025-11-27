@@ -9,10 +9,10 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable, DontGenerateComposeGroups]
-    private static void __Key(object key, [Composable] Action content, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    private static void __Key(object key, [Composable] Action content)
     {
         // BRUH
-        if (CurrentComposer.BeginComposeGroup(0))
+        if (CurrentComposer.BeginComposeGroup(1337, 0, key))
             return;
         try
         {
@@ -20,7 +20,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.WithState((key, content)).Remember<System.Action>(__ => () => Key(key, content)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<object, System.Action>, System.Action>(477495439, (key, content)) ? CurrentComposer.RememberedValue<ValueTuple<object, System.Action>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<object, System.Action>, System.Action>(() => Key(key, content)));
         }
     }
 }

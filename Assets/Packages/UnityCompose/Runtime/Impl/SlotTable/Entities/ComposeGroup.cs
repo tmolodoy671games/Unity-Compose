@@ -15,8 +15,7 @@ internal abstract class ComposeGroup : IDisposable
         Parent = parent;
     }
 
-    public virtual string ToString(ComposeGroup? currentParent, int currentIndex) =>
-        $"{Key} {IndexInParent} {GetType().Name} Not implemented";
+    public virtual string ToString(ComposeGroup? currentParent, int currentIndex) => ToString();
 
     public abstract void Dispose();
 }

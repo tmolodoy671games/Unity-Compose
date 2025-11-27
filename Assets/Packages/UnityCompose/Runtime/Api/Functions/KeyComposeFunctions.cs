@@ -10,14 +10,11 @@ public static partial class ComposeFunctions
     [Composable, DontGenerateComposeGroups]
     public static void Key(
         object key,
-        [Composable] Action content,
-        [CallerFilePath] string filePath = "",
-        [CallerMemberName] string memberName = "",
-        [CallerLineNumber] int lineNumber = 0
+        [Composable] Action content
     )
     {
         // BRUH
-        if (CurrentComposer.BeginComposeGroup(0)) return;
+        if (CurrentComposer.BeginComposeGroup(1337, 0, key)) return;
         try
         {
             content();

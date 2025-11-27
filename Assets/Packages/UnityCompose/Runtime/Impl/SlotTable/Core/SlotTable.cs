@@ -6,7 +6,13 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Core;
 
 internal class SlotTable
 {
-    public readonly ReusableComposeGroup Root = new ReusableComposeGroup<bool>(0, null, true, null!);
+    public readonly ReusableComposeGroup Root;
+
+
+    public SlotTable(SlotWriter writer)
+    {
+        Root = new ReusableComposeGroup<string>(0, null, "Root", writer);
+    }
 
     public string ToString(ComposeGroup? currentParent, int currentIndex)
     {

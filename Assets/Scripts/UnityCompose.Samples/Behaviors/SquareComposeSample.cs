@@ -1,95 +1,69 @@
 // ReSharper disable ArrangeNamespaceBody
 
-using System;
-using System.Collections;
-using UnityEngine.UIElements;
-
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class SquareComposeSample : ComposeUI
     {
         [Composable]
-        protected override void Content()
-        {
-            var hovered = Remember(() => MutableStateOf(false));
-            Spacer(
-                Modifier
-                    .Align(Alignment.CenterVertically)
-                    .Size(100)
-                    .Scale(hovered.Value ? 2 : 1, transition: Transition())
-                    .Background(Color.blue)
-                    .OnMouseEnter(() => hovered.Value = true)
-                    .OnMouseLeave(() => hovered.Value = false)
-            );
-        }
+        protected override void Content() => Preview();
 
         [Composable]
         protected override void Preview()
         {
-            var hovered = Remember(() => MutableStateOf(false));
-            Spacer(
-                Modifier
-                    .Align(Alignment.CenterVertically)
-                    .Size(100)
-                    .Scale(hovered.Value ? 2 : 1, transition: Transition())
-                    .Background(Color.blue)
-                    .OnMouseEnter(() => hovered.Value = true)
-                    .OnMouseLeave(() => hovered.Value = false)
-            );
-        }
-
-        [Composable]
-        private void EmptyWrapper([Composable] Action content)
-        {
-            content();
-        }
-
-        [Composable]
-        private void Layout()
-        {
+            var isSwitched = Remember(() => LoggableMutableStateOf(false));
+            var isHovered = Remember(() => LoggableMutableStateOf(false));
             Box(
-                modifier: Modifier
-                    .FillMaxSize(),
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
+                modifier: Modifier
+                    .FillMaxSize(),
                 content: () =>
                 {
-                    var isHovered = Remember(() => MutableStateOf(false));
-                    var isPressed = Remember(() => MutableStateOf(false));
-                    Spacer(
+                    if (isSwitched.Value)
+                    {
+                        Spacer(
+                            modifier: Modifier
+                                .Size(50)
+                                .Background(Color.green)
+                                .Border(16)
+                                .Margin(top: 100)
+                        );
+                    }
+                    Box(
+                        horizontalAlignment: Alignment.Horizontal.Center,
+                        verticalAlignment: Alignment.Vertical.Center,
                         modifier: Modifier
+                            .Background(Color.blue)
+                            .Border(16)
                             .Size(100)
-                            .Background(isPressed.Value ? Color.cyan : Color.blue, Transition())
-                            .Border(radius: 32)
-                            // .Scale(isHovered.Value ? 2 : 1, transition: Transition())
-                            .Scale(AnimateFloatAsState(isHovered.Value ? 2 : 1).Value)
-                            .OnMouseEnter(() =>
-                            {
-                                isHovered.Value = true;
-                                PrintTreeStructureDelayed();
-                            })
-                            .OnMouseLeave(() =>
-                            {
-                                isPressed.Value = false;
-                                isHovered.Value = false;
-                                PrintTreeStructureDelayed();
-                            })
-                            .OnMouseDown(() => isPressed.Value = true)
-                            .OnMouseUp(() => isPressed.Value = false)
+                            .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
+                            // .Scale(AnimateFloatAsState(isHovered.Value ? 1.5f : 1).Value)
+                            .OnClick(() => isSwitched.Value = !isSwitched.Value)
+                            .OnMouseEnter(() => isHovered.Value = true)
+                            .OnMouseLeave(() => isHovered.Value = false),
+                        content: () =>
+                        {
+                            Box(
+                                modifier: Modifier
+                                    .Size(50)
+                                    .Background(Color.red)
+                                    .Border(16),
+                                content: () => { Text(text: "Text", color: Color.white); }
+                            );
+                        }
                     );
+                    if (isSwitched.Value)
+                    {
+                        Spacer(
+                            modifier: Modifier
+                                .Size(50)
+                                .Background(Color.green)
+                                .Border(16)
+                                .Margin(top: 100)
+                        );
+                    }
                 }
             );
-        }
-
-        private void PrintTreeStructureDelayed()
-        {
-            StartCoroutine(PrintTreeStructureDelayedCoroutine());
-        }
-
-        private IEnumerator PrintTreeStructureDelayedCoroutine()
-        {
-            yield return new WaitForSeconds(0.1f);
-            // PrintTreeStructure();
         }
     }
 }

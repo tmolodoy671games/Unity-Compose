@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -13,43 +14,43 @@ public static partial class ComposeFunctions
         return new CompositionLocalImpl<T>(defaultValue);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         IImmutableStableList<CompositionLocalProvides> provides,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember(provides1, () => IImmutableStableList.Create(provides1));
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2), () => IImmutableStableList.Create(provides1, provides2));
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
         CompositionLocalProvides provides3,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2, provides3), () =>
@@ -58,13 +59,13 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
         CompositionLocalProvides provides3,
         CompositionLocalProvides provides4,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4), () =>
@@ -73,14 +74,14 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
         CompositionLocalProvides provides3,
         CompositionLocalProvides provides4,
         CompositionLocalProvides provides5,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5), () =>
@@ -89,7 +90,7 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
@@ -97,7 +98,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides4,
         CompositionLocalProvides provides5,
         CompositionLocalProvides provides6,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6), () =>
@@ -106,7 +107,7 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
@@ -115,7 +116,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides5,
         CompositionLocalProvides provides6,
         CompositionLocalProvides provides7,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember((provides1, provides2, provides3, provides4, provides5, provides6, provides7), () =>
@@ -124,7 +125,7 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
@@ -134,7 +135,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides6,
         CompositionLocalProvides provides7,
         CompositionLocalProvides provides8,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember(
@@ -153,7 +154,7 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void CompositionLocalProvider(
         CompositionLocalProvides provides1,
         CompositionLocalProvides provides2,
@@ -164,7 +165,7 @@ public static partial class ComposeFunctions
         CompositionLocalProvides provides7,
         CompositionLocalProvides provides8,
         CompositionLocalProvides provides9,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         var provides = Remember(
@@ -184,11 +185,11 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable]
+    [Composable, Compiled]
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     private static void CompositionLocalProviderImpl(
         IImmutableStableList<CompositionLocalProvides> provides,
-        [Composable] Action content
+        ComposableContent content
     )
     {
         CurrentComposer.BeginCompositionLocal(provides);

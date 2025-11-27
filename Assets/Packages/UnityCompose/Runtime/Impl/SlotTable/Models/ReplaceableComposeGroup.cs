@@ -5,6 +5,7 @@ using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Utils;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 
@@ -13,6 +14,11 @@ internal abstract class ReplaceableComposeGroup : ComposeGroup
     protected ReplaceableComposeGroup(int key, ReusableComposeGroup? parent) : base(key, parent)
     {
     }
+}
+
+interface IReplaceableKeyComposeGroup<TKey>
+{
+    Optional<TKey> Key { get; }
 }
 
 internal class ReplaceableComposeGroup<TKey, TValue> : ReplaceableComposeGroup
@@ -30,7 +36,7 @@ internal class ReplaceableComposeGroup<TKey, TValue> : ReplaceableComposeGroup
             disposable.Dispose();
     }
 
-    public override string ToString(ComposeGroup? currentParent, int currentIndex)
+    public override string ToString()
     {
         var builder = new StringBuilder();
         var ancestorsCount = this.Ancestors().Count();

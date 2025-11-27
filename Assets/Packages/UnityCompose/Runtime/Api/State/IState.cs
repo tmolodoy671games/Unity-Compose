@@ -18,15 +18,17 @@ public abstract class BaseMutableStateImpl
 {
     private readonly HashSet<ReusableComposeGroup> _scopes = new();
     private readonly bool _isCompositionLocal;
+    private bool _log;
 
-    protected BaseMutableStateImpl(bool isCompositionLocal = false)
+    protected BaseMutableStateImpl(bool isCompositionLocal = false, bool log = false)
     {
         _isCompositionLocal = isCompositionLocal;
+        _log = log;
     }
 
     protected void Capture()
     {
-        CurrentComposer.Capture(this);
+        CurrentComposer.Capture(this, _log);
     }
 
     protected void Notify()
@@ -40,12 +42,12 @@ public abstract class BaseMutableStateImpl
         }
     }
 
-    internal void Add(ReusableComposeGroup restartScope) => _scopes.Add(restartScope);
+    internal bool Add(ReusableComposeGroup restartScope) => _scopes.Add(restartScope);
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
 {
-    public MutableStateImpl(T value, bool isCompositionLocal = false) : base(isCompositionLocal)
+    public MutableStateImpl(T value, bool isCompositionLocal = false, bool log = false) : base(isCompositionLocal, log)
     {
         _value = value;
     }
@@ -70,6 +72,6 @@ internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
     public override string ToString()
     {
         var valueStr = _value?.ToString() ?? "null";
-        return $"MutableState({valueStr})";
+        return $"MutableState({valueStr})[{GetHashCode()}]";
     }
 }

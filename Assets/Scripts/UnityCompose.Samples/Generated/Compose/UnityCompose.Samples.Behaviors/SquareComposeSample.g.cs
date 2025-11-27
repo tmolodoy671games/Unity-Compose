@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
-using UnityEngine.UIElements;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
+// ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class SquareComposeSample
@@ -11,78 +10,51 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(969856316, true))
                 return;
             try
             {
-                var hovered = Remember(() => MutableStateOf(false));
-                Spacer(Modifier.Align(Alignment.CenterVertically).Size(100).Scale(hovered.Value ? 2 : 1, transition: Transition()).Background(Color.blue).OnMouseEnter(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = false)));
+                Preview();
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Content());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(969956316, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
             }
         }
 
         [Composable]
         private void __Preview()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(-284742440, true))
                 return;
             try
             {
-                var hovered = Remember(() => MutableStateOf(false));
-                Spacer(Modifier.Align(Alignment.CenterVertically).Size(100).Scale(hovered.Value ? 2 : 1, transition: Transition()).Background(Color.blue).OnMouseEnter(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = true)).OnMouseLeave(CurrentComposer.WithState(hovered).Remember<System.Action>(__ => () => hovered.Value = false)));
-            }
-            finally
-            {
-                CurrentComposer.EndComposeGroup(() => __Preview());
-            }
-        }
-
-        [Composable]
-        private void __EmptyWrapper([Composable] Action content)
-        {
-            var __content = (content);
-            if (CurrentComposer.BeginComposeGroup(__content))
-                return;
-            try
-            {
-                content();
-            }
-            finally
-            {
-                CurrentComposer.EndComposeGroup(CurrentComposer.WithState(__content).Remember<Action>(__ => () => __EmptyWrapper(__)));
-            }
-        }
-
-        [Composable]
-        private void __Layout()
-        {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
-                return;
-            try
-            {
-                Box(modifier: Modifier.FillMaxSize(), horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, content: CurrentComposer.WithState(this).Remember<System.Action>(__ => () =>
+                var isSwitched = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<bool>>(814623295, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<bool>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<bool>>(() => LoggableMutableStateOf(false));
+                var isHovered = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<bool>>(-652164945, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<bool>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<bool>>(() => LoggableMutableStateOf(false));
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<bool>?>, UnityCompose.ComposableContent>(-256013802, (isSwitched, isHovered)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<bool>?>, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<bool>?>, UnityCompose.ComposableContent>(() =>
                 {
-                    var isHovered = Remember(() => MutableStateOf(false));
-                    var isPressed = Remember(() => MutableStateOf(false));
-                    Spacer(modifier: Modifier.Size(100).Background(isPressed.Value ? Color.cyan : Color.blue, Transition()).Border(radius: 32)// .Scale(isHovered.Value ? 2 : 1, transition: Transition())
-                    .Scale(AnimateFloatAsState(isHovered.Value ? 2 : 1).Value).OnMouseEnter(CurrentComposer.WithState((this, isHovered)).Remember<System.Action>(__ => () =>
+                    if (isSwitched.Value)
                     {
-                        isHovered.Value = true;
-                        PrintTreeStructureDelayed();
-                    })).OnMouseLeave(CurrentComposer.WithState((this, isHovered, isPressed)).Remember<System.Action>(__ => () =>
+                        Spacer(modifier: Modifier.Size(50).Background(Color.green).Border(16).Margin(top: 100));
+                    }
+
+                    Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Background(Color.blue).Border(16).Size(100).Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())// .Scale(AnimateFloatAsState(isHovered.Value ? 1.5f : 1).Value)
+                    .OnClick(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(-555704455, isSwitched) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isSwitched.Value = !isSwitched.Value)).OnMouseEnter(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(-1889421879, isHovered) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isHovered.Value = true)).OnMouseLeave(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(1571247765, isHovered) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isHovered.Value = false)), content: CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(1198188410, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
                     {
-                        isPressed.Value = false;
-                        isHovered.Value = false;
-                        PrintTreeStructureDelayed();
-                    })).OnMouseDown(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = true)).OnMouseUp(CurrentComposer.WithState(isPressed).Remember<System.Action>(__ => () => isPressed.Value = false)));
+                        Box(modifier: Modifier.Size(50).Background(Color.red).Border(16), content: CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(-298408384, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
+                        {
+                            Text(text: "Text", color: Color.white);
+                        }));
+                    }));
+                    if (isSwitched.Value)
+                    {
+                        Spacer(modifier: Modifier.Size(50).Background(Color.green).Border(16).Margin(top: 100));
+                    }
                 }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Layout());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-284642440, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Preview()));
             }
         }
     }

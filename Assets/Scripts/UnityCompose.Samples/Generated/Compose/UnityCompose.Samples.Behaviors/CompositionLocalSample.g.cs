@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(-1686371046, true))
                 return;
             try
             {
@@ -19,14 +19,14 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Content());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1686271046, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
             }
         }
 
         [Composable]
         private void __Preview()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(1168398864, true))
                 return;
             try
             {
@@ -34,40 +34,40 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Preview());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(1168498864, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Preview()));
             }
         }
 
         [Composable]
         private static void __Layout()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(-1113182999, true))
                 return;
             try
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(-1396205945, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
                 {
-                    var isSwitched = Remember(() => MutableStateOf(false));
+                    var isSwitched = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<bool>>(834759850, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<bool>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<bool>>(() => MutableStateOf(false));
                     CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: SampleReader);
-                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(CurrentComposer.WithState(isSwitched).Remember<System.Action>(__ => () => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
+                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(-950663320, isSwitched) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
                 }));
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Layout());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1113082999, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Layout()));
             }
         }
 
         [Composable]
         private static void __SampleReader()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(1697547596, true))
                 return;
             try
             {
-                Box(CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
+                Box(CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(2100383898, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
                 {
-                    Box(CurrentComposer.WithState(string.Empty).Remember<System.Action>(__ => () =>
+                    Box(CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(-1769983919, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
                     {
                         Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100));
                     }));
@@ -75,7 +75,7 @@ namespace UnityCompose.Samples.Behaviors
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __SampleReader());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(1697647596, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __SampleReader()));
             }
         }
     }

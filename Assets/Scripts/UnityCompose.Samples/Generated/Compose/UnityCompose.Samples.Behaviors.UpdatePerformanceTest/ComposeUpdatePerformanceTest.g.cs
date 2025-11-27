@@ -11,33 +11,28 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(string.Empty))
+            if (CurrentComposer.BeginComposeGroup(48180485, true))
                 return;
             try
             {
-                var parentSize = Remember(() => IMutableStableProperty.Create(Vector2.zero));
-                Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(CurrentComposer.WithState(parentSize).Remember<System.Action<UnityCompose.LayoutCoordinates>>(__ => it => parentSize.Value = it.SizeWithPaddings)), content: CurrentComposer.WithState(parentSize).Remember<System.Action>(__ => () =>
+                var parentSize = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(-1468191770, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<UnityEngine.Vector2>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(() => IMutableStableProperty.Create(Vector2.zero));
+                Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(CurrentComposer.HasRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, System.Action<UnityCompose.LayoutCoordinates>>(1803957661, parentSize) ? CurrentComposer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, System.Action<UnityCompose.LayoutCoordinates>>() : CurrentComposer.WriteLambda<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.SizeWithPaddings)), content: CurrentComposer.HasRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, UnityCompose.ComposableContent>(-2074845092, parentSize) ? CurrentComposer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, UnityCompose.ComposableContent>(() =>
                 {
                     for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
-                        Key(key: currentI, content: CurrentComposer.WithState((parentSize, currentI)).Remember<System.Action>(__ => () =>
+                        Key(key: currentI, content: CurrentComposer.HasRememberedValue<ValueTuple<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, int>, System.Action>(591433766, (parentSize, currentI)) ? CurrentComposer.RememberedValue<ValueTuple<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, int>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<StableCollections.IMutableStableProperty<UnityEngine.Vector2>?, int>, System.Action>(() =>
                         {
-                            var position = Remember(static () => MutableStateOf(Vector2.zero));
-                            LaunchedEffect(key: string.Empty, coroutine: CurrentComposer.WithState((parentSize, position)).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => PerformanceUtils.MoveRandomlyCoroutine(parentSize: CurrentComposer.WithState(parentSize).Remember<System.Func<UnityEngine.Vector2>>(__ => () => parentSize.Value), CurrentComposer.WithState(position).Remember<System.Action<UnityEngine.Vector2>>(__ => it => position.Value = it))));
+                            var position = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<UnityEngine.Vector2>>(461120710, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<UnityEngine.Vector2>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<UnityEngine.Vector2>>(static () => MutableStateOf(Vector2.zero));
+                            LaunchedEffect(key: string.Empty, coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize.Value, it => position.Value = it));
                             Spacer(modifier: Modifier.Size(50).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float().Position(left: position.Value.x, top: position.Value.y));
                         }));
                     }
-
-                    var fps = Remember(() => MutableStateOf(0));
-                    LaunchedEffect(string.Empty, CurrentComposer.WithState(fps).Remember<System.Func<System.Collections.IEnumerator>>(__ => () => PerformanceUtils.MeasureFpsCoroutine(CurrentComposer.WithState(fps).Remember<System.Action<int>>(__ => it => fps.Value = it))));
-                    Text(text: fps.Value.ToString(), color: Color.white, modifier: Modifier.Float().Background(Color.black).Position(right: 40, top: 40));
                 }));
-                LaunchedEffect(string.Empty, static () => PrintStats());
             }
             finally
             {
-                CurrentComposer.EndComposeGroup(() => __Content());
+                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(48280485, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
             }
         }
     }

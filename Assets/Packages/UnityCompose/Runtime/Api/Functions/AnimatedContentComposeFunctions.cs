@@ -21,7 +21,7 @@ public static partial class ComposeFunctions
     public static void AnimatedContent<T>(
         T targetState,
         Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
-        [Composable] Action<T> content,
+        ComposableContent<T> content,
         Optional<AnimationSpec> sizeAnimationSpec = default,
         IModifier? modifier = null
     )

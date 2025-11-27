@@ -19,7 +19,7 @@ public static partial class ComposeFunctions
     public static void ReusableComposeView<T>(
         IModifier? modifier = null,
         Action<T>? initializer = null,
-        [Composable] Action? content = null
+        ComposableContent? content = null
     ) where T : VisualElement, new()
     {
         var resolvedModifier = modifier;
@@ -37,7 +37,7 @@ public static partial class ComposeFunctions
             parent.FastReinsert(index, visualElement);
             return it.OnDispose(() => parent.Remove(visualElement));
         });
-
+        
         var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
         var currentProperties = Remember(() =>
             IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
@@ -59,9 +59,11 @@ public static partial class ComposeFunctions
         visualElement.style.transitionTimingFunction.value?.Clear();
         visualElement.pickingMode = PickingMode.Ignore;
         visualElement.style.overflow = Overflow.Visible;
+        var a = Remember(() => 1);
+        LaunchedEffect(1, () => resolvedModifier?.Apply(visualElement));
         resolvedModifier?.Apply(visualElement);
         FireOnGloballyPositionedCallback(visualElement);
-
+        
         var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
         if (initializer != null)
         {
@@ -85,7 +87,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Column(
-        [Composable] Action content,
+        ComposableContent content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
@@ -104,7 +106,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Row(
-        [Composable] Action content,
+        ComposableContent content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
@@ -124,7 +126,7 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void Box(
-        [Composable] Action content,
+        ComposableContent content,
         IModifier? modifier = null,
         Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
         Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
