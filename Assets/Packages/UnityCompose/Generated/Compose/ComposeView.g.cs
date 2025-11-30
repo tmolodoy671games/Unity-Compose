@@ -16,6 +16,6 @@ public partial class ComposeView
         if (CurrentComposer.BeginRootComposeGroup(this))
             return;
         CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
-        CurrentComposer.EndRootComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(-41200726, (this, content)) ? CurrentComposer.RememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(() => ContentImpl(content)));
+        CurrentComposer.EndRootComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(1740702244, (this, content)) ? CurrentComposer.RememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(() => ContentImpl(content)));
     }
 }

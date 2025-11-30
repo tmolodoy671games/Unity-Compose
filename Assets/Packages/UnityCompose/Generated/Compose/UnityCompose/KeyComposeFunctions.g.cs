@@ -20,7 +20,7 @@ public static partial class ComposeFunctions
         }
         finally
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<object, System.Action>, System.Action>(477495439, (key, content)) ? CurrentComposer.RememberedValue<ValueTuple<object, System.Action>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<object, System.Action>, System.Action>(() => Key(key, content)));
+            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<object, System.Action>, System.Action>(-227514316, (key, content)) ? CurrentComposer.RememberedValue<ValueTuple<object, System.Action>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<object, System.Action>, System.Action>(() => Key(key, content)));
         }
     }
 }

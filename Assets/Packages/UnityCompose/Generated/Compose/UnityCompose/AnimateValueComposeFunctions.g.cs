@@ -42,11 +42,11 @@ public static partial class ComposeFunctions
     [Composable]
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        var property = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<T>>(-344389583, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<T>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<T>>(() => MutableStateOf(targetValue));
+        var property = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<T>>(-1967881308, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<T>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<T>>(() => MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: targetValue!, coroutine: CurrentComposer.HasRememberedValue<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(1531011583, (targetValue, property)) ? CurrentComposer.RememberedValue<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>() : CurrentComposer.WriteLambda<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
+        LaunchedEffect(key: targetValue!, coroutine: CurrentComposer.HasRememberedValue<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(680197389, (targetValue, property)) ? CurrentComposer.RememberedValue<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>() : CurrentComposer.WriteLambda<ValueTuple<T, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
@@ -71,11 +71,11 @@ public static partial class ComposeFunctions
     private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
         var targetValue = targetValueFactory();
-        var property = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<T>>(-1955790247, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<T>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<T>>(() => MutableStateOf(targetValue));
+        var property = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<T>>(-1382118261, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<T>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<T>>(() => MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: key, coroutine: CurrentComposer.HasRememberedValue<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(-243410239, (targetValueFactory, property)) ? CurrentComposer.RememberedValue<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>() : CurrentComposer.WriteLambda<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
+        LaunchedEffect(key: key, coroutine: CurrentComposer.HasRememberedValue<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(1303380056, (targetValueFactory, property)) ? CurrentComposer.RememberedValue<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>() : CurrentComposer.WriteLambda<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>, System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
