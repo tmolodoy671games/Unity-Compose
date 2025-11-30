@@ -1,4 +1,4 @@
-namespace Packages.UnityCompose.Impl.SlotTable.Models;
+namespace Packages.UnityCompose.Impl.SlotTableModels.Models;
 
 public readonly record struct ComposeGroup(
     int Key,
@@ -10,6 +10,7 @@ public readonly record struct ComposeGroup(
 
 public enum ComposeGroupType
 {
+    Root,
     Replace,
     Restartable,
 }

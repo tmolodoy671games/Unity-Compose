@@ -1,0 +1,6 @@
+{
+  "name": "UnityCompose.Impl.SlotTableWriting",
+  "references": [
+    "UnityCompose.Impl.SlotTableModels"
+  ]
+}

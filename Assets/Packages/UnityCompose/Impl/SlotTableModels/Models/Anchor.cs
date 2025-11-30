@@ -1,4 +1,4 @@
-namespace Packages.UnityCompose.Impl.SlotTable.Models;
+namespace Packages.UnityCompose.Impl.SlotTableModels.Models;
 
 public class Anchor
 {
