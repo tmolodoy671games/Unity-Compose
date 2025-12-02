@@ -21,7 +21,6 @@ public enum TextAlign
 
 internal static partial class TextAlignExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TextAnchor ToTextAnchor(this TextAlign textAlign)
     {
         return textAlign switch

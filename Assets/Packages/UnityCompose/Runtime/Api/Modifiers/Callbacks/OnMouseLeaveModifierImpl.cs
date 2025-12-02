@@ -9,7 +9,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseLeave(
         this IModifier modifier,
         Action<MouseMoveInfo> onMouseLeave,
@@ -21,7 +20,6 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseLeaveModifierImpl(onMouseLeave);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseLeave(
         this IModifier modifier,
         Action onMouseLeave,

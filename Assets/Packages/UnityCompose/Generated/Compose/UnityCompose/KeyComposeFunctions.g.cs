@@ -8,19 +8,11 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    [Composable, DontGenerateComposeGroups]
+    [Composable, Compiled]
     private static void __Key(object key, [Composable] Action content)
     {
+        var __composer = CurrentComposer;
         // BRUH
-        if (CurrentComposer.BeginComposeGroup(1337, 0, key))
-            return;
-        try
-        {
-            content();
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<object, System.Action>, System.Action>(-227514316, (key, content)) ? CurrentComposer.RememberedValue<ValueTuple<object, System.Action>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<object, System.Action>, System.Action>(() => Key(key, content)));
-        }
+        content();
     }
 }

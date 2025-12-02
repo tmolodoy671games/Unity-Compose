@@ -12,9 +12,7 @@ public static partial class ComposeFunctions
         Func<TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.HasRememberedValue<TKey, TValue>(-1337, key)
-            ? CurrentComposer.RememberedValue<TKey, TValue>()
-            : CurrentComposer.WriteValue<TKey, TValue>(defaultValueFactory);
+        throw new InvalidOperationException("Should be replaced when compiled!");
     }
 
     [Composable, Compiled]
@@ -22,8 +20,6 @@ public static partial class ComposeFunctions
         Func<TValue> defaultValueFactory
     )
     {
-        return CurrentComposer.HasRememberedValue<bool, TValue>(-1337, true)
-            ? CurrentComposer.RememberedValue<bool, TValue>()
-            : CurrentComposer.WriteValue<bool, TValue>(defaultValueFactory);
+        throw new InvalidOperationException("Should be replaced when compiled!");
     }
 }

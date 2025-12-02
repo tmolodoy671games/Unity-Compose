@@ -53,10 +53,14 @@ internal static class ComposeReleaseFileRewriter
                 .ReplaceNode(
                     originalComposableMethod,
                     originalComposableMethod
+                        .WithExpressionBody(null)
+                        .WithSemicolonToken(default)
+                        .WithBody(Block())
                         .AddReleaseCompiledAttribute()
                         .WithBody(Block(ParseStatement(statement)))
                         .NormalizeWhitespace(elasticTrivia: true, eol: "\n")
-                );
+                )
+                .NormalizeWhitespace(elasticTrivia: true, eol: "\n");
         }
 
         newRoot = newRoot.NormalizeWhitespace(elasticTrivia: true, eol: "\n");

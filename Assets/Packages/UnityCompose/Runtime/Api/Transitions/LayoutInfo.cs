@@ -25,7 +25,6 @@ public readonly record struct LayoutInfo(
     public float Height => Size.y;
     public float Width => Size.x;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LayoutInfo From(VisualElement element)
     {
         var layout = element.layout;

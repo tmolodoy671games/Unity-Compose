@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityEngine.UIElements;

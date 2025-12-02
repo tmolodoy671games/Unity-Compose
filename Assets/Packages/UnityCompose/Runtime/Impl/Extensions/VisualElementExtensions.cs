@@ -24,6 +24,7 @@ internal static class VisualElementExtensions
 
     public static bool FastReinsert(this VisualElement parent, int index, VisualElement child)
     {
+        // Debug.Log($"{parent.Format()}.FastReinsert({index}, {child.Format()})");
         if (parent.GetOrNull(index) == child) return false;
         child.RemoveFromHierarchy();
         parent.Insert(index, child);

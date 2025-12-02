@@ -11,7 +11,6 @@ public static partial class ModifierExtensions
 {
     #region OnMouseUp
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseUp(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseUp,
@@ -23,7 +22,6 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseUpModifierImpl(onMouseUp);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseUp(
         this IModifier modifier,
         Action onMouseUp,
@@ -39,7 +37,6 @@ public static partial class ModifierExtensions
 
     #region OnLmbUp
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbUp(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseUp,
@@ -55,7 +52,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbUp(
         this IModifier modifier,
         Action onMouseUp,
@@ -75,7 +71,6 @@ public static partial class ModifierExtensions
 
     #region OnRmbUp
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbUp(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseUp,
@@ -91,7 +86,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbUp(
         this IModifier modifier,
         Action onMouseUp,
@@ -111,7 +105,6 @@ public static partial class ModifierExtensions
 
     #region OnMmbUp
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbUp(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseUp,
@@ -127,7 +120,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbUp(
         this IModifier modifier,
         Action onMouseUp,

@@ -10,25 +10,21 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Background(this IModifier modifier, Sprite image)
     {
         return modifier + new BackgroundImageModifierImpl(UnityBackground.FromSprite(image));
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Background(this IModifier modifier, Texture2D image)
     {
         return modifier + new BackgroundImageModifierImpl(UnityBackground.FromTexture2D(image));
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Background(this IModifier modifier, VectorImage image)
     {
         return modifier + new BackgroundImageModifierImpl(UnityBackground.FromVectorImage(image));
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Background(this IModifier modifier, RenderTexture image)
     {
         return modifier + new BackgroundImageModifierImpl(UnityBackground.FromRenderTexture(image));

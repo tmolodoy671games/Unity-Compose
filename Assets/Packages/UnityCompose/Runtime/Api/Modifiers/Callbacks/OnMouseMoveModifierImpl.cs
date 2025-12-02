@@ -9,7 +9,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseMove(
         this IModifier modifier,
         Action<MouseMoveInfo> onMouseMove,
@@ -21,7 +20,6 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseMoveModifierImpl(onMouseMove);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseMove(
         this IModifier modifier,
         Action onMouseMove,

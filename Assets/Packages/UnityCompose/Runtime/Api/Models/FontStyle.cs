@@ -13,7 +13,6 @@ public enum FontStyle
 
 internal static partial class FontStyleUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static UnityEngine.FontStyle ToUnityFontStyle(FontStyle fontStyle, FontWeight fontWeight)
     {
         if (fontStyle == FontStyle.Italic && fontWeight == FontWeight.Bold)

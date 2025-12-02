@@ -8,7 +8,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Float(this IModifier modifier, bool enabled = true)
     {
         if (!enabled)

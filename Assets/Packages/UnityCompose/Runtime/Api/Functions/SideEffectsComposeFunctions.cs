@@ -41,7 +41,7 @@ public static partial class ComposeFunctions
         }
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         Func<IEnumerator> coroutine
@@ -53,7 +53,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         Action block
@@ -69,7 +69,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         TimeSpan delay,
@@ -82,7 +82,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         float delay,
@@ -96,7 +96,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void DisposableEffect<TKey>(
         TKey key,
         Func<IDisposableEffectScope, IDisposable> effect

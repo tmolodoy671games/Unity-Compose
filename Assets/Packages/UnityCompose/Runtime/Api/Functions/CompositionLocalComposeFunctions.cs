@@ -185,14 +185,14 @@ public static partial class ComposeFunctions
         CompositionLocalProviderImpl(provides, content);
     }
 
-    [Composable, Compiled]
+    [Composable]
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     private static void CompositionLocalProviderImpl(
         IImmutableStableList<CompositionLocalProvides> provides,
         ComposableContent content
     )
     {
-        CurrentComposer.BeginCompositionLocal(provides);
+        CurrentComposer.UpdateCompositionLocal(provides);
         content();
     }
 }

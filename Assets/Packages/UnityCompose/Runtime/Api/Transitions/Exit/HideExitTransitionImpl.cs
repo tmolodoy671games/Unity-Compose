@@ -8,7 +8,6 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IExitTransition Hide(Optional<AnimationSpec> animationSpec = default) =>
         new HideExitTransitionImpl(animationSpec.GetOrDefault());
 }

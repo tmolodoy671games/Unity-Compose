@@ -25,7 +25,6 @@ public readonly record struct ContentTransform(
         );
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ContentTransform operator +(ContentTransform first, ContentTransform second)
     {
         return new ContentTransform(
@@ -37,7 +36,6 @@ public readonly record struct ContentTransform(
 
 public static partial class EnterTransitionExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ContentTransform TogetherWith(this IEnterTransition enter, IExitTransition exit)
     {
         return new ContentTransform(enter, exit);

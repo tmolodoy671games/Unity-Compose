@@ -11,6 +11,34 @@ namespace UnityCompose.Samples.Behaviors
         protected override void Preview()
         {
             var isSwitched = Remember(() => LoggableMutableStateOf(false));
+            Debug.Log(isSwitched.Value);
+            Box(
+                horizontalAlignment: Alignment.Horizontal.Center,
+                verticalAlignment: Alignment.Vertical.Center,
+                modifier: Modifier
+                    .FillMaxSize(),
+                content: () =>
+                {
+                    Spacer(
+                        Modifier
+                            .Size(100)
+                            .Background(Color.red)
+                            .Border(16)
+                            .OnClick(() =>
+                            {
+                                Debug.Log("OnClick()");
+                                isSwitched.Value = !isSwitched.Value;
+                            })
+                            .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
+                    );
+                }
+            );
+        }
+
+        [Composable]
+        private static void Layout()
+        {
+            var isSwitched = Remember(() => LoggableMutableStateOf(false));
             var isHovered = Remember(() => LoggableMutableStateOf(false));
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
@@ -29,6 +57,7 @@ namespace UnityCompose.Samples.Behaviors
                                 .Margin(top: 100)
                         );
                     }
+
                     Box(
                         horizontalAlignment: Alignment.Horizontal.Center,
                         verticalAlignment: Alignment.Vertical.Center,

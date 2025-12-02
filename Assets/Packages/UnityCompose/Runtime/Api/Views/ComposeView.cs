@@ -1,10 +1,5 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using StableCollections;
 using UnityCompose;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
@@ -23,20 +18,22 @@ public partial class ComposeView : VisualElement
         _content = content;
         userData = null;
         Clear();
-        CurrentComposer.Reset();
+        // CurrentComposer.Reset();
         ContentImpl(content);
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable, Compiled]
     private void ContentImpl(ComposableContent content)
     {
-        if (CurrentComposer.BeginRootComposeGroup(this)) return;
+        CurrentComposer.StartReusableGroup(0);
+        CurrentComposer.SetVisualElement(this);
+        CurrentComposer.EnterVisualElement();
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
             LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)),
             content: content
         );
-        CurrentComposer.EndRootComposeGroup(() => ContentImpl(content));
+        CurrentComposer.EndReusableGroup(0);
     }
 
     public override string ToString() => "ComposeView";

@@ -71,7 +71,6 @@ public readonly record struct AnimationSpec
 
 public static class OptionalAnimationSpecExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static AnimationSpec GetOrDefault(this Optional<AnimationSpec> animationSpec)
     {
         return animationSpec.HasValue ? animationSpec.Value : AnimationSpec.Default;

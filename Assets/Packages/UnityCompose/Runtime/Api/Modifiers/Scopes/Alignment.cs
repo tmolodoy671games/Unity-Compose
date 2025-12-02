@@ -37,7 +37,6 @@ public static class Alignment
 
 internal static class AlignmentHorizontalExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Align ToAlign(this Alignment.Horizontal alignment)
     {
         return alignment switch
@@ -49,9 +48,7 @@ internal static class AlignmentHorizontalExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
         };
     }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     public static Justify ToJustify(this Alignment.Horizontal alignment)
     {
         return alignment switch
@@ -67,7 +64,6 @@ internal static class AlignmentHorizontalExtensions
 
 internal static class AlignmentVerticalExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Align ToAlign(this Alignment.Vertical alignment)
     {
         return alignment switch
@@ -79,9 +75,7 @@ internal static class AlignmentVerticalExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
         };
     }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     public static Justify ToJustify(this Alignment.Vertical alignment)
     {
         return alignment switch

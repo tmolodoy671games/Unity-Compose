@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections;
+using SharpExtensions;
 using Sirenix.OdinInspector;
-using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -9,79 +10,48 @@ namespace UnityCompose.Samples.Behaviors
     {
         [ShowInInspector] private int key;
         
-        private static readonly IMutableState<bool> _mutableState = MutableStateOf(false);
-
-        [Button("BeginRootComposeGroup")]
-        private static void BeginRootComposeGroupButton()
+        [PropertySpace]
+        [Button("Start Reusable Group")]
+        private void StartReusableGroupButton()
         {
-            CurrentComposer.BeginRootComposeGroup(new ComposeView());
+            CurrentComposer.StartReusableGroup(key);
             Log();
         }
 
-        [Button("EndRootComposeGroup")]
-        private static void EndRootComposeGroupButton()
+        [Button("End Reusable Group")]
+        private void EndReusableGroupButton()
         {
-            CurrentComposer.EndRootComposeGroup(() => { });
+            CurrentComposer.EndReusableGroup(key);
             Log();
         }
 
         [PropertySpace]
-        [Button("BeginComposeGroup")]
-        private void BeginComposeGroupButton()
+        [Button("Start Restart Group")]
+        private void StartRestartGroupButton()
         {
-            CurrentComposer.BeginComposeGroup(key, true);
+            CurrentComposer.StartRestartGroup(key);
             Log();
         }
 
-        [Button("EndComposeGroup")]
-        private static void EndComposeGroupButton()
+        [Button("End Restart Group")]
+        private void EndRestartGroupButton()
         {
-            CurrentComposer.EndComposeGroup(() => { });
-            Log();
-        }
-
-        [PropertySpace]
-        [Button("Remember")]
-        private void RememberButton()
-        {
-            ComposeFunctions.Remember(() => 1);
-            Log();
-        }
-
-        [Button("HasRememberedValue")]
-        public void HasRememberedValueButton()
-        {
-            CurrentComposer.HasRememberedValue<bool, int>(key, true);
-            Log();
-        }
-
-        [Button("RememberedValue")]
-        public void RememberedValueButton()
-        {
-            CurrentComposer.RememberedValue<bool, int>();
-            Log();
-        }
-
-        [Button("WriteValue")]
-        public void WriteValueButton()
-        {
-            CurrentComposer.WriteValue<bool, int>(() => 1);
+            CurrentComposer.EndRestartGroup(key);
             Log();
         }
 
         [PropertySpace]
-        [Button("GetOrCreateVisualElement")]
-        private void GetOrCreateVisualElementButton()
+        [Button("Start Replace Group")]
+        private void StartReplaceGroupButton()
         {
-            CurrentComposer.GetOrCreateVisualElement<VisualElement>();
+            CurrentComposer.StartReplaceGroup(key);
             Log();
         }
 
-        [PropertySpace]
-        [Button]
-        private void Clear()
+        [Button("End Replace Group")]
+        private void EndReplaceGroupButton()
         {
-            CurrentComposer.Reset();
+            CurrentComposer.EndReplaceGroup(key);
             Log();
         }
 
@@ -93,240 +63,17 @@ namespace UnityCompose.Samples.Behaviors
         }
 
         [PropertySpace]
-        [Button("Initial Layout")]
-        private static void InitialLayoutButton()
+        [Button("Clear")]
+        private void ClearButton()
         {
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(6, true);
-                    EndComposeGroup();
-                }
-                EndComposeGroup();
-
-                BeginComposeGroup(7, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(8, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(9, true);
-                EndComposeGroup();
-            }
-            EndComposeGroup();
-            Log();
-        }
-
-        [Button("Layout With Inserted Group")]
-        private static void LayoutWithInsertedGroupButton()
-        {
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(6, true);
-                    EndComposeGroup();
-                }
-                EndComposeGroup();
-
-                BeginComposeGroup(7, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(7, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(7, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(7, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(8, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(9, true);
-                EndComposeGroup();
-            }
-            EndComposeGroup();
-            Log();
-        }
-        
-        [Button("SkipTo7")]
-        private static void SkipTo7Button()
-        {
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(6, true);
-                    EndComposeGroup();
-                }
-                EndComposeGroup();
-            }
-            Log();
-        }
-
-        [Button("Layout With Removed Group")]
-        private static void LayoutWithRemovedGroupButton()
-        {
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-
-                    // BeginComposeGroup(6, true);
-                    // EndComposeGroup();
-                }
-                EndComposeGroup();
-            }
-            EndRootComposeGroup();
-            Log();
-        }
-
-        [Button("Remember Layout")]
-        private static void RememberLayoutButton()
-        {
-            BeginRootComposeGroup();
-            {
-                Remember(true, () => 1);
-                Remember(true, () => 1);
-            }
-            EndRootComposeGroup();
-            Log();
+            CurrentComposer.Clear();
         }
 
         [PropertySpace]
-        [Button("Test")]
-        private static void TestButton()
+        [Button("ResetTo")]
+        private void ResetToButton()
         {
-            // CurrentComposer.Test();
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(2, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-                }
-                EndComposeGroup();
-            }
-            EndRootComposeGroup();
-
-            BeginRootComposeGroup();
-            {
-                BeginComposeGroup(1, true);
-                EndComposeGroup();
-
-                BeginComposeGroup(3, true);
-                {
-                    BeginComposeGroup(4, true);
-                    EndComposeGroup();
-
-                    BeginComposeGroup(5, true);
-                    EndComposeGroup();
-                }
-                EndComposeGroup();
-            }
-            EndRootComposeGroup();
-            Log();
-        }
-
-        [Button("Restart")]
-        private static void RestartButton()
-        {
-            _mutableState.Value = !_mutableState.Value;
-        }
-
-        private static void BeginRootComposeGroup()
-        {
-            CurrentComposer.BeginRootComposeGroup(new ComposeView());
-        }
-
-        private static void EndRootComposeGroup()
-        {
-            CurrentComposer.EndRootComposeGroup(() => { });
-        }
-
-        private static void BeginComposeGroup<T>(int groupKey, T state)
-        {
-            CurrentComposer.BeginComposeGroup(groupKey, state);
-        }
-
-        private static void EndComposeGroup()
-        {
-            CurrentComposer.EndComposeGroup(() => { });
-        }
-
-        private static TValue Remember<TKey, TValue>(TKey key, Func<TValue> defaultValueFactory)
-        {
-            return ComposeFunctions.Remember(key, defaultValueFactory);
-        }
-
-        private static VisualElement GetOrCreateVisualElement()
-        {
-            return CurrentComposer.GetOrCreateVisualElement<VisualElement>();
+            CurrentComposer.Clear();
         }
 
         private static void Log()

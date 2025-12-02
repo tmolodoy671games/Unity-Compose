@@ -1,6 +1,6 @@
 using System;
 
-namespace Packages.UnityCompose.Impl.Composition.Models;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 
 public readonly struct AlwaysInvalidState : IEquatable<AlwaysInvalidState>
 {

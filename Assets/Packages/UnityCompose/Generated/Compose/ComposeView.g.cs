@@ -1,21 +1,26 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using StableCollections;
 using UnityCompose;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 using static UnityCompose.ComposeFunctions;
 
 public partial class ComposeView
 {
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     private void __ContentImpl(ComposableContent content)
     {
-        if (CurrentComposer.BeginRootComposeGroup(this))
-            return;
-        CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
-        CurrentComposer.EndRootComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(1740702244, (this, content)) ? CurrentComposer.RememberedValue<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<ComposeView, UnityCompose.ComposableContent>, System.Action>(() => ContentImpl(content)));
+        var __content = (content);
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-1780379594);
+        if (__composer.ShouldExecute(__content))
+        {
+            CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
+        }
+        else
+        {
+            __composer.SkipToGroupEnd();
+        }
+
+        __composer.EndRestartGroup(-1780379594)?.UpdateScope(() => __ContentImpl(__content));
     }
 }

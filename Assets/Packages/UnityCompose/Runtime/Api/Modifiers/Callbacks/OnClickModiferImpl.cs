@@ -10,7 +10,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnClick(
         this IModifier modifier,
         bool enabled,
@@ -22,7 +21,6 @@ public static partial class ModifierExtensions
         return modifier + new OnClickModiferImpl(onClick);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnClick(
         this IModifier modifier,
         bool enabled,
@@ -33,9 +31,7 @@ public static partial class ModifierExtensions
             return modifier;
         return modifier + new OnClickModiferImpl(_ => onClick());
     }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     public static IModifier OnClick(
         this IModifier modifier,
         Action<MouseClickInfo> onClick,
@@ -47,7 +43,6 @@ public static partial class ModifierExtensions
         return modifier + new OnClickModiferImpl(onClick);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnClick(
         this IModifier modifier,
         Action onClick,

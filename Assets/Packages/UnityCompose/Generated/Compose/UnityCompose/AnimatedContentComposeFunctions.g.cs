@@ -14,29 +14,26 @@ public static partial class ComposeFunctions
     private static void __AnimatedContent<T>(T targetState, Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec, ComposableContent<T> content, Optional<AnimationSpec> sizeAnimationSpec = default, IModifier? modifier = null)
     {
         var(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier) = (targetState, transitionSpec, content, sizeAnimationSpec, modifier);
-        if (CurrentComposer.BeginComposeGroup(-1433093757, (__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-1433093757);
+        if (__composer.ShouldExecute((__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
         {
-            // Progress:
-            var isSwitched = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<bool>>(150588824, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<bool>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<bool>>(() => MutableStateOf(false));
-            LaunchedEffect(targetState!, CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(770429064, isSwitched) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isSwitched.Value = !isSwitched.Value));
-            var previousValue = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<T>>(1075277741, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<T>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<T>>(() => IMutableStableProperty.Create(targetState));
-            var targetValue = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<T>>(-759848068, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<T>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<T>>(() => IMutableStableProperty.Create(targetState));
-            LaunchedEffect(targetState!, CurrentComposer.HasRememberedValue<ValueTuple<T, StableCollections.IMutableStableProperty<T>?, StableCollections.IMutableStableProperty<T>?>, System.Action>(696687230, (targetState, previousValue, targetValue)) ? CurrentComposer.RememberedValue<ValueTuple<T, StableCollections.IMutableStableProperty<T>?, StableCollections.IMutableStableProperty<T>?>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<T, StableCollections.IMutableStableProperty<T>?, StableCollections.IMutableStableProperty<T>?>, System.Action>(() =>
+            var isSwitched = !__composer.RememberedKeyChanged<bool>(150588824, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
+            LaunchedEffect(targetState!, !__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(770429064, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isSwitched.Value = !isSwitched.Value));
+            var previousValue = !__composer.RememberedKeyChanged<bool>(1075277741, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState));
+            var targetValue = !__composer.RememberedKeyChanged<bool>(-759848068, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState));
+            LaunchedEffect(targetState!, !__composer.RememberedKeyChanged<ValueTuple<T, StableCollections.IMutableStableProperty<T>?, StableCollections.IMutableStableProperty<T>?>>(696687230, (targetState, previousValue, targetValue)) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() =>
             {
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
             }));
-            var resolvedTransition = CurrentComposer.HasRememberedValue<T, UnityCompose.ContentTransform>(31949116, targetState!) ? CurrentComposer.RememberedValue<T, UnityCompose.ContentTransform>() : CurrentComposer.WriteValue<T, UnityCompose.ContentTransform>(() => Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
+            var resolvedTransition = !__composer.RememberedKeyChanged<T>(31949116, targetState!) ? __composer.RememberedValue<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValue<UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var resolvedTimeElapsed = resolvedProgress * transitionDuration;
-            // Animating size:
             var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState) : (Modifier, Modifier);
-            // Layout:
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: CurrentComposer.HasRememberedValue<ValueTuple<T, UnityCompose.ComposableContent<T>, UnityCompose.IMutableState<bool>?, StableCollections.IMutableStableProperty<T>?, UnityCompose.ContentTransform, float, float, ValueTuple<UnityCompose.IModifier?>>, UnityCompose.ComposableContent?>(-1663643859, (targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? CurrentComposer.RememberedValue<ValueTuple<T, UnityCompose.ComposableContent<T>, UnityCompose.IMutableState<bool>?, StableCollections.IMutableStableProperty<T>?, UnityCompose.ContentTransform, float, float, ValueTuple<UnityCompose.IModifier?>>, UnityCompose.ComposableContent?>() : CurrentComposer.WriteComposableLambda<ValueTuple<T, UnityCompose.ComposableContent<T>, UnityCompose.IMutableState<bool>?, StableCollections.IMutableStableProperty<T>?, UnityCompose.ContentTransform, float, float, ValueTuple<UnityCompose.IModifier?>>, UnityCompose.ComposableContent?>(() =>
+            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: !__composer.RememberedKeyChanged<ValueTuple<T, UnityCompose.ComposableContent<T>, UnityCompose.IMutableState<bool>?, StableCollections.IMutableStableProperty<T>?, UnityCompose.ContentTransform, float, float, ValueTuple<UnityCompose.IModifier?>>>(-1663643859, (targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent?>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent?>(() =>
             {
                 var parent = LocalVisualElement.Current;
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);
@@ -45,28 +42,35 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Style: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Style: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
+                __composer.StartReplaceGroup(-1696347639);
                 if (isSwitched.Value || isAnimationRunning)
                 {
-                    Key(key: "First", content: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>(-1367315250, (content, resolvedTransition, resolvedProgress, pair)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>(() =>
+                    Key(key: "First", content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>>(-1367315250, (content, resolvedTransition, resolvedProgress, pair)) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() =>
                     {
                         var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
-                        CompositionLocalProvider(LocalModifier.Provides(after: pair.First.Style), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: () => content(pair.First.Value));
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.First.Style), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.ComposableContent<T>, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>>(-1637215277, (content, pair)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() => content(pair.First.Value)));
                     }));
                 }
 
+                __composer.EndReplaceGroup(-1696347639);
+                __composer.StartReplaceGroup(1380573395);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
-                    Key(key: "Second", content: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>(323714725, (content, resolvedTransition, resolvedProgress, pair)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>, System.Action>(() =>
+                    Key(key: "Second", content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.ComposableContent<T>, UnityCompose.ContentTransform, float, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>>(323714725, (content, resolvedTransition, resolvedProgress, pair)) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() =>
                     {
                         var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
-                        CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: () => content(pair.Second.Value));
+                        CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.ComposableContent<T>, ((T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) First, (T Value, UnityCompose.IModifier Style, UnityCompose.TransitionState ContentState) Second)>>(-1788783281, (content, pair)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() => content(pair.Second.Value)));
                     }));
                 }
+
+                __composer.EndReplaceGroup(1380573395);
             }));
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<T, Func<IAnimatedContentTransitionScope<T>, ContentTransform>, ComposableContent<T>, Optional<AnimationSpec>, IModifier?>, Action>(-1432993757, (__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)) ? CurrentComposer.RememberedValue<ValueTuple<T, Func<IAnimatedContentTransitionScope<T>, ContentTransform>, ComposableContent<T>, Optional<AnimationSpec>, IModifier?>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<T, Func<IAnimatedContentTransitionScope<T>, ContentTransform>, ComposableContent<T>, Optional<AnimationSpec>, IModifier?>, Action>(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-1433093757)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
     }
 }

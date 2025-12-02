@@ -10,7 +10,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Padding(
         this IModifier modifier,
         LayoutLength all = default,

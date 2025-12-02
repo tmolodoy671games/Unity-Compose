@@ -8,7 +8,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Name(this IModifier modifier, string name)
     {
         return modifier + new NameModifierImpl(name);

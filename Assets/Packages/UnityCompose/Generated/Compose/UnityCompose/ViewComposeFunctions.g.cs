@@ -21,31 +21,35 @@ public static partial class ComposeFunctions
         where T : VisualElement, new()
     {
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
-        if (CurrentComposer.BeginComposeGroup(1230753333, (__modifier, __initializer, __content)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(1230753333);
+        if (__composer.ShouldExecute((__modifier, __initializer, __content)))
         {
+            CurrentComposer.StartReusableGroup(123);
+            var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
+            var parent = LocalVisualElement.Current;
+            var index = CurrentComposer.GetElementIndex();
+            DisposableEffect((visualElement, parent, index), !__composer.RememberedKeyChanged<ValueTuple<T?, UnityEngine.UIElements.VisualElement?, int>>(1862079167, (visualElement, parent, index)) ? CurrentComposer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : CurrentComposer.UpdateLambda<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
+            {
+                parent.FastReinsert(index, visualElement);
+                return it.OnDispose(!__composer.RememberedKeyChanged<ValueTuple<T?, UnityEngine.UIElements.VisualElement?>>(1487837232, (visualElement, parent)) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => parent.Remove(visualElement)));
+            }));
+            CurrentComposer.EnterVisualElement();
             var resolvedModifier = modifier;
             var localStyle = LocalModifier.Current;
             if (localStyle.Before != null)
                 resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
             if (localStyle.After != null)
                 resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
-            var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-            var parent = LocalVisualElement.Current;
-            var index = CurrentComposer.GetElementIndex();
-            DisposableEffect((visualElement, parent, index), CurrentComposer.HasRememberedValue<ValueTuple<T?, UnityEngine.UIElements.VisualElement?, int>, System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(-1837058023, (visualElement, parent, index)) ? CurrentComposer.RememberedValue<ValueTuple<T?, UnityEngine.UIElements.VisualElement?, int>, System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : CurrentComposer.WriteLambda<ValueTuple<T?, UnityEngine.UIElements.VisualElement?, int>, System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
-            {
-                parent.FastReinsert(index, visualElement);
-                return it.OnDispose(() => parent.Remove(visualElement));
-            }));
-            var currentModifier = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>(-382520752, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>(() => IMutableStableProperty.Create<IModifier?>(null));
-            var currentProperties = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>(-1437367925, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>(() => IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
+            var currentModifier = !__composer.RememberedKeyChanged<bool>(584154846, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityCompose.IModifier?>>(IMutableStableProperty.Create<IModifier?>(null));
+            var currentProperties = !__composer.RememberedKeyChanged<bool>(349352904, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<StableCollections.IStableSet<UnityCompose.ComposeModifiedProperty>>>(IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(IImmutableStableSet.Empty<ComposeModifiedProperty>()));
             var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
             resolvedModifier?.Apply(newProperties);
-            var propertiesToRevert = currentProperties.Value.Where(CurrentComposer.HasRememberedValue<StableCollections.IMutableStableSet<UnityCompose.ComposeModifiedProperty>?, System.Func<UnityCompose.ComposeModifiedProperty, bool>>(644688988, newProperties) ? CurrentComposer.RememberedValue<StableCollections.IMutableStableSet<UnityCompose.ComposeModifiedProperty>?, System.Func<UnityCompose.ComposeModifiedProperty, bool>>() : CurrentComposer.WriteLambda<StableCollections.IMutableStableSet<UnityCompose.ComposeModifiedProperty>?, System.Func<UnityCompose.ComposeModifiedProperty, bool>>(it => !newProperties.Contains(it)));
+            var propertiesToRevert = currentProperties.Value.Where(!__composer.RememberedKeyChanged<StableCollections.IMutableStableSet<UnityCompose.ComposeModifiedProperty>?>(1986802330, newProperties) ? CurrentComposer.RememberedValue<System.Func<UnityCompose.ComposeModifiedProperty, bool>>() : CurrentComposer.UpdateLambda<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(it => !newProperties.Contains(it)));
+            __composer.StartReplaceGroup(-1759835366);
             foreach (var property in propertiesToRevert)
                 property.Revert(visualElement);
+            __composer.EndReplaceGroup(-1759835366);
             currentProperties.Value = newProperties;
             currentModifier.Value = resolvedModifier;
             visualElement.ClearCallbacks();
@@ -55,119 +59,137 @@ public static partial class ComposeFunctions
             visualElement.style.transitionTimingFunction.value?.Clear();
             visualElement.pickingMode = PickingMode.Ignore;
             visualElement.style.overflow = Overflow.Visible;
-            var a = CurrentComposer.HasRememberedValue<bool, int>(-340821571, true) ? CurrentComposer.RememberedValue<bool, int>() : CurrentComposer.WriteValue<bool, int>(() => 1);
-            LaunchedEffect(1, CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.IModifier?, T?>, System.Action>(414248056, (resolvedModifier, visualElement)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.IModifier?, T?>, System.Action>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.IModifier?, T?>, System.Action>(() => resolvedModifier?.Apply(visualElement)));
+            LaunchedEffect(1, !__composer.RememberedKeyChanged<ValueTuple<T?, UnityCompose.IModifier?>>(-1783067216, (visualElement, resolvedModifier)) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => resolvedModifier?.Apply(visualElement)));
             resolvedModifier?.Apply(visualElement);
             FireOnGloballyPositionedCallback(visualElement);
-            var currentInitializer = CurrentComposer.HasRememberedValue<bool, StableCollections.IMutableStableProperty<System.Action<T>?>>(606789505, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IMutableStableProperty<System.Action<T>?>>() : CurrentComposer.WriteValue<bool, StableCollections.IMutableStableProperty<System.Action<T>?>>(() => IMutableStableProperty.Create<Action<T>?>(null));
+            var currentInitializer = !__composer.RememberedKeyChanged<bool>(211651232, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<System.Action<T>?>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<System.Action<T>?>>(IMutableStableProperty.Create<Action<T>?>(null));
+            __composer.StartReplaceGroup(398703009);
             if (initializer != null)
             {
+                __composer.StartReplaceGroup(1625118031);
                 if (currentInitializer.Value != initializer)
                 {
                     currentInitializer.Value = initializer;
                     initializer(visualElement);
                 }
+
+                __composer.EndReplaceGroup(1625118031);
             }
 
+            __composer.EndReplaceGroup(398703009);
+            __composer.StartReplaceGroup(502670197);
             if (content != null)
             {
-                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(CurrentComposer.HasRememberedValue<T, UnityCompose.LayoutMeasurerImpl>(-909646960, visualElement) ? CurrentComposer.RememberedValue<T, UnityCompose.LayoutMeasurerImpl>() : CurrentComposer.WriteValue<T, UnityCompose.LayoutMeasurerImpl>(() => new LayoutMeasurerImpl(visualElement))), content: content);
+                CompositionLocalProvider(LocalModifier.Provides((null, null)), LocalVisualElement.Provides(visualElement), LocalLayoutMeasurer.Provides(!__composer.RememberedKeyChanged<T>(-1649070255, visualElement) ? __composer.RememberedValue<UnityCompose.LayoutMeasurerImpl>() : __composer.UpdateRememberedValue<UnityCompose.LayoutMeasurerImpl>(new LayoutMeasurerImpl(visualElement))), content: content);
             }
+
+            __composer.EndReplaceGroup(502670197);
+            CurrentComposer.EndReusableGroup(123);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<IModifier?, Action<T>?, ComposableContent?>, Action>(1230853333, (__modifier, __initializer, __content)) ? CurrentComposer.RememberedValue<ValueTuple<IModifier?, Action<T>?, ComposableContent?>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<IModifier?, Action<T>?, ComposableContent?>, Action>(() => __ReusableComposeView(__modifier, __initializer, __content)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(1230753333)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content));
     }
 
     [Composable]
     private static void __Column(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
-        if (CurrentComposer.BeginComposeGroup(-944643133, (__content, __modifier, __horizontalAlignment, __verticalAlignment)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-1269982359);
+        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
-            ReusableComposeView<Column>(modifier: modifier, initializer: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(-1090661952, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(it =>
+            ReusableComposeView<Column>(modifier: modifier, initializer: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>>(176466432, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>() : CurrentComposer.UpdateLambda<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(it =>
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
             }), content: content);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(-944543133, (__content, __modifier, __horizontalAlignment, __verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-1269982359)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
     private static void __Row(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
-        if (CurrentComposer.BeginComposeGroup(-1125860534, (__content, __modifier, __horizontalAlignment, __verticalAlignment)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-1510478461);
+        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
-            ReusableComposeView<Row>(modifier: modifier, initializer: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(-42344062, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(it =>
+            ReusableComposeView<Row>(modifier: modifier, initializer: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>>(922852958, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>() : CurrentComposer.UpdateLambda<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
                 it.style.alignItems = verticalAlignment.ToAlign();
                 it.style.justifyContent = horizontalAlignment.ToJustify();
             }), content: content);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(-1125760534, (__content, __modifier, __horizontalAlignment, __verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-1510478461)?.UpdateScope(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
     private static void __Box(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left, Alignment.Vertical verticalAlignment = Alignment.Vertical.Top)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
-        if (CurrentComposer.BeginComposeGroup(-1869528440, (__content, __modifier, __horizontalAlignment, __verticalAlignment)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-1115575440);
+        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
-            ReusableComposeView<Box>(modifier: modifier, initializer: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(1996885493, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(it =>
+            ReusableComposeView<Box>(modifier: modifier, initializer: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.Alignment.Horizontal, UnityCompose.Alignment.Vertical>>(663077804, (horizontalAlignment, verticalAlignment)) ? CurrentComposer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>() : CurrentComposer.UpdateLambda<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(it =>
             {
                 it.style.alignItems = horizontalAlignment.ToAlign();
                 it.style.justifyContent = verticalAlignment.ToJustify();
             }), content: content);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(-1869428440, (__content, __modifier, __horizontalAlignment, __verticalAlignment)) ? CurrentComposer.RememberedValue<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<ComposableContent, IModifier?, Alignment.Horizontal, Alignment.Vertical>, Action>(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-1115575440)?.UpdateScope(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
     private static void __Spacer(IModifier modifier)
     {
         var __modifier = (modifier);
-        if (CurrentComposer.BeginComposeGroup(1877689277, __modifier))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-50213941);
+        if (__composer.ShouldExecute(__modifier))
         {
             ReusableComposeView<Spacer>(modifier: modifier);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<IModifier, Action>(1877789277, __modifier) ? CurrentComposer.RememberedValue<IModifier, Action>() : CurrentComposer.WriteComposableLambda<IModifier, Action>(() => __Spacer(__modifier)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-50213941)?.UpdateScope(() => __Spacer(__modifier));
     }
 
     [Composable]
     private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
-        if (CurrentComposer.BeginComposeGroup(-910238567, (__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(-480385983);
+        if (__composer.ShouldExecute((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
-            ReusableComposeView<Text>(modifier: modifier, initializer: CurrentComposer.HasRememberedValue<ValueTuple<string, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<float>, SharpExtensions.Optional<UnityCompose.TextStyle>, SharpExtensions.Optional<UnityCompose.FontStyle>, SharpExtensions.Optional<UnityCompose.FontWeight>, bool, ValueTuple<UnityCompose.TextAlign, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<UnityCompose.TextStyle>>>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>(-403625897, (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)) ? CurrentComposer.RememberedValue<ValueTuple<string, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<float>, SharpExtensions.Optional<UnityCompose.TextStyle>, SharpExtensions.Optional<UnityCompose.FontStyle>, SharpExtensions.Optional<UnityCompose.FontWeight>, bool, ValueTuple<UnityCompose.TextAlign, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<UnityCompose.TextStyle>>>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>() : CurrentComposer.WriteLambda<ValueTuple<string, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<float>, SharpExtensions.Optional<UnityCompose.TextStyle>, SharpExtensions.Optional<UnityCompose.FontStyle>, SharpExtensions.Optional<UnityCompose.FontWeight>, bool, ValueTuple<UnityCompose.TextAlign, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<UnityCompose.TextStyle>>>, System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>(it =>
+            ReusableComposeView<Text>(modifier: modifier, initializer: !__composer.RememberedKeyChanged<ValueTuple<string, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<float>, SharpExtensions.Optional<UnityCompose.TextStyle>, SharpExtensions.Optional<UnityCompose.FontStyle>, SharpExtensions.Optional<UnityCompose.FontWeight>, bool, ValueTuple<UnityCompose.TextAlign, SharpExtensions.Optional<UnityEngine.Color>, SharpExtensions.Optional<UnityCompose.TextStyle>>>>(365779819, (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)) ? CurrentComposer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>() : CurrentComposer.UpdateLambda<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>(it =>
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
@@ -215,21 +237,23 @@ public static partial class ComposeFunctions
                     it.style.color = Color.black;
             }));
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<string, Optional<Color>, Optional<float>, Optional<TextStyle>, Optional<FontStyle>, Optional<FontWeight>, bool, ValueTuple<TextAlign, IModifier?>>, Action>(-910138567, (__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)) ? CurrentComposer.RememberedValue<ValueTuple<string, Optional<Color>, Optional<float>, Optional<TextStyle>, Optional<FontStyle>, Optional<FontWeight>, bool, ValueTuple<TextAlign, IModifier?>>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<string, Optional<Color>, Optional<float>, Optional<TextStyle>, Optional<FontStyle>, Optional<FontWeight>, bool, ValueTuple<TextAlign, IModifier?>>, Action>(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(-480385983)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier));
     }
 
     [Composable]
     private static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null)
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
-        if (CurrentComposer.BeginComposeGroup(-371510727, (__image, __tint, __modifier)))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(1018411186);
+        if (__composer.ShouldExecute((__image, __tint, __modifier)))
         {
-            ReusableComposeView<Image>(initializer: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.ComposeImage, UnityEngine.Color?>, System.Action<UnityEngine.UIElements.Image>?>(1013346738, (image, tint)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.ComposeImage, UnityEngine.Color?>, System.Action<UnityEngine.UIElements.Image>?>() : CurrentComposer.WriteLambda<ValueTuple<UnityCompose.ComposeImage, UnityEngine.Color?>, System.Action<UnityEngine.UIElements.Image>?>(it =>
+            ReusableComposeView<Image>(initializer: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.ComposeImage, UnityEngine.Color?>>(75317162, (image, tint)) ? CurrentComposer.RememberedValue<System.Action<UnityEngine.UIElements.Image>?>() : CurrentComposer.UpdateLambda<System.Action<UnityEngine.UIElements.Image>?>(it =>
             {
                 it.sprite = image.Sprite;
                 it.vectorImage = image.VectorImage;
@@ -237,9 +261,11 @@ public static partial class ComposeFunctions
                 it.tintColor = tint ?? Color.white;
             }), modifier: modifier);
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<ValueTuple<ComposeImage, Color?, IModifier?>, Action>(-371410727, (__image, __tint, __modifier)) ? CurrentComposer.RememberedValue<ValueTuple<ComposeImage, Color?, IModifier?>, Action>() : CurrentComposer.WriteComposableLambda<ValueTuple<ComposeImage, Color?, IModifier?>, Action>(() => __Image(__image, __tint, __modifier)));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(1018411186)?.UpdateScope(() => __Image(__image, __tint, __modifier));
     }
 }

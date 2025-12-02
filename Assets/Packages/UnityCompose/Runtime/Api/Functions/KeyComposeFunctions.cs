@@ -7,21 +7,13 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [Composable, DontGenerateComposeGroups]
+    [Composable, Compiled]
     public static void Key(
         object key,
         [Composable] Action content
     )
     {
         // BRUH
-        if (CurrentComposer.BeginComposeGroup(1337, 0, key)) return;
-        try
-        {
-            content();
-        }
-        finally
-        {
-            CurrentComposer.EndComposeGroup(() => Key(key, content));
-        }
+        content();
     }
 }

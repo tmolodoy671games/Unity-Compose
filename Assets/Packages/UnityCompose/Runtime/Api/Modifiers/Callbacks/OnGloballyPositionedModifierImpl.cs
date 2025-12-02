@@ -29,7 +29,7 @@ internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloball
         _onGloballyPositioned = onGloballyPositioned;
     }
 
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public override void Apply(VisualElement element)
     {
         var previousLayoutCoordinates =
@@ -114,7 +114,7 @@ public static partial class VisualElementExtensions
 
 internal static partial class GloballyPositionedComposeFunctions
 {
-    [Composable, DontGenerateComposeGroups]
+    [Composable]
     public static void FireOnGloballyPositionedCallback(VisualElement element)
     {
         var callback = element.OnGloballyPositionedCallbackOrNull();

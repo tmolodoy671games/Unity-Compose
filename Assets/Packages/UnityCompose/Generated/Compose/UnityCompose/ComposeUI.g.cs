@@ -15,14 +15,16 @@ public abstract partial class ComposeUI
     [Composable]
     private void __Preview()
     {
-        if (CurrentComposer.BeginComposeGroup(378850138, true))
-            return;
-        try
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(378850138);
+        if (__composer.ShouldExecute(true))
         {
         }
-        finally
+        else
         {
-            CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(378950138, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Preview()));
+            __composer.SkipToGroupEnd();
         }
+
+        __composer.EndRestartGroup(378850138)?.UpdateScope(() => __Preview());
     }
 }

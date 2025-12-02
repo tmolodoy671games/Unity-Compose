@@ -13,53 +13,59 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(553615033, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(553615033);
+            if (__composer.ShouldExecute(true))
             {
                 Layout();
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(553715033, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(553615033)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
-            if (CurrentComposer.BeginComposeGroup(-1988832801, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-1988832801);
+            if (__composer.ShouldExecute(true))
             {
                 Layout();
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1988732801, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Preview()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-1988832801)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
-            if (CurrentComposer.BeginComposeGroup(-182273952, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-182273952);
+            if (__composer.ShouldExecute(true))
             {
                 var animationSpec = Tween(duration: 1f);
-                Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.HasRememberedValue<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>(-2003213279, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>(() =>
+                Box(modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-2003213279, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
-                    Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.HasRememberedValue<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>(-1783280012, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<UnityCompose.AnimationSpec, UnityCompose.ComposableContent>(() =>
+                    Box(modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-1783280012, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                     {
-                        Navigation(coordinator: CurrentComposer.HasRememberedValue<bool, UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(-1613637874, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : CurrentComposer.WriteValue<bool, UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(() => new SampleCoordinatorImpl()), transition: CurrentComposer.HasRememberedValue<UnityCompose.AnimationSpec, System.Func<UnityCompose.ContentTransform>?>(-2128946346, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.AnimationSpec, System.Func<UnityCompose.ContentTransform>?>() : CurrentComposer.WriteLambda<UnityCompose.AnimationSpec, System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: CurrentComposer.HasRememberedValue<bool, StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(1965714662, true) ? CurrentComposer.RememberedValue<bool, StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : CurrentComposer.WriteValue<bool, StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(() => IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: !__composer.RememberedKeyChanged<bool>(-1613637874, true) ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(new SampleCoordinatorImpl()), transition: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-2128946346, animationSpec) ? CurrentComposer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : CurrentComposer.UpdateLambda<System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: !__composer.RememberedKeyChanged<bool>(1965714662, true) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-182173952, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Layout()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-182273952)?.UpdateScope(() => __Layout());
         }
     }
 
@@ -68,21 +74,23 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(-1719960415, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-1719960415);
+            if (__composer.ShouldExecute(true))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(CurrentComposer.HasRememberedValue<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>(-1827947330, coordinator) ? CurrentComposer.RememberedValue<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>(() => coordinator.ShowSecondScreen()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(1552614955, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
+                CollectSpace(!__composer.RememberedKeyChanged<UnityCompose.Samples.Behaviors.ISampleCoordinator?>(-1827947330, coordinator) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => coordinator.ShowSecondScreen()));
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: !__composer.RememberedKeyChanged<bool>(1552614955, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
                     Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1719860415, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-1719960415)?.UpdateScope(() => __Content());
         }
     }
 
@@ -91,29 +99,47 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(-1037156711, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-1037156711);
+            if (__composer.ShouldExecute(true))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(CurrentComposer.HasRememberedValue<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>(1025707352, coordinator) ? CurrentComposer.RememberedValue<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.Samples.Behaviors.ISampleCoordinator?, System.Action>(() => coordinator.ShowFirstScreen()));
+                CollectSpace(!__composer.RememberedKeyChanged<UnityCompose.Samples.Behaviors.ISampleCoordinator?>(1025707352, coordinator) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => coordinator.ShowFirstScreen()));
                 Spacer(modifier: Modifier.FillMaxSize().Background(Color.red));
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1037056711, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-1037156711)?.UpdateScope(() => __Content());
         }
     }
 
     internal static partial class InputFunctions
     {
-        [Composable, DontGenerateComposeGroups]
+        [Composable]
         private static void __CollectSpace(Action onClick)
         {
-            if (!IsActive)
-                return;
-            LaunchedEffect(1, CurrentComposer.HasRememberedValue<System.Action, System.Func<System.Collections.IEnumerator>>(-1731916202, onClick) ? CurrentComposer.RememberedValue<System.Action, System.Func<System.Collections.IEnumerator>>() : CurrentComposer.WriteLambda<System.Action, System.Func<System.Collections.IEnumerator>>(() => CollectSpaceEnumerator(onClick)));
+            var __onClick = (onClick);
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-1251363310);
+            if (__composer.ShouldExecute(__onClick))
+            {
+                if (!IsActive)
+                {
+                    __composer.EndRestartGroup(-1251363310)?.UpdateScope(() => __CollectSpace(__onClick));
+                    return;
+                }
+
+                LaunchedEffect(1, !__composer.RememberedKeyChanged<System.Action>(-1731916202, onClick) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => CollectSpaceEnumerator(onClick)));
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(-1251363310)?.UpdateScope(() => __CollectSpace(__onClick));
         }
     }
 }

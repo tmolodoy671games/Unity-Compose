@@ -10,18 +10,20 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(889209525, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(889209525);
+            if (__composer.ShouldExecute(true))
             {
-                Box(CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(-291042615, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
+                Box(!__composer.RememberedKeyChanged<bool>(-291042615, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
                 }));
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(889309525, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(889209525)?.UpdateScope(() => __Content());
         }
     }
 }

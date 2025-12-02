@@ -11,7 +11,6 @@ public static partial class ModifierExtensions
 {
     #region OnMouseDown
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseDown(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
@@ -23,7 +22,6 @@ public static partial class ModifierExtensions
         return modifier + new OnMouseDownModifierImpl(onMouseDown);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMouseDown(
         this IModifier modifier,
         Action onMouseDown,
@@ -39,7 +37,6 @@ public static partial class ModifierExtensions
 
     #region OnLmbDown
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbDown(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
@@ -55,7 +52,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnLmbDown(
         this IModifier modifier,
         Action onMouseDown,
@@ -75,7 +71,6 @@ public static partial class ModifierExtensions
     
     #region OnRmbDown
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbDown(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
@@ -91,7 +86,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnRmbDown(
         this IModifier modifier,
         Action onMouseDown,
@@ -111,7 +105,6 @@ public static partial class ModifierExtensions
     
     #region OnMmbDown
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbDown(
         this IModifier modifier,
         bool enabled,
@@ -127,7 +120,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbDown(
         this IModifier modifier,
         bool enabled,
@@ -143,7 +135,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbDown(
         this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
@@ -159,7 +150,6 @@ public static partial class ModifierExtensions
         });
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OnMmbDown(
         this IModifier modifier,
         Action onMouseDown,

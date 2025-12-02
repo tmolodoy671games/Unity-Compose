@@ -11,7 +11,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier TransformOrigin(
         this IModifier modifier,
         LayoutLength originX = default,

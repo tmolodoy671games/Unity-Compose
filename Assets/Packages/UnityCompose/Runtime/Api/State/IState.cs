@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -16,9 +16,9 @@ public interface IMutableState<T> : IState<T>
 
 public abstract class BaseMutableStateImpl
 {
-    private readonly HashSet<ReusableComposeGroup> _scopes = new();
+    private readonly HashSet<ComposeRestartScope> _scopes = new();
     private readonly bool _isCompositionLocal;
-    private bool _log;
+    public bool _log;
 
     protected BaseMutableStateImpl(bool isCompositionLocal = false, bool log = false)
     {
@@ -28,7 +28,7 @@ public abstract class BaseMutableStateImpl
 
     protected void Capture()
     {
-        CurrentComposer.Capture(this, _log);
+        CurrentComposer.Capture(this);
     }
 
     protected void Notify()
@@ -42,7 +42,7 @@ public abstract class BaseMutableStateImpl
         }
     }
 
-    internal bool Add(ReusableComposeGroup restartScope) => _scopes.Add(restartScope);
+    internal bool Add(ComposeRestartScope restartScope) => _scopes.Add(restartScope);
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>

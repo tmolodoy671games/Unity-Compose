@@ -9,7 +9,6 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnterTransition Enter(
         Func<float, VisualElement, IModifier> transition,
         Optional<AnimationSpec> animationSpec = default

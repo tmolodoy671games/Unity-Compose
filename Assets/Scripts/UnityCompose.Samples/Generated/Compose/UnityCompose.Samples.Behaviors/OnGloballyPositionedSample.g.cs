@@ -11,70 +11,79 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(1984938033, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(1984938033);
+            if (__composer.ShouldExecute(true))
             {
                 Layout();
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(1985038033, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(1984938033)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
-            if (CurrentComposer.BeginComposeGroup(-1799797902, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-1799797902);
+            if (__composer.ShouldExecute(true))
             {
                 Layout();
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-1799697902, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Preview()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-1799797902)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
-            if (CurrentComposer.BeginComposeGroup(1907345131, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(1907345131);
+            if (__composer.ShouldExecute(true))
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.FillMaxSize().Padding(100), content: CurrentComposer.HasRememberedValue<bool, UnityCompose.ComposableContent>(-199839457, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<bool, UnityCompose.ComposableContent>(() =>
+                Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.FillMaxSize().Padding(100), content: !__composer.RememberedKeyChanged<bool>(-199839457, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
-                    var isSwitched = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<bool>>(2099990617, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<bool>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<bool>>(static () => MutableStateOf(false));
-                    var layout = CurrentComposer.HasRememberedValue<bool, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>(1672145474, true) ? CurrentComposer.RememberedValue<bool, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>() : CurrentComposer.WriteValue<bool, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>(static () => MutableStateOf(Optional.Empty<Vector2>()));
-                    Box(modifier: Modifier.FillMaxSize(), content: CurrentComposer.HasRememberedValue<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>, UnityCompose.ComposableContent>(-532533588, (isSwitched, layout)) ? CurrentComposer.RememberedValue<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>, UnityCompose.ComposableContent>(() =>
+                    var isSwitched = !__composer.RememberedKeyChanged<bool>(2099990617, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
+                    var layout = !__composer.RememberedKeyChanged<bool>(1672145474, true) ? __composer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>(MutableStateOf(Optional.Empty<Vector2>()));
+                    Box(modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>>(-532533588, (isSwitched, layout)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                     {
                         var transitionSpec = Tween();
-                        Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Size(40).Background(Color.blue).Offset(x: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value), content: CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(-1512483868, layout) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(() =>
+                        Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Size(40).Background(Color.blue).Offset(x: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value), content: !__composer.RememberedKeyChanged<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>(-1512483868, layout) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                         {
-                            Box(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(-431635704, layout) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(() =>
+                            Box(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>(-431635704, layout) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                             {
-                                Box(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(472236449, layout) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>() : CurrentComposer.WriteComposableLambda<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, UnityCompose.ComposableContent>(() =>
+                                Box(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>(472236449, layout) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                                 {
-                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, System.Action<UnityCompose.LayoutCoordinates>>(-1802126943, layout) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, System.Action<UnityCompose.LayoutCoordinates>>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?, System.Action<UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter)));
+                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>?>(-1802126943, layout) ? CurrentComposer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : CurrentComposer.UpdateLambda<System.Action<UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter)));
                                 }));
                             }));
                         }));
                     }));
-                    Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(CurrentComposer.HasRememberedValue<UnityCompose.IMutableState<bool>?, System.Action>(1652614945, isSwitched) ? CurrentComposer.RememberedValue<UnityCompose.IMutableState<bool>?, System.Action>() : CurrentComposer.WriteLambda<UnityCompose.IMutableState<bool>?, System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
+                    Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(1652614945, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
+                    __composer.StartReplaceGroup(1445387667);
                     if (layout.Value.HasValue)
                     {
                         var measurer = LocalLayoutMeasurer.Current;
                         Spacer(modifier: Modifier.Size(10).Background(Color.red).Float().Position(left: measurer.GlobalToLocal(layout.Value.Value).x, top: measurer.GlobalToLocal(layout.Value.Value).y));
                     }
+
+                    __composer.EndReplaceGroup(1445387667);
                 }));
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(1907445131, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Layout()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(1907345131)?.UpdateScope(() => __Layout());
         }
     }
 }

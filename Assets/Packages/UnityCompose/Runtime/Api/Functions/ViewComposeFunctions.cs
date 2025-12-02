@@ -22,13 +22,7 @@ public static partial class ComposeFunctions
         ComposableContent? content = null
     ) where T : VisualElement, new()
     {
-        var resolvedModifier = modifier;
-        var localStyle = LocalModifier.Current;
-        if (localStyle.Before != null)
-            resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
-        if (localStyle.After != null)
-            resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
-
+        CurrentComposer.StartReusableGroup(123);
         var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
         var parent = LocalVisualElement.Current;
         var index = CurrentComposer.GetElementIndex();
@@ -37,7 +31,15 @@ public static partial class ComposeFunctions
             parent.FastReinsert(index, visualElement);
             return it.OnDispose(() => parent.Remove(visualElement));
         });
-        
+        CurrentComposer.EnterVisualElement();
+
+        var resolvedModifier = modifier;
+        var localStyle = LocalModifier.Current;
+        if (localStyle.Before != null)
+            resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
+        if (localStyle.After != null)
+            resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
+
         var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
         var currentProperties = Remember(() =>
             IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
@@ -59,11 +61,10 @@ public static partial class ComposeFunctions
         visualElement.style.transitionTimingFunction.value?.Clear();
         visualElement.pickingMode = PickingMode.Ignore;
         visualElement.style.overflow = Overflow.Visible;
-        var a = Remember(() => 1);
         LaunchedEffect(1, () => resolvedModifier?.Apply(visualElement));
         resolvedModifier?.Apply(visualElement);
         FireOnGloballyPositionedCallback(visualElement);
-        
+
         var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
         if (initializer != null)
         {
@@ -83,6 +84,8 @@ public static partial class ComposeFunctions
                 content: content
             );
         }
+
+        CurrentComposer.EndReusableGroup(123);
     }
 
     [Composable]

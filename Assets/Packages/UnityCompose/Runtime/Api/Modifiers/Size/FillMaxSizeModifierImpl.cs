@@ -9,19 +9,16 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier FillMaxSize(this IModifier modifier, float fraction = 1)
     {
         return modifier + new FillMaxSizeModifierImpl(fraction, fraction);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier FillMaxWidth(this IModifier modifier, float fraction = 1)
     {
         return modifier + new FillMaxSizeModifierImpl(fraction, -1);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier FillMaxHeight(this IModifier modifier, float fraction = 1)
     {
         return modifier + new FillMaxSizeModifierImpl(-1, fraction);

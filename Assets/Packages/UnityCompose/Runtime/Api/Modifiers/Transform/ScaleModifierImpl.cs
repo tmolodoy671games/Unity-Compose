@@ -11,7 +11,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Scale(
         this IModifier modifier,
         Optional<float> scale = default,
@@ -29,7 +28,6 @@ public static partial class ModifierExtensions
         );
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Scale(
         this IModifier modifier,
         Vector2 scale,

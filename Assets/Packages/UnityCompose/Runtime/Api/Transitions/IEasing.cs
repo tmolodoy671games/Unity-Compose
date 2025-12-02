@@ -13,10 +13,8 @@ public static partial class ComposeFunctions
     private static IEasing EaseOutEasing = Easing(it => 1 - Mathf.Pow(1 - it, 3));
     private static IEasing EaseInEasing = Easing(it => Mathf.Pow(it, 3));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEasing Easing(Func<float, float> easing) => new CustomEasingImpl(easing);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEasing AnimationCurveEasing(AnimationCurve curve) => new AnimationCurveEasingImpl(curve);
 }
 

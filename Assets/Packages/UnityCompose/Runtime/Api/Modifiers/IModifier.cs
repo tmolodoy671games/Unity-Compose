@@ -17,7 +17,6 @@ public interface IModifier
     [Composable]
     void Revert(VisualElement element);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier operator +(IModifier left, IModifier right)
     {
         return left.Then(right);
@@ -51,10 +50,8 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier OrEmpty(this IModifier? modifier) => modifier ?? Modifier;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Then(this IModifier? left, IModifier? right)
     {
         if (left == null || Equals(left, EmptyModifierImpl.Instance))

@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
 
                         LaunchedEffect(
                             key: string.Empty,
-                            CurrentComposer.WithState(EffectCoroutine).Remember<Func<IEnumerator>>(static __ => () => __())
+                            coroutine: () => EffectCoroutine()
                         );
                     }
 

@@ -11,7 +11,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Border(
         this IModifier modifier,
         float radius = -1,

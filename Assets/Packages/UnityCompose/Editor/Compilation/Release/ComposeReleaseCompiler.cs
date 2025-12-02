@@ -15,9 +15,9 @@ public static class ComposeReleaseCompiler
         Action compile
     )
     {
-        var filePairs = FindFiles()
+        var files = FindFiles()
             .ToImmutableStableList();
-        var originalFileContents = filePairs
+        var originalFileContents = files
             .Select(it => (FullName: it.FullName, Content: File.ReadAllText(it.FullName)))
             .ToImmutableStableList();
         var unityComposeDirectory = new DirectoryInfo("UnityCompose");
@@ -25,7 +25,7 @@ public static class ComposeReleaseCompiler
             unityComposeDirectory.Create();
         var composeBuildFile = new FileInfo(Path.Combine("UnityCompose", ".unityComposeReleaseLock"));
         composeBuildFile.Create().Dispose();
-        Rewrite(filePairs);
+        Rewrite(files);
         AssetDatabase.Refresh();
         try
         {

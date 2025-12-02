@@ -12,15 +12,17 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
         [Composable]
         private void __Content()
         {
-            if (CurrentComposer.BeginComposeGroup(-409325130, true))
-                return;
-            try
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-409325130);
+            if (__composer.ShouldExecute(true))
             {
             }
-            finally
+            else
             {
-                CurrentComposer.EndComposeGroup(CurrentComposer.HasRememberedValue<bool, Action>(-409225130, true) ? CurrentComposer.RememberedValue<bool, Action>() : CurrentComposer.WriteComposableLambda<bool, Action>(() => __Content()));
+                __composer.SkipToGroupEnd();
             }
+
+            __composer.EndRestartGroup(-409325130)?.UpdateScope(() => __Content());
         }
     }
 }

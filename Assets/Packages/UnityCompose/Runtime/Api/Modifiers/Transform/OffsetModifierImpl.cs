@@ -11,7 +11,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Offset(
         this IModifier modifier,
         LayoutLength x = default,

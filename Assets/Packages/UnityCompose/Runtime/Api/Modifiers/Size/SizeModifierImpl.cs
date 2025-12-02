@@ -11,7 +11,6 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Size(
         this IModifier modifier,
         LayoutLength size = default,
@@ -25,7 +24,6 @@ public static partial class ModifierExtensions
         );
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Width(this IModifier modifier, LayoutLength width)
     {
         return modifier + new SizeModifierImpl(
@@ -34,7 +32,6 @@ public static partial class ModifierExtensions
         );
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IModifier Height(this IModifier modifier, LayoutLength height)
     {
         return modifier + new SizeModifierImpl(
