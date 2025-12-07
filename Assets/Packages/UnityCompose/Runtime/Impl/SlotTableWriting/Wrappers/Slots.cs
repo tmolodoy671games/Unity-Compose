@@ -36,6 +36,8 @@ internal readonly struct Slots
         set => _slots[index] = value;
     }
 
+    public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);
+    
     public T? Get<T>(int index)
     {
         var item = _slots[index];
@@ -151,7 +153,7 @@ internal readonly struct Slots
 
 internal static class RestartGroup
 {
-    public const int Size = 2;
+    public const int MetadataSize = 2;
     public const int PreviousStateOffset = 0;
     public const int RestartScopeOffset = 1;
 }
@@ -180,7 +182,7 @@ internal static class PreviousStateSlotsExtensions
 
     public static void InsertPreviousState(this Slots slots, int dataIndex)
     {
-        slots.Insert(dataIndex, ComposeEmptySlot.Instance);
+        slots.Insert(dataIndex + RestartGroup.PreviousStateOffset, ComposeEmptySlot.Instance);
     }
 }
 

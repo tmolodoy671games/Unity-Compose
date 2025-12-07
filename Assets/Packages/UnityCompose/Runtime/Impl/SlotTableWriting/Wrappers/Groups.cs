@@ -27,6 +27,8 @@ internal readonly struct Groups
     
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
     
+    public void RemoveRange(int index, int count) => _groups.RemoveRange(index, count);
+    
     public void Clear() => _groups.Clear();
 
     public string ToString(int currentParentIndex, int currentGroupIndex, Anchors groupsAnchors, Anchors slotsAnchors)

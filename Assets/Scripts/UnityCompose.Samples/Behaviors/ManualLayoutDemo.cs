@@ -7,15 +7,16 @@ namespace UnityCompose.Samples.Behaviors
     [DisallowMultipleComponent, HideMonoScript]
     internal partial class ManualLayoutDemo : MonoBehaviour
     {
-        private static readonly IMutableState<bool> State = MutableStateOf(false);
-        
+        private static readonly IMutableState<bool> UpdateState = MutableStateOf(false);
+        private static readonly IMutableState<bool> SwitchState = MutableStateOf(false);
+
         private void Awake()
         {
             if (!Application.isPlaying)
                 return;
             new ComposeView().SetContent(MockLayout);
         }
-        
+
         [Button("Log")]
         private static void LogButton()
         {
@@ -25,15 +26,25 @@ namespace UnityCompose.Samples.Behaviors
         [Button("Switch")]
         private static void SwitchButton()
         {
-            State.Value = !State.Value;
+            SwitchState.Value = !SwitchState.Value;
+        }
+
+        [Button("Update")]
+        private static void UpdateButton()
+        {
+            UpdateState.Value = !UpdateState.Value;
         }
 
         [Composable]
         private static void MockLayout()
         {
             Debug.Log("MockLayout()");
-            var _ = State.Value.ToString();
-            // MockSpacer();
+            var _ = UpdateState.Value;
+            MockSpacer();
+            if (SwitchState.Value)
+            {
+                MockSpacer();
+            }
         }
 
         [Composable]
