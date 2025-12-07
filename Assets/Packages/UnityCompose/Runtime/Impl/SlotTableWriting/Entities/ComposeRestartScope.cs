@@ -1,6 +1,7 @@
 using System;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 

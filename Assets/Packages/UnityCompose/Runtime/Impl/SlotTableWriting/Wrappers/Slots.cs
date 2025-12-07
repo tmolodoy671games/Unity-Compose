@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
 using UnityEngine.UIElements;
@@ -35,9 +36,25 @@ internal readonly struct Slots
         set => _slots[index] = value;
     }
 
-    private T Get<T>(int index) => (T)_slots[index]!;
+    public T? Get<T>(int index)
+    {
+        var item = _slots[index];
+        if (item is T slot)
+            return slot;
+        return default;
+    }
+    
+    public Optional<T> GetAsOptional<T>(int index)
+    {
+        var item = _slots[index];
+        if (item == ComposeEmptySlot.Instance)
+            return Optional.Empty<T>();
+        if (item is T slot)
+            return slot;
+        return default!;
+    }
 
-    public Optional<T> GetAsMutableState<T>(int index)
+    public Optional<T> GetStruct<T>(int index) where T : struct
     {
         if (index < 0 || index >= Count)
             return Optional.Empty<T>();
@@ -47,7 +64,7 @@ internal readonly struct Slots
         return Optional.Empty<T>();
     }
 
-    public void SetAsMutableState<T>(int index, T value)
+    public void SetAsStruct<T>(int index, T value) where T : struct
     {
         var slot = _slots[index];
         if (slot is MutableSlotEntry<T> mutableSlotEntry)
@@ -61,51 +78,10 @@ internal readonly struct Slots
         _slots.Insert(index, value);
     }
 
-    public void InsertAsMutableState<T>(int index, T value)
+    public void InsertAsStruct<T>(int index, T value) where T : struct
     {
         _slots.Insert(index, new MutableSlotEntry<T>(value));
     }
-
-    #region PreviousState
-
-    public Optional<T> GetPreviousState<T>(int dataIndex)
-    {
-        return GetAsMutableState<T>(dataIndex + PreviousStateOffset);
-    }
-
-    public void SetPreviousState<T>(int dataIndex, T previousState)
-    {
-        SetAsMutableState(dataIndex + PreviousStateOffset, previousState);
-    }
-
-    public void InsertPreviousState<T>(int dataIndex, T previousState)
-    {
-        InsertAsMutableState(dataIndex + PreviousStateOffset, previousState);
-    }
-
-    #endregion
-
-    #region Restart Scope
-
-    public ComposeRestartScope? GetRestartScope(int dataIndex)
-    {
-        var index = dataIndex + RestartScopeOffset;
-        if (index < 0 || index >= Count)
-            return null;
-        return _slots[index] as ComposeRestartScope;
-    }
-
-    public void InsertRestartScope(int dataIndex, ComposeRestartScope? restartScope)
-    {
-        _slots.Insert(dataIndex + RestartScopeOffset, restartScope);
-    }
-
-    public void SetRestartScope(int dataIndex, ComposeRestartScope? restartScope)
-    {
-        _slots[dataIndex + RestartScopeOffset] = restartScope;
-    }
-
-    #endregion
 
     #region CompositionLocal
 
@@ -170,5 +146,58 @@ internal readonly struct Slots
             builder.AppendLine("< CURRENT_ANCHOR_INDEX");
 
         return builder.ToString();
+    }
+}
+
+internal static class RestartGroup
+{
+    public const int Size = 2;
+    public const int PreviousStateOffset = 0;
+    public const int RestartScopeOffset = 1;
+}
+
+internal static class PreviousStateSlotsExtensions
+{
+    public static Optional<T> GetPreviousState<T>(this Slots slots, int dataIndex)
+    {
+        return slots.GetAsOptional<T>(dataIndex + RestartGroup.PreviousStateOffset);
+    }
+    
+    public static Optional<T> GetPreviousStateAsStruct<T>(this Slots slots, int dataIndex) where T : struct
+    {
+        return slots.GetStruct<T>(dataIndex + RestartGroup.PreviousStateOffset);
+    }
+
+    public static void SetPreviousState<T>(this Slots slots, int dataIndex, T previousState)
+    {
+        slots[dataIndex + RestartGroup.PreviousStateOffset] = previousState;
+    }
+
+    public static void SetPreviousStateAsStruct<T>(this Slots slots, int dataIndex, T previousState) where T : struct
+    {
+        slots.SetAsStruct(dataIndex + RestartGroup.PreviousStateOffset, previousState);
+    }
+
+    public static void InsertPreviousState(this Slots slots, int dataIndex)
+    {
+        slots.Insert(dataIndex, ComposeEmptySlot.Instance);
+    }
+}
+
+internal static class RestartScopeSlotsExtensions
+{
+    public static ComposeRestartScope? GetRestartScope(this Slots slots, int dataIndex)
+    {
+        return slots.Get<ComposeRestartScope>(dataIndex + RestartGroup.RestartScopeOffset);
+    }
+
+    public static void SetRestartScope(this Slots slots, int dataIndex, ComposeRestartScope? restartScope)
+    {
+        slots[dataIndex + RestartGroup.RestartScopeOffset] = restartScope;
+    }
+
+    public static void InsertRestartScope(this Slots slots, int dataIndex)
+    {
+        slots.Insert(dataIndex, null);
     }
 }

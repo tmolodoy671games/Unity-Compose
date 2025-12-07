@@ -7,34 +7,53 @@ namespace UnityCompose.Samples.Behaviors
     [DisallowMultipleComponent, HideMonoScript]
     internal partial class ManualLayoutDemo : MonoBehaviour
     {
+        private static readonly IMutableState<bool> State = MutableStateOf(false);
+        
         private void Awake()
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(() =>
-            {
-                var time = TimeUtils.Measure(MockLayout);
-                Debug.Log(time.TotalMilliseconds.ToFloat().ToInt());
-            });
+            new ComposeView().SetContent(MockLayout);
+        }
+        
+        [Button("Log")]
+        private static void LogButton()
+        {
+            Debug.Log(CurrentComposer);
         }
 
-        [Button]
-        private static void MockLayoutButton()
+        [Button("Switch")]
+        private static void SwitchButton()
         {
-            CurrentComposer.Clear();
-            MockLayout();
-            Log();
+            State.Value = !State.Value;
         }
 
         [Composable]
         private static void MockLayout()
         {
+            Debug.Log("MockLayout()");
+            var _ = State.Value.ToString();
+            // MockSpacer();
+        }
+
+        [Composable]
+        private static void MockSpacer()
+        {
+            Debug.Log("MockSpacer()");
+        }
+
+        [Composable]
+        private static void MockPerformanceLayout()
+        {
             for (var i = 0; i < 1_000_000; i++)
             {
-                CurrentComposer.StartRestartGroup(i);
-                CurrentComposer.EndRestartGroup(i);
-                // Spacer(Modifier);
+                EmptyComposable();
             }
+        }
+
+        [Composable]
+        private static void EmptyComposable()
+        {
         }
 
         private static void Log()
