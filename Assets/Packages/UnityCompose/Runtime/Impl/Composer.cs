@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 
 using System;
+using System.Collections.Generic;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
@@ -159,9 +160,8 @@ public class Composer : IComposer
         var restartScope = _writer.RequireRestartScope();
         if (restartScope == null)
             return;
-        var added = state.Add(restartScope);
-        if (added && state._log)
-            Debug.Log($"Capture({_writer.GetGroup(restartScope._groupAnchor).Key})");
+        if (state.Add(restartScope) && state.Log)
+            Debug.Log($"{state} Capture {_writer.GetGroupIndex(restartScope._groupAnchor)}");
     }
 
     #endregion
@@ -197,6 +197,16 @@ public class Composer : IComposer
 
     #region Composition Local
 
+    public void StartLocalGroup(int groupKey)
+    {
+        _writer.StartLocalGroup(groupKey);
+    }
+
+    public void EndLocalGroup(int groupKey)
+    {
+        _writer.EndLocalGroup(groupKey);
+    }
+
     public T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
     {
         return _writer.GetCompositionLocal(compositionLocal, defaultValueFactory);
@@ -212,11 +222,6 @@ public class Composer : IComposer
     public void Clear()
     {
         _writer.Clear();
-    }
-
-    public void ResetTo(int groupIndex)
-    {
-        _writer.ResetTo(groupIndex);
     }
 
     public override string ToString()

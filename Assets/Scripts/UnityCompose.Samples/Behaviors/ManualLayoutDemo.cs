@@ -9,6 +9,8 @@ namespace UnityCompose.Samples.Behaviors
     {
         private static readonly IMutableState<bool> UpdateState = MutableStateOf(false);
         private static readonly IMutableState<bool> SwitchState = MutableStateOf(false);
+        private static readonly IMutableState<int> AddState = MutableStateOf(0);
+        private static readonly ICompositionLocal<string> LocalTest = CompositionLocalOf(static () => "Default");
 
         private void Awake()
         {
@@ -35,16 +37,49 @@ namespace UnityCompose.Samples.Behaviors
             UpdateState.Value = !UpdateState.Value;
         }
 
+        [PropertySpace]
+        [Button("Add")]
+        private static void AddButton()
+        {
+            AddState.Value++;
+        }
+
+        [Button("Remove")]
+        private static void RemoveButton()
+        {
+            AddState.Value = Math.Clamp(AddState.Value - 1, 0, 1000);
+        }
+
+
         [Composable]
         private static void MockLayout()
         {
-            Debug.Log("MockLayout()");
-            var _ = UpdateState.Value;
-            MockSpacer();
-            if (SwitchState.Value)
-            {
-                MockSpacer();
-            }
+            Debug.Log(LocalTest.Current);
+            CompositionLocalProvider(
+                LocalTest.Provides("Custom1"),
+                () =>
+                {
+                    Debug.Log(LocalTest.Current);
+                    CompositionLocalProvider(
+                        LocalTest.Provides("Custom2"),
+                        () => Debug.Log(LocalTest.Current)
+                    );
+                }
+            );
+            Debug.Log(LocalTest.Current);
+
+            // Debug.Log("MockLayout()");
+            // var _ = UpdateState.Value;
+            // MockSpacer();
+            // if (SwitchState.Value)
+            // {
+            //     MockSpacer();
+            // }
+            //
+            // for (var i = 0; i < AddState.Value; i++)
+            // {
+            //     MockSpacer();
+            // }
         }
 
         [Composable]

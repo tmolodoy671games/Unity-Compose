@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
@@ -11,15 +11,10 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 
 internal readonly struct Slots
 {
-    public const int RestartGroupHeaderSize = 2;
     public const int ReusableGroupHeaderSize = 1;
     public const int ReplaceGroupHeaderSize = 0;
 
     private const int VisualElementOffset = 0;
-
-    private const int PreviousStateOffset = 0;
-    private const int RestartScopeOffset = 1;
-    private const int CompositionLocalOffset = 2;
 
     private readonly List<object?> _slots;
 
@@ -37,7 +32,7 @@ internal readonly struct Slots
     }
 
     public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);
-    
+
     public T? Get<T>(int index)
     {
         var item = _slots[index];
@@ -45,7 +40,7 @@ internal readonly struct Slots
             return slot;
         return default;
     }
-    
+
     public Optional<T> GetAsOptional<T>(int index)
     {
         var item = _slots[index];
@@ -85,25 +80,6 @@ internal readonly struct Slots
         _slots.Insert(index, new MutableSlotEntry<T>(value));
     }
 
-    #region CompositionLocal
-
-    public CompositionLocalMap GetCompositionLocalMap(int index)
-    {
-        return (_slots[index + CompositionLocalOffset] as CompositionLocalMap).NotNull();
-    }
-
-    public void SetCompositionLocalMap(int index, CompositionLocalMap? map)
-    {
-        _slots[index + CompositionLocalOffset] = map;
-    }
-
-    public void InsertCompositionLocalMap(int index, CompositionLocalMap? map)
-    {
-        _slots.Insert(index + CompositionLocalOffset, map);
-    }
-
-    #endregion
-
     #region VisualElement
 
     public VisualElement? GetVisualElement(int index)
@@ -138,7 +114,7 @@ internal readonly struct Slots
         for (var i = 0; i < _slots.Count; i++)
         {
             builder.Append($"[{i}] ");
-            builder.Append(_slots[i]);
+            builder.Append(Format(_slots[i]));
             if (i == currentAnchorIndex)
                 builder.Append(" < CURRENT_ANCHOR_INDEX");
             builder.AppendLine();
@@ -148,6 +124,15 @@ internal readonly struct Slots
             builder.AppendLine("< CURRENT_ANCHOR_INDEX");
 
         return builder.ToString();
+    }
+
+    private static string Format(object? value)
+    {
+        if (value == null)
+            return "Null";
+        if (value is Delegate)
+            return $"Lambda";
+        return value.ToString();
     }
 }
 
@@ -164,7 +149,7 @@ internal static class PreviousStateSlotsExtensions
     {
         return slots.GetAsOptional<T>(dataIndex + RestartGroup.PreviousStateOffset);
     }
-    
+
     public static Optional<T> GetPreviousStateAsStruct<T>(this Slots slots, int dataIndex) where T : struct
     {
         return slots.GetStruct<T>(dataIndex + RestartGroup.PreviousStateOffset);
@@ -201,5 +186,37 @@ internal static class RestartScopeSlotsExtensions
     public static void InsertRestartScope(this Slots slots, int dataIndex)
     {
         slots.Insert(dataIndex, null);
+    }
+}
+
+internal static class LocalGroup
+{
+    public const int MetadataSize = 1;
+    public const int CompositionLocalMapOffset = 0;
+}
+
+internal static class LocalGroupSlotsExtensions
+{
+    public static Dictionary<ICompositionLocal, IMutableState<object?>>? GetCompositionLocalMap(
+        this Slots slots,
+        int index
+    )
+    {
+        return slots[index + LocalGroup.CompositionLocalMapOffset] as
+            Dictionary<ICompositionLocal, IMutableState<object?>>;
+    }
+
+    public static void SetCompositionLocalMap(
+        this Slots slots,
+        int index,
+        Dictionary<ICompositionLocal, IMutableState<object?>>? map
+    )
+    {
+        slots[index + LocalGroup.CompositionLocalMapOffset] = map;
+    }
+
+    public static void InsertCompositionLocalMap(this Slots slots, int index)
+    {
+        slots.Insert(index + LocalGroup.CompositionLocalMapOffset, null);
     }
 }

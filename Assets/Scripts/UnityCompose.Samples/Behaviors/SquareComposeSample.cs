@@ -11,7 +11,6 @@ namespace UnityCompose.Samples.Behaviors
         protected override void Preview()
         {
             var isSwitched = Remember(() => LoggableMutableStateOf(false));
-            Debug.Log(isSwitched.Value);
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,

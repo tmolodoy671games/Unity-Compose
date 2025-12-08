@@ -33,8 +33,10 @@ public interface IComposer
     TValue UpdateLambda<TValue>(TValue value) => UpdateRememberedValue(value);
     TValue UpdateComposableLambda<TValue>(TValue value) => UpdateRememberedValue(value);
 
+    void StartLocalGroup(int groupKey);
     T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory);
     void UpdateCompositionLocal(IImmutableStableList<CompositionLocalProvides> provides);
+    void EndLocalGroup(int groupKey);
 
     T GetOrCreateVisualElement<T>() where T : VisualElement, new();
     void SetVisualElement(VisualElement visualElement);
@@ -45,5 +47,4 @@ public interface IComposer
 
     // Debug:
     void Clear();
-    void ResetTo(int groupIndex);
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 public class ComposeRestartScope : IScopeUpdateScope
 {
     public readonly AnchorId _groupAnchor;
+    public Dictionary<ICompositionLocal, IMutableState<object?>>? CompositionLocalMap;
     private Action? _restartCallback;
     private readonly ISlotTableWriter _writer;
 
@@ -24,7 +26,7 @@ public class ComposeRestartScope : IScopeUpdateScope
 
     public void Restart()
     {
-        _writer.ResetTo(_groupAnchor);
+        _writer.ResetTo(_groupAnchor, CompositionLocalMap);
         _restartCallback?.Invoke();
     }
 

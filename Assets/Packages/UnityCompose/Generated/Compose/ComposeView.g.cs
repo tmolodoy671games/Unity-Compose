@@ -14,7 +14,11 @@ public partial class ComposeView
         __composer.StartRestartGroup(-1780379594);
         if (__composer.ShouldExecute(__content))
         {
+            CurrentComposer.StartReusableGroup(0);
+            CurrentComposer.SetVisualElement(this);
+            CurrentComposer.EnterVisualElement();
             CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
+            CurrentComposer.EndReusableGroup(0);
         }
         else
         {

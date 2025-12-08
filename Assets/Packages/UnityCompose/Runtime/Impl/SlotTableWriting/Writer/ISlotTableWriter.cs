@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
@@ -37,12 +38,14 @@ internal interface ISlotTableWriter
     void WriteVisualElement(VisualElement visualElement);
     int GetCurrentElementIndex();
     void EnterVisualElement();
-    
+
+    void StartLocalGroup(int key);
     T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory);
     void SetCompositionLocal(IImmutableStableList<CompositionLocalProvides> providers);
+    void EndLocalGroup(int key);
     
     void Clear();
-    void ResetTo(int groupIndex);
-    void ResetTo(AnchorId groupAnchor);
+    void ResetTo(int groupIndex, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap);
+    void ResetTo(AnchorId groupAnchor, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap);
     void ResetToOutOfBounds();
 }

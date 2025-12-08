@@ -11,7 +11,12 @@ public static partial class ComposeFunctions
 {
     public static ICompositionLocal<T> CompositionLocalOf<T>(Func<T> defaultValue)
     {
-        return new CompositionLocalImpl<T>(defaultValue);
+        return new CompositionLocalImpl<T>(null, defaultValue);
+    }
+    
+    public static ICompositionLocal<T> CompositionLocalOf<T>(string name, Func<T> defaultValue)
+    {
+        return new CompositionLocalImpl<T>(name, defaultValue);
     }
 
     [Composable]
@@ -192,7 +197,9 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
+        CurrentComposer.StartLocalGroup(123);
         CurrentComposer.UpdateCompositionLocal(provides);
         content();
+        CurrentComposer.EndLocalGroup(123);
     }
 }

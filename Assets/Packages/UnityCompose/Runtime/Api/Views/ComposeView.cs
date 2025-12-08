@@ -22,7 +22,7 @@ public partial class ComposeView : VisualElement
         ContentImpl(content);
     }
 
-    [Composable, Compiled]
+    [Composable]
     private void ContentImpl(ComposableContent content)
     {
         CurrentComposer.StartReusableGroup(0);

@@ -17,4 +17,5 @@ internal enum ComposeGroupType : byte
     Replace,
     Restart,
     Reusable,
+    Local,
 }

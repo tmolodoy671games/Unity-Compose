@@ -10,7 +10,7 @@ public interface ICompositionLocal
 public interface ICompositionLocal<T> : ICompositionLocal
 {
     T Current { get; }
-    
+
     public CompositionLocalProvides Provides(T value)
     {
         return new CompositionLocalProvides(this, value);
@@ -20,10 +20,12 @@ public interface ICompositionLocal<T> : ICompositionLocal
 internal class CompositionLocalImpl<T> : ICompositionLocal<T>
 {
     private readonly Func<T> _defaultValueFactory;
+    private readonly string? _name;
 
-    public CompositionLocalImpl(Func<T> defaultValueFactory)
+    public CompositionLocalImpl(string? name, Func<T> defaultValueFactory)
     {
         _defaultValueFactory = defaultValueFactory;
+        _name = name;
     }
 
     public T Current
@@ -33,11 +35,17 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
 
     public override string ToString()
     {
-        return typeof(T).Name;
+        return _name ?? $"ICompositionLocal<{typeof(T).Name}>";
     }
 }
 
 public readonly record struct CompositionLocalProvides(
     ICompositionLocal CompositionLocal,
     object? Value
-);
+)
+{
+    public override string ToString()
+    {
+        return $"{CompositionLocal} Provides {Value}";
+    }
+}

@@ -39,7 +39,7 @@ internal readonly struct Groups
         for (var i = 0; i < _groups.Count; i++)
         {
             var group = _groups[i];
-            builder.Append($"[{i}] ");
+            builder.Append($"[{i}]\t");
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
             builder.Append(group.ToString(groupsAnchors, slotsAnchors));
             if (currentParentIndex == i)
@@ -86,6 +86,7 @@ internal static class ComposeGroupExtensions
                 ComposeGroupType.Replace => "ReplaceGroup",
                 ComposeGroupType.Restart => "RestartGroup",
                 ComposeGroupType.Reusable => "ReusableGroup",
+                ComposeGroupType.Local => "LocalGroup",
                 _ => throw new ArgumentOutOfRangeException()
             }
         );
@@ -96,6 +97,8 @@ internal static class ComposeGroupExtensions
         builder.Append($", Index: {group.Index(groupsAnchors)}");
         builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors)}");
         builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors)}");
+        builder.Append($", ElementIndex: {group.ElementIndex}");
+        builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
         return builder.ToString();
     }

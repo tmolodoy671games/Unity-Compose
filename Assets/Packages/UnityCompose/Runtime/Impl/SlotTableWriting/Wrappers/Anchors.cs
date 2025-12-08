@@ -15,7 +15,12 @@ internal readonly struct Anchors
     
     public int Count => _anchors.Count;
     
-    public Anchor this[AnchorId id] => _anchors[id.Index];
+    public Anchor this[AnchorId id]
+    {
+        get => _anchors[id.Index];
+        set => _anchors[id.Index] = value;
+    }
+
     public Anchor this[int id]
     {
         get => _anchors[id];
