@@ -44,7 +44,6 @@ public interface IComposer
     void EnterVisualElement();
 
     void Capture(BaseMutableStateImpl state);
-
-    // Debug:
+    void Reset();
     void Clear();
 }

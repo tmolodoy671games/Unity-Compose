@@ -34,11 +34,23 @@ namespace UnityCompose.Samples.Behaviors
                 var isSwitched = !__composer.RememberedKeyChanged<bool>(-894395642, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(LoggableMutableStateOf(false));
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(62634758, isSwitched) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
-                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(1202012326, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() =>
-                    {
-                        Debug.Log("OnClick()");
-                        isSwitched.Value = !isSwitched.Value;
-                    })).Scale(isSwitched.Value ? 1.5f : 1, transition: Transition()));
+                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(1202012326, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale(isSwitched.Value ? 1.5f : 1, transition: Transition()));
+                // Spacer(
+                //     Modifier
+                //         .Size(100)
+                //         .Background(Color.green)
+                //         .Border(16)
+                //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
+                //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
+                // );
+                // Spacer(
+                //     Modifier
+                //         .Size(100)
+                //         .Background(Color.blue)
+                //         .Border(16)
+                //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
+                //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
+                // );
                 }));
             }
             else
@@ -53,12 +65,12 @@ namespace UnityCompose.Samples.Behaviors
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1712682151);
+            __composer.StartRestartGroup(-683777904);
             if (__composer.ShouldExecute(true))
             {
-                var isSwitched = !__composer.RememberedKeyChanged<bool>(751214259, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(LoggableMutableStateOf(false));
-                var isHovered = !__composer.RememberedKeyChanged<bool>(237932776, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(LoggableMutableStateOf(false));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<bool>?>>(1854010567, (isSwitched, isHovered)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                var isSwitched = !__composer.RememberedKeyChanged<bool>(-726919735, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(LoggableMutableStateOf(false));
+                var isHovered = !__composer.RememberedKeyChanged<bool>(-479376136, true) ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(LoggableMutableStateOf(false));
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<ValueTuple<UnityCompose.IMutableState<bool>?, UnityCompose.IMutableState<bool>?>>(1186585468, (isSwitched, isHovered)) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
                     __composer.StartReplaceGroup(497652786);
                     if (isSwitched.Value)
@@ -68,9 +80,9 @@ namespace UnityCompose.Samples.Behaviors
 
                     __composer.EndReplaceGroup(497652786);
                     Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Background(Color.blue).Border(16).Size(100).Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())// .Scale(AnimateFloatAsState(isHovered.Value ? 1.5f : 1).Value)
-                    .OnClick(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(1360769975, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isSwitched.Value = !isSwitched.Value)).OnMouseEnter(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(822677266, isHovered) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isHovered.Value = true)).OnMouseLeave(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(1701961213, isHovered) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isHovered.Value = false)), content: !__composer.RememberedKeyChanged<bool>(1755578601, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                    .OnClick(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(2065212701, isSwitched) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isSwitched.Value = !isSwitched.Value)).OnMouseEnter(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(-1567267116, isHovered) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isHovered.Value = true)).OnMouseLeave(!__composer.RememberedKeyChanged<UnityCompose.IMutableState<bool>?>(996334958, isHovered) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => isHovered.Value = false)), content: !__composer.RememberedKeyChanged<bool>(-1404477844, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                     {
-                        Box(modifier: Modifier.Size(50).Background(Color.red).Border(16), content: !__composer.RememberedKeyChanged<bool>(-1245837134, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                        Box(modifier: Modifier.Size(50).Background(Color.red).Border(16), content: !__composer.RememberedKeyChanged<bool>(-1185058055, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                         {
                             Text(text: "Text", color: Color.white);
                         }));
@@ -89,7 +101,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1712682151)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(-683777904)?.UpdateScope(() => __Layout());
         }
     }
 }

@@ -164,6 +164,16 @@ public class Composer : IComposer
             Debug.Log($"{state} Capture {_writer.GetGroupIndex(restartScope._groupAnchor)}");
     }
 
+    public void Reset()
+    {
+        _writer.ResetTo(0, null);
+    }
+
+    public void Clear()
+    {
+     _writer.Clear();   
+    }
+
     #endregion
 
     #region Visual Element
@@ -218,11 +228,6 @@ public class Composer : IComposer
     }
 
     #endregion
-
-    public void Clear()
-    {
-        _writer.Clear();
-    }
 
     public override string ToString()
     {

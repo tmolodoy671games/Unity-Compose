@@ -386,6 +386,12 @@ internal class SlotTableWriter : ISlotTableWriter
         // if (IsDebugVisualElementNamesEnabled)
         //     visualElement.name = CurrentParent().Key.ToString();
         _slots.SetVisualElement(CurrentParent().SlotIndex(_slotsAnchors), visualElement);
+        var currentParent = CurrentParent();
+        if (currentParent.ElementsCount != 1)
+        {
+            currentParent = currentParent with { ElementsCount = 1 };
+            _groups[_currentParentIndex] = currentParent;
+        }
     }
 
     public int GetCurrentElementIndex() => _currentElementIndex;
@@ -537,17 +543,30 @@ internal class SlotTableWriter : ISlotTableWriter
     {
         _groups.Clear();
         _slots.Clear();
-        _slotsAnchors.Clear();
         _groupsAnchors.Clear();
-        _currentParentIndex = -1;
-        _currentGroupIndex = 0;
-        _currentSlotIndex = 0;
+        _slotsAnchors.Clear();
         _enteredParentsIndices.Clear();
+        _enteredParentsSlotIndices.Clear();
+        _enteredElementIndices.Clear();
+        _enteredRestartGroups.Clear();
+        _enteredLocalGroups.Clear();
+
+        _enteredCompositionLocalMaps.Clear();
+        _enteredProvides.Clear();
+        _rootCompositionLocalMap = null;
+
+        _currentGroupIndex = 0;
+        _currentParentIndex = -1;
+        _currentSlotIndex = 0;
+        _currentParentSlotIndex = -1;
+        _invalidationRoot = -1;
+        _currentElementIndex = 0;
+        _alreadyRemovedGroups = 0;
+        _alreadyRemovedSlots = 0;
     }
 
     public void ResetTo(int groupIndex, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap)
     {
-        Debug.Log($"ResetTo({groupIndex})");
 #if LOGGING
         Log($"ResetTo({groupIndex})");
 #endif
@@ -565,6 +584,7 @@ internal class SlotTableWriter : ISlotTableWriter
         _currentElementIndex = group.ElementIndex;
         _currentSlotIndex = _slotsAnchors[group.DataAnchorId].Index;
         _rootCompositionLocalMap = compositionLocalMap;
+        Log($"ResetTo()");
     }
 
     public void ResetTo(
@@ -572,7 +592,12 @@ internal class SlotTableWriter : ISlotTableWriter
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap
     )
     {
-        ResetTo(_groupsAnchors[groupAnchor].Index, compositionLocalMap);
+        if (!groupAnchor.IsValid)
+            return;
+        var anchor = _groupsAnchors[groupAnchor];
+        if (!anchor.IsValid)
+            return;
+        ResetTo(anchor.Index, compositionLocalMap);
     }
 
     public void ResetToOutOfBounds()
