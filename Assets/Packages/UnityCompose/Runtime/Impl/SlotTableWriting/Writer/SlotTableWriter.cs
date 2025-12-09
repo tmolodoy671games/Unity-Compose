@@ -1,6 +1,5 @@
 // #define LOGGING
-
-#define ASSERTIONS
+// #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 
 using System;
@@ -264,8 +263,8 @@ internal class SlotTableWriter : ISlotTableWriter
 #endif
         if (IsThereAlreadyAGroup())
         {
-#if ASSERTIONS
             var existingGroup = _groups[_currentGroupIndex];
+#if ASSERTIONS
             if (existingGroup.Key != key)
                 throw new InvalidOperationException($"Found {existingGroup.Key} instead of {key}!");
             if (existingGroup.Type != ComposeGroupType.Reusable)

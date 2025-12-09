@@ -1,6 +1,7 @@
 using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
+using StableCollections;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -16,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockLayout);
+            new ComposeView().SetContent(MockPerformanceLayout);
         }
 
         [Button("Log")]
@@ -91,10 +92,16 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void MockPerformanceLayout()
         {
-            for (var i = 0; i < 1_000_000; i++)
+            var composer = CurrentComposer;
+            var list = Remember(() => IImmutableStableList.Create<CompositionLocalProvides>());
+            var time = TimeUtils.Measure(() =>
             {
-                EmptyComposable();
-            }
+                for (var i = 0; i < 1_000_000; i++)
+                {
+                    var _ = Remember(() => 1);
+                }
+            });
+            Debug.Log((int)time.TotalMilliseconds);
         }
 
         [Composable]

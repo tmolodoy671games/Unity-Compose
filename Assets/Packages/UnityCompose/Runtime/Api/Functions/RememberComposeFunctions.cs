@@ -12,7 +12,8 @@ public static partial class ComposeFunctions
         Func<TValue> defaultValueFactory
     )
     {
-        throw new InvalidOperationException("Should be replaced when compiled!");
+        var composer = CurrentComposer;
+        return composer.RememberedKeyChanged(0, key) ? composer.RememberedValue<TValue>() : composer.UpdateRememberedValue(defaultValueFactory);
     }
 
     [Composable, Compiled]
@@ -20,6 +21,7 @@ public static partial class ComposeFunctions
         Func<TValue> defaultValueFactory
     )
     {
-        throw new InvalidOperationException("Should be replaced when compiled!");
+        var composer = CurrentComposer;
+        return composer.RememberedKeyChanged(0, 0) ? composer.RememberedValue<TValue>() : composer.UpdateRememberedValue(defaultValueFactory);
     }
 }

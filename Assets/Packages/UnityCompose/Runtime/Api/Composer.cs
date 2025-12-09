@@ -21,7 +21,7 @@ public interface IComposer
     void StartReusableGroup(int key);
     void EndReusableGroup(int key);
 
-    bool RememberedKeyChanged<T>(int groupKey);
+    bool RememberedKeyChanged(int groupKey);
     bool RememberedKeyChanged<T>(int groupKey, T state);
     bool RememberedKeyChangedAsStruct<T>(int groupKey, T state) where T : struct;
     T RememberedValue<T>();

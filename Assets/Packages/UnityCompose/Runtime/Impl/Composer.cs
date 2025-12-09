@@ -90,7 +90,7 @@ public class Composer : IComposer
 
     #region Remember
 
-    public bool RememberedKeyChanged<T>(int groupKey)
+    public bool RememberedKeyChanged(int groupKey)
     {
         return RememberedKeyChanged(groupKey, Unit.Instance);
     }
