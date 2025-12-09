@@ -18,13 +18,14 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxSize(),
                 content: () =>
                 {
+                    isSwitched.Value.ToString();
                     Spacer(
                         Modifier
                             .Size(100)
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
+                            .Scale(1, transition: Transition())
                     );
                     // Spacer(
                     //     Modifier

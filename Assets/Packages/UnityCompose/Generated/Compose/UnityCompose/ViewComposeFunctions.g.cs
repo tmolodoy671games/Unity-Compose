@@ -46,10 +46,8 @@ public static partial class ComposeFunctions
             var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
             resolvedModifier?.Apply(newProperties);
             var propertiesToRevert = currentProperties.Value.Where(!__composer.RememberedKeyChanged<StableCollections.IMutableStableSet<UnityCompose.ComposeModifiedProperty>?>(1986802330, newProperties) ? CurrentComposer.RememberedValue<System.Func<UnityCompose.ComposeModifiedProperty, bool>>() : CurrentComposer.UpdateLambda<System.Func<UnityCompose.ComposeModifiedProperty, bool>>(it => !newProperties.Contains(it)));
-            __composer.StartReplaceGroup(-1759835366);
             foreach (var property in propertiesToRevert)
                 property.Revert(visualElement);
-            __composer.EndReplaceGroup(-1759835366);
             currentProperties.Value = newProperties;
             currentModifier.Value = resolvedModifier;
             visualElement.ClearCallbacks();
@@ -63,20 +61,15 @@ public static partial class ComposeFunctions
             resolvedModifier?.Apply(visualElement);
             FireOnGloballyPositionedCallback(visualElement);
             var currentInitializer = !__composer.RememberedKeyChanged<bool>(211651232, true) ? __composer.RememberedValue<StableCollections.IMutableStableProperty<System.Action<T>?>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<System.Action<T>?>>(IMutableStableProperty.Create<Action<T>?>(null));
-            __composer.StartReplaceGroup(398703009);
             if (initializer != null)
             {
-                __composer.StartReplaceGroup(1625118031);
                 if (currentInitializer.Value != initializer)
                 {
                     currentInitializer.Value = initializer;
                     initializer(visualElement);
                 }
-
-                __composer.EndReplaceGroup(1625118031);
             }
 
-            __composer.EndReplaceGroup(398703009);
             __composer.StartReplaceGroup(502670197);
             if (content != null)
             {
