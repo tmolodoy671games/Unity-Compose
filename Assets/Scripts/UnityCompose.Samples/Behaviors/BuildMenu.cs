@@ -17,5 +17,17 @@ internal static class BuildMenu
             }
         ));
     }
+    
+    [MenuItem("Tools/Unity Compose/Build Windows")]
+    private static void BuildWindows()
+    {
+        ComposeReleaseCompiler.Compile(() => BuildPipeline.BuildPlayer(
+            buildPlayerOptions: new BuildPlayerOptions
+            {
+                target = BuildTarget.StandaloneWindows64,
+                locationPathName = "Build/Windows/UnityCompose.exe",
+            }
+        ));
+    }
 }
 #endif

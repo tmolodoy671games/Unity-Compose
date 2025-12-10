@@ -11,6 +11,6 @@ public static partial class ComposeFunctions
     private static IComposeCoroutineScope __RememberCoroutineScope()
     {
         var __composer = CurrentComposer;
-        return !__composer.RememberedKeyChanged<bool>(427740967, true) ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl());
+        return !__composer.RememberedKeyChanged<bool>(-1975442791, true) ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl());
     }
 }

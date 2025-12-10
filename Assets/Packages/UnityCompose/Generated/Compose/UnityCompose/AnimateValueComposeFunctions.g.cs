@@ -48,11 +48,11 @@ public static partial class ComposeFunctions
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
         var __composer = CurrentComposer;
-        var property = !__composer.RememberedKeyChanged<bool>(-1967881308, true) ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
+        var property = !__composer.RememberedKeyChanged<bool>(-344389583, true) ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: targetValue!, coroutine: !__composer.RememberedKeyChanged<ValueTuple<T, UnityCompose.IMutableState<T>?>>(680197389, (targetValue, property)) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
+        LaunchedEffect(key: targetValue!, coroutine: !__composer.RememberedKeyChanged<ValueTuple<T, UnityCompose.IMutableState<T>?>>(1531011583, (targetValue, property)) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
@@ -78,11 +78,11 @@ public static partial class ComposeFunctions
     {
         var __composer = CurrentComposer;
         var targetValue = targetValueFactory();
-        var property = !__composer.RememberedKeyChanged<bool>(-1382118261, true) ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
+        var property = !__composer.RememberedKeyChanged<bool>(-1955790247, true) ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
             return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: key, coroutine: !__composer.RememberedKeyChanged<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>>(1303380056, (targetValueFactory, property)) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
+        LaunchedEffect(key: key, coroutine: !__composer.RememberedKeyChanged<ValueTuple<System.Func<T>, UnityCompose.IMutableState<T>?>>(-243410239, (targetValueFactory, property)) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {

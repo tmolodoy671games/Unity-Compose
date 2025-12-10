@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockPerformanceLayout);
+            new ComposeView().SetContent(MockLayout);
         }
 
         [Button("Log")]
@@ -55,22 +55,22 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void MockLayout()
         {
-            Debug.Log(LocalTest.Current);
-            CompositionLocalProvider(
-                LocalTest.Provides("Custom1"),
-                () =>
-                {
-                    Debug.Log(LocalTest.Current);
-                    CompositionLocalProvider(
-                        LocalTest.Provides("Custom2"),
-                        () => Debug.Log(LocalTest.Current)
-                    );
-                }
-            );
-            Debug.Log(LocalTest.Current);
+            // Debug.Log(LocalTest.Current);
+            // CompositionLocalProvider(
+            //     LocalTest.Provides("Custom1"),
+            //     () =>
+            //     {
+            //         Debug.Log(LocalTest.Current);
+            //         CompositionLocalProvider(
+            //             LocalTest.Provides("Custom2"),
+            //             () => Debug.Log(LocalTest.Current)
+            //         );
+            //     }
+            // );
+            // Debug.Log(LocalTest.Current);
 
-            // Debug.Log("MockLayout()");
-            // var _ = UpdateState.Value;
+            Debug.Log("MockLayout()");
+            var _ = UpdateState.Value;
             // MockSpacer();
             // if (SwitchState.Value)
             // {
