@@ -81,17 +81,14 @@ public class Composer : IComposer
 
     #region Remember
 
-    public bool RememberedKeyChanged(int groupKey)
+    public bool Changed()
     {
-        return RememberedKeyChanged(groupKey, Unit.Instance);
+        return Changed(Unit.Instance);
     }
 
-    public bool RememberedKeyChanged<TState>(int groupKey, TState state)
+    public bool Changed<TState>(TState state)
     {
-        // _writer.StartReplaceGroup(groupKey);
-        var existingKey = _writer.Read<TState>();
-        _writer.Write(state);
-        _writer.IncrementSlotIndex();
+        var existingKey = _writer.ReadAndWrite(state);
         return !existingKey.Equals(state);
     }
 
@@ -99,7 +96,6 @@ public class Composer : IComposer
     {
         var result = _writer.Read<T>().Value;
         _writer.IncrementSlotIndex();
-        // _writer.EndReplaceGroup();
         return result;
     }
 
@@ -107,7 +103,6 @@ public class Composer : IComposer
     {
         _writer.Write(update);
         _writer.IncrementSlotIndex();
-        // _writer.EndReplaceGroup();
         return update;
     }
 

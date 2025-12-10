@@ -52,11 +52,11 @@ namespace UnityCompose.Samples.Behaviors
             if (__composer.ShouldExecute(true))
             {
                 var animationSpec = Tween(duration: 1f);
-                Box(modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-2003213279, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                Box(modifier: Modifier.FillMaxSize(), content: !__composer.Changed(animationSpec) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
-                    Box(modifier: Modifier.FillMaxSize(), content: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-1783280012, animationSpec) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                    Box(modifier: Modifier.FillMaxSize(), content: !__composer.Changed(animationSpec) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                     {
-                        Navigation(coordinator: !__composer.RememberedKeyChanged<bool>(-1613637874, true) ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(new SampleCoordinatorImpl()), transition: !__composer.RememberedKeyChanged<UnityCompose.AnimationSpec>(-2128946346, animationSpec) ? CurrentComposer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : CurrentComposer.UpdateLambda<System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: !__composer.RememberedKeyChanged<bool>(1965714662, true) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(new SampleCoordinatorImpl()), transition: !__composer.Changed(animationSpec) ? __composer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: !__composer.Changed() ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
@@ -79,8 +79,8 @@ namespace UnityCompose.Samples.Behaviors
             if (__composer.ShouldExecute(true))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(!__composer.RememberedKeyChanged<UnityCompose.Samples.Behaviors.ISampleCoordinator?>(-1827947330, coordinator) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => coordinator.ShowSecondScreen()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: !__composer.RememberedKeyChanged<bool>(1552614955, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowSecondScreen()));
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
                     Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
@@ -104,7 +104,7 @@ namespace UnityCompose.Samples.Behaviors
             if (__composer.ShouldExecute(true))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
-                CollectSpace(!__composer.RememberedKeyChanged<UnityCompose.Samples.Behaviors.ISampleCoordinator?>(1025707352, coordinator) ? CurrentComposer.RememberedValue<System.Action>() : CurrentComposer.UpdateLambda<System.Action>(() => coordinator.ShowFirstScreen()));
+                CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowFirstScreen()));
                 Spacer(modifier: Modifier.FillMaxSize().Background(Color.red));
             }
             else
@@ -132,7 +132,7 @@ namespace UnityCompose.Samples.Behaviors
                     return;
                 }
 
-                LaunchedEffect(1, !__composer.RememberedKeyChanged<System.Action>(-1731916202, onClick) ? CurrentComposer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : CurrentComposer.UpdateLambda<System.Func<System.Collections.IEnumerator>>(() => CollectSpaceEnumerator(onClick)));
+                LaunchedEffect(1, !__composer.Changed(onClick) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => CollectSpaceEnumerator(onClick)));
             }
             else
             {

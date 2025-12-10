@@ -1,7 +1,6 @@
 using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
-using StableCollections;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -17,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockPerformanceLayout);
+            new ComposeView().SetContent(MockLayout);
         }
 
         [Button("Log")]
@@ -50,36 +49,19 @@ namespace UnityCompose.Samples.Behaviors
         {
             AddState.Value = Math.Clamp(AddState.Value - 1, 0, 1000);
         }
-        
+
         [Composable]
         private static void MockLayout()
         {
-            // Debug.Log(LocalTest.Current);
-            // CompositionLocalProvider(
-            //     LocalTest.Provides("Custom1"),
-            //     () =>
-            //     {
-            //         Debug.Log(LocalTest.Current);
-            //         CompositionLocalProvider(
-            //             LocalTest.Provides("Custom2"),
-            //             () => Debug.Log(LocalTest.Current)
-            //         );
-            //     }
-            // );
-            // Debug.Log(LocalTest.Current);
-
             Debug.Log("MockLayout()");
-            var _ = UpdateState.Value;
-            // MockSpacer();
-            // if (SwitchState.Value)
-            // {
-            //     MockSpacer();
-            // }
-            //
-            // for (var i = 0; i < AddState.Value; i++)
-            // {
-            //     MockSpacer();
-            // }
+            _ = UpdateState.Value;
+            if (SwitchState.Value)
+            {
+                MockSpacer();
+            }
+            
+            for (var i = 0; i < AddState.Value; i++)
+                MockSpacer();
         }
 
         [Composable]
@@ -91,14 +73,12 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void MockPerformanceLayout()
         {
-            var composer = CurrentComposer;
-            var list = Remember(() => IImmutableStableList.Create<CompositionLocalProvides>());
             var state = new object();
             var time = TimeUtils.Measure(() =>
             {
                 for (var i = 0; i < 1_000_000; i++)
                 {
-                    var _ = Remember(() => state);
+                    _ = Remember(() => i);
                 }
             });
             Debug.Log((int)time.TotalMilliseconds);

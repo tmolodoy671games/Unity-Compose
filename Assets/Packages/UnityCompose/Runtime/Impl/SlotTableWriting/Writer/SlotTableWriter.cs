@@ -313,6 +313,16 @@ internal class SlotTableWriter : ISlotTableWriter
             return Optional.Empty<T>();
         return _slots.GetAsOptional<T>(_currentSlotIndex);
     }
+
+    public Optional<T> ReadAndWrite<T>(T value)
+    {
+        if (!IsThereAlreadyASlot())
+            return Optional.Empty<T>();
+        var result = _slots.GetAsOptional<T>(_currentSlotIndex);
+        _slots[_currentSlotIndex] = value;
+        _currentSlotIndex++;
+        return result;
+    }
     
     public void Write<T>(T value)
     {
@@ -549,7 +559,6 @@ internal class SlotTableWriter : ISlotTableWriter
         _currentElementIndex = group.ElementIndex;
         _currentSlotIndex = _slotsAnchors[group.DataAnchorId].Index;
         _rootCompositionLocalMap = compositionLocalMap;
-        Log($"ResetTo()");
     }
 
     public void ResetTo(

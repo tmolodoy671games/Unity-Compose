@@ -20,8 +20,8 @@ public interface IComposer
     void StartReusableGroup(int key);
     void EndReusableGroup(int key);
 
-    bool RememberedKeyChanged(int groupKey);
-    bool RememberedKeyChanged<T>(int groupKey, T state);
+    bool Changed();
+    bool Changed<T>(T state);
     T RememberedValue<T>();
     T UpdateRememberedValue<T>(T value);
     T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());

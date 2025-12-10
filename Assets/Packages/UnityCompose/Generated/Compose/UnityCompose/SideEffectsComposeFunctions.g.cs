@@ -18,7 +18,7 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(-769255491);
         if (__composer.ShouldExecute((__key, __coroutine)))
         {
-            var _ = !__composer.RememberedKeyChanged<TKey?>(-482592511, key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
+            var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
         }
         else
         {
@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(-1475952084);
         if (__composer.ShouldExecute((__key, __block)))
         {
-            var _ = !__composer.RememberedKeyChanged<TKey?>(1173313406, key) ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
+            var _ = !__composer.Changed(key) ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
             {
                 block();
                 return string.Empty;
@@ -58,7 +58,7 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(1550925309);
         if (__composer.ShouldExecute((__key, __delay, __block)))
         {
-            var _ = !__composer.RememberedKeyChanged<TKey?>(691399711, key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
+            var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
         }
         else
         {
@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(659675226);
         if (__composer.ShouldExecute((__key, __delay, __block)))
         {
-            var _ = !__composer.RememberedKeyChanged<TKey?>(-1957850529, key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block)));
+            var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block)));
         }
         else
         {
@@ -94,7 +94,7 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(1899698801);
         if (__composer.ShouldExecute((__key, __effect)))
         {
-            var _ = !__composer.RememberedKeyChanged<TKey?>(281098790, key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(effect(DisposableEffectScopeImpl.Instance));
+            var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(effect(DisposableEffectScopeImpl.Instance));
         }
         else
         {

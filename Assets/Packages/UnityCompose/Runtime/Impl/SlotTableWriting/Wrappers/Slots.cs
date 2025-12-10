@@ -75,11 +75,6 @@ internal readonly struct Slots
         _slots.Insert(index, value);
     }
 
-    public void InsertAsStruct<T>(int index, T value) where T : struct
-    {
-        _slots.Insert(index, new MutableSlotEntry<T>(value));
-    }
-
     #region VisualElement
 
     public VisualElement? GetVisualElement(int index)
@@ -150,19 +145,9 @@ internal static class PreviousStateSlotsExtensions
         return slots.GetAsOptional<T>(dataIndex + RestartGroup.PreviousStateOffset);
     }
 
-    public static Optional<T> GetPreviousStateAsStruct<T>(this Slots slots, int dataIndex) where T : struct
-    {
-        return slots.GetStruct<T>(dataIndex + RestartGroup.PreviousStateOffset);
-    }
-
     public static void SetPreviousState<T>(this Slots slots, int dataIndex, T previousState)
     {
         slots[dataIndex + RestartGroup.PreviousStateOffset] = previousState;
-    }
-
-    public static void SetPreviousStateAsStruct<T>(this Slots slots, int dataIndex, T previousState) where T : struct
-    {
-        slots.SetAsStruct(dataIndex + RestartGroup.PreviousStateOffset, previousState);
     }
 
     public static void InsertPreviousState(this Slots slots, int dataIndex)
