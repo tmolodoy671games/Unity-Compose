@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockLayout);
+            new ComposeView().SetContent(MockPerformanceLayout);
         }
 
         [Button("Log")]
@@ -50,8 +50,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             AddState.Value = Math.Clamp(AddState.Value - 1, 0, 1000);
         }
-
-
+        
         [Composable]
         private static void MockLayout()
         {
@@ -94,11 +93,12 @@ namespace UnityCompose.Samples.Behaviors
         {
             var composer = CurrentComposer;
             var list = Remember(() => IImmutableStableList.Create<CompositionLocalProvides>());
+            var state = new object();
             var time = TimeUtils.Measure(() =>
             {
                 for (var i = 0; i < 1_000_000; i++)
                 {
-                    var _ = Remember(() => 1);
+                    var _ = Remember(() => state);
                 }
             });
             Debug.Log((int)time.TotalMilliseconds);

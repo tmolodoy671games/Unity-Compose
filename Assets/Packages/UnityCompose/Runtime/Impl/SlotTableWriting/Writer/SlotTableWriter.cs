@@ -109,19 +109,9 @@ internal class SlotTableWriter : ISlotTableWriter
         return _slots.GetPreviousState<T>(_currentParentSlotIndex);
     }
 
-    public Optional<T> GetPreviousStateAsStruct<T>() where T : struct
-    {
-        return _slots.GetPreviousStateAsStruct<T>(_currentParentSlotIndex);
-    }
-
     public void UpdatePreviousState<T>(T state)
     {
         _slots.SetPreviousState(_currentParentSlotIndex, state);
-    }
-
-    public void UpdatePreviousStateAsStruct<T>(T state) where T : struct
-    {
-        _slots.SetPreviousStateAsStruct(_currentParentSlotIndex, state);
     }
 
     public void SkipToGroupEnd()
@@ -323,17 +313,7 @@ internal class SlotTableWriter : ISlotTableWriter
             return Optional.Empty<T>();
         return _slots.GetAsOptional<T>(_currentSlotIndex);
     }
-
-    public Optional<T> ReadAsStruct<T>() where T : struct
-    {
-#if LOGGING
-        Log($"ReadAsStruct<T>()");
-#endif
-        if (!IsThereAlreadyASlot())
-            return Optional.Empty<T>();
-        return _slots.GetStruct<T>(_currentSlotIndex);
-    }
-
+    
     public void Write<T>(T value)
     {
 #if LOGGING
@@ -346,20 +326,6 @@ internal class SlotTableWriter : ISlotTableWriter
         }
 
         _slots[_currentSlotIndex] = value;
-    }
-
-    public void WriteAsStruct<T>(T value) where T : struct
-    {
-#if LOGGING
-        Log($"WriteAsStruct<T>()");
-#endif
-        if (!IsThereAlreadyASlot())
-        {
-            _slots.InsertAsStruct(_currentSlotIndex, value);
-            return;
-        }
-
-        _slots.SetAsStruct(_currentSlotIndex, value);
     }
 
     public void IncrementSlotIndex()

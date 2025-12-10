@@ -25,7 +25,7 @@ public class Composer : IComposer
 
     public bool ShouldExecute()
     {
-        return ShouldExecuteAsStruct(Unit.Instance);
+        return ShouldExecute(Unit.Instance);
     }
 
     public bool ShouldExecute<T>(T state)
@@ -34,15 +34,6 @@ public class Composer : IComposer
             return true;
         var existingState = _writer.GetPreviousState<T>();
         _writer.UpdatePreviousState(state);
-        return !existingState.Equals(state);
-    }
-
-    public bool ShouldExecuteAsStruct<T>(T state) where T : struct
-    {
-        if (_writer.IsInInvalidationRoot())
-            return true;
-        var existingState = _writer.GetPreviousStateAsStruct<T>();
-        _writer.UpdatePreviousStateAsStruct(state);
         return !existingState.Equals(state);
     }
 
@@ -104,26 +95,9 @@ public class Composer : IComposer
         return !existingKey.Equals(state);
     }
 
-    public bool RememberedKeyChangedAsStruct<T>(int groupKey, T state) where T : struct
-    {
-        // _writer.StartReplaceGroup(groupKey);
-        var existingKey = _writer.ReadAsStruct<T>();
-        _writer.WriteAsStruct(state);
-        _writer.IncrementSlotIndex();
-        return !existingKey.Equals(state);
-    }
-
     public T RememberedValue<T>()
     {
         var result = _writer.Read<T>().Value;
-        _writer.IncrementSlotIndex();
-        // _writer.EndReplaceGroup();
-        return result;
-    }
-
-    public T RememberedValueAsStruct<T>() where T : struct
-    {
-        var result = _writer.ReadAsStruct<T>().Value;
         _writer.IncrementSlotIndex();
         // _writer.EndReplaceGroup();
         return result;
@@ -137,16 +111,7 @@ public class Composer : IComposer
         return update;
     }
 
-    public T UpdateRememberedValueAsStruct<T>(T value) where T : struct
-    {
-        _writer.WriteAsStruct(value);
-        _writer.IncrementSlotIndex();
-        // _writer.EndReplaceGroup();
-        return value;
-    }
-
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
-    public T UpdateRememberedValueAsStruct<T>(Func<T> value) where T : struct => UpdateRememberedValueAsStruct(value());
 
     public TValue UpdateLambda<TValue>(TValue value) => UpdateRememberedValue(value);
     public TValue UpdateComposableLambda<TValue>(TValue value) => UpdateRememberedValue(value);

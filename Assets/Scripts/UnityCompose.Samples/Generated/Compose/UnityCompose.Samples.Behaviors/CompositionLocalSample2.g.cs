@@ -11,10 +11,10 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1371467293);
+            __composer.StartRestartGroup(889209525);
             if (__composer.ShouldExecute(true))
             {
-                Box(!__composer.RememberedKeyChanged<bool>(-1031186156, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                Box(!__composer.RememberedKeyChanged<bool>(-291042615, true) ? CurrentComposer.RememberedValue<UnityCompose.ComposableContent>() : CurrentComposer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
                 {
                 }));
             }
@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1371467293)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(889209525)?.UpdateScope(() => __Content());
         }
     }
 }

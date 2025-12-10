@@ -13,9 +13,7 @@ internal interface ISlotTableWriter
     void StartRestartGroup(int key);
     bool IsInInvalidationRoot();
     Optional<T> GetPreviousState<T>();
-    Optional<T> GetPreviousStateAsStruct<T>() where T : struct;
     void UpdatePreviousState<T>(T state);
-    void UpdatePreviousStateAsStruct<T>(T state) where T : struct;
     void SkipToGroupEnd();
     ComposeRestartScope? GetRestartScope();
     ComposeRestartScope? RequireRestartScope();
@@ -29,9 +27,7 @@ internal interface ISlotTableWriter
     void EndReusableGroup(int key);
 
     Optional<T> Read<T>();
-    Optional<T> ReadAsStruct<T>() where T : struct;
     void Write<T>(T value);
-    void WriteAsStruct<T>(T value) where T : struct;
     void IncrementSlotIndex();
 
     T? GetVisualElement<T>() where T : VisualElement;
