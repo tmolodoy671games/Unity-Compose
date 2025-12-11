@@ -14,7 +14,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-409325130);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
             }
             else

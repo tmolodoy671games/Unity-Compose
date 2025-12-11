@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(889209525);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

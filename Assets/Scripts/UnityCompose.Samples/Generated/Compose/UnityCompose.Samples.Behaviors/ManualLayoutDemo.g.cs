@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1468109432);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Debug.Log("MockLayout()");
                 _ = UpdateState.Value;
@@ -42,7 +42,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(86275340);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Debug.Log("MockSpacer()");
             }
@@ -59,14 +59,14 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(532808067);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 var state = new object ();
                 var time = TimeUtils.Measure(!__composer.Changed() ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
                 {
                     for (var i = 0; i < 1_000_000; i++)
                     {
-                        _ = !__composer.Changed() ? __composer.RememberedValue<int>() : __composer.UpdateRememberedValue<int>(i);
+                        _ = !__composer.Changed() ? __composer.RememberedValue<object>() : __composer.UpdateRememberedValue<object>(new object ());
                     }
                 }));
                 Debug.Log((int)time.TotalMilliseconds);
@@ -84,7 +84,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1998145738);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
             }
             else

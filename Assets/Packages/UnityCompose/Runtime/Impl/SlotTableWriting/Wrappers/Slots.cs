@@ -5,6 +5,7 @@ using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -27,8 +28,14 @@ internal readonly struct Slots
 
     public object? this[int index]
     {
-        get => _slots[index];
-        set => _slots[index] = value;
+        get
+        {
+            return _slots[index];
+        }
+        set
+        {
+            _slots[index] = value;
+        }
     }
 
     public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);
@@ -87,9 +94,9 @@ internal readonly struct Slots
         _slots[index + VisualElementOffset] = visualElement;
     }
 
-    public void InsertVisualElement(int index, VisualElement? visualElement)
+    public void InsertVisualElement(int index)
     {
-        _slots.Insert(index + VisualElementOffset, visualElement);
+        _slots.Insert(index + VisualElementOffset, ComposeEmptySlot.Instance);
     }
 
     #endregion
@@ -105,18 +112,18 @@ internal readonly struct Slots
     {
         var builder = new StringBuilder();
         if (currentAnchorIndex == -1)
-            builder.AppendLine("< CURRENT_ANCHOR_INDEX");
+            builder.AppendLine("< CURRENT_SLOT_INDEX");
         for (var i = 0; i < _slots.Count; i++)
         {
             builder.Append($"[{i}] ");
             builder.Append(Format(_slots[i]));
             if (i == currentAnchorIndex)
-                builder.Append(" < CURRENT_ANCHOR_INDEX");
+                builder.Append(" < CURRENT_SLOT_INDEX");
             builder.AppendLine();
         }
 
         if (currentAnchorIndex == _slots.Count)
-            builder.AppendLine("< CURRENT_ANCHOR_INDEX");
+            builder.AppendLine("< CURRENT_SLOT_INDEX");
 
         return builder.ToString();
     }
@@ -170,7 +177,7 @@ internal static class RestartScopeSlotsExtensions
 
     public static void InsertRestartScope(this Slots slots, int dataIndex)
     {
-        slots.Insert(dataIndex, null);
+        slots.Insert(dataIndex + RestartGroup.RestartScopeOffset, ComposeEmptySlot.Instance);
     }
 }
 
@@ -202,6 +209,6 @@ internal static class LocalGroupSlotsExtensions
 
     public static void InsertCompositionLocalMap(this Slots slots, int index)
     {
-        slots.Insert(index + LocalGroup.CompositionLocalMapOffset, null);
+        slots.Insert(index + LocalGroup.CompositionLocalMapOffset, ComposeEmptySlot.Instance);
     }
 }

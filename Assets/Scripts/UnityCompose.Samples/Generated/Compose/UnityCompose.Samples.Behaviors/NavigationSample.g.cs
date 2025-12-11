@@ -15,7 +15,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(553615033);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Layout();
             }
@@ -32,7 +32,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1988832801);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Layout();
             }
@@ -49,7 +49,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-182273952);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 var animationSpec = Tween(duration: 1f);
                 Box(modifier: Modifier.FillMaxSize(), content: !__composer.Changed(animationSpec) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -76,7 +76,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1719960415);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowSecondScreen()));
@@ -101,7 +101,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1037156711);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowFirstScreen()));

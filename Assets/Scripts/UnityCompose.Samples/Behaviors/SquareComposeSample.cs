@@ -5,12 +5,15 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class SquareComposeSample : ComposeUI
     {
         [Composable]
-        protected override void Content() => Preview();
+        protected override void Content() => Layout();
 
         [Composable]
-        protected override void Preview()
+        protected override void Preview() => Layout();
+
+        [Composable]
+        private static void Layout()
         {
-            var isSwitched = Remember(() => LoggableMutableStateOf(false));
+            var isSwitched = Remember(() => MutableStateOf(false));
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
@@ -18,14 +21,13 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxSize(),
                 content: () =>
                 {
-                    isSwitched.Value.ToString();
                     Spacer(
                         Modifier
                             .Size(100)
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale(1, transition: Transition())
+                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value)
                     );
                     // Spacer(
                     //     Modifier
@@ -43,66 +45,6 @@ namespace UnityCompose.Samples.Behaviors
                     //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
                     //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
                     // );
-                }
-            );
-        }
-
-        [Composable]
-        private static void Layout()
-        {
-            var isSwitched = Remember(() => LoggableMutableStateOf(false));
-            var isHovered = Remember(() => LoggableMutableStateOf(false));
-            Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
-                modifier: Modifier
-                    .FillMaxSize(),
-                content: () =>
-                {
-                    if (isSwitched.Value)
-                    {
-                        Spacer(
-                            modifier: Modifier
-                                .Size(50)
-                                .Background(Color.green)
-                                .Border(16)
-                                .Margin(top: 100)
-                        );
-                    }
-
-                    Box(
-                        horizontalAlignment: Alignment.Horizontal.Center,
-                        verticalAlignment: Alignment.Vertical.Center,
-                        modifier: Modifier
-                            .Background(Color.blue)
-                            .Border(16)
-                            .Size(100)
-                            .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
-                            // .Scale(AnimateFloatAsState(isHovered.Value ? 1.5f : 1).Value)
-                            .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .OnMouseEnter(() => isHovered.Value = true)
-                            .OnMouseLeave(() => isHovered.Value = false),
-                        content: () =>
-                        {
-                            Box(
-                                modifier: Modifier
-                                    .Size(50)
-                                    .Background(Color.red)
-                                    .Border(16),
-                                content: () => { Text(text: "Text", color: Color.white); }
-                            );
-                        }
-                    );
-                    if (isSwitched.Value)
-                    {
-                        Spacer(
-                            modifier: Modifier
-                                .Size(50)
-                                .Background(Color.green)
-                                .Border(16)
-                                .Margin(top: 100)
-                        );
-                    }
                 }
             );
         }

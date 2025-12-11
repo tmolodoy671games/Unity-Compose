@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1449131958);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Layout();
             }
@@ -30,7 +30,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1367538738);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Layout();
             }
@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-597693002);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
@@ -69,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-943066722);
-            if (__composer.ShouldExecute(true))
+            if (__composer.ShouldExecute())
             {
                 Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

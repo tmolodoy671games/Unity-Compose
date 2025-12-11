@@ -35,24 +35,24 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 );
             }
 
-            var fpsLabel = new Label()
-            {
-                style =
-                {
-                    backgroundColor = Color.black,
-                    color = Color.white,
-                    paddingTop = 10,
-                    paddingBottom = 10,
-                    paddingLeft = 10,
-                    paddingRight = 10,
-                    position = Position.Absolute,
-                    right = 40,
-                    top = 40
-                }
-            };
-            root.Add(fpsLabel);
-
-            StartCoroutine(PerformanceUtils.MeasureFpsCoroutine(it => fpsLabel.text = it.ToString()));
+            // var fpsLabel = new Label
+            // {
+            //     style =
+            //     {
+            //         backgroundColor = Color.black,
+            //         color = Color.white,
+            //         paddingTop = 10,
+            //         paddingBottom = 10,
+            //         paddingLeft = 10,
+            //         paddingRight = 10,
+            //         position = Position.Absolute,
+            //         right = 40,
+            //         top = 40
+            //     }
+            // };
+            // root.Add(fpsLabel);
+            //
+            // StartCoroutine(PerformanceUtils.MeasureFpsCoroutine(it => fpsLabel.text = it.ToString()));
         }
     }
 }

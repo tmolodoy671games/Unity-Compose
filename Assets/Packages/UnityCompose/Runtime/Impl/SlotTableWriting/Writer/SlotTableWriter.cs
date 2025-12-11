@@ -278,7 +278,7 @@ internal class SlotTableWriter : ISlotTableWriter
             ElementsCount: 1
         );
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.InsertVisualElement(_currentSlotIndex, null);
+        _slots.InsertVisualElement(_currentSlotIndex);
         EnterGroup();
         _currentSlotIndex += Slots.ReusableGroupHeaderSize;
     }
@@ -317,13 +317,18 @@ internal class SlotTableWriter : ISlotTableWriter
     public Optional<T> ReadAndWrite<T>(T value)
     {
         if (!IsThereAlreadyASlot())
+        {
+            _slots.Insert(_currentSlotIndex, value);
+            _currentSlotIndex++;
             return Optional.Empty<T>();
+        }
+
         var result = _slots.GetAsOptional<T>(_currentSlotIndex);
         _slots[_currentSlotIndex] = value;
         _currentSlotIndex++;
         return result;
     }
-    
+
     public void Write<T>(T value)
     {
 #if LOGGING
@@ -332,10 +337,12 @@ internal class SlotTableWriter : ISlotTableWriter
         if (!IsThereAlreadyASlot())
         {
             _slots.Insert(_currentSlotIndex, value);
+            _currentSlotIndex++;
             return;
         }
 
         _slots[_currentSlotIndex] = value;
+        _currentSlotIndex++;
     }
 
     public void IncrementSlotIndex()
@@ -418,6 +425,7 @@ internal class SlotTableWriter : ISlotTableWriter
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertCompositionLocalMap(_currentSlotIndex);
         EnterGroup();
+        _currentSlotIndex += LocalGroup.MetadataSize;
     }
 
     public void EndLocalGroup(int key)
@@ -554,10 +562,9 @@ internal class SlotTableWriter : ISlotTableWriter
 #endif
         _invalidationRoot = groupIndex;
         _currentGroupIndex = groupIndex;
-        if (group.ParentAnchorId.IsValid)
-            _currentParentIndex = _groupsAnchors[group.ParentAnchorId].Index;
-        _currentElementIndex = group.ElementIndex;
         _currentSlotIndex = _slotsAnchors[group.DataAnchorId].Index;
+        _currentParentIndex = group.ParentAnchorId.IsValid ? _groupsAnchors[group.ParentAnchorId].Index : -1;
+        _currentElementIndex = group.ElementIndex;
         _rootCompositionLocalMap = compositionLocalMap;
     }
 

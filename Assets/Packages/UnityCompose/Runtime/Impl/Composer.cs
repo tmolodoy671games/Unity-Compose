@@ -1,7 +1,6 @@
 // ReSharper disable CheckNamespace
 
 using System;
-using System.Collections.Generic;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
@@ -102,14 +101,10 @@ public class Composer : IComposer
     public T UpdateRememberedValue<T>(T update)
     {
         _writer.Write(update);
-        _writer.IncrementSlotIndex();
         return update;
     }
 
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
-
-    public TValue UpdateLambda<TValue>(TValue value) => UpdateRememberedValue(value);
-    public TValue UpdateComposableLambda<TValue>(TValue value) => UpdateRememberedValue(value);
 
     #endregion
 

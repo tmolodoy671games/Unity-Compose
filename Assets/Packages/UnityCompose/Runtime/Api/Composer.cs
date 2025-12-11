@@ -24,9 +24,7 @@ public interface IComposer
     bool Changed<T>(T state);
     T RememberedValue<T>();
     T UpdateRememberedValue<T>(T value);
-    T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
-    TValue UpdateLambda<TValue>(TValue value) => UpdateRememberedValue(value);
-    TValue UpdateComposableLambda<TValue>(TValue value) => UpdateRememberedValue(value);
+    T UpdateRememberedValue<T>(Func<T> value);
 
     void StartLocalGroup(int groupKey);
     T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory);

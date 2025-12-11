@@ -99,7 +99,7 @@ internal partial class NavigationScopeImpl
     {
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1960824537);
-        if (__composer.ShouldExecute(true))
+        if (__composer.ShouldExecute())
         {
             _content();
         }

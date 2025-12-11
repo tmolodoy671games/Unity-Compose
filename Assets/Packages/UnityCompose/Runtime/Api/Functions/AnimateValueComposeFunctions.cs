@@ -91,8 +91,8 @@ public static partial class ComposeFunctions
     )
     {
         var property = Remember(() => MutableStateOf(targetValue));
-        if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
-        var resolvedAnimationSpec = animationSpec.GetOrDefault();
+        // BRUH
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
 
         LaunchedEffect(
             key: targetValue!,
@@ -102,6 +102,7 @@ public static partial class ComposeFunctions
 
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
+            var resolvedAnimationSpec = animationSpec.GetOrDefault();
             var startValue = property.Value;
             if (EqualityUtils.FastEquals(startValue, targetValue)) yield break;
             if (resolvedAnimationSpec.Delay > 0)

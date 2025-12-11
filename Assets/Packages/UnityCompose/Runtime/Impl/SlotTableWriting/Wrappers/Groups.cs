@@ -92,11 +92,11 @@ internal static class ComposeGroupExtensions
         );
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
-        builder.Append($", Size: {group.Size}");
-        builder.Append($", SlotsSize: {group.SlotsSize}");
-        builder.Append($", Index: {group.Index(groupsAnchors)}");
         builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors)}");
+        builder.Append($", Index: {group.Index(groupsAnchors)}");
+        builder.Append($", Size: {group.Size}");
         builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors)}");
+        builder.Append($", SlotsSize: {group.SlotsSize}");
         builder.Append($", ElementIndex: {group.ElementIndex}");
         builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");

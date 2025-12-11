@@ -13,7 +13,7 @@ public static partial class ComposeFunctions
     )
     {
         var composer = CurrentComposer;
-        return composer.Changed(key)
+        return !composer.Changed(key)
             ? composer.RememberedValue<TValue>()
             : composer.UpdateRememberedValue(defaultValueFactory);
     }
@@ -24,7 +24,7 @@ public static partial class ComposeFunctions
     )
     {
         var composer = CurrentComposer;
-        return composer.Changed(0)
+        return !composer.Changed()
             ? composer.RememberedValue<TValue>()
             : composer.UpdateRememberedValue(defaultValueFactory);
     }

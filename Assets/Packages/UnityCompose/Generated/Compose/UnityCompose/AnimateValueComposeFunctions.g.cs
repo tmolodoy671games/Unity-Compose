@@ -49,13 +49,13 @@ public static partial class ComposeFunctions
     {
         var __composer = CurrentComposer;
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
-        if (EqualityUtils.FastEquals(property.Value, targetValue))
-            return property;
-        var resolvedAnimationSpec = animationSpec.GetOrDefault();
+        // BRUH
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         LaunchedEffect(key: targetValue!, coroutine: !__composer.Changed((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
+            var resolvedAnimationSpec = animationSpec.GetOrDefault();
             var startValue = property.Value;
             if (EqualityUtils.FastEquals(startValue, targetValue))
                 yield break;
