@@ -58,6 +58,7 @@ namespace UnityCompose
 
         private readonly HashSet<ComposeRestartScope> _invalidatedGroups = new();
         private readonly HashSet<ComposeRestartScope> _instantInvalidatedGroups = new();
+        private readonly List<ComposeRestartScope> _groupsToRestart = new();
 
         public ComposeInvalidator()
         {
@@ -75,10 +76,11 @@ namespace UnityCompose
         private void Update()
         {
             if (_invalidatedGroups.Count == 0) return;
-            var groupsToInvalidate = _invalidatedGroups.ToList();
+            _groupsToRestart.AddRange(_invalidatedGroups);
             _invalidatedGroups.Clear();
-            foreach (var group in groupsToInvalidate)
+            foreach (var group in _groupsToRestart)
                 group.Restart();
+            _groupsToRestart.Clear();
         }
 
         internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)

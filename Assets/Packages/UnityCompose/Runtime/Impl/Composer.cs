@@ -20,11 +20,7 @@ public class Composer
 
     public bool ShouldExecute()
     {
-#if STRUCT_OPTIMIZATIONS
-        return ShouldExecuteAsStruct(Unit.Instance);
-#else
         return ShouldExecute(SingletonState.Instance);
-#endif
     }
 
     public void StartRestartGroup(int key)
@@ -100,11 +96,7 @@ public class Composer
 
     public bool Changed()
     {
-#if STRUCT_OPTIMIZATIONS
-        return ChangedAsStruct(Unit.Instance);
-#else
         return Changed(SingletonState.Instance);
-#endif
     }
 
     public bool Changed<TState>(TState state)

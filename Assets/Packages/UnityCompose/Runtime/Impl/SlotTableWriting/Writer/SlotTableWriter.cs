@@ -141,11 +141,6 @@ internal class SlotTableWriter
         if (_enteredRestartGroups.IsEmpty())
             return null;
         var scope = _slots.GetRestartScope(_enteredRestartGroups.Peek().SlotIndex);
-        if (scope != null)
-        {
-            scope.CompositionLocalMap = RequireCompositionLocalMap();
-        }
-
         return scope;
     }
 
@@ -173,7 +168,7 @@ internal class SlotTableWriter
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
-        restartScope = new ComposeRestartScope(restartGroup.AnchorId, this);
+        restartScope = new ComposeRestartScope(restartGroup.AnchorId, this, RequireCompositionLocalMap());
         _slots.SetRestartScope(enteredRestartGroupSlotIndex, restartScope);
         return restartScope;
     }
@@ -324,7 +319,7 @@ internal class SlotTableWriter
             return Optional.Empty<T>();
         return _slots.GetAsOptional<T>(_currentSlotIndex);
     }
-    
+
     public Optional<T> ReadAsStruct<T>() where T : struct
     {
 #if LOGGING
@@ -630,6 +625,7 @@ internal class SlotTableWriter
     {
         return _groupsAnchors[groupAnchor].Index;
     }
+
     internal ComposeGroup GetGroup(AnchorId groupAnchor)
     {
         return _groups[_groupsAnchors[groupAnchor].Index];
