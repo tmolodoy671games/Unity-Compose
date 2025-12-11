@@ -21,32 +21,26 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxSize(),
                 content: () =>
                 {
+                    if (isSwitched.Value)
+                    {
+                        EmptySpacer();
+                    }
+
                     Spacer(
                         Modifier
                             .Size(100)
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value)
+                            .Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition())
                     );
-                    // Spacer(
-                    //     Modifier
-                    //         .Size(100)
-                    //         .Background(Color.green)
-                    //         .Border(16)
-                    //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                    //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
-                    // );
-                    // Spacer(
-                    //     Modifier
-                    //         .Size(100)
-                    //         .Background(Color.blue)
-                    //         .Border(16)
-                    //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                    //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
-                    // );
                 }
             );
+        }
+
+        [Composable]
+        private static void EmptySpacer()
+        {
         }
     }
 }

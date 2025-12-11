@@ -51,23 +51,12 @@ namespace UnityCompose.Samples.Behaviors
                 var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed(isSwitched) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value));
-                // Spacer(
-                //     Modifier
-                //         .Size(100)
-                //         .Background(Color.green)
-                //         .Border(16)
-                //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
-                // );
-                // Spacer(
-                //     Modifier
-                //         .Size(100)
-                //         .Background(Color.blue)
-                //         .Border(16)
-                //         .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                //         .Scale(isSwitched.Value ? 1.5f : 1, transition: Transition())
-                // );
+                    if (isSwitched.Value)
+                    {
+                        EmptySpacer();
+                    }
+
+                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition()));
                 }));
             }
             else
@@ -76,6 +65,22 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(-894395642)?.UpdateScope(() => __Layout());
+        }
+
+        [Composable]
+        private static void __EmptySpacer()
+        {
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(237932776);
+            if (__composer.ShouldExecute())
+            {
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(237932776)?.UpdateScope(() => __EmptySpacer());
         }
     }
 }

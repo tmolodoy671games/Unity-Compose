@@ -1,6 +1,5 @@
 // #define LOGGING
-// #define ASSERTIONS
-
+#define WIASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 
 using System;
