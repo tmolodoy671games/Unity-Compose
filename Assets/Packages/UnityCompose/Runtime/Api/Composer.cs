@@ -11,6 +11,7 @@ public interface IComposer
     void StartRestartGroup(int key);
     bool ShouldExecute();
     bool ShouldExecute<T>(T state);
+    bool ShouldExecuteAsStruct<T>(T state) where T : struct;
     void SkipToGroupEnd();
     IScopeUpdateScope? EndRestartGroup(int key);
 

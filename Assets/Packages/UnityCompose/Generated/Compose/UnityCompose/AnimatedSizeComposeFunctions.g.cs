@@ -18,7 +18,7 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __animationSpec) = (content, modifier, animationSpec);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1847834173);
-        if (__composer.ShouldExecute((__content, __modifier, __animationSpec)))
+        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __animationSpec)))
         {
             var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
             var(containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault());

@@ -86,7 +86,7 @@ namespace UnityCompose.Samples.Behaviors
             var(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick) = (state, onMoveUpClick, onMoveDownClick, onRemoveClick);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1524142510);
-            if (__composer.ShouldExecute((__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick)))
+            if (__composer.ShouldExecuteAsStruct((__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick)))
             {
                 Row(verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4).Border(radius: 12).Margin(vertical: 4).Name(state.ToString()), content: !__composer.Changed((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

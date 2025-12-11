@@ -18,7 +18,7 @@ public static partial class ComposeFunctions
         var(__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier) = (coordinator, transition, initialScreens, onTransitionProgressChanged, content, modifier);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1768390015);
-        if (__composer.ShouldExecute((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)))
+        if (__composer.ShouldExecuteAsStruct((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)))
         {
             var backStack = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
             var coordinatorEntry = LocalCoordinator.Current;

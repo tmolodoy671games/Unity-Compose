@@ -1,3 +1,4 @@
+#define STRUCT_OPTIMIZATIONS
 // ReSharper disable CheckNamespace
 
 using System;
@@ -24,7 +25,7 @@ public class Composer : IComposer
 
     public bool ShouldExecute()
     {
-        return ShouldExecute(SingletonState.Instance);
+        return ShouldExecuteAsStruct(Unit.Instance);
     }
 
     public bool ShouldExecute<T>(T state)
@@ -34,6 +35,19 @@ public class Composer : IComposer
         var existingState = _writer.GetPreviousState<T>();
         _writer.UpdatePreviousState(state);
         return !existingState.Equals(state);
+    }
+
+    public bool ShouldExecuteAsStruct<T>(T state) where T : struct
+    {
+#if STRUCT_OPTIMIZATIONS
+        if (_writer.IsInInvalidationRoot())
+            return true;
+        var existingState = _writer.GetPreviousState<T>();
+        _writer.UpdatePreviousState(state);
+        return !existingState.Equals(state);
+#else
+        return ShouldExecute(state);
+#endif
     }
 
     public void SkipToGroupEnd()
@@ -126,7 +140,7 @@ public class Composer : IComposer
 
     public void Clear()
     {
-     _writer.Clear();   
+        _writer.Clear();
     }
 
     #endregion

@@ -109,9 +109,19 @@ internal class SlotTableWriter : ISlotTableWriter
         return _slots.GetPreviousState<T>(_currentParentSlotIndex);
     }
 
+    public Optional<T> GetPreviousStateAsStruct<T>() where T : struct
+    {
+        return _slots.GetPreviousStateAsStruct<T>(_currentParentSlotIndex);
+    }
+
     public void UpdatePreviousState<T>(T state)
     {
         _slots.SetPreviousState(_currentParentSlotIndex, state);
+    }
+
+    public void UpdatePreviousStateAsStruct<T>(T state) where T : struct
+    {
+        _slots.SetPreviousStateAsStruct(_currentParentSlotIndex, state);
     }
 
     public void SkipToGroupEnd()

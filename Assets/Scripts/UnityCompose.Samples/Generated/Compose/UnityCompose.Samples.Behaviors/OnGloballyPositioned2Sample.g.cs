@@ -80,7 +80,7 @@ namespace UnityCompose.Samples.Behaviors
             var(__selected, __content, __modifier) = (selected, content, modifier);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(356085281);
-            if (__composer.ShouldExecute((__selected, __content, __modifier)))
+            if (__composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
             {
                 Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

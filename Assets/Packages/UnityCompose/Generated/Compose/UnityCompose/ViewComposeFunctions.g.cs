@@ -23,7 +23,7 @@ public static partial class ComposeFunctions
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1230753333);
-        if (__composer.ShouldExecute((__modifier, __initializer, __content)))
+        if (__composer.ShouldExecuteAsStruct((__modifier, __initializer, __content)))
         {
             CurrentComposer.StartReusableGroup(123);
             var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
@@ -93,7 +93,7 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1269982359);
-        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Column>(modifier: modifier, initializer: !__composer.Changed((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(it =>
             {
@@ -115,7 +115,7 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1510478461);
-        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Row>(modifier: modifier, initializer: !__composer.Changed((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(it =>
             {
@@ -138,7 +138,7 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1115575440);
-        if (__composer.ShouldExecute((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Box>(modifier: modifier, initializer: !__composer.Changed((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(it =>
             {
@@ -178,7 +178,7 @@ public static partial class ComposeFunctions
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-480385983);
-        if (__composer.ShouldExecute((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
+        if (__composer.ShouldExecuteAsStruct((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
@@ -244,7 +244,7 @@ public static partial class ComposeFunctions
         var(__image, __tint, __modifier) = (image, tint, modifier);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1018411186);
-        if (__composer.ShouldExecute((__image, __tint, __modifier)))
+        if (__composer.ShouldExecuteAsStruct((__image, __tint, __modifier)))
         {
             ReusableComposeView<Image>(initializer: !__composer.Changed((image, tint)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.Image>?>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.Image>?>(it =>
             {

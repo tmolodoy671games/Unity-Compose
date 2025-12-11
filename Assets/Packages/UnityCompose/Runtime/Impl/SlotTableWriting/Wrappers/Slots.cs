@@ -58,7 +58,7 @@ internal readonly struct Slots
         return default!;
     }
 
-    public Optional<T> GetStruct<T>(int index) where T : struct
+    public Optional<T> GetAsStruct<T>(int index) where T : struct
     {
         if (index < 0 || index >= Count)
             return Optional.Empty<T>();
@@ -151,10 +151,20 @@ internal static class PreviousStateSlotsExtensions
     {
         return slots.GetAsOptional<T>(dataIndex + RestartGroup.PreviousStateOffset);
     }
+    
+    public static Optional<T> GetPreviousStateAsStruct<T>(this Slots slots, int dataIndex) where T : struct
+    {
+        return slots.GetAsStruct<T>(dataIndex + RestartGroup.PreviousStateOffset);
+    }
 
     public static void SetPreviousState<T>(this Slots slots, int dataIndex, T previousState)
     {
         slots[dataIndex + RestartGroup.PreviousStateOffset] = previousState;
+    }
+
+    public static void SetPreviousStateAsStruct<T>(this Slots slots, int dataIndex, T previousState) where T : struct
+    {
+        slots.SetAsStruct(dataIndex + RestartGroup.PreviousStateOffset, previousState);
     }
 
     public static void InsertPreviousState(this Slots slots, int dataIndex)
