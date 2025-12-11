@@ -50,6 +50,7 @@ public static partial class ComposeFunctions
                 LaunchedEffect(resolvedProgress, !__composer.ChangedAsStruct((onTransitionProgressChanged, resolvedProgress)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => onTransitionProgressChanged?.Invoke(resolvedProgress)));
                 if (IsInPreview)
                     return;
+                __composer.StartReplaceGroup(-583009174);
                 foreach (var screen in allScreens)
                 {
                     var screenState = !__composer.ChangedAsStruct((screen, currentBackStack, previousBackStack.Value)) ? __composer.RememberedValueAsStruct<UnityCompose.TransitionState>() : __composer.UpdateRememberedValue<UnityCompose.TransitionState>(Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get());
@@ -73,12 +74,22 @@ public static partial class ComposeFunctions
                         CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentModifier)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: () =>
                         {
                             if (content != null)
+                            {
+                                __composer.StartReplaceGroup(-1066606106);
                                 content(scope);
+                                __composer.EndReplaceGroup(-1066606106);
+                            }
                             else
+                            {
+                                __composer.StartReplaceGroup(-1536900066);
                                 scope.Content();
+                                __composer.EndReplaceGroup(-1536900066);
+                            }
                         });
                     }));
                 }
+
+                __composer.EndReplaceGroup(-583009174);
             }));
             if (isTransitionFinished)
                 previousBackStack.Value = currentBackStack;

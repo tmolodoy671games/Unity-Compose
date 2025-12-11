@@ -21,11 +21,6 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxSize(),
                 content: () =>
                 {
-                    if (isSwitched.Value)
-                    {
-                        EmptySpacer();
-                    }
-
                     Spacer(
                         Modifier
                             .Size(100)
@@ -34,6 +29,9 @@ namespace UnityCompose.Samples.Behaviors
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             .Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition())
                     );
+
+                    if (isSwitched.Value)
+                        EmptySpacer();
                 }
             );
         }

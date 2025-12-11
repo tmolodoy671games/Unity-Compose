@@ -18,6 +18,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 var parentSize = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(IMutableStableProperty.Create(Vector2.zero));
                 Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(!__composer.Changed(parentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.SizeWithPaddings)), content: !__composer.Changed(parentSize) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
+                    __composer.StartReplaceGroup(853964739);
                     for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
@@ -28,6 +29,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                             Spacer(modifier: Modifier.Size(50).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float().Position(left: position.Value.x, top: position.Value.y));
                         }));
                     }
+
+                    __composer.EndReplaceGroup(853964739);
                 }));
             }
             else

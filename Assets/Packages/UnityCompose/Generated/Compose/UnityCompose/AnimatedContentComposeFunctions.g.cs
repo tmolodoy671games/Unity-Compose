@@ -42,6 +42,7 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Style: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Style: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
+                __composer.StartReplaceGroup(6755691);
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "First", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
@@ -51,6 +52,8 @@ public static partial class ComposeFunctions
                     }));
                 }
 
+                __composer.EndReplaceGroup(6755691);
+                __composer.StartReplaceGroup(1194410071);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "Second", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
@@ -59,6 +62,8 @@ public static partial class ComposeFunctions
                         CompositionLocalProvider(LocalModifier.Provides(after: pair.Second.Style), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: () => content(pair.Second.Value));
                     }));
                 }
+
+                __composer.EndReplaceGroup(1194410071);
             }));
         }
         else
