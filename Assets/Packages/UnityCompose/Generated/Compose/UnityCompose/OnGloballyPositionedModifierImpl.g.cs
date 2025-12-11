@@ -33,11 +33,11 @@ internal partial class OnGloballyPositionedModifierImpl
                 var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
                 foreach (var ancestor in ancestors)
                     ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-                return it.OnDispose(!__composer.Changed((onGeometryChanged, ancestors)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                return it.OnDispose(() =>
                 {
                     foreach (var ancestor in ancestors)
                         ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
-                }));
+                });
             }));
         }
         else

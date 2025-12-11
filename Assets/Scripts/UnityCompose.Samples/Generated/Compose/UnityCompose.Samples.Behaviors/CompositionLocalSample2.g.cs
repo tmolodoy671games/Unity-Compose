@@ -14,7 +14,7 @@ namespace UnityCompose.Samples.Behaviors
             __composer.StartRestartGroup(889209525);
             if (__composer.ShouldExecute(true))
             {
-                Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                 }));
             }

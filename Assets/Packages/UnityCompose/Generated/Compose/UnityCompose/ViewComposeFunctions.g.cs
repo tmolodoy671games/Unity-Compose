@@ -32,7 +32,7 @@ public static partial class ComposeFunctions
             DisposableEffect((visualElement, parent, index), !__composer.Changed((visualElement, parent, index)) ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
             {
                 parent.FastReinsert(index, visualElement);
-                return it.OnDispose(!__composer.Changed((visualElement, parent)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => parent.Remove(visualElement)));
+                return it.OnDispose(() => parent.Remove(visualElement));
             }));
             CurrentComposer.EnterVisualElement();
             var resolvedModifier = modifier;

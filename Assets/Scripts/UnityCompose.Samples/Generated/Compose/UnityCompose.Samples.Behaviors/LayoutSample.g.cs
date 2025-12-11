@@ -14,9 +14,9 @@ namespace UnityCompose.Samples.Behaviors
             __composer.StartRestartGroup(-1385292471);
             if (__composer.ShouldExecute(true))
             {
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Box(modifier: Modifier.Background(Color.red).Size(400), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent>(() =>
+                    Box(modifier: Modifier.Background(Color.red).Size(400), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         Spacer(modifier: Modifier.Size(100).Float().Background(Color.yellow).Position(top: 5));
                         Spacer(modifier: Modifier.Size(100).Float().Background(Color.yellow).Position(bottom: 5));

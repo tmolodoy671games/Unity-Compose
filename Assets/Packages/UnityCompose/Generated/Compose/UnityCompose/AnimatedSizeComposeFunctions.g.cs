@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
             {
                 it.style.alignItems = Align.Center;
                 it.style.justifyContent = Justify.Center;
-            }), content: !__composer.Changed((content, contentStyle)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateComposableLambda<UnityCompose.ComposableContent?>(() =>
+            }), content: !__composer.Changed((content, contentStyle)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 CompositionLocalProvider(LocalModifier.Provides(after: contentStyle), content: content);
             }));

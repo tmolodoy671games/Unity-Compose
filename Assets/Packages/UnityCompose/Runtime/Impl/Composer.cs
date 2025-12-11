@@ -25,7 +25,7 @@ public class Composer : IComposer
 
     public bool ShouldExecute()
     {
-        return ShouldExecute(Unit.Instance);
+        return ShouldExecute(SingletonState.Instance);
     }
 
     public bool ShouldExecute<T>(T state)
@@ -83,7 +83,7 @@ public class Composer : IComposer
 
     public bool Changed()
     {
-        return Changed(Unit.Instance);
+        return Changed(SingletonState.Instance);
     }
 
     public bool Changed<TState>(TState state)
