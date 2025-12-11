@@ -324,6 +324,16 @@ internal class SlotTableWriter
             return Optional.Empty<T>();
         return _slots.GetAsOptional<T>(_currentSlotIndex);
     }
+    
+    public Optional<T> ReadAsStruct<T>() where T : struct
+    {
+#if LOGGING
+        Log($"ReadAsStruct<T>()");
+#endif
+        if (!IsThereAlreadyASlot())
+            return Optional.Empty<T>();
+        return _slots.GetAsStruct<T>(_currentSlotIndex);
+    }
 
     public Optional<T> ReadAndWrite<T>(T value)
     {

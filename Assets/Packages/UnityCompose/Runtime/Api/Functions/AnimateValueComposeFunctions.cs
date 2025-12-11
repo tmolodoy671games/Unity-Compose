@@ -129,7 +129,8 @@ public static partial class ComposeFunctions
     {
         var targetValue = targetValueFactory();
         var property = Remember(() => MutableStateOf(targetValue));
-        if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        // BRUH
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
         LaunchedEffect(

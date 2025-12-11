@@ -61,19 +61,11 @@ public static partial class ComposeFunctions
         visualElement.style.transitionTimingFunction.value?.Clear();
         visualElement.pickingMode = PickingMode.Ignore;
         visualElement.style.overflow = Overflow.Visible;
-        LaunchedEffect(1, () => resolvedModifier?.Apply(visualElement));
-        resolvedModifier?.Apply(visualElement);
+        LaunchedEffect(resolvedModifier, () => resolvedModifier?.Apply(visualElement));
         FireOnGloballyPositionedCallback(visualElement);
 
-        var currentInitializer = Remember(() => IMutableStableProperty.Create<Action<T>?>(null));
-        if (initializer != null)
-        {
-            if (currentInitializer.Value != initializer)
-            {
-                currentInitializer.Value = initializer;
-                initializer(visualElement);
-            }
-        }
+        // if (initializer != null) // BRUH
+        LaunchedEffect(initializer, () => initializer?.Invoke(visualElement));
 
         if (content != null)
         {

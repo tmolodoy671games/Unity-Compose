@@ -130,6 +130,13 @@ public class Composer
         return result;
     }
 
+    public T RememberedValueAsStruct<T>() where T : struct
+    {
+        var result = _writer.ReadAsStruct<T>().Value;
+        _writer.IncrementSlotIndex();
+        return result;
+    }
+
     public T UpdateRememberedValue<T>(T update)
     {
         _writer.Write(update);
