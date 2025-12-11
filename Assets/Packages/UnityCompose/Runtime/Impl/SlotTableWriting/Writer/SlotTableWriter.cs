@@ -630,6 +630,10 @@ internal class SlotTableWriter
     {
         return _groupsAnchors[groupAnchor].Index;
     }
+    internal ComposeGroup GetGroup(AnchorId groupAnchor)
+    {
+        return _groups[_groupsAnchors[groupAnchor].Index];
+    }
 
     #endregion
 

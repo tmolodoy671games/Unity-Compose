@@ -8,11 +8,21 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    [Composable, Compiled]
-    private static void __Key(object key, [Composable] Action content)
+    [Composable]
+    private static void __Key<T>(T key, [Composable] Action content)
     {
+        var(__key, __content) = (key, content);
         var __composer = CurrentComposer;
-        // BRUH
-        content();
+        __composer.StartRestartGroup(-1755839592);
+        if (__composer.ShouldExecuteAsStruct((__key, __content)))
+        {
+            content();
+        }
+        else
+        {
+            __composer.SkipToGroupEnd();
+        }
+
+        __composer.EndRestartGroup(-1755839592)?.UpdateScope(() => __Key(__key, __content));
     }
 }
