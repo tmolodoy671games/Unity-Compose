@@ -1,5 +1,6 @@
 // #define LOGGING
 // #define ASSERTIONS
+
 #define PARENT_ANCHORS_FOR_EVERYONE
 
 using System;
@@ -18,7 +19,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Write
 
 // TODO: Shifting ancestors sizes on restart
 // TODO: Shifting anchors on insertion/removal
-internal class SlotTableWriter : ISlotTableWriter
+internal class SlotTableWriter
 {
     private readonly Groups _groups;
     private readonly Slots _slots;
@@ -335,6 +336,21 @@ internal class SlotTableWriter : ISlotTableWriter
 
         var result = _slots.GetAsOptional<T>(_currentSlotIndex);
         _slots[_currentSlotIndex] = value;
+        _currentSlotIndex++;
+        return result;
+    }
+
+    public Optional<T> ReadAndWriteAsStruct<T>(T value) where T : struct
+    {
+        if (!IsThereAlreadyASlot())
+        {
+            _slots.InsertAsStruct(_currentSlotIndex, value);
+            _currentSlotIndex++;
+            return Optional.Empty<T>();
+        }
+
+        var result = _slots.GetAsStruct<T>(_currentSlotIndex);
+        _slots.SetAsStruct(_currentSlotIndex, value);
         _currentSlotIndex++;
         return result;
     }

@@ -19,7 +19,7 @@ internal partial class OnGloballyPositionedModifierImpl
         if (__composer.ShouldExecute(__element))
         {
             var previousLayoutCoordinates = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
-            Action<GeometryChangedEvent> onGeometryChanged = !__composer.Changed((this, element, previousLayoutCoordinates)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>(_ =>
+            Action<GeometryChangedEvent> onGeometryChanged = !__composer.ChangedAsStruct((this, element, previousLayoutCoordinates)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>(_ =>
             {
                 var newLayoutCoordinates = LayoutCoordinates.Create(element);
                 if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
@@ -28,7 +28,7 @@ internal partial class OnGloballyPositionedModifierImpl
                     _onGloballyPositioned(newLayoutCoordinates);
                 }
             });
-            DisposableEffect(key: element, effect: !__composer.Changed((element, onGeometryChanged)) ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
+            DisposableEffect(key: element, effect: !__composer.ChangedAsStruct((element, onGeometryChanged)) ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
             {
                 var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
                 foreach (var ancestor in ancestors)
@@ -69,7 +69,7 @@ internal static partial class GloballyPositionedComposeFunctions
             var style = element.style;
             var lastTranslate = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleTranslate>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleTranslate>>(IMutableStableProperty.Create(style.translate));
             var lastScale = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleScale>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.UIElements.StyleScale>>(IMutableStableProperty.Create(style.scale));
-            LaunchedEffect((style.translate, style.scale), !__composer.Changed((callback, style, lastTranslate, lastScale)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+            LaunchedEffect((style.translate, style.scale), !__composer.ChangedAsStruct((callback, style, lastTranslate, lastScale)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
             {
                 if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)
                 {

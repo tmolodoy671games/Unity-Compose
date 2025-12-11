@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                     for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
-                        Key(key: currentI, content: !__composer.Changed((parentSize, currentI)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                        Key(key: currentI, content: !__composer.ChangedAsStruct((parentSize, currentI)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
                         {
                             var position = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(Vector2.zero));
                             LaunchedEffect(key: string.Empty, coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize.Value, it => position.Value = it));

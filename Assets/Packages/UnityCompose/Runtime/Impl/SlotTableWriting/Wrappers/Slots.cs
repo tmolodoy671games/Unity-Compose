@@ -82,6 +82,11 @@ internal readonly struct Slots
         _slots.Insert(index, value);
     }
 
+    public void InsertAsStruct<T>(int index, T value) where T : struct
+    {
+        _slots.Insert(index, new MutableSlotEntry<T>(value));
+    }
+
     #region VisualElement
 
     public VisualElement? GetVisualElement(int index)

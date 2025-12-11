@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public class Composer : IComposer
+public class Composer
 {
     public static readonly Composer Instance = new();
 
@@ -18,14 +18,18 @@ public class Composer : IComposer
 
     #region Restart Group
 
+    public bool ShouldExecute()
+    {
+#if STRUCT_OPTIMIZATIONS
+        return ShouldExecuteAsStruct(Unit.Instance);
+#else
+        return ShouldExecute(SingletonState.Instance);
+#endif
+    }
+
     public void StartRestartGroup(int key)
     {
         _writer.StartRestartGroup(key);
-    }
-
-    public bool ShouldExecute()
-    {
-        return ShouldExecuteAsStruct(Unit.Instance);
     }
 
     public bool ShouldExecute<T>(T state)
@@ -96,13 +100,27 @@ public class Composer : IComposer
 
     public bool Changed()
     {
+#if STRUCT_OPTIMIZATIONS
+        return ChangedAsStruct(Unit.Instance);
+#else
         return Changed(SingletonState.Instance);
+#endif
     }
 
     public bool Changed<TState>(TState state)
     {
         var existingKey = _writer.ReadAndWrite(state);
         return !existingKey.Equals(state);
+    }
+
+    public bool ChangedAsStruct<T>(T state) where T : struct
+    {
+#if STRUCT_OPTIMIZATIONS
+        var existingKey = _writer.ReadAndWriteAsStruct(state);
+        return !existingKey.Equals(state);
+#else
+        return Changed(state);
+#endif
     }
 
     public T RememberedValue<T>()

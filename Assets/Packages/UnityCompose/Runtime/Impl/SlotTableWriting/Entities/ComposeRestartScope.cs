@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
-public class ComposeRestartScope : IScopeUpdateScope
+internal class ComposeRestartScope : IScopeUpdateScope
 {
     public readonly AnchorId _groupAnchor;
     public Dictionary<ICompositionLocal, IMutableState<object?>>? CompositionLocalMap;
     private Action? _restartCallback;
-    private readonly ISlotTableWriter _writer;
+    private readonly SlotTableWriter _writer;
 
-    internal ComposeRestartScope(AnchorId groupAnchor, ISlotTableWriter writer)
+    internal ComposeRestartScope(AnchorId groupAnchor, SlotTableWriter writer)
     {
         _groupAnchor = groupAnchor;
         _writer = writer;

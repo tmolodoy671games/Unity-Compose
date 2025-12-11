@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
             {
                 it.style.alignItems = Align.Center;
                 it.style.justifyContent = Justify.Center;
-            }), content: !__composer.Changed((content, contentStyle)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
+            }), content: !__composer.ChangedAsStruct((content, contentStyle)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 CompositionLocalProvider(LocalModifier.Provides(after: contentStyle), content: content);
             }));
@@ -63,7 +63,7 @@ public static partial class ComposeFunctions
             var isSizeValid = contentSize.Value is { x: > 0, y: > 0 } && containerPaddings.Value is { x: >= 0, y: >= 0 };
             if (isSizeValid)
             {
-                var animatedSize = key != null ? AnimateVector2AsState(key: key, targetValueFactory: !__composer.Changed((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value), animationSpec: resolvedAnimationSpec).Value : AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value;
+                var animatedSize = key != null ? AnimateVector2AsState(key: key, targetValueFactory: !__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value), animationSpec: resolvedAnimationSpec).Value : AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value;
                 containerStyle = containerStyle.Size(width: animatedSize.x, height: animatedSize.y);
                 contentStyle = contentStyle.Float();
             }
