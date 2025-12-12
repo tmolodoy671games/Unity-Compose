@@ -13,7 +13,7 @@ public static partial class ComposeFunctions
     {
         var(__key, __content) = (key, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1755839592);
+        __composer.StartRestartGroup(-664152188);
         if (__composer.ShouldExecuteAsStruct((__key, __content)))
         {
             content();
@@ -23,6 +23,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1755839592)?.UpdateScope(() => __Key(__key, __content));
+        __composer.EndRestartGroup(-664152188)?.UpdateScope(() => __Key(__key, __content));
     }
 }

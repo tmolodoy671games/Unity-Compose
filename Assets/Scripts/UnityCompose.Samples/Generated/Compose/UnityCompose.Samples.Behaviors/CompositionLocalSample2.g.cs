@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(889209525);
+            __composer.StartRestartGroup(-1371467293);
             if (__composer.ShouldExecute())
             {
                 Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(889209525)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-1371467293)?.UpdateScope(() => __Content());
         }
     }
 }

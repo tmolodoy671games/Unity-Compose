@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1183406456);
+            __composer.StartRestartGroup(969856316);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -21,14 +21,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1183406456)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(969856316)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-2102891545);
+            __composer.StartRestartGroup(-284742440);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -38,24 +38,24 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-2102891545)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(-284742440)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-894395642);
+            __composer.StartRestartGroup(814623295);
             if (__composer.ShouldExecute())
             {
                 var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed(isSwitched) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition()));
-                    __composer.StartReplaceGroup(636477144);
+                    __composer.StartReplaceGroup(687378638);
                     if (isSwitched.Value)
                         EmptySpacer();
-                    __composer.EndReplaceGroup(636477144);
+                    __composer.EndReplaceGroup(687378638);
                 }));
             }
             else
@@ -63,14 +63,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-894395642)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(814623295)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
         private static void __EmptySpacer()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(668813134);
+            __composer.StartRestartGroup(-469596372);
             if (__composer.ShouldExecute())
             {
             }
@@ -79,7 +79,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(668813134)?.UpdateScope(() => __EmptySpacer());
+            __composer.EndRestartGroup(-469596372)?.UpdateScope(() => __EmptySpacer());
         }
     }
 }

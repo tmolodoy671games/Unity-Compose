@@ -15,7 +15,7 @@ internal partial class OnGloballyPositionedModifierImpl
     {
         var __element = (element);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1249381947);
+        __composer.StartRestartGroup(1473523162);
         if (__composer.ShouldExecute(__element))
         {
             var previousLayoutCoordinates = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
@@ -45,7 +45,7 @@ internal partial class OnGloballyPositionedModifierImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1249381947)?.UpdateScope(() => __Apply(__element));
+        __composer.EndRestartGroup(1473523162)?.UpdateScope(() => __Apply(__element));
     }
 }
 
@@ -56,13 +56,13 @@ internal static partial class GloballyPositionedComposeFunctions
     {
         var __element = (element);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(752919397);
+        __composer.StartRestartGroup(-429797837);
         if (__composer.ShouldExecute(__element))
         {
             var callback = element.OnGloballyPositionedCallbackOrNull();
             if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
             {
-                __composer.EndRestartGroup(752919397)?.UpdateScope(() => __FireOnGloballyPositionedCallback(__element));
+                __composer.EndRestartGroup(-429797837)?.UpdateScope(() => __FireOnGloballyPositionedCallback(__element));
                 return;
             }
 
@@ -84,6 +84,6 @@ internal static partial class GloballyPositionedComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(752919397)?.UpdateScope(() => __FireOnGloballyPositionedCallback(__element));
+        __composer.EndRestartGroup(-429797837)?.UpdateScope(() => __FireOnGloballyPositionedCallback(__element));
     }
 }

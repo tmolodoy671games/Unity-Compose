@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
     {
         var(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier) = (targetState, transitionSpec, content, sizeAnimationSpec, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1433093757);
+        __composer.StartRestartGroup(497003188);
         if (__composer.ShouldExecuteAsStruct((__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
         {
             var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
@@ -42,7 +42,7 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Style: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Style: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
-                __composer.StartReplaceGroup(6755691);
+                __composer.StartReplaceGroup(1351223420);
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "First", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
@@ -52,8 +52,8 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(6755691);
-                __composer.StartReplaceGroup(1194410071);
+                __composer.EndReplaceGroup(1351223420);
+                __composer.StartReplaceGroup(-2106566898);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "Second", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
@@ -63,7 +63,7 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(1194410071);
+                __composer.EndReplaceGroup(-2106566898);
             }));
         }
         else
@@ -71,6 +71,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1433093757)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
+        __composer.EndRestartGroup(497003188)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
     }
 }

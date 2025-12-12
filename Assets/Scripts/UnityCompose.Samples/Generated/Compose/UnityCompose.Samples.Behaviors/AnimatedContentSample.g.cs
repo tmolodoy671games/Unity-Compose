@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-2064172763);
+            __composer.StartRestartGroup(-1836938474);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -21,14 +21,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-2064172763)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-1836938474)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1747397018);
+            __composer.StartRestartGroup(383655333);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -38,14 +38,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1747397018)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(383655333)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(219010038);
+            __composer.StartRestartGroup(896715348);
             if (__composer.ShouldExecute())
             {
                 const float Duration = 0.5f;
@@ -68,7 +68,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(219010038)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(896715348)?.UpdateScope(() => __Layout());
         }
     }
 }

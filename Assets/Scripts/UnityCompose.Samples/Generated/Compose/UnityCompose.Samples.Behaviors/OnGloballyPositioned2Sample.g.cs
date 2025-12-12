@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-591915576);
+            __composer.StartRestartGroup(1825056684);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -21,14 +21,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-591915576)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1825056684)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(238988961);
+            __composer.StartRestartGroup(-294336196);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -38,14 +38,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(238988961)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(-294336196)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1546365619);
+            __composer.StartRestartGroup(946367469);
             if (__composer.ShouldExecute())
             {
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -59,14 +59,14 @@ namespace UnityCompose.Samples.Behaviors
                         Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick(!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 2)).OnGloballyPositioned(!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[2] = it.GlobalPosition)), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "Third")));
                         Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick(!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 3)).OnGloballyPositioned(!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[3] = it.GlobalPosition)), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "Fourth")));
                     }));
-                    __composer.StartReplaceGroup(1006274587);
+                    __composer.StartReplaceGroup(-1032052655);
                     foreach (var position in positions.Values)
                     {
                         var measurer = LocalLayoutMeasurer.Current;
                         Spacer(modifier: Modifier.Background(Color.red).Size(16).Border(4, topLeftRadius: 0).Float().Position(left: measurer.GlobalToLocal(position).x, top: measurer.GlobalToLocal(position).y));
                     }
 
-                    __composer.EndReplaceGroup(1006274587);
+                    __composer.EndReplaceGroup(-1032052655);
                 }));
             }
             else
@@ -74,7 +74,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1546365619)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(946367469)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
@@ -82,7 +82,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var(__selected, __content, __modifier) = (selected, content, modifier);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(356085281);
+            __composer.StartRestartGroup(-977926424);
             if (__composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
             {
                 Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -95,7 +95,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(356085281)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
+            __composer.EndRestartGroup(-977926424)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
         }
     }
 }

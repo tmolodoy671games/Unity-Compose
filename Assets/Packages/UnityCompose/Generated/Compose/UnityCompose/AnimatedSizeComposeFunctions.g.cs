@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __animationSpec) = (content, modifier, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1847834173);
+        __composer.StartRestartGroup(1826694553);
         if (__composer.ShouldExecuteAsStruct((__content, __modifier, __animationSpec)))
         {
             var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1847834173)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec));
+        __composer.EndRestartGroup(1826694553)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec));
     }
 
     [Composable]

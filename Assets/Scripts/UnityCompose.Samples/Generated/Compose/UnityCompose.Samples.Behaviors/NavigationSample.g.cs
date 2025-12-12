@@ -14,7 +14,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(553615033);
+            __composer.StartRestartGroup(107286556);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -24,14 +24,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(553615033)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(107286556)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1988832801);
+            __composer.StartRestartGroup(1172386894);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -41,14 +41,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1988832801)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(1172386894)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-182273952);
+            __composer.StartRestartGroup(1517382754);
             if (__composer.ShouldExecute())
             {
                 var animationSpec = Tween(duration: 1f);
@@ -65,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-182273952)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1517382754)?.UpdateScope(() => __Layout());
         }
     }
 
@@ -75,7 +75,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1719960415);
+            __composer.StartRestartGroup(-611690533);
             if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
@@ -90,7 +90,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1719960415)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-611690533)?.UpdateScope(() => __Content());
         }
     }
 
@@ -100,7 +100,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1037156711);
+            __composer.StartRestartGroup(1026872014);
             if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
@@ -112,7 +112,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1037156711)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1026872014)?.UpdateScope(() => __Content());
         }
     }
 
@@ -123,12 +123,12 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __onClick = (onClick);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1251363310);
+            __composer.StartRestartGroup(1188124018);
             if (__composer.ShouldExecute(__onClick))
             {
                 if (!IsActive)
                 {
-                    __composer.EndRestartGroup(-1251363310)?.UpdateScope(() => __CollectSpace(__onClick));
+                    __composer.EndRestartGroup(1188124018)?.UpdateScope(() => __CollectSpace(__onClick));
                     return;
                 }
 
@@ -139,7 +139,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1251363310)?.UpdateScope(() => __CollectSpace(__onClick));
+            __composer.EndRestartGroup(1188124018)?.UpdateScope(() => __CollectSpace(__onClick));
         }
     }
 }
