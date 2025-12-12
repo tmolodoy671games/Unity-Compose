@@ -16,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockPerformanceLayout);
+            new ComposeView().SetContent(MockLayout);
         }
 
         [Button("Log")]
@@ -53,12 +53,14 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void MockLayout()
         {
-            Debug.Log("MockLayout()");
+            // Debug.Log("MockLayout()");
             _ = UpdateState.Value;
             if (SwitchState.Value)
             {
                 MockSpacer();
             }
+            
+            MockSpacer();
 
             for (var i = 0; i < AddState.Value; i++)
                 MockSpacer();
@@ -67,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void MockSpacer()
         {
-            Debug.Log("MockSpacer()");
+            // Debug.Log("MockSpacer()");
         }
 
         [Composable]

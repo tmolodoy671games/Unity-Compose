@@ -15,7 +15,6 @@ namespace UnityCompose.Samples.Behaviors
             __composer.StartRestartGroup(203612774);
             if (__composer.ShouldExecute())
             {
-                Debug.Log("MockLayout()");
                 _ = UpdateState.Value;
                 __composer.StartReplaceGroup(977782000);
                 if (SwitchState.Value)
@@ -24,10 +23,11 @@ namespace UnityCompose.Samples.Behaviors
                 }
 
                 __composer.EndReplaceGroup(977782000);
-                __composer.StartReplaceGroup(-1035410300);
+                MockSpacer();
+                __composer.StartReplaceGroup(1922131363);
                 for (var i = 0; i < AddState.Value; i++)
                     MockSpacer();
-                __composer.EndReplaceGroup(-1035410300);
+                __composer.EndReplaceGroup(1922131363);
             }
             else
             {
@@ -41,24 +41,23 @@ namespace UnityCompose.Samples.Behaviors
         private static void __MockSpacer()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1226377744);
+            __composer.StartRestartGroup(578180728);
             if (__composer.ShouldExecute())
             {
-                Debug.Log("MockSpacer()");
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1226377744)?.UpdateScope(() => __MockSpacer());
+            __composer.EndRestartGroup(578180728)?.UpdateScope(() => __MockSpacer());
         }
 
         [Composable]
         private static void __MockPerformanceLayout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-668126737);
+            __composer.StartRestartGroup(642155314);
             if (__composer.ShouldExecute())
             {
                 var state = new object ();
@@ -76,14 +75,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-668126737)?.UpdateScope(() => __MockPerformanceLayout());
+            __composer.EndRestartGroup(642155314)?.UpdateScope(() => __MockPerformanceLayout());
         }
 
         [Composable]
         private static void __EmptyComposable()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1029596769);
+            __composer.StartRestartGroup(957535468);
             if (__composer.ShouldExecute())
             {
             }
@@ -92,7 +91,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1029596769)?.UpdateScope(() => __EmptyComposable());
+            __composer.EndRestartGroup(957535468)?.UpdateScope(() => __EmptyComposable());
         }
     }
 }

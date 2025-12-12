@@ -1,4 +1,5 @@
 // #define LOGGING
+
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 
@@ -24,11 +25,11 @@ internal class SlotTableWriter
     private readonly Slots _slots;
     private readonly Anchors _groupsAnchors;
     private readonly Anchors _slotsAnchors;
-    private readonly Stack<int> _enteredParentsIndices = new();
-    private readonly Stack<int> _enteredParentsSlotIndices = new();
+    private readonly Stack<ComposeGroupEntry> _enteredParents = new();
     private readonly Stack<int> _enteredElementIndices = new();
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
+    private readonly Stack<(int GroupOffset, int SlotOffset)> _pendingOffsets = new();
 
     private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
     private readonly List<IImmutableStableList<CompositionLocalProvides>> _enteredProvides = new();
@@ -558,11 +559,11 @@ internal class SlotTableWriter
         _slots.Clear();
         _groupsAnchors.Clear();
         _slotsAnchors.Clear();
-        _enteredParentsIndices.Clear();
-        _enteredParentsSlotIndices.Clear();
+        _enteredParents.Clear();
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
+        _pendingOffsets.Clear();
 
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
@@ -611,15 +612,6 @@ internal class SlotTableWriter
         ResetTo(anchor.Index, compositionLocalMap);
     }
 
-    public void ResetToOutOfBounds()
-    {
-        _enteredParentsIndices.Clear();
-        _invalidationRoot = -1;
-        _currentGroupIndex = _groups.Count;
-        _currentSlotIndex = _slots.Count;
-        _currentParentIndex = -1;
-    }
-
     internal int GetGroupIndex(AnchorId groupAnchor)
     {
         return _groupsAnchors[groupAnchor].Index;
@@ -663,7 +655,7 @@ internal class SlotTableWriter
         var parent = CurrentParent();
         if (parent.Size == 0)
             return false;
-        return _currentGroupIndex < _currentParentIndex + parent.Size;
+        return _currentGroupIndex < _currentParentIndex + parent.Size + _pendingOffsets.PeekOrDefault((0, 0)).Item1;
     }
 
     private bool IsThereAlreadyASlot()
@@ -675,7 +667,8 @@ internal class SlotTableWriter
         var parent = CurrentParent();
         if (parent.SlotsSize == 0)
             return false;
-        return _currentSlotIndex < _currentParentSlotIndex + parent.SlotsSize;
+        return _currentSlotIndex <
+               _currentParentSlotIndex + parent.SlotsSize + _pendingOffsets.PeekOrDefault((0, 0)).Item2;
     }
 
     private void EnsureIndex(ComposeGroup group)
@@ -691,8 +684,8 @@ internal class SlotTableWriter
     private void EnterGroup()
     {
         _currentParentIndex = _currentGroupIndex;
-        _enteredParentsIndices.Push(_currentGroupIndex);
-        _enteredParentsSlotIndices.Push(_currentSlotIndex);
+        _enteredParents.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
+        _pendingOffsets.Push((0, 0));
         _currentParentSlotIndex = _currentSlotIndex;
         _currentGroupIndex++;
     }
@@ -739,7 +732,7 @@ internal class SlotTableWriter
             _alreadyRemovedSlots += currentSlotsSizeOffset;
         }
 
-        if (_enteredParentsIndices.Count == 1)
+        if (_enteredParents.Count == 1)
         {
             ShiftGroupsAnchors(_currentGroupIndex + 1, groupSizeOffset);
             ShiftSlotsAnchors(_currentSlotIndex + 1, slotsSizeOffset);
@@ -750,10 +743,19 @@ internal class SlotTableWriter
             _alreadyRemovedSlots = 0;
         }
 
-        _enteredParentsIndices.Pop();
-        _enteredParentsSlotIndices.Pop();
-        _currentParentIndex = _enteredParentsIndices.PeekOrDefault(-1);
-        _currentParentSlotIndex = _enteredParentsSlotIndices.PeekOrDefault(-1);
+        _enteredParents.Pop();
+        var newParent = _enteredParents.PeekOrDefault(new ComposeGroupEntry(-1, -1));
+        _currentParentIndex = newParent.GroupIndex;
+        _currentParentSlotIndex = newParent.SlotIndex;
+        _pendingOffsets.Pop();
+        if (_pendingOffsets.IsNotEmpty())
+        {
+            var oldOffsets = _pendingOffsets.Pop();
+            _pendingOffsets.Push((
+                oldOffsets.GroupOffset + groupSizeOffset,
+                oldOffsets.SlotOffset + slotsSizeOffset
+            ));
+        }
     }
 
     public override string ToString()
