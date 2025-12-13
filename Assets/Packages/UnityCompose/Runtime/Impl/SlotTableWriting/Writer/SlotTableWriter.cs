@@ -2,6 +2,7 @@
 
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
+#define ANCHORS_FOR_EVERYONE
 
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,8 @@ internal class SlotTableWriter
     {
         _groups = new Groups(table.Groups);
         _slots = new Slots(table.Slots);
-        _groupsAnchors = new Anchors(table.GroupsAnchors);
-        _slotsAnchors = new Anchors(table.SlotsAnchors);
+        _groupsAnchors = new Anchors(table.GroupsAnchors, table.FreedGroupAnchors);
+        _slotsAnchors = new Anchors(table.SlotsAnchors, table.FreedSlotAnchors);
     }
 
     private ComposeGroup CurrentParent() => _groups[_currentParentIndex];
@@ -278,8 +279,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: 1,
-            AnchorId: _groupsAnchors.AllocateAnchor(_currentGroupIndex),
-            DataAnchorId: _slotsAnchors.AllocateAnchor(_currentSlotIndex),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 1
         );
@@ -391,14 +392,14 @@ internal class SlotTableWriter
 
     public T? GetVisualElement<T>() where T : VisualElement
     {
-        return _slots.GetVisualElement(CurrentParent().SlotIndex(_slotsAnchors)) as T;
+        return _slots.GetVisualElement(_currentParentSlotIndex) as T;
     }
 
     public void WriteVisualElement(VisualElement visualElement)
     {
         // if (IsDebugVisualElementNamesEnabled)
         //     visualElement.name = CurrentParent().Key.ToString();
-        _slots.SetVisualElement(CurrentParent().SlotIndex(_slotsAnchors), visualElement);
+        _slots.SetVisualElement(_currentParentSlotIndex, visualElement);
         var currentParent = CurrentParent();
         if (currentParent.ElementsCount != 1)
         {
@@ -718,6 +719,7 @@ internal class SlotTableWriter
 #if LOGGING
             Log($"_groups.RemoveRange({_currentGroupIndex}, {currentGroupSizeOffset})");
 #endif
+            RecycleAnchors(_currentGroupIndex, currentGroupSizeOffset);
             _groups.RemoveRange(_currentGroupIndex, currentGroupSizeOffset);
             _alreadyRemovedGroups += currentGroupSizeOffset;
         }
@@ -850,6 +852,20 @@ internal class SlotTableWriter
             if (!ancestor.ParentAnchorId.IsValid)
                 return;
             ancestorIndex = _groupsAnchors[ancestor.ParentAnchorId].Index;
+        }
+    }
+
+    private void RecycleAnchors(int startIndex, int count)
+    {
+        if (count == 0)
+            return;
+        for (var i = startIndex; i < startIndex + count; i++)
+        {
+            var group = _groups[i];
+            if (group.AnchorId.IsValid)
+                _groupsAnchors.ReleaseAnchor(group.AnchorId);
+            if (group.DataAnchorId.IsValid)
+                _groupsAnchors.ReleaseAnchor(group.DataAnchorId);
         }
     }
 

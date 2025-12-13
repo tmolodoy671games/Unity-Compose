@@ -7,10 +7,12 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 internal readonly struct Anchors
 {
     private readonly List<Anchor> _anchors;
+    private readonly Stack<AnchorId> _freeAnchorIds;
 
-    public Anchors(List<Anchor> anchors)
+    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds)
     {
         _anchors = anchors;
+        _freeAnchorIds = freeAnchorIds;
     }
     
     public int Count => _anchors.Count;
@@ -29,9 +31,20 @@ internal readonly struct Anchors
 
     public AnchorId AllocateAnchor(int initialLocation)
     {
+        if (_freeAnchorIds.TryPop(out var freeAnchorId))
+        {
+            _anchors[freeAnchorId.Index] = new Anchor(initialLocation);
+            return freeAnchorId;
+        }
         var newAnchorId = _anchors.Count;
        _anchors.Add(new Anchor(initialLocation));
        return new AnchorId(newAnchorId);
+    }
+
+    public void ReleaseAnchor(AnchorId anchorId)
+    {
+        _freeAnchorIds.Push(anchorId);
+        _anchors[anchorId.Index] = Anchor.None;
     }
     
     public void Clear() => _anchors.Clear();
