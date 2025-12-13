@@ -49,8 +49,8 @@ public static partial class ComposeFunctions
     {
         var __composer = CurrentComposer;
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
-        // BRUH
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue))
+            return property;
         LaunchedEffect(key: targetValue!, coroutine: !__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
@@ -79,8 +79,8 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         var targetValue = targetValueFactory();
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
-        // BRUH
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue))
+            return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: key, coroutine: !__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
         return property;

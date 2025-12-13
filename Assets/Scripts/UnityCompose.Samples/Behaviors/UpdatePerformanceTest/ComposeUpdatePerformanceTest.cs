@@ -1,6 +1,5 @@
 // ReSharper disable ArrangeNamespaceBody
 
-using System.Collections;
 using StableCollections;
 
 namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
@@ -17,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                     .OnGloballyPositioned(it => parentSize.Value = it.SizeWithPaddings),
                 content: () =>
                 {
-                    for (var i = 0; i < 1_000; i++)
+                    for (var i = 0; i < 1_00; i++)
                     {
                         var currentI = i;
                         Key(
@@ -33,12 +32,15 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                                     )
                                 );
 
+                                var baseModifier = Remember(currentI, () => Modifier
+                                    .Size(50)
+                                    .Background(
+                                        PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
+                                    .Float()
+                                );
                                 Spacer(
-                                    modifier: Modifier
-                                        .Size(50)
-                                        .Background(
-                                            PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
-                                        .Float()
+                                    modifier:
+                                    baseModifier
                                         .Position(
                                             left: position.Value.x,
                                             top: position.Value.y

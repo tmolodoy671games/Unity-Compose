@@ -1,6 +1,7 @@
 using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
+using UnityEditor;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -57,19 +58,50 @@ namespace UnityCompose.Samples.Behaviors
             _ = UpdateState.Value;
             if (SwitchState.Value)
             {
+                // MockColumn(() =>
+                // {
                 MockSpacer();
+                MockSpacer();
+                MockSpacer();
+                MockSpacer();
+                MockSpacer();
+                // });
             }
-            
-            MockSpacer();
 
+            // MockColumn(() =>
+            // {
+            MockSpacer();
+            // MockSpacer();
+            // });
+
+            // MockColumn(() =>
+            // {
             for (var i = 0; i < AddState.Value; i++)
                 MockSpacer();
+            // });
+        }
+
+        [Composable]
+        private static void MockColumn(ComposableContent content)
+        {
+            content();
         }
 
         [Composable]
         private static void MockSpacer()
         {
             // Debug.Log("MockSpacer()");
+            MockNestedSpacer();
+        }
+
+        [Composable]
+        private static void MockNestedSpacer()
+        {
+            // MockSuperNestedSpacer();
+        }
+
+        private static void MockSuperNestedSpacer()
+        {
         }
 
         [Composable]
@@ -84,16 +116,6 @@ namespace UnityCompose.Samples.Behaviors
                 }
             });
             Debug.Log((int)time.TotalMilliseconds);
-        }
-
-        [Composable]
-        private static void EmptyComposable()
-        {
-        }
-
-        private static void Log()
-        {
-            Debug.Log(CurrentComposer);
         }
     }
 }

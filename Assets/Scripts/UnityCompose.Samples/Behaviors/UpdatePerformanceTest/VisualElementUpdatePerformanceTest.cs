@@ -9,7 +9,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 1_00; i++)
             {
                 var childElement = new VisualElement
                 {

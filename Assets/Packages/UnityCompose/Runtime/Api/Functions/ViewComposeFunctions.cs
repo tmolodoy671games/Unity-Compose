@@ -40,20 +40,21 @@ public static partial class ComposeFunctions
         if (localStyle.After != null)
             resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
 
-        var currentModifier = Remember(() => IMutableStableProperty.Create<IModifier?>(null));
-        var currentProperties = Remember(() =>
-            IMutableStableProperty.Create<IStableSet<ComposeModifiedProperty>>(
-                IImmutableStableSet.Empty<ComposeModifiedProperty>()
-            )
-        );
-        var newProperties = IMutableStableSet.Create<ComposeModifiedProperty>();
+        var currentProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
+        var newProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
         resolvedModifier?.Apply(newProperties);
-        var propertiesToRevert = currentProperties.Value
-            .Where(it => !newProperties.Contains(it));
-        foreach (var property in propertiesToRevert)
+        foreach (var property in currentProperties)
+        {
+            if (newProperties.Contains(property))
+                continue;
             property.Revert(visualElement);
-        currentProperties.Value = newProperties;
-        currentModifier.Value = resolvedModifier;
+        }
+
+        currentProperties.Clear();
+        if (newProperties.IsNotEmpty())
+            currentProperties.AddRange(newProperties);
+        newProperties.Clear();
+        
         visualElement.ClearCallbacks();
         visualElement.style.transitionDelay.value?.Clear();
         visualElement.style.transitionDuration.value?.Clear();

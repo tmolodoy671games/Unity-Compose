@@ -51,11 +51,9 @@ namespace UnityCompose.Samples.Behaviors
                 var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed(isSwitched) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition()));
-                    __composer.StartReplaceGroup(687378638);
-                    if (isSwitched.Value)
-                        EmptySpacer();
-                    __composer.EndReplaceGroup(687378638);
+                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value));
+                // if (isSwitched.Value)
+                //     EmptySpacer();
                 }));
             }
             else

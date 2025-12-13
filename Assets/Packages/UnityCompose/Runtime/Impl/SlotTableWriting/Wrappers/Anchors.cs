@@ -8,11 +8,13 @@ internal readonly struct Anchors
 {
     private readonly List<Anchor> _anchors;
     private readonly Stack<AnchorId> _freeAnchorIds;
+    private readonly Stack<AnchorId> _newlyAllocatedAnchorIds;
 
-    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds)
+    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds, Stack<AnchorId> newlyAllocatedAnchorIds)
     {
         _anchors = anchors;
         _freeAnchorIds = freeAnchorIds;
+        _newlyAllocatedAnchorIds = newlyAllocatedAnchorIds;
     }
     
     public int Count => _anchors.Count;
@@ -34,10 +36,12 @@ internal readonly struct Anchors
         if (_freeAnchorIds.TryPop(out var freeAnchorId))
         {
             _anchors[freeAnchorId.Index] = new Anchor(initialLocation);
+            _newlyAllocatedAnchorIds.Push(freeAnchorId);
             return freeAnchorId;
         }
         var newAnchorId = _anchors.Count;
        _anchors.Add(new Anchor(initialLocation));
+       _newlyAllocatedAnchorIds.Push(new AnchorId(newAnchorId));
        return new AnchorId(newAnchorId);
     }
 

@@ -8,8 +8,3 @@ namespace UnityCompose;
 public class CompiledAttribute : Attribute
 {
 }
-
-[AttributeUsage(AttributeTargets.Method)]
-public class DontGenerateComposeGroupsAttribute : Attribute
-{
-}

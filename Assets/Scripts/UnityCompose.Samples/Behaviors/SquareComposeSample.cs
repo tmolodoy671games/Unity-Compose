@@ -27,11 +27,11 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale((isSwitched.Value ? 1.5f : 1f), transition: Transition())
+                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value)
                     );
 
-                    if (isSwitched.Value)
-                        EmptySpacer();
+                    // if (isSwitched.Value)
+                    //     EmptySpacer();
                 }
             );
         }

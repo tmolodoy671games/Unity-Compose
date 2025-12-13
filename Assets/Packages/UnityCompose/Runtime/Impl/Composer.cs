@@ -42,8 +42,8 @@ public class Composer
 #if STRUCT_OPTIMIZATIONS
         if (_writer.IsInInvalidationRoot())
             return true;
-        var existingState = _writer.GetPreviousState<T>();
-        _writer.UpdatePreviousState(state);
+        var existingState = _writer.GetPreviousStateAsStruct<T>();
+        _writer.UpdatePreviousStateAsStruct(state);
         return !existingState.Equals(state);
 #else
         return ShouldExecute(state);
