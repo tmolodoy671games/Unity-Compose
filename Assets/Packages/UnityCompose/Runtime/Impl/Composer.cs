@@ -147,7 +147,7 @@ public class Composer
         if (restartScope == null)
             return;
         if (state.Add(restartScope) && state.Log)
-            Debug.Log($"{state} Capture {_writer.GetGroupIndex(restartScope._groupAnchor)}");
+            Debug.Log($"{state} Capture {restartScope._groupAnchor}");
     }
 
     public void Reset()

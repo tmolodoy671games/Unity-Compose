@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
-            var isSwitched = Remember(() => MutableStateOf(false));
+            var isSwitched = Remember(() => LoggableMutableStateOf(false));
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
@@ -27,18 +27,10 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value)
+                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f, animationSpec: Tween(duration: 2)).Value)
                     );
-
-                    // if (isSwitched.Value)
-                    //     EmptySpacer();
                 }
             );
-        }
-
-        [Composable]
-        private static void EmptySpacer()
-        {
         }
     }
 }

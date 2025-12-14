@@ -2,7 +2,7 @@
 
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
-#define ANCHORS_FOR_EVERYONE
+// #define ANCHORS_FOR_EVERYONE
 
 using System;
 using System.Collections.Generic;
@@ -176,6 +176,7 @@ internal class SlotTableWriter
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
+        Debug.Log($"Create ComposeRestartScope({restartGroup.AnchorId})");
         restartScope = new ComposeRestartScope(restartGroup.AnchorId, this, RequireCompositionLocalMap());
         _slots.SetRestartScope(enteredRestartGroupSlotIndex, restartScope);
         return restartScope;
@@ -567,11 +568,14 @@ internal class SlotTableWriter
         _slots.Clear();
         _groupsAnchors.Clear();
         _slotsAnchors.Clear();
+        
         _enteredParents.Clear();
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
         _pendingOffsets.Clear();
+        _newlyAllocatedGroupAnchors.Clear();
+        _newlyAllocatedSlotAnchors.Clear();
         _newlyAllocatedGroupAnchors.Clear();
         _newlyAllocatedSlotAnchors.Clear();
 
@@ -591,7 +595,6 @@ internal class SlotTableWriter
 
     public void ResetTo(int groupIndex, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap)
     {
-        // Debug.Log($"Restart {groupIndex}");
 #if LOGGING
         Log($"ResetTo({groupIndex})");
 #endif
@@ -605,9 +608,12 @@ internal class SlotTableWriter
         _invalidationRoot = groupIndex;
         _currentGroupIndex = groupIndex;
         _currentSlotIndex = _slotsAnchors[group.DataAnchorId].Index;
-        _currentParentIndex = group.ParentAnchorId.IsValid ? _groupsAnchors[group.ParentAnchorId].Index : -1;
+        _currentParentIndex = -1;
+        _currentParentSlotIndex = -1;
         _currentElementIndex = group.ElementIndex;
         _rootCompositionLocalMap = compositionLocalMap;
+        _alreadyRemovedGroups = 0;
+        _alreadyRemovedSlots = 0;
 
         _enteredParents.Clear();
         _enteredElementIndices.Clear();
@@ -625,6 +631,7 @@ internal class SlotTableWriter
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap
     )
     {
+        Log($"Restart {groupAnchor}");
         if (!groupAnchor.IsValid)
             return;
         var anchor = _groupsAnchors[groupAnchor];
@@ -787,6 +794,7 @@ internal class SlotTableWriter
         _currentParentIndex = newParent.GroupIndex;
         _currentParentSlotIndex = newParent.SlotIndex;
         _pendingOffsets.RemoveAt(_pendingOffsets.Count - 1);
+        Debug.Log(_currentParentIndex);
         if (_pendingOffsets.IsNotEmpty())
         {
             var oldOffsets = _pendingOffsets[^1];

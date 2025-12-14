@@ -202,7 +202,6 @@ internal static class ComposeDebugAssemblyCompiler
     {
         if (method.IsAbstract) return false;
         if (method.Name.StartsWith("__")) return false;
-        if (method.ReturnType.FullName != "System.Void") return false;
         var composableAttribute = method.CustomAttributes
             .FirstOrDefault(it => it.AttributeType.Name == "ComposableAttribute");
         if (composableAttribute == null)
