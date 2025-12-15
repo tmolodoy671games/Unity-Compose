@@ -479,7 +479,7 @@ internal class SlotTableWriter
         var map = GetCompositionLocalMap();
         if (map != null)
             _enteredCompositionLocalMaps.Pop();
-        else
+        else if (_enteredProvides.IsNotEmpty())
             _enteredProvides.RemoveAt(_enteredProvides.Count - 1);
         ExitGroup(parent);
         if (parent.Key == _invalidationRoot)
