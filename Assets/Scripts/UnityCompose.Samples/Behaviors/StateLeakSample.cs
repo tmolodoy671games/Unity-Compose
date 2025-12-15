@@ -34,7 +34,6 @@ namespace UnityCompose.Samples.Behaviors
                                 var firstCount = Remember(() => MutableStateOf(0));
                                 Text(
                                     text: $"Clicked {firstCount.Value} times",
-                                    fontSize: 20,
                                     textAlign: TextAlign.MiddleCenter,
                                     modifier: Modifier
                                         .FillMaxWidth()
@@ -49,7 +48,6 @@ namespace UnityCompose.Samples.Behaviors
                             var secondCount = Remember(() => MutableStateOf(0));
                             Text(
                                 text: $"Clicked {secondCount.Value} times",
-                                fontSize: 20,
                                 textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .FillMaxWidth()
@@ -63,7 +61,6 @@ namespace UnityCompose.Samples.Behaviors
 
                             Text(
                                 text: "Switch",
-                                fontSize: 20,
                                 textAlign: TextAlign.MiddleCenter,
                                 modifier: Modifier
                                     .FillMaxWidth()

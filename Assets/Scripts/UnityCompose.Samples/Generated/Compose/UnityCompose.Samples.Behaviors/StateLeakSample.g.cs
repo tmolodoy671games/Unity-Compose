@@ -23,13 +23,13 @@ namespace UnityCompose.Samples.Behaviors
                         if (showFirst.Value)
                         {
                             var firstCount = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<int>>(MutableStateOf(0));
-                            Text(text: $"Clicked {firstCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.red).Padding(all: 20).Border(radius: 16).OnClick(!__composer.Changed(firstCount) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => firstCount.Value++)).Name("first-button"));
+                            Text(text: $"Clicked {firstCount.Value} times", textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.red).Padding(all: 20).Border(radius: 16).OnClick(!__composer.Changed(firstCount) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => firstCount.Value++)).Name("first-button"));
                         }
 
                         __composer.EndReplaceGroup(1013871575);
                         var secondCount = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<int>>(MutableStateOf(0));
-                        Text(text: $"Clicked {secondCount.Value} times", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.green).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(!__composer.Changed(secondCount) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => secondCount.Value++)).Name("second-button"));
-                        Text(text: "Switch", fontSize: 20, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.blue).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(!__composer.Changed(showFirst) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => showFirst.Value = !showFirst.Value)).Name("switch-button"));
+                        Text(text: $"Clicked {secondCount.Value} times", textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.green).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(!__composer.Changed(secondCount) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => secondCount.Value++)).Name("second-button"));
+                        Text(text: "Switch", textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.blue).Padding(all: 20).Border(radius: 16).Margin(top: 16).OnClick(!__composer.Changed(showFirst) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => showFirst.Value = !showFirst.Value)).Name("switch-button"));
                     }));
                 }));
             }

@@ -10,7 +10,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 internal readonly struct Groups
 {
     public const int GroupHeaderSize = 1;
-    
+
     private readonly List<ComposeGroup> _groups;
 
     public Groups(List<ComposeGroup> groups)
@@ -22,13 +22,14 @@ internal readonly struct Groups
     {
         get => _groups[index];
         set => _groups[index] = value;
-    } 
+    }
+
     public int Count => _groups.Count;
-    
+
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
-    
+
     public void RemoveRange(int index, int count) => _groups.RemoveRange(index, count);
-    
+
     public void Clear() => _groups.Clear();
 
     public string ToString(int currentParentIndex, int currentGroupIndex, Anchors groupsAnchors, Anchors slotsAnchors)
@@ -42,12 +43,21 @@ internal readonly struct Groups
             builder.Append($"[{i}]\t");
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
             builder.Append(group.ToString(groupsAnchors, slotsAnchors));
+            var isSelfIndexInvalid = group.AnchorId.IsValid &&
+                                     (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors) != i);
+            if (isSelfIndexInvalid)
+                builder.Append(" [SELF ANCHOR IS INVALID]");
+            var isDataIndexInvalid = group.DataAnchorId.IsValid &&
+                                     !slotsAnchors.ContainsIndex(group.DataAnchorId);
+            if (isDataIndexInvalid)
+                builder.Append(" [DATA ANCHOR IS INVALID]");
             if (currentParentIndex == i)
                 builder.Append(" < CURRENT_PARENT_INDEX");
             if (currentGroupIndex == i)
                 builder.Append(" < CURRENT_GROUP_INDEX");
             builder.AppendLine();
         }
+
         if (currentGroupIndex == _groups.Count)
             builder.AppendLine("< CURRENT_GROUP_INDEX");
         return builder.ToString();
@@ -62,7 +72,7 @@ internal static class ComposeGroupExtensions
             return -1;
         return anchors[group.AnchorId].Index;
     }
-    
+
     public static int ParentIndex(this ComposeGroup group, Anchors anchors)
     {
         if (!group.ParentAnchorId.IsValid)
@@ -76,7 +86,7 @@ internal static class ComposeGroupExtensions
             return -1;
         return anchors[group.DataAnchorId].Index;
     }
-    
+
     public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors)
     {
         var builder = new StringBuilder();
@@ -102,7 +112,7 @@ internal static class ComposeGroupExtensions
         builder.Append(")");
         return builder.ToString();
     }
-    
+
     public static int AncestorsCount(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         var count = 0;

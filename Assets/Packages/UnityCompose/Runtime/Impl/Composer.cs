@@ -30,6 +30,7 @@ public class Composer
 
     public bool ShouldExecute<T>(T state)
     {
+        return true; // BRUH
         if (_writer.IsInInvalidationRoot())
             return true;
         var existingState = _writer.GetPreviousState<T>();
@@ -39,6 +40,7 @@ public class Composer
 
     public bool ShouldExecuteAsStruct<T>(T state) where T : struct
     {
+        return true; // BRUH
 #if STRUCT_OPTIMIZATIONS
         if (_writer.IsInInvalidationRoot())
             return true;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -8,13 +9,11 @@ internal readonly struct Anchors
 {
     private readonly List<Anchor> _anchors;
     private readonly Stack<AnchorId> _freeAnchorIds;
-    private readonly Stack<AnchorId> _newlyAllocatedAnchorIds;
 
-    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds, Stack<AnchorId> newlyAllocatedAnchorIds)
+    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds)
     {
         _anchors = anchors;
         _freeAnchorIds = freeAnchorIds;
-        _newlyAllocatedAnchorIds = newlyAllocatedAnchorIds;
     }
     
     public int Count => _anchors.Count;
@@ -36,12 +35,10 @@ internal readonly struct Anchors
         if (_freeAnchorIds.TryPop(out var freeAnchorId))
         {
             _anchors[freeAnchorId.Index] = new Anchor(initialLocation);
-            _newlyAllocatedAnchorIds.Push(freeAnchorId);
             return freeAnchorId;
         }
         var newAnchorId = _anchors.Count;
        _anchors.Add(new Anchor(initialLocation));
-       _newlyAllocatedAnchorIds.Push(new AnchorId(newAnchorId));
        return new AnchorId(newAnchorId);
     }
 
@@ -52,6 +49,8 @@ internal readonly struct Anchors
     }
     
     public void Clear() => _anchors.Clear();
+
+    public bool ContainsIndex(AnchorId index) => _anchors.ContainsIndex(index.Index);
     
     public override string ToString()
     {
