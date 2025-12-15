@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -33,6 +34,8 @@ public abstract class BaseMutableStateImpl
 
     protected void Notify()
     {
+        if (Log)
+            Debug.Log($"{this}.Notify()");
         foreach (var group in _scopes)
         {
             if (_isCompositionLocal)

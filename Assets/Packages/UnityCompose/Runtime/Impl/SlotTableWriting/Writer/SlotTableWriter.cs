@@ -135,7 +135,6 @@ internal class SlotTableWriter
 #if LOGGING
         Log("SkipToGroupEnd()");
 #endif
-        // BRUH
         var parent = CurrentParent();
         ShiftSkippedGroupIndices(parent);
 
@@ -176,7 +175,6 @@ internal class SlotTableWriter
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
-        Debug.Log($"Create ComposeRestartScope({restartGroup.AnchorId})");
         restartScope = new ComposeRestartScope(restartGroup.AnchorId, this, RequireCompositionLocalMap());
         _slots.SetRestartScope(enteredRestartGroupSlotIndex, restartScope);
         return restartScope;
@@ -568,7 +566,7 @@ internal class SlotTableWriter
         _slots.Clear();
         _groupsAnchors.Clear();
         _slotsAnchors.Clear();
-        
+
         _enteredParents.Clear();
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
@@ -631,7 +629,6 @@ internal class SlotTableWriter
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap
     )
     {
-        Log($"Restart {groupAnchor}");
         if (!groupAnchor.IsValid)
             return;
         var anchor = _groupsAnchors[groupAnchor];
@@ -733,9 +730,7 @@ internal class SlotTableWriter
 
     private void ExitGroup(ComposeGroup currentParent)
     {
-        var oldSize = currentParent.Size;
         var newSize = _currentGroupIndex - _currentParentIndex;
-        var oldSlotsSize = currentParent.SlotsSize;
         var newSlotsSize = _currentSlotIndex - _currentParentSlotIndex;
         var newElementsCount = _currentElementIndex - currentParent.ElementIndex;
         if (currentParent.Type == ComposeGroupType.Reusable)
@@ -761,7 +756,7 @@ internal class SlotTableWriter
 #if LOGGING
             Log($"_groups.RemoveRange({_currentGroupIndex}, {currentGroupSizeOffset})");
 #endif
-            RecycleAnchors(_currentGroupIndex, currentGroupSizeOffset);
+            CleanupGroups(_currentGroupIndex, currentGroupSizeOffset);
             _groups.RemoveRange(_currentGroupIndex, currentGroupSizeOffset);
             _alreadyRemovedGroups += currentGroupSizeOffset;
         }
@@ -772,6 +767,7 @@ internal class SlotTableWriter
 #if LOGGING
             Log($"_slots.RemoveRange({_currentSlotIndex}, {currentSlotsSizeOffset})");
 #endif
+            CleanupSlots(_currentSlotIndex, currentSlotsSizeOffset);
             _slots.RemoveRange(_currentSlotIndex, currentSlotsSizeOffset);
             _alreadyRemovedSlots += currentSlotsSizeOffset;
         }
@@ -794,7 +790,6 @@ internal class SlotTableWriter
         _currentParentIndex = newParent.GroupIndex;
         _currentParentSlotIndex = newParent.SlotIndex;
         _pendingOffsets.RemoveAt(_pendingOffsets.Count - 1);
-        Debug.Log(_currentParentIndex);
         if (_pendingOffsets.IsNotEmpty())
         {
             var oldOffsets = _pendingOffsets[^1];
@@ -931,7 +926,7 @@ internal class SlotTableWriter
         }
     }
 
-    private void RecycleAnchors(int startIndex, int count)
+    private void CleanupGroups(int startIndex, int count)
     {
         if (count == 0)
             return;
@@ -942,6 +937,18 @@ internal class SlotTableWriter
                 _groupsAnchors.ReleaseAnchor(group.AnchorId);
             if (group.DataAnchorId.IsValid)
                 _groupsAnchors.ReleaseAnchor(group.DataAnchorId);
+        }
+    }
+
+    private void CleanupSlots(int startIndex, int count)
+    {
+        if (count == 0)
+            return;
+        for (var i = startIndex; i < startIndex + count; i++)
+        {
+            var slot = _slots[i];
+            if (slot is IDisposable disposable)
+                disposable.Dispose();
         }
     }
 
@@ -987,7 +994,7 @@ internal class SlotTableWriter
         }
     }
 
-    private void Log(string message)
+    private void Log(object? message)
     {
         Debug.Log(message + "\n" + ToString());
     }

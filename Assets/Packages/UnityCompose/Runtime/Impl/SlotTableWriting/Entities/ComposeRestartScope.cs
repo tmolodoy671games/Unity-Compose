@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
-internal class ComposeRestartScope : IScopeUpdateScope
+internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 {
     public readonly AnchorId _groupAnchor;
     public readonly Dictionary<ICompositionLocal, IMutableState<object?>>? CompositionLocalMap;
@@ -39,4 +39,9 @@ internal class ComposeRestartScope : IScopeUpdateScope
 
     public override string ToString() =>
         $"RestartScope({_groupAnchor}, {_restartCallback != null}, {CompositionLocalMap?.ToImmutableStableDictionary()})";
+
+    public void Dispose()
+    {
+        ComposeInvalidator.CancelInvalidate(this);
+    }
 }

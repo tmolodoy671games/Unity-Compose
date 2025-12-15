@@ -80,6 +80,7 @@ namespace UnityCompose
             _invalidatedGroups.Clear();
             foreach (var group in _groupsToRestart)
                 group.Restart();
+
             _groupsToRestart.Clear();
         }
 

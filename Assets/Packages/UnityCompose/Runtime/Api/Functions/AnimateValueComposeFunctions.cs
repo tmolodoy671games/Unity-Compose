@@ -101,6 +101,7 @@ public static partial class ComposeFunctions
 
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
+            yield return null;
             var resolvedAnimationSpec = animationSpec.GetOrDefault();
             var startValue = property.Value;
             if (EqualityUtils.FastEquals(startValue, targetValue)) yield break;
@@ -113,7 +114,7 @@ public static partial class ComposeFunctions
                 property.Value = interpolator(startValue, newValue, resolvedAnimationSpec.GetProgress(elapsed));
                 yield return null;
             }
-            
+
             property.Value = newValue;
         }
     }
@@ -139,6 +140,7 @@ public static partial class ComposeFunctions
 
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
+            yield return null;
             var startValue = property.Value;
             if (Equals(startValue, newValueFactory())) yield break;
             if (resolvedAnimationSpec.Delay > 0)

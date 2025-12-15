@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
-            var isSwitched = Remember(() => LoggableMutableStateOf(false));
+            var isSwitched = Remember(() => MutableStateOf(false));
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
@@ -27,7 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.red)
                             .Border(16)
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f, animationSpec: Tween(duration: 2)).Value)
+                            .Scale(AnimateFloatAsState(isSwitched.Value ? 1.5f : 1f).Value)
                     );
                 }
             );

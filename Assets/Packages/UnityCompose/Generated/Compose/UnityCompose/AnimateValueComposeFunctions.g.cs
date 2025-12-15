@@ -62,6 +62,7 @@ public static partial class ComposeFunctions
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
+            yield return null;
             var resolvedAnimationSpec = animationSpec.GetOrDefault();
             var startValue = property.Value;
             if (EqualityUtils.FastEquals(startValue, targetValue))
@@ -85,21 +86,22 @@ public static partial class ComposeFunctions
     {
         var(__key, __targetValueFactory, __interpolator, __animationSpec) = (key, targetValueFactory, interpolator, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(646389510);
+        __composer.StartReplaceGroup(-487189138);
         var targetValue = targetValueFactory();
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
         if (EqualityUtils.FastEquals(property.Value, targetValue))
         {
-            __composer.EndReplaceGroup(646389510);
+            __composer.EndReplaceGroup(-487189138);
             return property;
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: key, coroutine: !__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
-        __composer.EndReplaceGroup(646389510);
+        __composer.EndReplaceGroup(-487189138);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
+            yield return null;
             var startValue = property.Value;
             if (Equals(startValue, newValueFactory()))
                 yield break;
