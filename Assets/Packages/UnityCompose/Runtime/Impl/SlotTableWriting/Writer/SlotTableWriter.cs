@@ -1,4 +1,4 @@
-#define LOGGING
+// #define LOGGING
 
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using SharpExtensions;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
 using UnityEngine;
@@ -43,8 +43,9 @@ internal class SlotTableWriter
     private int _alreadyRemovedGroups = 0;
     private int _alreadyRemovedSlots = 0;
 
-    public SlotTableWriter(SlotTable.Models.SlotTable table)
+    public SlotTableWriter()
     {
+        var table = new SlotTable();
         _groups = new Groups(table.Groups);
         _slots = new Slots(table.Slots);
         _groupsAnchors = new Anchors(table.GroupsAnchors, table.FreedGroupAnchors);

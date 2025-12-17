@@ -1,4 +1,4 @@
-namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 
 internal readonly record struct ComposeGroup(
     int Key,

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using SharpExtensions;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityEngine;
 

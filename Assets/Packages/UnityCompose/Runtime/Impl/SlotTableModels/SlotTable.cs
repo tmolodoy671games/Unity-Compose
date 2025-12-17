@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTable.Models;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 
 internal class SlotTable
 {
