@@ -24,6 +24,8 @@ internal class SlotTableWriter
     private readonly Slots _slots;
     private readonly Anchors _groupsAnchors;
     private readonly Anchors _slotsAnchors;
+    private readonly Composer _composer;
+    
     private readonly Stack<ComposeGroupEntry> _enteredParents = new();
     private readonly Stack<int> _enteredElementIndices = new();
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
@@ -43,13 +45,14 @@ internal class SlotTableWriter
     private int _alreadyRemovedGroups = 0;
     private int _alreadyRemovedSlots = 0;
 
-    public SlotTableWriter()
+    public SlotTableWriter(Composer composer)
     {
+        _composer = composer;
         var table = new SlotTable();
         _groups = new Groups(table.Groups);
         _slots = new Slots(table.Slots);
-        _groupsAnchors = new Anchors(table.GroupsAnchors, table.FreedGroupAnchors);
-        _slotsAnchors = new Anchors(table.SlotsAnchors, table.FreedSlotAnchors);
+        _groupsAnchors = new Anchors(AnchorsType.Groups, table.GroupsAnchors, table.FreedGroupAnchors);
+        _slotsAnchors = new Anchors(AnchorsType.Slots, table.SlotsAnchors, table.FreedSlotAnchors);
     }
 
     private ComposeGroup CurrentParent() => _groups[_currentParentIndex];
@@ -625,7 +628,13 @@ internal class SlotTableWriter
         var anchor = _groupsAnchors[groupAnchor];
         if (!anchor.IsValid)
             return;
+        _composer.SetAsCurrentComposer();
         ResetTo(anchor.Index, compositionLocalMap);
+    }
+
+    public void ReleaseCurrentComposer()
+    {
+        _composer.ResetAsCurrentComposer();
     }
 
     internal int GetGroupIndex(AnchorId groupAnchor)
@@ -833,7 +842,6 @@ internal class SlotTableWriter
         if (offset == 0)
             return;
 
-        Debug.Log($"ShiftGroupsAnchors({startIndex}, {offset})");
         for (var i = 0; i < _groupsAnchors.Count; i++)
         {
             var anchor = _groupsAnchors[i];
@@ -847,7 +855,6 @@ internal class SlotTableWriter
         if (offset == 0)
             return;
 
-        Debug.Log($"ShiftSlotsAnchors({startIndex}, {offset})");
         for (var i = 0; i < _slotsAnchors.Count; i++)
         {
             var anchor = _slotsAnchors[i];
@@ -861,8 +868,7 @@ internal class SlotTableWriter
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
         var i = 0;
-        var iteration = 0;
-        while (ancestorIndex >= 0 && iteration++ < 100)
+        while (ancestorIndex >= 0 && i < 100)
         {
             var ancestor = _groups[ancestorIndex];
             if (i++ > 0)
@@ -882,8 +888,7 @@ internal class SlotTableWriter
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
         var i = 0;
-        var iteration = 0;
-        while (ancestorIndex >= 0 && iteration++ < 100)
+        while (ancestorIndex >= 0 && i < 100)
         {
             var ancestor = _groups[ancestorIndex];
             if (i++ > 0)
@@ -902,14 +907,19 @@ internal class SlotTableWriter
     {
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
-        var iteration = 0;
-        while (ancestorIndex >= 0 && iteration++ < 100)
+        var i = 0;
+        while (ancestorIndex >= 0 && i < 100)
         {
             var ancestor = _groups[ancestorIndex];
             if (ancestor.Type == ComposeGroupType.Reusable)
                 return;
-            ancestor = ancestor with { ElementsCount = ancestor.ElementsCount + offset };
-            _groups[ancestorIndex] = ancestor;
+
+            if (i++ > 0)
+            {
+                ancestor = ancestor with { ElementsCount = ancestor.ElementsCount + offset };
+                _groups[ancestorIndex] = ancestor;
+            }
+
             if (!ancestor.ParentAnchorId.IsValid)
                 return;
             ancestorIndex = _groupsAnchors[ancestor.ParentAnchorId].Index;
@@ -926,7 +936,7 @@ internal class SlotTableWriter
             if (group.AnchorId.IsValid)
                 _groupsAnchors.ReleaseAnchor(group.AnchorId);
             if (group.DataAnchorId.IsValid)
-                _groupsAnchors.ReleaseAnchor(group.DataAnchorId);
+                _slotsAnchors.ReleaseAnchor(group.DataAnchorId);
         }
     }
 

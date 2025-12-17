@@ -9,6 +9,7 @@ public partial class ComposeView : VisualElement
     {
     }
 
+    private readonly Composer _composer = new();
     private ComposableContent? _content;
 
     public void SetContent(ComposableContent content)
@@ -17,23 +18,25 @@ public partial class ComposeView : VisualElement
             return;
         _content = content;
         userData = null;
+        _composer.SetAsCurrentComposer();
         Clear();
-        CurrentComposer.Clear();
         ContentImpl(content);
+        _composer.ResetAsCurrentComposer();
     }
 
     [Composable]
     private void ContentImpl(ComposableContent content)
     {
-        CurrentComposer.StartReusableGroup(0);
-        CurrentComposer.SetVisualElement(this);
-        CurrentComposer.EnterVisualElement();
+        var composer = CurrentComposer;
+        composer.StartReusableGroup(0);
+        composer.SetVisualElement(this);
+        composer.EnterVisualElement();
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
             LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)),
             content: content
         );
-        CurrentComposer.EndReusableGroup(0);
+        composer.EndReusableGroup(0);
     }
 
     public override string ToString() => "ComposeView";

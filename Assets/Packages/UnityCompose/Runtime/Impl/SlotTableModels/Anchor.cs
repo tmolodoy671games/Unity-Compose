@@ -2,7 +2,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 
 internal readonly struct Anchor
 {
-    public static readonly Anchor None = new();
+    public static readonly Anchor None = new(-1);
     
     public readonly int Index;
 
@@ -11,7 +11,7 @@ internal readonly struct Anchor
         Index = index;
     }
 
-    public bool IsValid => Index != int.MaxValue;
+    public bool IsValid => Index >= 0;
 
     public override string ToString()
     {

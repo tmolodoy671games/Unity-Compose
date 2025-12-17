@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
         if (newProperties.IsNotEmpty())
             currentProperties.AddRange(newProperties);
         newProperties.Clear();
-        
+
         visualElement.ClearCallbacks();
         visualElement.style.transitionDelay.value?.Clear();
         visualElement.style.transitionDuration.value?.Clear();
@@ -65,8 +65,8 @@ public static partial class ComposeFunctions
         LaunchedEffect(resolvedModifier, () => resolvedModifier?.Apply(visualElement));
         FireOnGloballyPositionedCallback(visualElement);
 
-        // if (initializer != null) // BRUH
-        LaunchedEffect(initializer, () => initializer?.Invoke(visualElement));
+        if (initializer != null)
+            LaunchedEffect(initializer, () => initializer?.Invoke(visualElement));
 
         if (content != null)
         {

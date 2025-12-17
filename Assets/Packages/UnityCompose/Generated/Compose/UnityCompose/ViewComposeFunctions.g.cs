@@ -64,7 +64,10 @@ public static partial class ComposeFunctions
             visualElement.style.overflow = Overflow.Visible;
             LaunchedEffect(resolvedModifier, !__composer.ChangedAsStruct((visualElement, resolvedModifier)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => resolvedModifier?.Apply(visualElement)));
             FireOnGloballyPositionedCallback(visualElement);
-            LaunchedEffect(initializer, !__composer.ChangedAsStruct((initializer, visualElement)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => initializer?.Invoke(visualElement)));
+            __composer.StartReplaceGroup(-1581597383);
+            if (initializer != null)
+                LaunchedEffect(initializer, !__composer.ChangedAsStruct((initializer, visualElement)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => initializer?.Invoke(visualElement)));
+            __composer.EndReplaceGroup(-1581597383);
             __composer.StartReplaceGroup(1181320336);
             if (content != null)
             {

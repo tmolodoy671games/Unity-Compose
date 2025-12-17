@@ -12,9 +12,27 @@ namespace UnityCompose;
 
 public class Composer
 {
-    public static readonly Composer Instance = new();
+    private static Composer? _current;
 
-    private readonly SlotTableWriter _writer = new(new SlotTable());
+    public static Composer? Current => _current;
+
+    private readonly SlotTableWriter _writer;
+
+    internal Composer()
+    {
+        _writer = new SlotTableWriter(this);
+    }
+
+    public void SetAsCurrentComposer()
+    {
+        _current = this;
+    }
+
+    public void ResetAsCurrentComposer()
+    {
+        // if (_current == this)
+        //     _current = null;
+    }
 
     #region Restart Group
 
@@ -30,7 +48,6 @@ public class Composer
 
     public bool ShouldExecute<T>(T state)
     {
-        return true; // BRUH
         if (_writer.IsInInvalidationRoot())
             return true;
         var existingState = _writer.GetPreviousState<T>();
@@ -40,7 +57,6 @@ public class Composer
 
     public bool ShouldExecuteAsStruct<T>(T state) where T : struct
     {
-        return true; // BRUH
 #if STRUCT_OPTIMIZATIONS
         if (_writer.IsInInvalidationRoot())
             return true;

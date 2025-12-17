@@ -11,20 +11,21 @@ public partial class ComposeView
     {
         var __content = (content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-503212460);
+        __composer.StartRestartGroup(-418571067);
         if (__composer.ShouldExecute(__content))
         {
-            CurrentComposer.StartReusableGroup(0);
-            CurrentComposer.SetVisualElement(this);
-            CurrentComposer.EnterVisualElement();
+            var composer = CurrentComposer;
+            composer.StartReusableGroup(0);
+            composer.SetVisualElement(this);
+            composer.EnterVisualElement();
             CompositionLocalProvider(LocalVisualElement.Provides(this), LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)), content: content);
-            CurrentComposer.EndReusableGroup(0);
+            composer.EndReusableGroup(0);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-503212460)?.UpdateScope(() => __ContentImpl(__content));
+        __composer.EndRestartGroup(-418571067)?.UpdateScope(() => __ContentImpl(__content));
     }
 }

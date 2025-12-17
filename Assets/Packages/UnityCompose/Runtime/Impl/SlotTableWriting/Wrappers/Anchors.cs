@@ -7,11 +7,13 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 
 internal readonly struct Anchors
 {
+    private readonly AnchorsType _type;
     private readonly List<Anchor> _anchors;
     private readonly Stack<AnchorId> _freeAnchorIds;
 
-    public Anchors(List<Anchor> anchors, Stack<AnchorId> freeAnchorIds)
+    public Anchors(AnchorsType type, List<Anchor> anchors, Stack<AnchorId> freeAnchorIds)
     {
+        _type = type;
         _anchors = anchors;
         _freeAnchorIds = freeAnchorIds;
     }
@@ -20,8 +22,8 @@ internal readonly struct Anchors
     
     public Anchor this[AnchorId id]
     {
-        get => _anchors[id.Index];
-        set => _anchors[id.Index] = value;
+        get => this[id.Index];
+        set => this[id.Index] = value;
     }
 
     public Anchor this[int id]
@@ -64,4 +66,10 @@ internal readonly struct Anchors
 
         return builder.ToString();
     }
+}
+
+internal enum AnchorsType
+{
+    Groups,
+    Slots,
 }

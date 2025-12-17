@@ -30,7 +30,7 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
 
     public T Current
     {
-        [Composable] get => CurrentComposer.GetCompositionLocal(this, _defaultValueFactory);
+        [Composable, Compiled] get => CurrentComposer.GetCompositionLocal(this, _defaultValueFactory);
     }
 
     public override string ToString()

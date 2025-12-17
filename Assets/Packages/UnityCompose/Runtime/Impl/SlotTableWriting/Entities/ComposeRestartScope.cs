@@ -35,6 +35,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     {
         _writer.ResetTo(_groupAnchor, CompositionLocalMap);
         _restartCallback?.Invoke();
+        _writer.ReleaseCurrentComposer();
     }
 
     public override string ToString() =>

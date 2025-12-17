@@ -1,4 +1,5 @@
-﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+﻿using System;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -6,7 +7,15 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     // Try switching to ThreadLocal for parallel Recomposition
-    public static Composer CurrentComposer => Composer.Instance;
+    public static Composer CurrentComposer
+    {
+        get
+        {
+            var result = Composer.Current;
+            return result ?? throw new InvalidOperationException("Not in composition context!");
+        }
+    }
+
     public static bool IsInPreview => !ApplicationUtils.IsPlaying;
     
     public static readonly IModifier Modifier = EmptyModifierImpl.Instance;
