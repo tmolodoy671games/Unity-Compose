@@ -56,6 +56,7 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void SampleReader()
         {
+            Debug.Log("SampleReader()");
             Box(() =>
             {
                 Box(() =>
