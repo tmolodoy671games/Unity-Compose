@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.SocialPlatforms;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -6,6 +7,8 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class ReordarableListSample : ComposeUI
     {
+        private static readonly ICompositionLocal<string> LocalTest = CompositionLocalOf("LocalTest", () => "Default");
+
         protected override void Content()
         {
             Layout();
@@ -34,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Width(800),
                         content: () =>
                         {
-                            var items = Remember(() => MutableStateListOf(1, 2));
+                            var items = Remember(() => MutableStateListOf(1));
                             Text(
                                 text: "Add Item",
                                 color: Color.white,
@@ -118,8 +121,7 @@ namespace UnityCompose.Samples.Behaviors
                     .FillMaxWidth()
                     .Padding(all: 4)
                     .Border(radius: 12)
-                    .Margin(vertical: 4)
-                    .Name(state.ToString()),
+                    .Margin(vertical: 4),
                 content: () =>
                 {
                     Text(

@@ -75,8 +75,9 @@ public class Composer
 
     public IScopeUpdateScope? EndRestartGroup(int groupKey)
     {
-        var scope = _writer.GetRestartScope(endComposeGroup: true);
+        var scope = _writer.GetRestartScope();
         _writer.EndRestartGroup(groupKey);
+        scope?.SyncFrame();
         return scope;
     }
 
@@ -226,7 +227,7 @@ public class Composer
         return _writer.GetCompositionLocal(compositionLocal, defaultValueFactory);
     }
 
-    public void UpdateCompositionLocal(IImmutableStableList<CompositionLocalProvides> provides)
+    public void UpdateCompositionLocal(IImmutableStableList<CompositionLocalProvides> provides, bool log = false)
     {
         _writer.SetCompositionLocal(provides);
     }

@@ -58,10 +58,10 @@ public static partial class ComposeFunctions
     )
     {
         // Debug.Log($"StartLocalGroup({provides})");
-        CurrentComposer.StartLocalGroup(123);
-        CurrentComposer.UpdateCompositionLocal(provides);
+        CurrentComposer.StartLocalGroup(321);
+        CurrentComposer.UpdateCompositionLocal(provides, true);
         content();
-        CurrentComposer.EndLocalGroup(123);
+        CurrentComposer.EndLocalGroup(321);
         // Debug.Log("EndLocalGroup()");
     }
 

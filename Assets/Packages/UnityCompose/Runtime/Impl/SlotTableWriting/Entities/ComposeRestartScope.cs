@@ -14,6 +14,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public readonly Dictionary<ICompositionLocal, IMutableState<object?>>? CompositionLocalMap;
     private Action? _restartCallback;
     private readonly SlotTableWriter _writer;
+    private int _lastCalledAtFrame = -1;
 
     internal ComposeRestartScope(
         AnchorId groupAnchor,
@@ -26,6 +27,11 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         CompositionLocalMap = compositionLocalMap;
     }
 
+    public void SyncFrame()
+    {
+        _lastCalledAtFrame = Time.frameCount;
+    }
+
     public void UpdateScope(Action restartCallback)
     {
         _restartCallback = restartCallback;
@@ -33,6 +39,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
+        if (Time.frameCount == _lastCalledAtFrame)
+            return;
+        _lastCalledAtFrame = Time.frameCount;
         _writer.ResetTo(_groupAnchor, CompositionLocalMap);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();

@@ -34,12 +34,9 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
 
-                    LoggableCompositionLocalProvider(
+                    CompositionLocalProvider(
                         LocalIsSwitched.Provides(isSwitched.Value),
-                        content: () =>
-                        {
-                            SampleReader();
-                        }
+                        content: () => SampleReader()
                     );
 
                     Text(
@@ -55,6 +52,12 @@ namespace UnityCompose.Samples.Behaviors
                     );
                 }
             );
+        }
+
+        [Composable]
+        private static void OtherSampleReader(bool firstValue, bool secondValue)
+        {
+            Debug.Log($"{Time.frameCount}: {firstValue} vs {secondValue}");
         }
 
         [Composable]

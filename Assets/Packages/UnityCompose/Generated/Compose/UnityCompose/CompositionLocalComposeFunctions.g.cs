@@ -74,10 +74,10 @@ public static partial class ComposeFunctions
         __composer.StartRestartGroup(-1374181071);
         if (__composer.ShouldExecuteAsStruct((__provides, __content)))
         {
-            CurrentComposer.StartLocalGroup(123);
-            CurrentComposer.UpdateCompositionLocal(provides);
+            CurrentComposer.StartLocalGroup(321);
+            CurrentComposer.UpdateCompositionLocal(provides, true);
             content();
-            CurrentComposer.EndLocalGroup(123);
+            CurrentComposer.EndLocalGroup(321);
         }
         else
         {

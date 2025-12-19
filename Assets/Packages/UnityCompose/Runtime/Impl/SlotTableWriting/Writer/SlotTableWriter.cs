@@ -142,13 +142,11 @@ internal class SlotTableWriter
         _currentElementIndex += parent.ElementsCount;
     }
 
-    public ComposeRestartScope? GetRestartScope(bool endComposeGroup = false)
+    public ComposeRestartScope? GetRestartScope()
     {
         if (_enteredRestartGroups.IsEmpty())
             return null;
         var scope = _slots.GetRestartScope(_enteredRestartGroups.Peek().SlotIndex);
-        if (endComposeGroup && scope != null)
-            ComposeInvalidator.CancelInvalidate(scope);
         return scope;
     }
 
@@ -493,8 +491,6 @@ internal class SlotTableWriter
         var map = RequireCompositionLocalMap() ?? _rootCompositionLocalMap;
         if (map == null)
             return defaultValueFactory();
-        // if (compositionLocal is ICompositionLocal<bool>)
-        //     Log("GetCompositionLocal:" + _enteredCompositionLocalMaps.Select(it => it.Map.GetHashCode()).ToImmutableStableList());
         if (map.TryGetValue(compositionLocal, out var state))
         {
             if (state.Value is not T castedValue)
@@ -536,23 +532,13 @@ internal class SlotTableWriter
         return _slots.GetCompositionLocalMap(_enteredLocalGroups.Peek().SlotIndex);
     }
 
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? GetCompositionLocalMap()
-    {
-        if (!_enteredCompositionLocalMaps.TryPeek(out var lastLocalMapEntry))
-            return null;
-        if (_enteredLocalGroups.IsEmpty())
-            return null;
-        var lastLocalGroupIndex = _enteredLocalGroups.Peek().GroupIndex;
-        return lastLocalMapEntry.GroupIndex == lastLocalGroupIndex ? lastLocalMapEntry.Map : null;
-    }
-
     private Dictionary<ICompositionLocal, IMutableState<object?>>? RequireCompositionLocalMap()
     {
-        var map = GetCompositionLocalMap() ?? _rootCompositionLocalMap;
+        var map = GetCurrentLocalGroupCompositionLocalMap();
         if (map != null)
             return map;
-        if (_enteredLocalGroups.IsEmpty())
-            return null;
+        if (map == null && _enteredProvides.IsEmpty())
+            return _rootCompositionLocalMap;
         var (groupIndex, slotIndex) = _enteredLocalGroups.Peek();
         var parentDictionary = _enteredCompositionLocalMaps.IsNotEmpty()
             ? _enteredCompositionLocalMaps.Peek().Map
@@ -564,7 +550,7 @@ internal class SlotTableWriter
         foreach (var provider in _enteredProvides.SelectMany(static it => it))
             map[provider.CompositionLocal] = MutableStateOf(provider.Value);
         _slots.SetCompositionLocalMap(slotIndex, map);
-        _enteredProvides.Clear();
+        _enteredProvides.RemoveAt(_enteredProvides.Count - 1);
         _enteredCompositionLocalMaps.Push(new CompositionLocalMapEntry(groupIndex, map));
         return map;
     }
@@ -603,7 +589,6 @@ internal class SlotTableWriter
 
     public void ResetTo(int groupIndex, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap)
     {
-        // Log($"ResetTo({groupIndex}, {compositionLocalMap?.GetHashCode()})");
 #if LOGGING
         Log($"ResetTo({groupIndex})");
 #endif
