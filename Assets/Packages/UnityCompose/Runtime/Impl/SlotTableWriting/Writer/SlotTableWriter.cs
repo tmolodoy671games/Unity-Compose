@@ -25,7 +25,7 @@ internal class SlotTableWriter
     private readonly Anchors _groupsAnchors;
     private readonly Anchors _slotsAnchors;
     private readonly Composer _composer;
-    
+
     private readonly Stack<ComposeGroupEntry> _enteredParents = new();
     private readonly Stack<int> _enteredElementIndices = new();
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
@@ -228,7 +228,7 @@ internal class SlotTableWriter
             Type: ComposeGroupType.Replace,
             ParentAnchorId: GetOrAllocateParentAnchorForNonRestartGroup(),
             Size: 1,
-            SlotsSize: Slots.ReplaceGroupHeaderSize,
+            SlotsSize: 0,
             AnchorId: AllocateGroupAnchor(),
             DataAnchorId: AllocateSlotAnchor(),
             ElementIndex: _currentElementIndex,
@@ -274,7 +274,7 @@ internal class SlotTableWriter
 #endif
             SyncIndices(existingGroup);
             EnterGroup();
-            _currentSlotIndex += Slots.ReusableGroupHeaderSize;
+            _currentSlotIndex += ReusableGroup.MetadataSize;
             return;
         }
 
@@ -292,7 +292,7 @@ internal class SlotTableWriter
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertVisualElement(_currentSlotIndex);
         EnterGroup();
-        _currentSlotIndex += Slots.ReusableGroupHeaderSize;
+        _currentSlotIndex += ReusableGroup.MetadataSize;
     }
 
     public void EndReusableGroup(int key)
@@ -452,7 +452,7 @@ internal class SlotTableWriter
             Type: ComposeGroupType.Local,
             ParentAnchorId: GetOrAllocateParentAnchorForNonRestartGroup(),
             Size: 1,
-            SlotsSize: Slots.ReplaceGroupHeaderSize,
+            SlotsSize: LocalGroup.MetadataSize,
             AnchorId: AllocateGroupAnchor(),
             DataAnchorId: AllocateSlotAnchor(),
             ElementIndex: _currentElementIndex,
