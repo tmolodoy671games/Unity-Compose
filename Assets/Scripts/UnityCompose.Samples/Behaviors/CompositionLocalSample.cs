@@ -1,4 +1,5 @@
 using StableCollections;
+using UnityEngine.SocialPlatforms;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -35,7 +36,11 @@ namespace UnityCompose.Samples.Behaviors
 
                     CompositionLocalProvider(
                         LocalIsSwitched.Provides(isSwitched.Value),
-                        content: SampleReader
+                        content: () =>
+                        {
+                            Debug.Log(isSwitched.Value + " vs " + LocalIsSwitched.Current);
+                            SampleReader();
+                        }
                     );
 
                     Text(

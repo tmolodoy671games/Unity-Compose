@@ -1,4 +1,5 @@
 using StableCollections;
+using UnityEngine.SocialPlatforms;
 using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -12,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1686371046);
+            __composer.StartRestartGroup(-1377754495);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -22,14 +23,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1686371046)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-1377754495)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1168398864);
+            __composer.StartRestartGroup(-768442416);
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -39,20 +40,24 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1168398864)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(-768442416)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1113182999);
+            __composer.StartRestartGroup(1469247124);
             if (__composer.ShouldExecute())
             {
                 Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: SampleReader);
+                    CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: !__composer.Changed(isSwitched) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    {
+                        Debug.Log(isSwitched.Value + " vs " + LocalIsSwitched.Current);
+                        SampleReader();
+                    }));
                     Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
                 }));
             }
@@ -61,14 +66,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1113182999)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1469247124)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
         private static void __SampleReader()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1697547596);
+            __composer.StartRestartGroup(-1769983919);
             if (__composer.ShouldExecute())
             {
                 Debug.Log("SampleReader()");
@@ -85,7 +90,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1697547596)?.UpdateScope(() => __SampleReader());
+            __composer.EndRestartGroup(-1769983919)?.UpdateScope(() => __SampleReader());
         }
     }
 }

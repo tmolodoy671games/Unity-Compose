@@ -142,11 +142,13 @@ internal class SlotTableWriter
         _currentElementIndex += parent.ElementsCount;
     }
 
-    public ComposeRestartScope? GetRestartScope()
+    public ComposeRestartScope? GetRestartScope(bool endComposeGroup = false)
     {
         if (_enteredRestartGroups.IsEmpty())
             return null;
         var scope = _slots.GetRestartScope(_enteredRestartGroups.Peek().SlotIndex);
+        if (endComposeGroup && scope != null)
+            ComposeInvalidator.CancelInvalidate(scope);
         return scope;
     }
 
@@ -537,11 +539,11 @@ internal class SlotTableWriter
 
     private Dictionary<ICompositionLocal, IMutableState<object?>>? RequireCompositionLocalMap()
     {
-        if (_enteredLocalGroups.IsEmpty())
-            return null;
-        var map = GetCompositionLocalMap();
+        var map = GetCompositionLocalMap() ?? _rootCompositionLocalMap;
         if (map != null)
             return map;
+        if (_enteredLocalGroups.IsEmpty())
+            return null;
         var (groupIndex, slotIndex) = _enteredLocalGroups.Peek();
         map = _enteredCompositionLocalMaps.IsNotEmpty()
             ? _enteredCompositionLocalMaps.Peek().Map.ToDictionary(static it => it.Key, static it => it.Value)

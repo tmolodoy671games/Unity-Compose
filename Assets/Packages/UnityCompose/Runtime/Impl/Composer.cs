@@ -75,7 +75,7 @@ public class Composer
 
     public IScopeUpdateScope? EndRestartGroup(int groupKey)
     {
-        var scope = _writer.GetRestartScope();
+        var scope = _writer.GetRestartScope(endComposeGroup: true);
         _writer.EndRestartGroup(groupKey);
         return scope;
     }
