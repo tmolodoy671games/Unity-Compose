@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Width(800),
                         content: () =>
                         {
-                            // var items = Remember(() => MutableStateListOf(1, 2));
+                            var items = Remember(() => MutableStateListOf(1, 2));
                             Text(
                                 text: "Add Item",
                                 color: Color.white,
@@ -45,57 +45,57 @@ namespace UnityCompose.Samples.Behaviors
                                     .Background(Color.blue)
                                     .Padding(horizontal: 32, vertical: 16)
                                     .Border(radius: 16)
-                                    // .OnClick(() =>
-                                    // {
-                                        // for (var i = 1; i <= items.Count + 1; i++)
-                                        // {
-                                        //     if (!items.Contains(i))
-                                        //     {
-                                        //         items.Add(i);
-                                        //         return;
-                                        //     }
-                                        // }
-                                    // })
+                                    .OnClick(() =>
+                                    {
+                                        for (var i = 1; i <= items.Count + 1; i++)
+                                        {
+                                            if (!items.Contains(i))
+                                            {
+                                                items.Add(i);
+                                                return;
+                                            }
+                                        }
+                                    })
                             );
 
-                            // Column(
-                            //     horizontalAlignment: Alignment.Horizontal.Center,
-                            //     modifier: Modifier
-                            //         .Name("nested-column")
-                            //         .FillMaxWidth(),
-                            //     content: () =>
-                            //     {
-                            //         foreach (var item in items)
-                            //         {
-                            //             Key(
-                            //                 key: item,
-                            //                 content: () =>
-                            //                 {
-                            //                     Item(
-                            //                         state: item,
-                            //                         onMoveUpClick: () =>
-                            //                         {
-                            //                             var oldIndex = items.IndexOf(item);
-                            //                             if (oldIndex == 0) return;
-                            //                             var newIndex = oldIndex - 1;
-                            //                             items.RemoveAt(oldIndex);
-                            //                             items.Insert(newIndex, item);
-                            //                         },
-                            //                         onMoveDownClick: () =>
-                            //                         {
-                            //                             var oldIndex = items.IndexOf(item);
-                            //                             if (oldIndex == items.Count - 1) return;
-                            //                             var newIndex = oldIndex + 1;
-                            //                             items.RemoveAt(oldIndex);
-                            //                             items.Insert(newIndex, item);
-                            //                         },
-                            //                         onRemoveClick: () => { items.Remove(item); }
-                            //                     );
-                            //                 }
-                            //             );
-                            //         }
-                            //     }
-                            // );
+                            Column(
+                                horizontalAlignment: Alignment.Horizontal.Center,
+                                modifier: Modifier
+                                    .Name("nested-column")
+                                    .FillMaxWidth(),
+                                content: () =>
+                                {
+                                    foreach (var item in items)
+                                    {
+                                        Key(
+                                            key: item,
+                                            content: () =>
+                                            {
+                                                Item(
+                                                    state: item,
+                                                    onMoveUpClick: () =>
+                                                    {
+                                                        var oldIndex = items.IndexOf(item);
+                                                        if (oldIndex == 0) return;
+                                                        var newIndex = oldIndex - 1;
+                                                        items.RemoveAt(oldIndex);
+                                                        items.Insert(newIndex, item);
+                                                    },
+                                                    onMoveDownClick: () =>
+                                                    {
+                                                        var oldIndex = items.IndexOf(item);
+                                                        if (oldIndex == items.Count - 1) return;
+                                                        var newIndex = oldIndex + 1;
+                                                        items.RemoveAt(oldIndex);
+                                                        items.Insert(newIndex, item);
+                                                    },
+                                                    onRemoveClick: () => { items.Remove(item); }
+                                                );
+                                            }
+                                        );
+                                    }
+                                }
+                            );
                         }
                     );
                 }

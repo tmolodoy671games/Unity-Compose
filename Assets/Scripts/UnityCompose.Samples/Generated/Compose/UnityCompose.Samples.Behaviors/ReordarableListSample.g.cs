@@ -18,57 +18,50 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("reordarable-list-sample").Padding(top: 100).FillMaxHeight().Width(800), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        // var items = Remember(() => MutableStateListOf(1, 2));
-                        Text(text: "Add Item", color: Color.white, fontSize: 40, modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32, vertical: 16).Border(radius: 16)// .OnClick(() =>
-                        // {
-                        // for (var i = 1; i <= items.Count + 1; i++)
-                        // {
-                        //     if (!items.Contains(i))
-                        //     {
-                        //         items.Add(i);
-                        //         return;
-                        //     }
-                        // }
-                        // })
-                        );
-                    // Column(
-                    //     horizontalAlignment: Alignment.Horizontal.Center,
-                    //     modifier: Modifier
-                    //         .Name("nested-column")
-                    //         .FillMaxWidth(),
-                    //     content: () =>
-                    //     {
-                    //         foreach (var item in items)
-                    //         {
-                    //             Key(
-                    //                 key: item,
-                    //                 content: () =>
-                    //                 {
-                    //                     Item(
-                    //                         state: item,
-                    //                         onMoveUpClick: () =>
-                    //                         {
-                    //                             var oldIndex = items.IndexOf(item);
-                    //                             if (oldIndex == 0) return;
-                    //                             var newIndex = oldIndex - 1;
-                    //                             items.RemoveAt(oldIndex);
-                    //                             items.Insert(newIndex, item);
-                    //                         },
-                    //                         onMoveDownClick: () =>
-                    //                         {
-                    //                             var oldIndex = items.IndexOf(item);
-                    //                             if (oldIndex == items.Count - 1) return;
-                    //                             var newIndex = oldIndex + 1;
-                    //                             items.RemoveAt(oldIndex);
-                    //                             items.Insert(newIndex, item);
-                    //                         },
-                    //                         onRemoveClick: () => { items.Remove(item); }
-                    //                     );
-                    //                 }
-                    //             );
-                    //         }
-                    //     }
-                    // );
+                        var items = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<int>>(MutableStateListOf(1, 2));
+                        Text(text: "Add Item", color: Color.white, fontSize: 40, modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32, vertical: 16).Border(radius: 16).OnClick(!__composer.Changed(items) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                        {
+                            for (var i = 1; i <= items.Count + 1; i++)
+                            {
+                                if (!items.Contains(i))
+                                {
+                                    items.Add(i);
+                                    return;
+                                }
+                            }
+                        })));
+                        Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: !__composer.Changed(items) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        {
+                            __composer.StartReplaceGroup(-1353549631);
+                            foreach (var item in items)
+                            {
+                                Key(key: item, content: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                                {
+                                    Item(state: item, onMoveUpClick: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                                    {
+                                        var oldIndex = items.IndexOf(item);
+                                        if (oldIndex == 0)
+                                            return;
+                                        var newIndex = oldIndex - 1;
+                                        items.RemoveAt(oldIndex);
+                                        items.Insert(newIndex, item);
+                                    }), onMoveDownClick: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                                    {
+                                        var oldIndex = items.IndexOf(item);
+                                        if (oldIndex == items.Count - 1)
+                                            return;
+                                        var newIndex = oldIndex + 1;
+                                        items.RemoveAt(oldIndex);
+                                        items.Insert(newIndex, item);
+                                    }), onRemoveClick: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                                    {
+                                        items.Remove(item);
+                                    }));
+                                }));
+                            }
+
+                            __composer.EndReplaceGroup(-1353549631);
+                        }));
                     }));
                 }));
             }

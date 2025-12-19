@@ -47,18 +47,10 @@ public static partial class ComposeFunctions
     [Composable]
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        var(__targetValue, __interpolator, __animationSpec) = (targetValue, interpolator, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(1942875767);
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
-        if (EqualityUtils.FastEquals(property.Value, targetValue))
-        {
-            __composer.EndReplaceGroup(1942875767);
-            return property;
-        }
-
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         LaunchedEffect(key: targetValue!, coroutine: !__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
-        __composer.EndReplaceGroup(1942875767);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
@@ -84,20 +76,12 @@ public static partial class ComposeFunctions
     [Composable]
     private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        var(__key, __targetValueFactory, __interpolator, __animationSpec) = (key, targetValueFactory, interpolator, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(-487189138);
         var targetValue = targetValueFactory();
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
-        if (EqualityUtils.FastEquals(property.Value, targetValue))
-        {
-            __composer.EndReplaceGroup(-487189138);
-            return property;
-        }
-
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: key, coroutine: !__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
-        __composer.EndReplaceGroup(-487189138);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
