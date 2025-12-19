@@ -53,9 +53,8 @@ namespace UnityCompose.Samples.Behaviors
                 Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: !__composer.Changed(isSwitched) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    LoggableCompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        Debug.Log(isSwitched.Value + " vs " + LocalIsSwitched.Current);
                         SampleReader();
                     }));
                     Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
@@ -73,10 +72,9 @@ namespace UnityCompose.Samples.Behaviors
         private static void __SampleReader()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1769983919);
+            __composer.StartRestartGroup(693916152);
             if (__composer.ShouldExecute())
             {
-                Debug.Log("SampleReader()");
                 Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -90,7 +88,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1769983919)?.UpdateScope(() => __SampleReader());
+            __composer.EndRestartGroup(693916152)?.UpdateScope(() => __SampleReader());
         }
     }
 }

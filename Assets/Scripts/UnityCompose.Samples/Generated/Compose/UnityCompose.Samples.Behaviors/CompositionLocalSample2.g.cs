@@ -1,8 +1,8 @@
+using System.Drawing;
 using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
-// ReSharper disable ArrangeNamespaceBody
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class CompositionLocalSample2
@@ -11,11 +11,60 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1371467293);
+            __composer.StartRestartGroup(1829182718);
             if (__composer.ShouldExecute())
             {
-                Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Layout();
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1829182718)?.UpdateScope(() => __Content());
+        }
+
+        [Composable]
+        private void __Preview()
+        {
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-424386791);
+            if (__composer.ShouldExecute())
+            {
+                Layout();
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(-424386791)?.UpdateScope(() => __Preview());
+        }
+
+        [Composable]
+        private static void __Layout()
+        {
+            var __composer = CurrentComposer;
+            __composer.StartRestartGroup(-932535685);
+            if (__composer.ShouldExecute())
+            {
+                CompositionLocalProvider(LocalTextStyle.Provides(new TextStyle(FontSize: 80, Color: Color.white)), !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
+                    Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    {
+                        Text(LocalDebugString.Current);
+                        CompositionLocalProvider(LocalDebugString.Provides("Nested"), !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        {
+                            Text(LocalDebugString.Current);
+                            CompositionLocalProvider(LocalDebugString.Provides("Super Nested"), !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                            {
+                                Text(LocalDebugString.Current);
+                                Text(LocalDebugString.Current);
+                            }));
+                            Text(LocalDebugString.Current);
+                        }));
+                        Text(LocalDebugString.Current);
+                    }));
                 }));
             }
             else
@@ -23,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1371467293)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-932535685)?.UpdateScope(() => __Layout());
         }
     }
 }

@@ -34,11 +34,10 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
 
-                    CompositionLocalProvider(
+                    LoggableCompositionLocalProvider(
                         LocalIsSwitched.Provides(isSwitched.Value),
                         content: () =>
                         {
-                            Debug.Log(isSwitched.Value + " vs " + LocalIsSwitched.Current);
                             SampleReader();
                         }
                     );
@@ -61,7 +60,6 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void SampleReader()
         {
-            Debug.Log("SampleReader()");
             Box(() =>
             {
                 Box(() =>

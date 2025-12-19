@@ -38,6 +38,32 @@ public static partial class ComposeFunctions
         var provides = Remember(provides1, () => IImmutableStableList.Create(provides1));
         CompositionLocalProviderImpl(provides, content);
     }
+    
+    [Composable]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    public static void LoggableCompositionLocalProvider(
+        CompositionLocalProvides provides1,
+        ComposableContent content
+    )
+    {
+        var provides = Remember(provides1, () => IImmutableStableList.Create(provides1));
+        LoggableCompositionLocalProviderImpl(provides, content);
+    }
+    
+    [Composable]
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    private static void LoggableCompositionLocalProviderImpl(
+        IImmutableStableList<CompositionLocalProvides> provides,
+        ComposableContent content
+    )
+    {
+        // Debug.Log($"StartLocalGroup({provides})");
+        CurrentComposer.StartLocalGroup(123);
+        CurrentComposer.UpdateCompositionLocal(provides);
+        content();
+        CurrentComposer.EndLocalGroup(123);
+        // Debug.Log("EndLocalGroup()");
+    }
 
     [Composable]
     public static void CompositionLocalProvider(
