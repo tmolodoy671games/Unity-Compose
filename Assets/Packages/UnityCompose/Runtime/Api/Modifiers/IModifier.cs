@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-public interface IModifier
+public partial interface IModifier
 {
     void Apply(VisualElement element);
 

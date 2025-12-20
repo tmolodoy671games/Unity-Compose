@@ -78,16 +78,16 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
             _lastInitializer = initializer;
         }
 
-        var callback = VisualElement.OnGloballyPositionedCallbackOrNull();
-        if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
-            return;
-        var style = VisualElement.style;
-        if (_lastTranslate != style.translate || _lastScale != style.scale)
-        {
-            _lastTranslate = style.translate;
-            _lastScale = style.scale;
-            callback.ReInvoke();
-        }
+        // var callback = VisualElement.OnGloballyPositionedCallbackOrNull();
+        // if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
+        //     return;
+        // var style = VisualElement.style;
+        // if (_lastTranslate != style.translate || _lastScale != style.scale)
+        // {
+        //     _lastTranslate = style.translate;
+        //     _lastScale = style.scale;
+        //     callback.ReInvoke();
+        // }
     }
 
     public void Dispose()

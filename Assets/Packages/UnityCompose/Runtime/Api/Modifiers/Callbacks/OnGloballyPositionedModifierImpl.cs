@@ -1,11 +1,11 @@
 // ReSharper disable CheckNamespace
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using SharpExtensions;
 using StableCollections;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -23,88 +23,73 @@ public static partial class ModifierExtensions
         Action<LayoutCoordinates> onGloballyPositioned
     )
     {
-        var element = CurrentComposer.GetParentVisualElement().NotNull();
-        var previousLayoutCoordinates =
-            Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
-        Action<GeometryChangedEvent> onGeometryChanged = _ =>
+        if (true)
         {
-            var newLayoutCoordinates = LayoutCoordinates.Create(element);
-            if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
+            var previousCoordinates =
+                Remember(() => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+            var element = CurrentComposer.GetParentVisualElement().NotNull();
+
+            IEnumerator EveryFrameCoroutine()
             {
-                previousLayoutCoordinates.Value = newLayoutCoordinates;
-                onGloballyPositioned(newLayoutCoordinates);
-            }
-        };
-        DisposableEffect(
-            key: element,
-            effect: it =>
-            {
-                var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
-                foreach (var ancestor in ancestors)
-                    ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-                return it.OnDispose(() =>
+                yield return null;
+                while (true)
                 {
-                    foreach (var ancestor in ancestors)
-                        ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
-                });
+                    var newCoordinates = LayoutCoordinates.Create(element);
+                    if (!previousCoordinates.Value.Equals(newCoordinates))
+                    {
+                        previousCoordinates.Value = newCoordinates;
+                        onGloballyPositioned(newCoordinates);
+                    }
+
+                    yield return null;
+                }
             }
-        );
+
+            LaunchedEffect(onGloballyPositioned, () => EveryFrameCoroutine());
+        }
+
         return Modifier;
+    }
+
+    [Composable]
+    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
+    private static IModifier OnGloballyPositionedImplDeprecated(
+        Action<LayoutCoordinates> onGloballyPositioned
+    )
+    {
+        if (true)
+        {
+            var element = CurrentComposer.GetParentVisualElement().NotNull();
+            var previousLayoutCoordinates =
+                Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+            Action<GeometryChangedEvent> onGeometryChanged = _ =>
+            {
+                var newLayoutCoordinates = LayoutCoordinates.Create(element);
+                if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
+                {
+                    previousLayoutCoordinates.Value = newLayoutCoordinates;
+                    onGloballyPositioned(newLayoutCoordinates);
+                }
+            };
+            DisposableEffect(
+                key: element,
+                effect: it =>
+                {
+                    var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
+                    foreach (var ancestor in ancestors)
+                        ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
+                    return it.OnDispose(() =>
+                    {
+                        foreach (var ancestor in ancestors)
+                            ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
+                    });
+                }
+            );
+        }
+
         return Modifier;
     }
 }
-
-// internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
-// {
-//     private readonly Action<LayoutCoordinates> _onGloballyPositioned;
-//
-//     public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
-//     {
-//         _onGloballyPositioned = onGloballyPositioned;
-//     }
-//
-//     public override void Apply(VisualElement element)
-//     {
-//         var previousLayoutCoordinates =
-//             Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
-//         Action<GeometryChangedEvent> onGeometryChanged = _ =>
-//         {
-//             var newLayoutCoordinates = LayoutCoordinates.Create(element);
-//             if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
-//             {
-//                 previousLayoutCoordinates.Value = newLayoutCoordinates;
-//                 _onGloballyPositioned(newLayoutCoordinates);
-//             }
-//         };
-//         DisposableEffect(
-//             key: element,
-//             effect: it =>
-//             {
-//                 var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
-//                 foreach (var ancestor in ancestors)
-//                     ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-//                 return it.OnDispose(() =>
-//                 {
-//                     foreach (var ancestor in ancestors)
-//                         ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
-//                 });
-//             }
-//         );
-//     }
-//
-//     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-//     {
-//     }
-//
-//     public override void Revert(VisualElement element)
-//     {
-//     }
-//
-//     protected override bool Equals(OnGloballyPositionedModifierImpl other)
-//     {
-//         return _onGloballyPositioned == other._onGloballyPositioned;
-//     }
-// }
 
 public static partial class VisualElementExtensions
 {

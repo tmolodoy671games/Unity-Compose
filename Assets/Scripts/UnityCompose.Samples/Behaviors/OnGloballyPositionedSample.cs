@@ -42,7 +42,6 @@ namespace UnityCompose.Samples.Behaviors
                                 verticalAlignment: Alignment.Vertical.Center,
                                 modifier: Modifier
                                     .Size(40)
-                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
                                     .Background(Color.blue)
                                     .Offset(x: AnimateFloatAsState(
                                         targetValue: 500 * isSwitched.Value.ToInt(),
@@ -58,7 +57,7 @@ namespace UnityCompose.Samples.Behaviors
                                                 Modifier
                                                     .Background(Color.green)
                                                     .Size(20)
-                                                    
+                                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
                                             );
                                         });
                                     });
