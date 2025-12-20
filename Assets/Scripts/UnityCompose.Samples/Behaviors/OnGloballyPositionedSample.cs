@@ -22,10 +22,12 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
+            var parentCoordinates = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
             Column(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 modifier: Modifier.FillMaxSize()
-                    .Padding(100),
+                    .Padding(100)
+                    .OnGloballyPositioned(it => parentCoordinates.Value = it),
                 content: () =>
                 {
                     var isSwitched = Remember(static () => MutableStateOf(false));
@@ -40,6 +42,7 @@ namespace UnityCompose.Samples.Behaviors
                                 verticalAlignment: Alignment.Vertical.Center,
                                 modifier: Modifier
                                     .Size(40)
+                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
                                     .Background(Color.blue)
                                     .Offset(x: AnimateFloatAsState(
                                         targetValue: 500 * isSwitched.Value.ToInt(),
@@ -55,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                                                 Modifier
                                                     .Background(Color.green)
                                                     .Size(20)
-                                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
+                                                    
                                             );
                                         });
                                     });
@@ -73,19 +76,19 @@ namespace UnityCompose.Samples.Behaviors
                         text: "Switch"
                     );
 
-                    if (layout.Value.HasValue)
+                    if (layout.Value.HasValue && parentCoordinates.Value.HasValue)
                     {
-                        // var measurer = LocalLayoutMeasurer.Current;
-                        // Spacer(
-                        //     modifier: Modifier
-                        //         .Size(10)
-                        //         .Background(Color.red)
-                        //         .Float()
-                        //         .Position(
-                        //             left: measurer.GlobalToLocal(layout.Value.Value).x,
-                        //             top: measurer.GlobalToLocal(layout.Value.Value).y
-                        //         )
-                        // );
+                        var parentCoordinatesValue = parentCoordinates.Value.Value;
+                        Spacer(
+                            modifier: Modifier
+                                .Size(10)
+                                .Background(Color.red)
+                                .Float()
+                                .Position(
+                                    left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x,
+                                    top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y
+                                )
+                        );
                     }
                 }
             );

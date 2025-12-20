@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine;
@@ -14,23 +15,15 @@ public static partial class ModifierExtensions
     public static IModifier OnGloballyPositioned(
         this IModifier modifier,
         Action<LayoutCoordinates> onGloballyPositioned
+    ) => modifier.Composed(() => OnGloballyPositionedImpl(onGloballyPositioned));
+
+    [Composable]
+    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
+    private static IModifier OnGloballyPositionedImpl(
+        Action<LayoutCoordinates> onGloballyPositioned
     )
     {
-        return modifier + new OnGloballyPositionedModifierImpl(onGloballyPositioned);
-    }
-}
-
-internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
-{
-    private readonly Action<LayoutCoordinates> _onGloballyPositioned;
-
-    public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
-    {
-        _onGloballyPositioned = onGloballyPositioned;
-    }
-
-    public override void Apply(VisualElement element)
-    {
+        var element = CurrentComposer.GetParentVisualElement().NotNull();
         var previousLayoutCoordinates =
             Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
         Action<GeometryChangedEvent> onGeometryChanged = _ =>
@@ -39,7 +32,7 @@ internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositio
             if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
             {
                 previousLayoutCoordinates.Value = newLayoutCoordinates;
-                _onGloballyPositioned(newLayoutCoordinates);
+                onGloballyPositioned(newLayoutCoordinates);
             }
         };
         DisposableEffect(
@@ -56,21 +49,62 @@ internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositio
                 });
             }
         );
-    }
-
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-    }
-
-    public override void Revert(VisualElement element)
-    {
-    }
-
-    protected override bool Equals(OnGloballyPositionedModifierImpl other)
-    {
-        return _onGloballyPositioned == other._onGloballyPositioned;
+        return Modifier;
+        return Modifier;
     }
 }
+
+// internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
+// {
+//     private readonly Action<LayoutCoordinates> _onGloballyPositioned;
+//
+//     public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
+//     {
+//         _onGloballyPositioned = onGloballyPositioned;
+//     }
+//
+//     public override void Apply(VisualElement element)
+//     {
+//         var previousLayoutCoordinates =
+//             Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
+//         Action<GeometryChangedEvent> onGeometryChanged = _ =>
+//         {
+//             var newLayoutCoordinates = LayoutCoordinates.Create(element);
+//             if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
+//             {
+//                 previousLayoutCoordinates.Value = newLayoutCoordinates;
+//                 _onGloballyPositioned(newLayoutCoordinates);
+//             }
+//         };
+//         DisposableEffect(
+//             key: element,
+//             effect: it =>
+//             {
+//                 var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
+//                 foreach (var ancestor in ancestors)
+//                     ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
+//                 return it.OnDispose(() =>
+//                 {
+//                     foreach (var ancestor in ancestors)
+//                         ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
+//                 });
+//             }
+//         );
+//     }
+//
+//     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
+//     {
+//     }
+//
+//     public override void Revert(VisualElement element)
+//     {
+//     }
+//
+//     protected override bool Equals(OnGloballyPositionedModifierImpl other)
+//     {
+//         return _onGloballyPositioned == other._onGloballyPositioned;
+//     }
+// }
 
 public static partial class VisualElementExtensions
 {

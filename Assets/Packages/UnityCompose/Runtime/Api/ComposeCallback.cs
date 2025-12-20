@@ -14,7 +14,7 @@ public abstract class ComposeCallback
 
 public class ComposeCallback<T> : ComposeCallback where T : EventBase
 {
-    private readonly IMutableStableList<Action<T>> _callbacks = IMutableStableList.Create<Action<T>>();
+    private readonly List<Action<T>> _callbacks = new(1);
 
     public readonly EventCallback<T> Callback;
     private T? _lastEvent;
@@ -29,7 +29,7 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
                 callback(it);
         };
     }
-    
+
     public int InvokedAtFrame { get; private set; }
 
     public void Add(Action<T> callback)
@@ -44,11 +44,6 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
         _callbacks.Remove(callback);
     }
 
-    public void Add(Action callback)
-    {
-        _callbacks.Add(_ => callback());
-    }
-
     public override void Clear()
     {
         _callbacks.Clear();
@@ -56,7 +51,50 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
 
     public void ReInvoke()
     {
-        if (_lastEvent == null) 
+        if (_lastEvent == null)
+            return;
+        Callback(_lastEvent);
+    }
+}
+
+public class ComposeCallback<TKey, T> : ComposeCallback where T : EventBase
+{
+    private readonly Dictionary<TKey, Action<T>> _callbacks = new(1);
+
+    public readonly EventCallback<T> Callback;
+    private T? _lastEvent;
+
+    public ComposeCallback()
+    {
+        Callback = it =>
+        {
+            InvokedAtFrame = Time.frameCount;
+            _lastEvent = it;
+            foreach (var callback in _callbacks)
+                callback.Value(it);
+        };
+    }
+
+    public int InvokedAtFrame { get; private set; }
+
+    public void Add(TKey key, Action<T> callback)
+    {
+        _callbacks[key] = callback;
+    }
+
+    public void Remove(TKey key)
+    {
+        _callbacks.Remove(key);
+    }
+    
+    public override void Clear()
+    {
+        _callbacks.Clear();
+    }
+
+    public void ReInvoke()
+    {
+        if (_lastEvent == null)
             return;
         Callback(_lastEvent);
     }
@@ -129,7 +167,7 @@ public static partial class VisualElementExtensions
         userData["__Callbacks"] = newCallbacks;
         return newCallbacks;
     }
-    
+
     private static IMutableStableDictionary<Type, ComposeCallback>? CallbacksOrNull(this VisualElement element)
     {
         var userData = element.UserData();

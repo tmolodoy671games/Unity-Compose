@@ -38,7 +38,7 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
             parent.FastReinsert(indexInParent, VisualElement);
             _indexInParent = indexInParent;
         }
-
+        
         if (_lastModifiersPair != modifiers || !Equals(_lastModifier, modifier))
         {
             var newModifier = modifier.OrEmpty();
