@@ -222,7 +222,8 @@ internal class SlotTableWriter
             var existingGroup = _groups[_currentGroupIndex];
 #if ASSERTIONS
             if (existingGroup.Type != ComposeGroupType.Replace)
-                throw new InvalidOperationException($"Found {existingGroup.Type} group instead of replace group!");
+                throw new InvalidOperationException(
+                    $"Found {existingGroup.Type}({existingGroup.Key}) group instead of replace group!");
 #endif
             if (existingGroup.Key != key)
             {
@@ -410,7 +411,7 @@ internal class SlotTableWriter
 
     #region VisualElement
 
-    public  ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement
+    public ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement
     {
         return _slots.GetReusableNode<T>(_currentParentSlotIndex);
     }
@@ -638,6 +639,8 @@ internal class SlotTableWriter
 #endif
         var group = _groups[groupIndex];
 #if ASSERTIONS
+        if (group.Type != ComposeGroupType.Restart)
+            throw new InvalidOperationException($"Trying to restart non-restart group: {group}");
         if (!group.AnchorId.IsValid)
             throw new InvalidOperationException($"Group {groupIndex} has invalid AnchorId!");
         if (!group.DataAnchorId.IsValid)

@@ -43,24 +43,24 @@ namespace UnityCompose.Samples.Behaviors
                         Tab(
                             selected: selectionIndex.Value == 1,
                             modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 1)
-                                .OnGloballyPositioned(it => positions[1] = it.GlobalPosition),
+                                .OnClick(() => selectionIndex.Value = 1),
+                                // .OnGloballyPositioned(it => positions[1] = it.GlobalPosition),
                             content: () => Text(text: "Second")
                         );
-                        Tab(
-                            selected: selectionIndex.Value == 2,
-                            modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 2)
-                                .OnGloballyPositioned(it => positions[2] = it.GlobalPosition),
-                            content: () => Text(text: "Third")
-                        );
-                        Tab(
-                            selected: selectionIndex.Value == 3,
-                            modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 3)
-                                .OnGloballyPositioned(it => positions[3] = it.GlobalPosition),
-                            content: () => Text(text: "Fourth")
-                        );
+                        // Tab(
+                        //     selected: selectionIndex.Value == 2,
+                        //     modifier: Modifier
+                        //         .OnClick(() => selectionIndex.Value = 2)
+                        //         .OnGloballyPositioned(it => positions[2] = it.GlobalPosition),
+                        //     content: () => Text(text: "Third")
+                        // );
+                        // Tab(
+                        //     selected: selectionIndex.Value == 3,
+                        //     modifier: Modifier
+                        //         .OnClick(() => selectionIndex.Value = 3)
+                        //         .OnGloballyPositioned(it => positions[3] = it.GlobalPosition),
+                        //     content: () => Text(text: "Fourth")
+                        // );
                     });
 
                     foreach (var position in positions.Values)

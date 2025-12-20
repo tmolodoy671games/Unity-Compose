@@ -20,7 +20,7 @@ public static partial class ModifierExtensions
     }
 }
 
-internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
+internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
 {
     private readonly Action<LayoutCoordinates> _onGloballyPositioned;
 
@@ -29,7 +29,6 @@ internal partial class OnGloballyPositionedModifierImpl : BaseModifier<OnGloball
         _onGloballyPositioned = onGloballyPositioned;
     }
 
-    [Composable]
     public override void Apply(VisualElement element)
     {
         var previousLayoutCoordinates =
@@ -101,36 +100,15 @@ public static partial class VisualElementExtensions
         element.RegisterCallback(newCallback.Callback);
         return newCallback;
     }
-    
-    internal static ComposeCallback<GeometryChangedEvent>? OnGloballyPositionedCallbackOrNull(this VisualElement element)
+
+    internal static ComposeCallback<GeometryChangedEvent>? OnGloballyPositionedCallbackOrNull(
+        this VisualElement element
+    )
     {
         var userData = element.UserData();
         if (userData.TryGet("__OnGloballyPositioned", out var cached) &&
             cached is ComposeCallback<GeometryChangedEvent> onGloballyPositioned)
             return onGloballyPositioned;
         return null;
-    }
-}
-
-internal static partial class GloballyPositionedComposeFunctions
-{
-    [Composable]
-    public static void FireOnGloballyPositionedCallback(VisualElement element)
-    {
-        var callback = element.OnGloballyPositionedCallbackOrNull();
-        if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
-            return;
-        var style = element.style;
-        var lastTranslate = Remember(() => IMutableStableProperty.Create(style.translate));
-        var lastScale = Remember(() => IMutableStableProperty.Create(style.scale));
-        LaunchedEffect((style.translate, style.scale), () =>
-        {
-            if (lastTranslate.Value != style.translate || lastScale.Value != style.scale)
-            {
-                lastTranslate.Value = style.translate;
-                lastScale.Value = style.scale;
-                callback.ReInvoke();
-            }
-        });
     }
 }

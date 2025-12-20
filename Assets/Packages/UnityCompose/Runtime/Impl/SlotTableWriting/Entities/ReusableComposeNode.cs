@@ -92,7 +92,10 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
 
     public void Dispose()
     {
-        var parent = VisualElement.parent;
-        parent?.FastRemove(_indexInParent, VisualElement);
+        var visualElement = VisualElement;
+        if (visualElement == null)
+            return;
+        var parent = visualElement.parent;
+        parent?.FastRemove(_indexInParent, visualElement);
     }
 }

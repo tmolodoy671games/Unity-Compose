@@ -17,6 +17,8 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
+            const int AnimationDuration = 2;
+            var animationSpec = Tween(AnimationDuration);
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
@@ -34,15 +36,12 @@ namespace UnityCompose.Samples.Behaviors
                             var text = isSwitched.Value
                                 ? "Short"
                                 : "Loooooooooooooong\nLoooooooooooooong\nLoooooooooooooong";
-
                             AnimatedSize(
                                 modifier: Modifier
                                     .Name("animated-size")
-                                    .Background(isSwitched.Value ? Color.green : Color.red, Transition(5))
+                                    .Background(isSwitched.Value ? Color.green : Color.red, Transition(AnimationDuration))
                                     .Padding(all: 16),
-                                animationSpec: Tween(
-                                    duration: 2
-                                ),
+                                animationSpec: animationSpec,
                                 content: () =>
                                 {
                                     Text(
