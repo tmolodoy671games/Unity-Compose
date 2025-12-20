@@ -12,6 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(133363970);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -28,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(133363970)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(133363970, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

@@ -16,6 +16,7 @@ public static partial class ComposeFunctions
         var(__provides, __content) = (provides, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(185578461);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides, __content)))
         {
             CompositionLocalProviderImpl(provides, content);
@@ -25,7 +26,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(185578461)?.UpdateScope(() => __CompositionLocalProvider(__provides, __content));
+        __composer.EndRestartGroup(185578461, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides, __content));
     }
 
     [Composable]
@@ -34,6 +35,7 @@ public static partial class ComposeFunctions
         var(__provides1, __content) = (provides1, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1189998356);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __content)))
         {
             var provides = !__composer.ChangedAsStruct(provides1) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1));
@@ -44,7 +46,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1189998356)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
+        __composer.EndRestartGroup(-1189998356, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
     }
 
     [Composable]
@@ -53,6 +55,7 @@ public static partial class ComposeFunctions
         var(__provides1, __content) = (provides1, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1600544323);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __content)))
         {
             var provides = !__composer.ChangedAsStruct(provides1) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1));
@@ -63,7 +66,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1600544323)?.UpdateScope(() => __LoggableCompositionLocalProvider(__provides1, __content));
+        __composer.EndRestartGroup(-1600544323, __isRestarted)?.UpdateScope(() => __LoggableCompositionLocalProvider(__provides1, __content));
     }
 
     [Composable]
@@ -72,6 +75,7 @@ public static partial class ComposeFunctions
         var(__provides, __content) = (provides, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1374181071);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides, __content)))
         {
             CurrentComposer.StartLocalGroup(321);
@@ -84,7 +88,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1374181071)?.UpdateScope(() => __LoggableCompositionLocalProviderImpl(__provides, __content));
+        __composer.EndRestartGroup(-1374181071, __isRestarted)?.UpdateScope(() => __LoggableCompositionLocalProviderImpl(__provides, __content));
     }
 
     [Composable]
@@ -93,6 +97,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __content) = (provides1, provides2, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-485029187);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2));
@@ -103,7 +108,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-485029187)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
+        __composer.EndRestartGroup(-485029187, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
     }
 
     [Composable]
@@ -112,6 +117,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __content) = (provides1, provides2, provides3, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-587139638);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3));
@@ -122,7 +128,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-587139638)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
+        __composer.EndRestartGroup(-587139638, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
     }
 
     [Composable]
@@ -131,6 +137,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __content) = (provides1, provides2, provides3, provides4, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(835843544);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4));
@@ -141,7 +148,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(835843544)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
+        __composer.EndRestartGroup(835843544, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
     }
 
     [Composable]
@@ -150,6 +157,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __content) = (provides1, provides2, provides3, provides4, provides5, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(995095908);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4, provides5)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5));
@@ -160,7 +168,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(995095908)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
+        __composer.EndRestartGroup(995095908, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
     }
 
     [Composable]
@@ -169,6 +177,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1461942799);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4, provides5, provides6)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6));
@@ -179,7 +188,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1461942799)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
+        __composer.EndRestartGroup(-1461942799, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
     }
 
     [Composable]
@@ -188,6 +197,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1340101204);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4, provides5, provides6, provides7)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6, provides7));
@@ -198,7 +208,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1340101204)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
+        __composer.EndRestartGroup(1340101204, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
     }
 
     [Composable]
@@ -207,6 +217,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1416436347);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8));
@@ -217,7 +228,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1416436347)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
+        __composer.EndRestartGroup(-1416436347, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
     }
 
     [Composable]
@@ -226,6 +237,7 @@ public static partial class ComposeFunctions
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(2071621430);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content)))
         {
             var provides = !__composer.ChangedAsStruct((provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.CompositionLocalProvides>>(IImmutableStableList.Create(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9));
@@ -236,7 +248,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(2071621430)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
+        __composer.EndRestartGroup(2071621430, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
     }
 
     [Composable]
@@ -245,6 +257,7 @@ public static partial class ComposeFunctions
         var(__provides, __content) = (provides, content);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-691166404);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__provides, __content)))
         {
             CurrentComposer.StartLocalGroup(123);
@@ -257,6 +270,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-691166404)?.UpdateScope(() => __CompositionLocalProviderImpl(__provides, __content));
+        __composer.EndRestartGroup(-691166404, __isRestarted)?.UpdateScope(() => __CompositionLocalProviderImpl(__provides, __content));
     }
 }

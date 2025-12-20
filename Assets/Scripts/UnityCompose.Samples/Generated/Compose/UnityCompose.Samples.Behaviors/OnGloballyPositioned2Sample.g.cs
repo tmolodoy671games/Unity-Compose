@@ -12,6 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1825056684);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -21,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1825056684)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1825056684, __isRestarted)?.UpdateScope(() => __Content());
         }
 
         [Composable]
@@ -29,6 +30,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-294336196);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -38,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-294336196)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(-294336196, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
@@ -46,6 +48,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(946367469);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -81,7 +84,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(946367469)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(946367469, __isRestarted)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
@@ -90,6 +93,7 @@ namespace UnityCompose.Samples.Behaviors
             var(__selected, __content, __modifier) = (selected, content, modifier);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-977926424);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
             {
                 Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -102,7 +106,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-977926424)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
+            __composer.EndRestartGroup(-977926424, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
         }
     }
 }

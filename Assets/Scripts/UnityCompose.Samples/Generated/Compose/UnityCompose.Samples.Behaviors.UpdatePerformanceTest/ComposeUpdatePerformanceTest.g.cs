@@ -12,6 +12,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-631616914);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 var parentSize = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(IMutableStableProperty.Create(Vector2.zero));
@@ -38,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-631616914)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-631616914, __isRestarted)?.UpdateScope(() => __Content());
         }
     }
 }

@@ -15,6 +15,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(107286556);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -24,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(107286556)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(107286556, __isRestarted)?.UpdateScope(() => __Content());
         }
 
         [Composable]
@@ -32,6 +33,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1172386894);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -41,7 +43,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1172386894)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(1172386894, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
@@ -49,6 +51,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1517382754);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 var animationSpec = Tween(duration: 1f);
@@ -65,7 +68,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1517382754)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1517382754, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 
@@ -76,6 +79,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-611690533);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
@@ -90,7 +94,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-611690533)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-611690533, __isRestarted)?.UpdateScope(() => __Content());
         }
     }
 
@@ -101,6 +105,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1026872014);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
@@ -112,7 +117,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1026872014)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1026872014, __isRestarted)?.UpdateScope(() => __Content());
         }
     }
 
@@ -124,11 +129,12 @@ namespace UnityCompose.Samples.Behaviors
             var __onClick = (onClick);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1188124018);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute(__onClick))
             {
                 if (!IsActive)
                 {
-                    __composer.EndRestartGroup(1188124018)?.UpdateScope(() => __CollectSpace(__onClick));
+                    __composer.EndRestartGroup(1188124018, __isRestarted)?.UpdateScope(() => __CollectSpace(__onClick));
                     return;
                 }
 
@@ -139,7 +145,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1188124018)?.UpdateScope(() => __CollectSpace(__onClick));
+            __composer.EndRestartGroup(1188124018, __isRestarted)?.UpdateScope(() => __CollectSpace(__onClick));
         }
     }
 }

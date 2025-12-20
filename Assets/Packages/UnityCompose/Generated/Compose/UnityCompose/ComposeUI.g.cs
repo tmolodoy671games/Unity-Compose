@@ -17,6 +17,7 @@ public abstract partial class ComposeUI
     {
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(2060217662);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecute())
         {
         }
@@ -25,6 +26,6 @@ public abstract partial class ComposeUI
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(2060217662)?.UpdateScope(() => __Preview());
+        __composer.EndRestartGroup(2060217662, __isRestarted)?.UpdateScope(() => __Preview());
     }
 }

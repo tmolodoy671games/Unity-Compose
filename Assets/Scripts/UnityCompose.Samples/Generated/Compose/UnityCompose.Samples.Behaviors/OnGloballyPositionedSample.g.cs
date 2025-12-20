@@ -13,6 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(202235192);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -22,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(202235192)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(202235192, __isRestarted)?.UpdateScope(() => __Content());
         }
 
         [Composable]
@@ -30,6 +31,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(694094757);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Layout();
@@ -39,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(694094757)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(694094757, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
@@ -47,6 +49,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1747818766);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
                 Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.FillMaxSize().Padding(100), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -89,7 +92,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1747818766)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1747818766, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

@@ -37,10 +37,9 @@ public class Composer
 
     #region Restart Group
 
-    public bool ShouldExecute()
-    {
-        return ShouldExecute(SingletonState.Instance);
-    }
+    public bool IsRestarted() => _writer.IsInInvalidationRoot();
+
+    public bool ShouldExecute() => ShouldExecute(SingletonState.Instance);
 
     public void StartRestartGroup(int key)
     {
@@ -74,12 +73,12 @@ public class Composer
         _writer.SkipToGroupEnd();
     }
 
-    public IScopeUpdateScope? EndRestartGroup(int groupKey)
+    public IScopeUpdateScope? EndRestartGroup(int groupKey, bool restarted)
     {
         var scope = _writer.GetRestartScope();
         _writer.EndRestartGroup(groupKey);
         scope?.SyncFrame();
-        return scope;
+        return restarted ? null : scope;
     }
 
     #endregion

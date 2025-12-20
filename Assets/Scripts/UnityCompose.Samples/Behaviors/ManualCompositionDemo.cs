@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
         [Button("End Restart Group")]
         private void EndRestartGroupButton()
         {
-            CurrentComposer.EndRestartGroup(key);
+            CurrentComposer.EndRestartGroup(key, false);
             Log();
         }
 

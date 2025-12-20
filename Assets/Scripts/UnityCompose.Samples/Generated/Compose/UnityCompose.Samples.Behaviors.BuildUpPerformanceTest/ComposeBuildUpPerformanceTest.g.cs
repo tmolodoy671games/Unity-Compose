@@ -14,6 +14,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
         {
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(255387690);
+            var __isRestarted = __composer.IsRestarted();
             if (__composer.ShouldExecute())
             {
             }
@@ -22,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(255387690)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(255387690, __isRestarted)?.UpdateScope(() => __Content());
         }
     }
 }

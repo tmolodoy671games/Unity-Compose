@@ -18,6 +18,7 @@ public static partial class ComposeFunctions
         var(__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier) = (coordinator, transition, initialScreens, onTransitionProgressChanged, content, modifier);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(261249727);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecuteAsStruct((__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier)))
         {
             var backStack = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
@@ -102,7 +103,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(261249727)?.UpdateScope(() => __Navigation(__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier));
+        __composer.EndRestartGroup(261249727, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __initialScreens, __onTransitionProgressChanged, __content, __modifier));
     }
 }
 
@@ -113,6 +114,7 @@ internal partial class NavigationScopeImpl
     {
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(606385123);
+        var __isRestarted = __composer.IsRestarted();
         if (__composer.ShouldExecute())
         {
             _content();
@@ -122,6 +124,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(606385123)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(606385123, __isRestarted)?.UpdateScope(() => __Content());
     }
 }
