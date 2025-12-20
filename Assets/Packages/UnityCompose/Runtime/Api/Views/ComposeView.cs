@@ -30,12 +30,8 @@ public partial class ComposeView : VisualElement
         var composer = CurrentComposer;
         composer.StartReusableGroup(0);
         composer.SetVisualElement(this);
-        composer.EnterVisualElement();
-        CompositionLocalProvider(
-            LocalVisualElement.Provides(this),
-            LocalLayoutMeasurer.Provides(new LayoutMeasurerImpl(this)),
-            content: content
-        );
+        composer.EnterVisualElement(this);
+        content();
         composer.EndReusableGroup(0);
     }
 

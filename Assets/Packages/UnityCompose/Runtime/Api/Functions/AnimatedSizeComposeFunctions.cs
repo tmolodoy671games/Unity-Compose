@@ -32,8 +32,8 @@ public static partial class ComposeFunctions
             },
             content: () =>
             {
-                CompositionLocalProvider(
-                    LocalModifier.Provides(after: contentStyle),
+                WithModifiers(
+                    after: contentStyle,
                     content: content
                 );
             }

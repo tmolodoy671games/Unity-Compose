@@ -67,7 +67,7 @@ public static partial class ComposeFunctions
                 .Then(containerModifier),
             content: () =>
             {
-                var parent = LocalVisualElement.Current;
+                var parent = CurrentComposer.GetParentVisualElement().NotNull();
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent)
                     .Then(contentModifier);
                 var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent)
@@ -100,13 +100,18 @@ public static partial class ComposeFunctions
                                 duration: resolvedTransition.TotalDuration
                             );
                             CompositionLocalProvider(
-                                LocalModifier.Provides(after: pair.First.Style),
                                 LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                                 LocalTransitionDuration.Provides(state.Duration),
-                                content: () => content(pair.First.Value)
+                                content: () =>
+                                {
+                                    WithModifiers(
+                                        after: pair.First.Style,
+                                        content: () => content(pair.First.Value)
+                                    );
+                                }
                             );
                         }
                     );
@@ -124,13 +129,18 @@ public static partial class ComposeFunctions
                                 duration: resolvedTransition.TotalDuration
                             );
                             CompositionLocalProvider(
-                                LocalModifier.Provides(after: pair.Second.Style),
                                 LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                                 LocalTransitionDuration.Provides(state.Duration),
-                                content: () => content(pair.Second.Value)
+                                content: () =>
+                                {
+                                    WithModifiers(
+                                        after: pair.Second.Style,
+                                        content: () => content(pair.Second.Value)
+                                    );
+                                }
                             );
                         }
                     );

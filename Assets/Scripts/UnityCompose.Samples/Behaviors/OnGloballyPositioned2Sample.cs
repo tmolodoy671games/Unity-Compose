@@ -65,18 +65,18 @@ namespace UnityCompose.Samples.Behaviors
 
                     foreach (var position in positions.Values)
                     {
-                        var measurer = LocalLayoutMeasurer.Current;
-                        Spacer(
-                            modifier: Modifier
-                                .Background(Color.red)
-                                .Size(16)
-                                .Border(4, topLeftRadius: 0)
-                                .Float()
-                                .Position(
-                                    left: measurer.GlobalToLocal(position).x,
-                                    top: measurer.GlobalToLocal(position).y
-                                )
-                        );
+                        // var measurer = LocalLayoutMeasurer.Current;
+                        // Spacer(
+                        //     modifier: Modifier
+                        //         .Background(Color.red)
+                        //         .Size(16)
+                        //         .Border(4, topLeftRadius: 0)
+                        //         .Float()
+                        //         .Position(
+                        //             left: measurer.GlobalToLocal(position).x,
+                        //             top: measurer.GlobalToLocal(position).y
+                        //         )
+                        // );
                     }
                 }
             );

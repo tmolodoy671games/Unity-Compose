@@ -1,4 +1,5 @@
-﻿using StableCollections;
+﻿using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
@@ -24,7 +25,7 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
 
     public override void Apply(VisualElement element)
     {
-        switch (LocalVisualElement.Current.style.flexDirection.value)
+        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
         {
             case FlexDirection.Row:
             case FlexDirection.RowReverse:
@@ -35,7 +36,7 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
 
     public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
     {
-        switch (LocalVisualElement.Current.style.flexDirection.value)
+        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
         {
             case FlexDirection.Row:
             case FlexDirection.RowReverse:
@@ -46,7 +47,7 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
 
     public override void Revert(VisualElement element)
     {
-        switch (LocalVisualElement.Current.style.flexDirection.value)
+        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
         {
             case FlexDirection.Row:
             case FlexDirection.RowReverse:

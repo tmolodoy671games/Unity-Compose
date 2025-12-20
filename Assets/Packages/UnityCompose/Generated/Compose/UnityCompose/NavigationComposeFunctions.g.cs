@@ -60,7 +60,7 @@ public static partial class ComposeFunctions
                         screenState = TransitionState.Idle;
                     Key(key: screen, content: !__composer.ChangedAsStruct((coordinator, content, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        var parent = LocalVisualElement.Current;
+                        var parent = CurrentComposer.GetParentVisualElement().NotNull();
                         var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                         var contentModifier = screenState switch
                         {
@@ -71,20 +71,23 @@ public static partial class ComposeFunctions
                         var state = TransitionResolvedState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                         var isActive = LocalIsActive.Current;
                         var scope = !__composer.Changed(screen) ? __composer.RememberedValue<UnityCompose.NavigationScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.NavigationScopeImpl>(new NavigationScopeImpl(screen.Content));
-                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalModifier.Provides(after: LocalModifier.Current.After.OrEmpty().Then(contentModifier)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, scope)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, contentModifier, scope)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                         {
-                            if (content != null)
+                            WithModifiers(after: CurrentComposer.GetModifiers().After.OrEmpty().Then(contentModifier), content: !__composer.ChangedAsStruct((content, scope)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                             {
-                                __composer.StartReplaceGroup(-322363526);
-                                content(scope);
-                                __composer.EndReplaceGroup(-322363526);
-                            }
-                            else
-                            {
-                                __composer.StartReplaceGroup(-1547631547);
-                                scope.Content();
-                                __composer.EndReplaceGroup(-1547631547);
-                            }
+                                if (content != null)
+                                {
+                                    __composer.StartReplaceGroup(57981188);
+                                    content(scope);
+                                    __composer.EndReplaceGroup(57981188);
+                                }
+                                else
+                                {
+                                    __composer.StartReplaceGroup(-322363526);
+                                    scope.Content();
+                                    __composer.EndReplaceGroup(-322363526);
+                                }
+                            }));
                         }));
                     }));
                 }
@@ -109,7 +112,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1349311267);
+        __composer.StartRestartGroup(606385123);
         if (__composer.ShouldExecute())
         {
             _content();
@@ -119,6 +122,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1349311267)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(606385123)?.UpdateScope(() => __Content());
     }
 }

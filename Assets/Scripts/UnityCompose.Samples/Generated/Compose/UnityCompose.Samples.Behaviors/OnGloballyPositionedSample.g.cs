@@ -68,14 +68,20 @@ namespace UnityCompose.Samples.Behaviors
                         }));
                     }));
                     Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
-                    __composer.StartReplaceGroup(-49090154);
                     if (layout.Value.HasValue)
                     {
-                        var measurer = LocalLayoutMeasurer.Current;
-                        Spacer(modifier: Modifier.Size(10).Background(Color.red).Float().Position(left: measurer.GlobalToLocal(layout.Value.Value).x, top: measurer.GlobalToLocal(layout.Value.Value).y));
+                    // var measurer = LocalLayoutMeasurer.Current;
+                    // Spacer(
+                    //     modifier: Modifier
+                    //         .Size(10)
+                    //         .Background(Color.red)
+                    //         .Float()
+                    //         .Position(
+                    //             left: measurer.GlobalToLocal(layout.Value.Value).x,
+                    //             top: measurer.GlobalToLocal(layout.Value.Value).y
+                    //         )
+                    // );
                     }
-
-                    __composer.EndReplaceGroup(-49090154);
                 }));
             }
             else

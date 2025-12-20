@@ -130,7 +130,7 @@ public static partial class ComposeFunctions
                         key: screen,
                         content: () =>
                         {
-                            var parent = LocalVisualElement.Current;
+                            var parent = CurrentComposer.GetParentVisualElement().NotNull();
                             var isCurrentScreen = screen.Equals(currentBackStack[^1]);
                             var contentModifier = screenState switch
                             {
@@ -160,10 +160,6 @@ public static partial class ComposeFunctions
                                         Parent: isActive
                                     )
                                 ),
-                                LocalModifier.Provides(
-                                    after: LocalModifier.Current.After.OrEmpty()
-                                        .Then(contentModifier)
-                                ),
                                 LocalTransitionState.Provides(state.State),
                                 LocalTransitionProgress.Provides(state.Progress),
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
@@ -171,10 +167,17 @@ public static partial class ComposeFunctions
                                 LocalTransitionDuration.Provides(state.Duration),
                                 content: () =>
                                 {
-                                    if (content != null)
-                                        content(scope);
-                                    else
-                                        scope.Content();
+                                    WithModifiers(
+                                        after: CurrentComposer.GetModifiers().After.OrEmpty()
+                                            .Then(contentModifier),
+                                        content: () =>
+                                        {
+                                            if (content != null)
+                                                content(scope);
+                                            else
+                                                scope.Content();
+                                        }
+                                    );
                                 }
                             );
                         }

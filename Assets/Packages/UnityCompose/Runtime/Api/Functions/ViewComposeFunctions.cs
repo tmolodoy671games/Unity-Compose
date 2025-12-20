@@ -16,6 +16,19 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
+    public static void WithModifiers(
+        ComposableContent content,
+        IModifier? before = null,
+        IModifier? after = null
+    )
+    {
+        var composer = CurrentComposer;
+        composer.PushModifiers(before, after);
+        content();
+        composer.PopModifiers();
+    }
+
+    [Composable]
     public static void ReusableComposeView<T>(
         IModifier? modifier = null,
         Action<T>? initializer = null,
@@ -24,21 +37,21 @@ public static partial class ComposeFunctions
     {
         CurrentComposer.StartReusableGroup(123);
         var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-        var parent = LocalVisualElement.Current;
+        var parent = CurrentComposer.GetParentVisualElement().NotNull();
         var index = CurrentComposer.GetElementIndex();
         DisposableEffect((visualElement, parent, index), it =>
         {
             parent.FastReinsert(index, visualElement);
             return it.OnDispose(() => parent.Remove(visualElement));
         });
-        CurrentComposer.EnterVisualElement();
+        CurrentComposer.EnterVisualElement(visualElement);
 
         var resolvedModifier = modifier;
-        var localStyle = LocalModifier.Current;
-        if (localStyle.Before != null)
-            resolvedModifier = localStyle.Before.Then(resolvedModifier.OrEmpty());
-        if (localStyle.After != null)
-            resolvedModifier = resolvedModifier.OrEmpty().Then(localStyle.After);
+        var modifiers = CurrentComposer.GetModifiers();
+        if (modifiers.Before != null)
+            resolvedModifier = modifiers.Before.Then(resolvedModifier.OrEmpty());
+        if (modifiers.After != null)
+            resolvedModifier = resolvedModifier.OrEmpty().Then(modifiers.After);
 
         var currentProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
         var newProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
@@ -70,10 +83,9 @@ public static partial class ComposeFunctions
 
         if (content != null)
         {
-            CompositionLocalProvider(
-                LocalModifier.Provides((null, null)),
-                LocalVisualElement.Provides(visualElement),
-                LocalLayoutMeasurer.Provides(Remember(visualElement, () => new LayoutMeasurerImpl(visualElement))),
+            WithModifiers(
+                before: null,
+                after: null,
                 content: content
             );
         }

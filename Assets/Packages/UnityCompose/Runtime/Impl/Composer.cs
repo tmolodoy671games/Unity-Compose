@@ -169,11 +169,6 @@ public class Composer
             Debug.Log($"{state} Capture {restartScope._groupAnchor}");
     }
 
-    public void Reset()
-    {
-        _writer.ResetTo(0, null);
-    }
-
     public void Clear()
     {
         _writer.Clear();
@@ -193,6 +188,11 @@ public class Composer
         return newElement;
     }
 
+    public VisualElement? GetParentVisualElement()
+    {
+        return _writer.GetParentVisualElement();
+    }
+
     public int GetElementIndex()
     {
         return _writer.GetCurrentElementIndex();
@@ -203,9 +203,24 @@ public class Composer
         _writer.WriteVisualElement(visualElement);
     }
 
-    public void EnterVisualElement()
+    public void EnterVisualElement(VisualElement element)
     {
-        _writer.EnterVisualElement();
+        _writer.EnterVisualElement(element);
+    }
+
+    public void PushModifiers(IModifier? before, IModifier? after)
+    {
+        _writer.PushModifiers(before, after);
+    }
+
+    public void PopModifiers()
+    {
+        _writer.PopModifiers();
+    }
+
+    internal ModifiersPair GetModifiers()
+    {
+        return _writer.GetModifiers();
     }
 
     #endregion

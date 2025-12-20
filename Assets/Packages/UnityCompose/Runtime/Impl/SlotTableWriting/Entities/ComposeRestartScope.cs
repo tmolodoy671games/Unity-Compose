@@ -5,26 +5,34 @@ using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
 internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 {
-    public readonly AnchorId _groupAnchor;
-    public readonly Dictionary<ICompositionLocal, IMutableState<object?>>? CompositionLocalMap;
-    private Action? _restartCallback;
     private readonly SlotTableWriter _writer;
+    public readonly AnchorId _groupAnchor;
+    private readonly Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap;
+    private readonly VisualElement? _visualElement;
+    private readonly ModifiersPair _modifiers;
+    
+    private Action? _restartCallback;
     private int _lastCalledAtFrame = -1;
 
     internal ComposeRestartScope(
         AnchorId groupAnchor,
         SlotTableWriter writer,
-        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap
+        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        VisualElement? element,
+        ModifiersPair modifiers
     )
     {
         _groupAnchor = groupAnchor;
         _writer = writer;
-        CompositionLocalMap = compositionLocalMap;
+        _compositionLocalMap = compositionLocalMap;
+        _visualElement = element;
+        _modifiers = modifiers;
     }
 
     public void SyncFrame()
@@ -42,13 +50,13 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         if (Time.frameCount == _lastCalledAtFrame)
             return;
         _lastCalledAtFrame = Time.frameCount;
-        _writer.ResetTo(_groupAnchor, CompositionLocalMap);
+        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement, _modifiers);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();
     }
 
     public override string ToString() =>
-        $"RestartScope({_groupAnchor}, {_restartCallback != null}, {CompositionLocalMap?.ToImmutableStableDictionary()})";
+        $"RestartScope({_groupAnchor}, {_restartCallback != null}, {_compositionLocalMap?.ToImmutableStableDictionary()})";
 
     public void Dispose()
     {

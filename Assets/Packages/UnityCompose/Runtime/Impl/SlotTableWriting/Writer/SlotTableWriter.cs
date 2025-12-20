@@ -32,6 +32,12 @@ internal class SlotTableWriter
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
     private readonly List<ComposeGroupOffset> _pendingOffsets = new();
 
+    private readonly Stack<VisualElement> _enteredElements = new();
+    private VisualElement? _rootVisualElement;
+
+    private readonly Stack<ModifiersPair> _enteredModifiers = new();
+    private ModifiersPair _rootModifiers;
+
     private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
     private readonly List<IImmutableStableList<CompositionLocalProvides>> _enteredProvides = new();
     private Dictionary<ICompositionLocal, IMutableState<object?>>? _rootCompositionLocalMap = null;
@@ -174,7 +180,13 @@ internal class SlotTableWriter
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
-        restartScope = new ComposeRestartScope(restartGroup.AnchorId, this, RequireCompositionLocalMap());
+        restartScope = new ComposeRestartScope(
+            groupAnchor: restartGroup.AnchorId,
+            writer: this,
+            compositionLocalMap: RequireCompositionLocalMap(),
+            element: GetParentVisualElement(),
+            modifiers: GetModifiers()
+        );
         _slots.SetRestartScope(enteredRestartGroupSlotIndex, restartScope);
         return restartScope;
     }
@@ -309,6 +321,7 @@ internal class SlotTableWriter
         _currentElementIndex = _enteredElementIndices.PeekOrDefault(0);
         _currentElementIndex++;
         _enteredElementIndices.TryPop(out _);
+        _enteredElements.Pop();
     }
 
     #endregion
@@ -415,10 +428,31 @@ internal class SlotTableWriter
 
     public int GetCurrentElementIndex() => _currentElementIndex;
 
-    public void EnterVisualElement()
+    public void EnterVisualElement(VisualElement element)
     {
         _enteredElementIndices.Push(_currentElementIndex);
         _currentElementIndex = 0;
+        _enteredElements.Push(element);
+    }
+
+    public VisualElement? GetParentVisualElement()
+    {
+        return _enteredElements!.PeekOrDefault(_rootVisualElement);
+    }
+
+    public void PushModifiers(IModifier? before, IModifier? after)
+    {
+        _enteredModifiers.Push(new(before, after));
+    }
+
+    public void PopModifiers()
+    {
+        _enteredModifiers.Pop();
+    }
+
+    public ModifiersPair GetModifiers()
+    {
+        return _enteredModifiers.PeekOrDefault(_rootModifiers);
     }
 
     #endregion
@@ -575,6 +609,9 @@ internal class SlotTableWriter
 
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
+        _enteredElements.Clear();
+        _enteredModifiers.Clear();
+        _rootVisualElement = null;
         _rootCompositionLocalMap = null;
 
         _currentGroupIndex = 0;
@@ -587,7 +624,12 @@ internal class SlotTableWriter
         _alreadyRemovedSlots = 0;
     }
 
-    public void ResetTo(int groupIndex, Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap)
+    public void ResetTo(
+        int groupIndex,
+        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        VisualElement? element,
+        ModifiersPair modifiers
+    )
     {
 #if LOGGING
         Log($"ResetTo({groupIndex})");
@@ -608,6 +650,8 @@ internal class SlotTableWriter
         _rootCompositionLocalMap = compositionLocalMap;
         _alreadyRemovedGroups = 0;
         _alreadyRemovedSlots = 0;
+        _rootVisualElement = element;
+        _rootModifiers = modifiers;
 
         _enteredParents.Clear();
         _enteredElementIndices.Clear();
@@ -615,13 +659,16 @@ internal class SlotTableWriter
         _enteredLocalGroups.Clear();
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
-
         _pendingOffsets.Clear();
+        _enteredElements.Clear();
+        _enteredModifiers.Clear();
     }
 
     public void ResetTo(
         AnchorId groupAnchor,
-        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap
+        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        VisualElement? element,
+        ModifiersPair modifiers
     )
     {
         if (!groupAnchor.IsValid)
@@ -630,7 +677,7 @@ internal class SlotTableWriter
         if (!anchor.IsValid)
             return;
         _composer.SetAsCurrentComposer();
-        ResetTo(anchor.Index, compositionLocalMap);
+        ResetTo(anchor.Index, compositionLocalMap, element, modifiers);
     }
 
     public void ReleaseCurrentComposer()
@@ -1014,4 +1061,9 @@ internal readonly record struct CompositionLocalMapEntry(
 internal readonly record struct ComposeGroupOffset(
     int GroupOffset,
     int SlotOffset
+);
+
+internal readonly record struct ModifiersPair(
+    IModifier? Before,
+    IModifier? After
 );

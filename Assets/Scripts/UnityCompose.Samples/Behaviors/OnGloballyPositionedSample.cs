@@ -75,17 +75,17 @@ namespace UnityCompose.Samples.Behaviors
 
                     if (layout.Value.HasValue)
                     {
-                        var measurer = LocalLayoutMeasurer.Current;
-                        Spacer(
-                            modifier: Modifier
-                                .Size(10)
-                                .Background(Color.red)
-                                .Float()
-                                .Position(
-                                    left: measurer.GlobalToLocal(layout.Value.Value).x,
-                                    top: measurer.GlobalToLocal(layout.Value.Value).y
-                                )
-                        );
+                        // var measurer = LocalLayoutMeasurer.Current;
+                        // Spacer(
+                        //     modifier: Modifier
+                        //         .Size(10)
+                        //         .Background(Color.red)
+                        //         .Float()
+                        //         .Position(
+                        //             left: measurer.GlobalToLocal(layout.Value.Value).x,
+                        //             top: measurer.GlobalToLocal(layout.Value.Value).y
+                        //         )
+                        // );
                     }
                 }
             );
