@@ -16,7 +16,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     private readonly Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap;
     private readonly VisualElement? _visualElement;
     private readonly ModifiersPair _modifiers;
-    
+
     private Action? _restartCallback;
     private int _lastCalledAtFrame = -1;
 

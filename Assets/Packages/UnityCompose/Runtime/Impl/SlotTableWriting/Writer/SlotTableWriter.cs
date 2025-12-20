@@ -408,9 +408,9 @@ internal class SlotTableWriter
 
     #region VisualElement
 
-    public T? GetVisualElement<T>() where T : VisualElement
+    public  ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement
     {
-        return _slots.GetVisualElement(_currentParentSlotIndex) as T;
+        return _slots.GetReusableNode<T>(_currentParentSlotIndex);
     }
 
     public void WriteVisualElement(VisualElement visualElement)

@@ -35,51 +35,23 @@ public static partial class ComposeFunctions
         ComposableContent? content = null
     ) where T : VisualElement, new()
     {
-        CurrentComposer.StartReusableGroup(123);
-        var visualElement = CurrentComposer.GetOrCreateVisualElement<T>();
-        var parent = CurrentComposer.GetParentVisualElement().NotNull();
-        var index = CurrentComposer.GetElementIndex();
-        DisposableEffect((visualElement, parent, index), it =>
-        {
-            parent.FastReinsert(index, visualElement);
-            return it.OnDispose(() => parent.Remove(visualElement));
-        });
-        CurrentComposer.EnterVisualElement(visualElement);
+        var composer = CurrentComposer;
+        composer.StartReusableGroup(123);
+        var parent = composer.GetParentVisualElement().NotNull();
+        var indexInParent = composer.GetElementIndex();
+        var node = composer.GetReusableNode<T>();
+        var modifiers = composer.GetModifiers();
+        node.VisualElement ??= new T();
+        var visualElement = node.VisualElement.NotNull();
+        composer.EnterVisualElement(visualElement);
 
-        var resolvedModifier = modifier;
-        var modifiers = CurrentComposer.GetModifiers();
-        if (modifiers.Before != null)
-            resolvedModifier = modifiers.Before.Then(resolvedModifier.OrEmpty());
-        if (modifiers.After != null)
-            resolvedModifier = resolvedModifier.OrEmpty().Then(modifiers.After);
-
-        var currentProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
-        var newProperties = Remember(() => IMutableStableSet.Create<ComposeModifiedProperty>());
-        resolvedModifier?.Apply(newProperties);
-        foreach (var property in currentProperties)
-        {
-            if (newProperties.Contains(property))
-                continue;
-            property.Revert(visualElement);
-        }
-
-        currentProperties.Clear();
-        if (newProperties.IsNotEmpty())
-            currentProperties.AddRange(newProperties);
-        newProperties.Clear();
-
-        visualElement.ClearCallbacks();
-        visualElement.style.transitionDelay.value?.Clear();
-        visualElement.style.transitionDuration.value?.Clear();
-        visualElement.style.transitionProperty.value?.Clear();
-        visualElement.style.transitionTimingFunction.value?.Clear();
-        visualElement.pickingMode = PickingMode.Ignore;
-        visualElement.style.overflow = Overflow.Visible;
-        LaunchedEffect(resolvedModifier, () => resolvedModifier?.Apply(visualElement));
-        FireOnGloballyPositionedCallback(visualElement);
-
-        if (initializer != null)
-            LaunchedEffect(initializer, () => initializer?.Invoke(visualElement));
+        node.Update(
+            parent: parent,
+            indexInParent: indexInParent,
+            modifiers: modifiers,
+            modifier: modifier,
+            initializer: initializer
+        );
 
         if (content != null)
         {
@@ -90,7 +62,7 @@ public static partial class ComposeFunctions
             );
         }
 
-        CurrentComposer.EndReusableGroup(123);
+        composer.EndReusableGroup(123);
     }
 
     [Composable]

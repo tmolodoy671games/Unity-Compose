@@ -30,4 +30,12 @@ internal static class VisualElementExtensions
         parent.Insert(index, child);
         return true;
     }
+
+    public static void FastRemove(this VisualElement parent, int index, VisualElement child)
+    {
+        if (parent.GetOrNull(index) == child)
+            parent.RemoveAt(index);
+        else
+            parent.Remove(child);
+    }
 }

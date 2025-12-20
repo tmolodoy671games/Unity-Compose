@@ -4,6 +4,7 @@
 using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -178,14 +179,9 @@ public class Composer
 
     #region Visual Element
 
-    public T GetOrCreateVisualElement<T>() where T : VisualElement, new()
+    internal ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement, new()
     {
-        var existingElement = _writer.GetVisualElement<T>();
-        if (existingElement != null)
-            return existingElement;
-        var newElement = new T();
-        _writer.WriteVisualElement(newElement);
-        return newElement;
+        return _writer.GetReusableNode<T>();
     }
 
     public VisualElement? GetParentVisualElement()

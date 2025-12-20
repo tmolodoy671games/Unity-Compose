@@ -1,4 +1,7 @@
-﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
+﻿using System;
+using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -6,23 +9,39 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 internal static class ReusableGroup
 {
     public const int MetadataSize = 1;
-    public const int VisualElementOffset = 0;
+    public const int ReusableNodeOffset = 0;
 }
 
 internal static class ReusableGroupSlotsExtensions
 {
-    public static VisualElement? GetVisualElement(this Slots slots, int index)
+    public static ReusableComposeNode<T> GetReusableNode<T>(this Slots slots, int index) where T : VisualElement
     {
-        return slots[index + ReusableGroup.VisualElementOffset] as VisualElement;
+        var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
+        if (existingNode is not ReusableComposeNode<T> reusableNode)
+        {
+            if (existingNode is IDisposable disposable)
+                disposable.Dispose();
+            reusableNode = new ReusableComposeNode<T>();
+            slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;
+        }
+        return reusableNode;
     }
 
-    public static void SetVisualElement(this Slots slots, int index, VisualElement visualElement)
+    public static void SetVisualElement<T>(this Slots slots, int index, T visualElement) where T : VisualElement
     {
-        slots[index + ReusableGroup.VisualElementOffset] = visualElement;
+        var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
+        if (existingNode is not ReusableComposeNode<T> reusableNode)
+        {
+            if (existingNode is IDisposable disposable)
+                disposable.Dispose();
+            reusableNode = new ReusableComposeNode<T>();
+            slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;
+        }
+        reusableNode.VisualElement = visualElement;
     }
 
     public static void InsertVisualElement(this Slots slots, int index)
     {
-        slots.Insert(index + ReusableGroup.VisualElementOffset, ComposeEmptySlot.Instance);
+        slots.Insert(index + ReusableGroup.ReusableNodeOffset, ComposeEmptySlot.Instance);
     }
 }
