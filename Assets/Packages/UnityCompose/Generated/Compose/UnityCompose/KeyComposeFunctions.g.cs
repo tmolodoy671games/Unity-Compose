@@ -13,7 +13,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-735268864);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __content)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __content)))
         {
             content();
         }

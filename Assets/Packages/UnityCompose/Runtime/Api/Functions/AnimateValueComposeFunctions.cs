@@ -94,7 +94,7 @@ public static partial class ComposeFunctions
         // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
 
         LaunchedEffect(
-            key: targetValue!,
+            key: targetValue,
             coroutine: () => UpdatePropertyCoroutine(targetValue)
         );
         return property;

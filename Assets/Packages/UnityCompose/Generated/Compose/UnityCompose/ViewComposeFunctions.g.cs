@@ -23,7 +23,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(546009290);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__content, __before, __after)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __before, __after)))
         {
             var composer = CurrentComposer;
             composer.PushModifiers(before, after);
@@ -46,7 +46,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(441709024);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__modifier, __initializer, __content)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__modifier, __initializer, __content)))
         {
             var composer = CurrentComposer;
             composer.StartReusableGroup(123);
@@ -82,7 +82,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1581597383);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Column>(modifier: modifier, initializer: !__composer.ChangedAsStruct((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(it =>
             {
@@ -105,7 +105,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1977875257);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Row>(modifier: modifier, initializer: !__composer.ChangedAsStruct((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(it =>
             {
@@ -129,7 +129,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1566475176);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
             ReusableComposeView<Box>(modifier: modifier, initializer: !__composer.ChangedAsStruct((horizontalAlignment, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(it =>
             {
@@ -152,7 +152,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-641620535);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecute(__modifier))
+        if (__isRestarted || __composer.ShouldExecute(__modifier))
         {
             ReusableComposeView<Spacer>(modifier: modifier);
         }
@@ -171,7 +171,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(293914871);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
@@ -238,7 +238,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1834534301);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__image, __tint, __modifier)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__image, __tint, __modifier)))
         {
             ReusableComposeView<Image>(initializer: !__composer.ChangedAsStruct((image, tint)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.Image>?>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.Image>?>(it =>
             {

@@ -28,11 +28,11 @@ public static partial class ComposeFunctions
     {
         // Progress:
         var isSwitched = Remember(() => MutableStateOf(false));
-        LaunchedEffect(targetState!, () => isSwitched.Value = !isSwitched.Value);
+        LaunchedEffect(targetState, () => isSwitched.Value = !isSwitched.Value);
 
         var previousValue = Remember(() => IMutableStableProperty.Create(targetState));
         var targetValue = Remember(() => IMutableStableProperty.Create(targetState));
-        LaunchedEffect(targetState!, () =>
+        LaunchedEffect(targetState, () =>
         {
             previousValue.Value = targetValue.Value;
             targetValue.Value = targetState;

@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1836938474);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 Layout();
             }
@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(383655333);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 Layout();
             }
@@ -49,7 +49,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(896715348);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 const float Duration = 0.5f;
                 Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.ChangedAsStruct(Duration) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>

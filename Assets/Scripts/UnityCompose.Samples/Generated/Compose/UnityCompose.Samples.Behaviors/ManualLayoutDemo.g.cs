@@ -15,7 +15,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1926847197);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 _ = UpdateState.Value;
                 __composer.StartReplaceGroup(-574372599);
@@ -53,7 +53,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(737051444);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute(__content))
+            if (__isRestarted || __composer.ShouldExecute(__content))
             {
                 content();
             }
@@ -71,7 +71,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(178813868);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 MockNestedSpacer();
             }
@@ -89,7 +89,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(920743208);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
             }
             else
@@ -106,15 +106,18 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-593993807);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 var state = new object ();
                 var time = TimeUtils.Measure(!__composer.Changed() ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
                 {
+                    __composer.StartReplaceGroup(-1737032216);
                     for (var i = 0; i < 1_000_000; i++)
                     {
                         _ = !__composer.Changed() ? __composer.RememberedValue<object>() : __composer.UpdateRememberedValue<object>(new object ());
                     }
+
+                    __composer.EndReplaceGroup(-1737032216);
                 }));
                 Debug.Log((int)time.TotalMilliseconds);
             }

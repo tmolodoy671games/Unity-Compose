@@ -28,7 +28,7 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
                         modifier: Modifier
-                            .Padding(horizontal: isHovered.Value ? 80 : 40, vertical: 16, transition: Transition())
+                            .Padding(horizontal: AnimateFloatAsState(isHovered.Value ? 80 : 40).Value, vertical: 16)
                             .Background(Color.blue)
                             .Border(radius: 16)
                             .OnMouseEnter(() => isHovered.Value = true)

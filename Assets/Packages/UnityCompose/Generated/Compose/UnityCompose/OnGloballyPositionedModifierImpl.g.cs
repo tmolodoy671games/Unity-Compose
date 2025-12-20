@@ -17,7 +17,7 @@ internal partial class OnGloballyPositionedModifierImpl
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1473523162);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecute(__element))
+        if (__isRestarted || __composer.ShouldExecute(__element))
         {
             var previousLayoutCoordinates = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
             Action<GeometryChangedEvent> onGeometryChanged = !__composer.ChangedAsStruct((this, element, previousLayoutCoordinates)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.GeometryChangedEvent>>(_ =>
@@ -59,7 +59,7 @@ internal static partial class GloballyPositionedComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-429797837);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecute(__element))
+        if (__isRestarted || __composer.ShouldExecute(__element))
         {
             var callback = element.OnGloballyPositionedCallbackOrNull();
             if (callback == null || callback.InvokedAtFrame >= Time.frameCount)

@@ -16,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(107286556);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 Layout();
             }
@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1172386894);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 Layout();
             }
@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1517382754);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 var animationSpec = Tween(duration: 1f);
                 Box(modifier: Modifier.FillMaxSize(), content: !__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -80,7 +80,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-611690533);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowSecondScreen()));
@@ -106,7 +106,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1026872014);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowFirstScreen()));
@@ -130,7 +130,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1188124018);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute(__onClick))
+            if (__isRestarted || __composer.ShouldExecute(__onClick))
             {
                 if (!IsActive)
                 {

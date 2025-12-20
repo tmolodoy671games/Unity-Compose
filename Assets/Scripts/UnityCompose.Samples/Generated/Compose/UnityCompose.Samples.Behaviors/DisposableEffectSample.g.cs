@@ -13,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(217995475);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
                 Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

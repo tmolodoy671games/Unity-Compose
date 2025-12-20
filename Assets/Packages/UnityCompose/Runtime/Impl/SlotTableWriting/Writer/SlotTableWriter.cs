@@ -391,6 +391,8 @@ internal class SlotTableWriter
             return;
         }
 
+        if (_slots[_currentSlotIndex] is IDisposable existingDisposable)
+            existingDisposable.Dispose();
         _slots[_currentSlotIndex] = value;
         _currentSlotIndex++;
     }

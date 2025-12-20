@@ -13,7 +13,7 @@ public partial class ComposeView
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-418571067);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecute(__content))
+        if (__isRestarted || __composer.ShouldExecute(__content))
         {
             var composer = CurrentComposer;
             composer.StartReusableGroup(0);

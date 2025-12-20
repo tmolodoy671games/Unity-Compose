@@ -18,7 +18,7 @@ public abstract partial class ComposeUI
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(2060217662);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecute())
+        if (__isRestarted || __composer.ShouldExecute())
         {
         }
         else

@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(1736125028);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __coroutine)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __coroutine)))
         {
             var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
         }
@@ -36,7 +36,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1078729898);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __block)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __block)))
         {
             var _ = !__composer.Changed(key) ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
             {
@@ -59,7 +59,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1631362445);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __delay, __block)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __delay, __block)))
         {
             var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
         }
@@ -78,7 +78,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(483082571);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __delay, __block)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __delay, __block)))
         {
             var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block)));
         }
@@ -97,7 +97,7 @@ public static partial class ComposeFunctions
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1949177568);
         var __isRestarted = __composer.IsRestarted();
-        if (__composer.ShouldExecuteAsStruct((__key, __effect)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __effect)))
         {
             var _ = !__composer.Changed(key) ? __composer.RememberedValue<System.IDisposable>() : __composer.UpdateRememberedValue<System.IDisposable>(effect(DisposableEffectScopeImpl.Instance));
         }

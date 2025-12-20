@@ -15,7 +15,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(255387690);
             var __isRestarted = __composer.IsRestarted();
-            if (__composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute())
             {
             }
             else
