@@ -41,7 +41,7 @@ public static partial class ComposeFunctions
             var appearingScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());
             var allScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(previousBackStack.Value.Union(currentBackStack).Distinct().OrderBy(static it => it.Priority).ToImmutableStableList());
-            var resolvedTransition = !__composer.ChangedAsStruct((appearingScreens, disappearingScreens, transition)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValue<UnityCompose.ContentTransform>(ResolveTransition(transition, appearingScreens, disappearingScreens));
+            var resolvedTransition = !__composer.ChangedAsStruct((appearingScreens, disappearingScreens, transition)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransition(transition, appearingScreens, disappearingScreens));
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
                 __composer.StartReplaceGroup(-1873039072);
                 foreach (var screen in allScreens)
                 {
-                    var screenState = !__composer.ChangedAsStruct((screen, currentBackStack, previousBackStack.Value)) ? __composer.RememberedValueAsStruct<UnityCompose.TransitionState>() : __composer.UpdateRememberedValue<UnityCompose.TransitionState>(Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get());
+                    var screenState = !__composer.ChangedAsStruct((screen, currentBackStack, previousBackStack.Value)) ? __composer.RememberedValueAsStruct<UnityCompose.TransitionState>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.TransitionState>(Switch().Case(appearingScreens.Contains(screen), TransitionState.Entering).Case(disappearingScreens.Contains(screen), TransitionState.Exiting).Default(TransitionState.Idle).Get());
                     if (screenState == TransitionState.Exiting && isTransitionFinished)
                         continue;
                     if (screenState == TransitionState.Entering && isTransitionFinished)

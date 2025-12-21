@@ -1,4 +1,5 @@
-#define LOGGING
+// #define LOGGING
+
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 // #define ANCHORS_FOR_EVERYONE
@@ -394,6 +395,24 @@ internal class SlotTableWriter
         if (_slots[_currentSlotIndex] is IDisposable existingDisposable)
             existingDisposable.Dispose();
         _slots[_currentSlotIndex] = value;
+        _currentSlotIndex++;
+    }
+
+    public void WriteAsStruct<T>(T value) where T : struct
+    {
+#if LOGGING
+        Log($"WriteAsStruct<T>()");
+#endif
+        if (!IsThereAlreadyASlot())
+        {
+            _slots.InsertAsStruct(_currentSlotIndex, value);
+            _currentSlotIndex++;
+            return;
+        }
+
+        if (_slots[_currentSlotIndex] is IDisposable existingDisposable)
+            existingDisposable.Dispose();
+        _slots.SetAsStruct(_currentSlotIndex, value);
         _currentSlotIndex++;
     }
 

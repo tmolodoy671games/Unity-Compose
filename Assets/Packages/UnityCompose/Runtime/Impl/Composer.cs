@@ -155,6 +155,14 @@ public class Composer
     }
 
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
+    
+    public T UpdateRememberedValueAsStruct<T>(T update) where T : struct
+    {
+        _writer.WriteAsStruct(update);
+        return update;
+    }
+
+    public T UpdateRememberedValueAsStruct<T>(Func<T> value) where T : struct => UpdateRememberedValueAsStruct(value());
 
     #endregion
 
