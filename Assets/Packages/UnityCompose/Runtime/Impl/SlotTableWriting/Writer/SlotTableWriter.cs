@@ -1,5 +1,4 @@
-// #define LOGGING
-
+#define LOGGING
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 // #define ANCHORS_FOR_EVERYONE

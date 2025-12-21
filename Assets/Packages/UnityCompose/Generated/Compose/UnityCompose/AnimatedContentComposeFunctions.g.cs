@@ -19,7 +19,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
         {
-            var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
+            var isSwitched = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<bool>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<bool>>(IMutableStableProperty.Create(false));
             LaunchedEffect(targetState, !__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value));
             var previousValue = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState));
             var targetValue = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState));
@@ -31,47 +31,6 @@ public static partial class ComposeFunctions
             var resolvedTransition = !__composer.Changed(targetState!) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValue<UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState)));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration)).Value;
-            var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
-            var resolvedTimeElapsed = resolvedProgress * transitionDuration;
-            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState) : (Modifier, Modifier);
-            ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: !__composer.ChangedAsStruct((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
-            {
-                var parent = CurrentComposer.GetParentVisualElement().NotNull();
-                var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);
-                var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent).Float();
-                var isAnimationRunning = resolvedProgress is> 0 and < 1;
-                var next = (Value: targetState, Style: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
-                var previous = (Value: previousValue.Value, Style: previousModifier, ContentState: TransitionState.Exiting);
-                var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
-                __composer.StartReplaceGroup(1351223420);
-                if (isSwitched.Value || isAnimationRunning)
-                {
-                    Key(key: "First", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                    {
-                        var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
-                        CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                        {
-                            WithModifiers(after: pair.First.Style, content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(pair.First.Value)));
-                        }));
-                    }));
-                }
-
-                __composer.EndReplaceGroup(1351223420);
-                __composer.StartReplaceGroup(845778187);
-                if (!isSwitched.Value || isAnimationRunning)
-                {
-                    Key(key: "Second", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                    {
-                        var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
-                        CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                        {
-                            WithModifiers(after: pair.Second.Style, content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(pair.Second.Value)));
-                        }));
-                    }));
-                }
-
-                __composer.EndReplaceGroup(845778187);
-            }));
         }
         else
         {

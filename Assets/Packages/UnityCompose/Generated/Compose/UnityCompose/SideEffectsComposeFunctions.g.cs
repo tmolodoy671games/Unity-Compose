@@ -30,29 +30,6 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    private static void __LaunchedEffect<TKey>(TKey key, Action block)
-    {
-        var(__key, __block) = (key, block);
-        var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1078729898);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __block)))
-        {
-            var _ = !__composer.Changed(key) ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
-            {
-                block();
-                return string.Empty;
-            });
-        }
-        else
-        {
-            __composer.SkipToGroupEnd();
-        }
-
-        __composer.EndRestartGroup(-1078729898, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __block));
-    }
-
-    [Composable]
     private static void __LaunchedEffect<TKey>(TKey key, TimeSpan delay, Action block)
     {
         var(__key, __delay, __block) = (key, delay, block);

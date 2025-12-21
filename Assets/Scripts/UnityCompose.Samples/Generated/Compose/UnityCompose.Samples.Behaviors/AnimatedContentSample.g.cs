@@ -58,7 +58,14 @@ namespace UnityCompose.Samples.Behaviors
                     {
                         var animationSpec = Tween(easing: EaseInOutEasing, duration: Duration);
                         var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: !__composer.ChangedAsStruct((animationSpec, isSwitched)) ? __composer.RememberedValue<System.Func<UnityCompose.IAnimatedContentTransitionScope<string>, UnityCompose.ContentTransform>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IAnimatedContentTransitionScope<string>, UnityCompose.ContentTransform>>(_ => isSwitched.Value ? SlideInVertically(it => -it).TogetherWith(SlideOutVertically(it => it)).With(animationSpec: animationSpec) : SlideInVertically(it => it).TogetherWith(SlideOutVertically(it => -it)).With(animationSpec: animationSpec)), sizeAnimationSpec: animationSpec, modifier: Modifier.Name("animated-content").Background(AnimateColorAsState(targetValue: isSwitched.Value ? Color.green : Color.red, animationSpec: animationSpec).Value), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent<string>>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent<string>>(state =>
+                        AnimatedContent(targetState: isSwitched.Value ? "Looooooooooooooooooong" : "Short", transitionSpec: !__composer.ChangedAsStruct((animationSpec, isSwitched)) ? __composer.RememberedValue<System.Func<UnityCompose.IAnimatedContentTransitionScope<string>, UnityCompose.ContentTransform>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IAnimatedContentTransitionScope<string>, UnityCompose.ContentTransform>>(_ => isSwitched.Value ? SlideInVertically(it => -it).TogetherWith(SlideOutVertically(it => it)).With(animationSpec: animationSpec) : SlideInVertically(it => it).TogetherWith(SlideOutVertically(it => -it)).With(animationSpec: animationSpec)), // sizeAnimationSpec: animationSpec,
+                        modifier: Modifier.Name("animated-content"), // .Background(
+                        //     AnimateColorAsState(
+                        //         targetValue: isSwitched.Value ? Color.green : Color.red,
+                        //         animationSpec: animationSpec
+                        //     ).Value
+                        // ),
+                        content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent<string>>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent<string>>(state =>
                         {
                             Text(text: state.ToString(), color: Color.white, fontSize: 64);
                         }));

@@ -48,15 +48,15 @@ namespace UnityCompose.Samples.Behaviors
                                         : SlideInVertically(it => it)
                                             .TogetherWith(SlideOutVertically(it => -it))
                                             .With(animationSpec: animationSpec),
-                                sizeAnimationSpec: animationSpec,
+                                // sizeAnimationSpec: animationSpec,
                                 modifier: Modifier
-                                    .Name("animated-content")
-                                    .Background(
-                                        AnimateColorAsState(
-                                            targetValue: isSwitched.Value ? Color.green : Color.red,
-                                            animationSpec: animationSpec
-                                        ).Value
-                                    ),
+                                    .Name("animated-content"),
+                                    // .Background(
+                                    //     AnimateColorAsState(
+                                    //         targetValue: isSwitched.Value ? Color.green : Color.red,
+                                    //         animationSpec: animationSpec
+                                    //     ).Value
+                                    // ),
                                 content: state =>
                                 {
                                     Text(
