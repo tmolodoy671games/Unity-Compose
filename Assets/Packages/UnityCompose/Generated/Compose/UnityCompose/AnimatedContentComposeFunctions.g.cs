@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
     {
         var(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier) = (targetState, transitionSpec, content, sizeAnimationSpec, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(674034136);
+        __composer.StartRestartGroup(497003188);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
         {
@@ -43,7 +43,7 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Modifier: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Modifier: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
-                __composer.StartReplaceGroup(92096009);
+                __composer.StartReplaceGroup(1351223420);
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "First", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -60,8 +60,8 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(92096009);
-                __composer.StartReplaceGroup(508633122);
+                __composer.EndReplaceGroup(1351223420);
+                __composer.StartReplaceGroup(1458077520);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     Key(key: "Second", content: !__composer.ChangedAsStruct((content, resolvedTransition, resolvedProgress, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -78,7 +78,7 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(508633122);
+                __composer.EndReplaceGroup(1458077520);
             }));
         }
         else
@@ -86,6 +86,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(674034136, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
+        __composer.EndRestartGroup(497003188, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
     }
 }

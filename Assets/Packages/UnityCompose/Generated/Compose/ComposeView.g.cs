@@ -11,7 +11,7 @@ public partial class ComposeView
     {
         var __content = (content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1284189060);
+        __composer.StartRestartGroup(-418571067);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__content))
         {
@@ -27,6 +27,6 @@ public partial class ComposeView
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1284189060, __isRestarted)?.UpdateScope(() => __ContentImpl(__content));
+        __composer.EndRestartGroup(-418571067, __isRestarted)?.UpdateScope(() => __ContentImpl(__content));
     }
 }

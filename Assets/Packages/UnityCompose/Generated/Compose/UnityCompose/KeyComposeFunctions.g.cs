@@ -7,13 +7,13 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    private static void __Key<T>(T key, ComposableContent content)
+    private static void __KeyImpl(ComposableContent content)
     {
-        var(__key, __content) = (key, content);
+        var __content = (content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(483437895);
+        __composer.StartRestartGroup(-1341083919);
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __content)))
+        if (__isRestarted || __composer.ShouldExecute(__content))
         {
             content();
         }
@@ -22,6 +22,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(483437895, __isRestarted)?.UpdateScope(() => __Key(__key, __content));
+        __composer.EndRestartGroup(-1341083919, __isRestarted)?.UpdateScope(() => __KeyImpl(__content));
     }
 }

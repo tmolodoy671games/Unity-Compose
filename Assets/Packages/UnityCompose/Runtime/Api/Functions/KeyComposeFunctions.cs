@@ -4,13 +4,20 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    [Composable]
+    [Composable, Compiled]
     public static void Key<T>(
         T key,
         ComposableContent content
     )
     {
-        // BRUH
+        var composer = CurrentComposer;
+        // composer.StartRestartGroup(437, key);
+        KeyImpl(content);
+    }
+
+    [Composable]
+    private static void KeyImpl(ComposableContent content)
+    {
         content();
     }
 }
