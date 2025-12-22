@@ -34,6 +34,7 @@ internal class SlotTableWriter
 
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
+    private readonly List<VisualElement> _elementsBuffer = new();
 
     private readonly Stack<ModifiersPair> _enteredModifiers = new();
     private ModifiersPair _rootModifiers;
@@ -323,6 +324,123 @@ internal class SlotTableWriter
         _currentElementIndex++;
         _enteredElementIndices.TryPop(out _);
         _enteredElements.Pop();
+    }
+
+    #endregion
+
+
+    #region Key Group
+
+    public void StartKeyGroup<T>(int key, T dataKey)
+    {
+#if LOGGING
+        Log($"StartKeyGroup({key}, {dataKey})");
+#endif
+        if (IsThereAlreadyAGroup())
+        {
+            var existingGroup = _groups[_currentGroupIndex];
+            if (IsTheSameKeyGroup(existingGroup, key, dataKey))
+            {
+                Log($"Entering existing group {key}");
+                SyncIndices(existingGroup);
+                EnterGroup();
+                _currentSlotIndex += KeyGroup.MetadataSize;
+                return;
+            }
+
+            if (TryFindAndMoveExistingKeyGroup(key, dataKey))
+            {
+                Log($"Moving existing group {key}");
+                existingGroup = _groups[_currentGroupIndex];
+                SyncIndices(existingGroup);
+                EnterGroup();
+                _currentSlotIndex += KeyGroup.MetadataSize;
+                return;
+            }
+
+            // throw new ArgumentOutOfRangeException("Should be unreachable");
+        }
+
+        Log($"Inserting new group {key}");
+        var newGroup = new ComposeGroup(
+            Key: key,
+            Type: ComposeGroupType.Key,
+            ParentAnchorId: GetOrAllocateParentAnchor(),
+            Size: 1,
+            SlotsSize: KeyGroup.MetadataSize,
+            AnchorId: AllocateGroupAnchor(),
+            DataAnchorId: _slotsAnchors.AllocateAnchor(_currentSlotIndex),
+            ElementIndex: _currentElementIndex,
+            ElementsCount: 0
+        );
+        _groups.Insert(_currentGroupIndex, newGroup);
+        _slots.InsertKey(_currentSlotIndex, dataKey);
+        EnterGroup();
+        _currentSlotIndex += KeyGroup.MetadataSize;
+    }
+
+    public void EndKeyGroup(int key)
+    {
+        var currentParent = CurrentParent();
+#if ASSERTIONS
+        if (currentParent.Key != key)
+            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {currentParent.Key}!");
+#endif
+        ExitGroup(currentParent);
+    }
+
+    private bool IsTheSameKeyGroup<T>(ComposeGroup group, int key, T dataKey)
+    {
+        return group.Type == ComposeGroupType.Key &&
+               group.Key == key &&
+               _slots.GetKey<T>(_slotsAnchors[group.DataAnchorId].Index).Equals(dataKey);
+    }
+
+    private bool TryFindAndMoveExistingKeyGroup<T>(int key, T dataKey)
+    {
+        var index = FindKeyGroup(key, dataKey);
+        if (index < 0)
+            return false;
+        var existingGroup = _groups[index];
+        _groups.Move(
+            startIndex: index,
+            targetIndex: _currentGroupIndex,
+            count: existingGroup.Size
+        );
+        _slots.Move(
+            startIndex: _slotsAnchors[existingGroup.DataAnchorId].Index,
+            targetIndex: _currentSlotIndex,
+            count: existingGroup.SlotsSize
+        );
+        var parentElement = GetParentVisualElement().NotNull();
+        _elementsBuffer.Clear();
+        for (var i = existingGroup.ElementIndex; i < existingGroup.ElementIndex + existingGroup.ElementsCount; i++)
+            _elementsBuffer.Add(parentElement[i]);
+        for (var i = 0; i < existingGroup.ElementsCount; i++)
+            parentElement.RemoveAt(existingGroup.ElementIndex);
+        for (var i = 0; i < _elementsBuffer.Count; i++)
+            parentElement.Insert(_currentElementIndex + i, _elementsBuffer[i]);
+        _elementsBuffer.Clear();
+
+        return true;
+    }
+
+    private int FindKeyGroup<T>(int key, T dataKey)
+    {
+        var currentParent = CurrentParent();
+        var initialIndex = _currentGroupIndex + _groups[_currentGroupIndex].Size;
+        var lastIndex = _currentGroupIndex + currentParent.Size - 1;
+        for (var i = initialIndex; i <= lastIndex;)
+        {
+            if (i >= _groups.Count)
+                return -1;
+            var group = _groups[i];
+            if (IsTheSameKeyGroup(group, key, dataKey))
+                return i;
+            i += group.Size;
+        }
+
+        return -1;
     }
 
     #endregion
@@ -716,6 +834,8 @@ internal class SlotTableWriter
     #endregion
 
 
+    #region Utils
+
     private AnchorId GetOrAllocateParentAnchorForNonRestartGroup()
     {
 #if PARENT_ANCHORS_FOR_EVERYONE
@@ -884,28 +1004,28 @@ internal class SlotTableWriter
 
     public override string ToString()
     {
-        try
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
-            builder.AppendLine("Groups:");
-            builder.AppendLine(_groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors,
-                _slotsAnchors));
+        // try
+        // {
+        var builder = new StringBuilder();
+        builder.AppendLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
+        builder.AppendLine("Groups:");
+        builder.AppendLine(_groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors,
+            _slotsAnchors));
 
-            builder.AppendLine("Slots:");
-            builder.AppendLine(_slots.ToString(_currentSlotIndex));
+        builder.AppendLine("Slots:");
+        builder.AppendLine(_slots.ToString(_currentSlotIndex));
 
-            builder.AppendLine("Groups Anchors:");
-            builder.AppendLine(_groupsAnchors.ToString());
-            builder.AppendLine("Slots Anchors:");
-            builder.AppendLine(_slotsAnchors.ToString());
+        builder.AppendLine("Groups Anchors:");
+        builder.AppendLine(_groupsAnchors.ToString());
+        builder.AppendLine("Slots Anchors:");
+        builder.AppendLine(_slotsAnchors.ToString());
 
-            return builder.ToString();
-        }
-        catch (Exception)
-        {
-            return "";
-        }
+        return builder.ToString();
+        // }
+        // catch (Exception)
+        // {
+        //     return "";
+        // }
     }
 
     private void ShiftGroupsAnchors(int startIndex, int offset)
@@ -1069,6 +1189,8 @@ internal class SlotTableWriter
     {
         Debug.Log(message + "\n\n" + ToString());
     }
+
+    #endregion
 }
 
 internal readonly record struct ComposeGroupEntry(

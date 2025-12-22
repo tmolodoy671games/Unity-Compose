@@ -13,9 +13,7 @@ namespace UnityCompose;
 
 public class Composer
 {
-    private static Composer? _current;
-
-    public static Composer? Current => _current;
+    public static Composer? Current { get; private set; }
 
     private readonly SlotTableWriter _writer;
 
@@ -26,7 +24,7 @@ public class Composer
 
     public void SetAsCurrentComposer()
     {
-        _current = this;
+        Current = this;
     }
 
     public void ResetAsCurrentComposer()
@@ -108,6 +106,14 @@ public class Composer
     {
         _writer.EndReusableGroup(key);
     }
+
+    #endregion
+
+    #region Key Group
+
+    public void StartKeyGroup<T>(int key, T dataKey) => _writer.StartKeyGroup(key, dataKey);
+
+    public void EndKeyGroup(int key) => _writer.EndKeyGroup(key);
 
     #endregion
 

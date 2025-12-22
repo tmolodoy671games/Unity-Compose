@@ -11,7 +11,7 @@ public static partial class ComposeFunctions
     {
         var __content = (content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1341083919);
+        __composer.StartRestartGroup(-759170281);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__content))
         {
@@ -22,6 +22,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1341083919, __isRestarted)?.UpdateScope(() => __KeyImpl(__content));
+        __composer.EndRestartGroup(-759170281, __isRestarted)?.UpdateScope(() => __KeyImpl(__content));
     }
 }

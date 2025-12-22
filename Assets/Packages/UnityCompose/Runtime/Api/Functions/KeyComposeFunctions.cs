@@ -11,8 +11,10 @@ public static partial class ComposeFunctions
     )
     {
         var composer = CurrentComposer;
-        // composer.StartRestartGroup(437, key);
+        var intKey = key?.GetHashCode() ?? 0;
+        composer.StartKeyGroup(intKey, key);
         KeyImpl(content);
+        composer.EndKeyGroup(intKey);
     }
 
     [Composable]

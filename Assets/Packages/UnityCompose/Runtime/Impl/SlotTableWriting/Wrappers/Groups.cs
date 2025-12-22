@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -12,6 +13,7 @@ internal readonly struct Groups
     public const int GroupHeaderSize = 1;
 
     private readonly List<ComposeGroup> _groups;
+    private readonly List<ComposeGroup> _buffer = new(0);
 
     public Groups(List<ComposeGroup> groups)
     {
@@ -29,6 +31,16 @@ internal readonly struct Groups
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
 
     public void RemoveRange(int index, int count) => _groups.RemoveRange(index, count);
+
+    public void Move(int startIndex, int targetIndex, int count)
+    {
+        _groups.Move(
+            buffer: _buffer,
+            startIndex: startIndex,
+            targetIndex: targetIndex,
+            count: count
+        );
+    }
 
     public void Clear() => _groups.Clear();
 
@@ -90,16 +102,7 @@ internal static class ComposeGroupExtensions
     public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors)
     {
         var builder = new StringBuilder();
-        builder.Append(
-            group.Type switch
-            {
-                ComposeGroupType.Replace => "ReplaceGroup",
-                ComposeGroupType.Restart => "RestartGroup",
-                ComposeGroupType.Reusable => "ReusableGroup",
-                ComposeGroupType.Local => "LocalGroup",
-                _ => throw new ArgumentOutOfRangeException()
-            }
-        );
+        builder.Append(group.Type + "Group");
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
         builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors)}");

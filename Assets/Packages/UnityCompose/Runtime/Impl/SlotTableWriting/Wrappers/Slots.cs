@@ -4,6 +4,7 @@ using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -13,6 +14,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 internal readonly struct Slots
 {
     private readonly List<object?> _slots;
+    private readonly List<object?> _buffer = new(0);
 
     public Slots(List<object?> slots)
     {
@@ -23,14 +25,8 @@ internal readonly struct Slots
 
     public object? this[int index]
     {
-        get
-        {
-            return _slots[index];
-        }
-        set
-        {
-            _slots[index] = value;
-        }
+        get { return _slots[index]; }
+        set { _slots[index] = value; }
     }
 
     public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);
@@ -53,7 +49,7 @@ internal readonly struct Slots
         return default!;
     }
 
-    public Optional<T> GetAsStruct<T>(int index) where T : struct
+    public Optional<T> GetAsStruct<T>(int index)
     {
         if (index < 0 || index >= Count)
             return Optional.Empty<T>();
@@ -63,7 +59,7 @@ internal readonly struct Slots
         return Optional.Empty<T>();
     }
 
-    public void SetAsStruct<T>(int index, T value) where T : struct
+    public void SetAsStruct<T>(int index, T value)
     {
         var slot = _slots[index];
         if (slot is MutableSlotEntry<T> mutableSlotEntry)
@@ -77,9 +73,19 @@ internal readonly struct Slots
         _slots.Insert(index, value);
     }
 
-    public void InsertAsStruct<T>(int index, T value) where T : struct
+    public void InsertAsStruct<T>(int index, T value)
     {
         _slots.Insert(index, MutableSlotEntry.Get(value));
+    }
+
+    public void Move(int startIndex, int targetIndex, int count)
+    {
+        _slots.Move(
+            buffer: _buffer,
+            startIndex: startIndex,
+            targetIndex: targetIndex,
+            count: count
+        );
     }
 
     public void Clear() => _slots.Clear();
