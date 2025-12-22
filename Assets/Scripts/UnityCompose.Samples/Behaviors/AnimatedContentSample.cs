@@ -57,19 +57,13 @@ namespace UnityCompose.Samples.Behaviors
                                             animationSpec: animationSpec
                                         ).Value
                                     ),
-                                content: state =>
+                                content: (state, modifier) =>
                                 {
-                                    WithModifiers(
-                                        before: Modifier
-                                            .Background(Color.cyan),
-                                        content: () =>
-                                        {
-                                            Text(
-                                                text: state.ToString(),
-                                                color: Color.white,
-                                                fontSize: 64
-                                            );
-                                        }
+                                    Text(
+                                        text: state.ToString(),
+                                        color: Color.white,
+                                        fontSize: 64,
+                                        modifier: modifier
                                     );
                                 }
                             );

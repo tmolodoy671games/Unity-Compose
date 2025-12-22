@@ -56,8 +56,8 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
-        if (Time.frameCount == _lastCalledAtFrame)
-            return;
+        // if (Time.frameCount == _lastCalledAtFrame)
+        //     return;
         _lastCalledAtFrame = Time.frameCount;
         _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement, _modifiers);
         _restartCallback?.Invoke();

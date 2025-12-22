@@ -21,7 +21,7 @@ public static partial class ComposeFunctions
     public static void AnimatedContent<T>(
         T targetState,
         Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
-        ComposableContent<T> content,
+        ComposableContent<T, IModifier> content,
         Optional<AnimationSpec> sizeAnimationSpec = default,
         IModifier? modifier = null
     )
@@ -45,7 +45,7 @@ public static partial class ComposeFunctions
                 : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))
         );
         var transitionDuration = resolvedTransition.TotalDuration;
-        
+
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             animationSpec: Tween(
@@ -60,7 +60,7 @@ public static partial class ComposeFunctions
         var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
             ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState)
             : (Modifier, Modifier);
-        
+
         // Layout:
         ReusableComposeView<AnimatedContent>(
             modifier: modifier.OrEmpty()
@@ -73,7 +73,7 @@ public static partial class ComposeFunctions
                 var previousModifier = resolvedTransition.Exit.Get(resolvedTimeElapsed, parent)
                     .Float();
                 var isAnimationRunning = resolvedProgress is > 0 and < 1;
-        
+
                 var next = (
                     Value: targetState,
                     Modifier: nextModifier,
@@ -87,7 +87,7 @@ public static partial class ComposeFunctions
                 var pair = isSwitched.Value
                     ? (First: next, Second: previous)
                     : (First: previous, Second: next);
-        
+
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     Key(
@@ -107,16 +107,17 @@ public static partial class ComposeFunctions
                                 LocalTransitionDuration.Provides(state.Duration),
                                 content: () =>
                                 {
-                                    WithModifiers(
-                                        after: pair.First.Modifier,
-                                        content: () => content(pair.First.Value)
-                                    );
+                                    content(pair.First.Value, pair.First.Modifier);
+                                    // WithModifiers(
+                                    //     after: pair.First.Modifier,
+                                    //     content: () => content(pair.First.Value, pair.First.Modifier)
+                                    // );
                                 }
                             );
                         }
                     );
                 }
-        
+
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     Key(
@@ -136,10 +137,11 @@ public static partial class ComposeFunctions
                                 LocalTransitionDuration.Provides(state.Duration),
                                 content: () =>
                                 {
-                                    WithModifiers(
-                                        after: pair.Second.Modifier,
-                                        content: () => content(pair.Second.Value)
-                                    );
+                                    content(pair.Second.Value, pair.Second.Modifier);
+                                    // WithModifiers(
+                                    //     after: pair.Second.Modifier,
+                                    //     content: () => content(pair.Second.Value)
+                                    // );
                                 }
                             );
                         }
