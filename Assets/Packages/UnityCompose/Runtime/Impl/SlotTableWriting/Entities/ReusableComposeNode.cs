@@ -2,13 +2,26 @@
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
+internal static class ReusableComposeNode
+{
+    public static ReusableComposeNode<T> Get<T>() where T : VisualElement
+    {
+        return ReusableComposeNode<T>.Get();
+    }
+}
+
 internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
 {
+    private static readonly NewObjectPool<ReusableComposeNode<T>> _pool = new NewObjectPool<ReusableComposeNode<T>>(
+        factory: () => new ReusableComposeNode<T>()
+    );
+
     public T? VisualElement;
     private int _indexInParent = -1;
     private ModifiersPair _lastModifiersPair;
@@ -22,6 +35,13 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
 
     private readonly IMutableStableSet<ComposeModifiedProperty> _newProperties =
         IMutableStableSet.Create<ComposeModifiedProperty>();
+
+    public static ReusableComposeNode<T> Get()
+    {
+        return _pool.Get();
+    }
+    
+    private ReusableComposeNode() {}
 
     public void Update(
         VisualElement parent,
@@ -38,7 +58,7 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
             parent.FastReinsert(indexInParent, VisualElement);
             _indexInParent = indexInParent;
         }
-        
+
         if (_lastModifiersPair != modifiers || !Equals(_lastModifier, modifier))
         {
             var newModifier = modifier.OrEmpty();
@@ -93,9 +113,20 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
     public void Dispose()
     {
         var visualElement = VisualElement;
-        if (visualElement == null)
-            return;
-        var parent = visualElement.parent;
-        parent?.FastRemove(_indexInParent, visualElement);
+        if (visualElement != null)
+        {
+            var parent = visualElement.parent;
+            parent?.FastRemove(_indexInParent, visualElement);
+        }
+
+        VisualElement = null;
+        _indexInParent = -1;
+        _lastModifiersPair = new();
+        _lastModifier = null;
+        _lastInitializer = null;
+        _lastTranslate = StyleKeyword.Null;
+        _lastTranslate = StyleKeyword.Null;
+        
+        _pool.Release(this);
     }
 }

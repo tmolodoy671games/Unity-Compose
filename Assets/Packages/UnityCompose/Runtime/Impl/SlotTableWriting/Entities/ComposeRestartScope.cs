@@ -4,6 +4,7 @@ using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,16 +12,18 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 
 internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 {
-    private readonly SlotTableWriter _writer;
-    public readonly AnchorId _groupAnchor;
-    private readonly Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap;
-    private readonly VisualElement? _visualElement;
-    private readonly ModifiersPair _modifiers;
+    private static readonly NewObjectPool<ComposeRestartScope> _pool = new(() => new());
+
+    private SlotTableWriter _writer = null!;
+    public AnchorId _groupAnchor = default!;
+    private Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap = null!;
+    private VisualElement? _visualElement = null!;
+    private ModifiersPair _modifiers = default!;
 
     private Action? _restartCallback;
     private int _lastCalledAtFrame = -1;
 
-    internal ComposeRestartScope(
+    public static ComposeRestartScope Get(
         AnchorId groupAnchor,
         SlotTableWriter writer,
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
@@ -28,11 +31,17 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         ModifiersPair modifiers
     )
     {
-        _groupAnchor = groupAnchor;
-        _writer = writer;
-        _compositionLocalMap = compositionLocalMap;
-        _visualElement = element;
-        _modifiers = modifiers;
+        var instance = _pool.Get();
+        instance._groupAnchor = groupAnchor;
+        instance._writer = writer;
+        instance._compositionLocalMap = compositionLocalMap;
+        instance._visualElement = element;
+        instance._modifiers = modifiers;
+        return instance;
+    }
+
+    private ComposeRestartScope()
+    {
     }
 
     public void SyncFrame()
@@ -61,5 +70,6 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public void Dispose()
     {
         ComposeInvalidator.CancelInvalidate(this);
+        _pool.Release(this);
     }
 }

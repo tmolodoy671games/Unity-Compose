@@ -180,7 +180,7 @@ internal class SlotTableWriter
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
-        restartScope = new ComposeRestartScope(
+        restartScope = ComposeRestartScope.Get(
             groupAnchor: restartGroup.AnchorId,
             writer: this,
             compositionLocalMap: RequireCompositionLocalMap(),

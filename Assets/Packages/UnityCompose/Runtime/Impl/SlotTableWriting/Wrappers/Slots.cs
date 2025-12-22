@@ -69,7 +69,7 @@ internal readonly struct Slots
         if (slot is MutableSlotEntry<T> mutableSlotEntry)
             mutableSlotEntry.Value = value;
         else
-            _slots[index] = new MutableSlotEntry<T>(value);
+            _slots[index] = MutableSlotEntry.Get(value);
     }
 
     public void Insert(int index, object? value)
@@ -79,7 +79,7 @@ internal readonly struct Slots
 
     public void InsertAsStruct<T>(int index, T value) where T : struct
     {
-        _slots.Insert(index, new MutableSlotEntry<T>(value));
+        _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 
     public void Clear() => _slots.Clear();

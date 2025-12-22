@@ -21,7 +21,7 @@ internal static class ReusableGroupSlotsExtensions
         {
             if (existingNode is IDisposable disposable)
                 disposable.Dispose();
-            reusableNode = new ReusableComposeNode<T>();
+            reusableNode = ReusableComposeNode.Get<T>();
             slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;
         }
         return reusableNode;
@@ -34,7 +34,7 @@ internal static class ReusableGroupSlotsExtensions
         {
             if (existingNode is IDisposable disposable)
                 disposable.Dispose();
-            reusableNode = new ReusableComposeNode<T>();
+            reusableNode = ReusableComposeNode.Get<T>();
             slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;
         }
         reusableNode.VisualElement = visualElement;
