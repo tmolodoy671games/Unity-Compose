@@ -19,4 +19,5 @@ internal enum ComposeGroupType : byte
     Reusable,
     Local,
     Key,
+    Modifier,
 }

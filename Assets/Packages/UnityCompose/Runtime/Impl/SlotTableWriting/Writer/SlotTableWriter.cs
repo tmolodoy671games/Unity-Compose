@@ -13,6 +13,7 @@ using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -31,13 +32,14 @@ internal class SlotTableWriter
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
     private readonly List<ComposeGroupOffset> _pendingOffsets = new();
+    private readonly Stack<ComposeGroupEntry> _enteredModifierGroups = new();
 
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
     private readonly List<VisualElement> _elementsBuffer = new();
 
-    private readonly Stack<ModifiersPair> _enteredModifiers = new();
-    private ModifiersPair _rootModifiers;
+    private readonly Stack<ModifiersPair> _enteredModifiersPairs = new();
+    private ModifiersStatePair? _rootModifiers;
 
     private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
     private readonly List<IImmutableStableList<CompositionLocalProvides>> _enteredProvides = new();
@@ -186,7 +188,7 @@ internal class SlotTableWriter
             writer: this,
             compositionLocalMap: RequireCompositionLocalMap(),
             element: GetParentVisualElement(),
-            modifiers: GetModifiers()
+            modifiers: RequireModifiersStatePair()
         );
         _slots.SetRestartScope(enteredRestartGroupSlotIndex, restartScope);
         return restartScope;
@@ -579,21 +581,6 @@ internal class SlotTableWriter
         return _enteredElements!.PeekOrDefault(_rootVisualElement);
     }
 
-    public void PushModifiers(IModifier? before, IModifier? after)
-    {
-        _enteredModifiers.Push(new(before, after));
-    }
-
-    public void PopModifiers()
-    {
-        _enteredModifiers.Pop();
-    }
-
-    public ModifiersPair GetModifiers()
-    {
-        return _enteredModifiers.PeekOrDefault(_rootModifiers);
-    }
-
     #endregion
 
 
@@ -731,6 +718,103 @@ internal class SlotTableWriter
     #endregion
 
 
+    #region Modifiers
+
+    public void StartModifierGroup(int key)
+    {
+#if LOGGING
+        Log($"StartModifierGroup({key})");
+#endif
+        if (IsThereAlreadyAGroup())
+        {
+            var existingGroup = _groups[_currentGroupIndex];
+#if ASSERTIONS
+            if (existingGroup.Key != key)
+                throw new InvalidOperationException($"Found {existingGroup.Key} instead of {key}!");
+            if (existingGroup.Type != ComposeGroupType.Modifier)
+                throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Modifier group!");
+#endif
+            _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
+            SyncIndices(existingGroup);
+            EnterGroup();
+            _currentSlotIndex += ModifierGroup.MetadataSize;
+            return;
+        }
+
+        var newGroup = new ComposeGroup(
+            Key: key,
+            Type: ComposeGroupType.Modifier,
+            ParentAnchorId: GetOrAllocateParentAnchor(),
+            Size: 1,
+            SlotsSize: 1,
+            AnchorId: AllocateGroupAnchor(),
+            DataAnchorId: AllocateSlotAnchor(),
+            ElementIndex: _currentElementIndex,
+            ElementsCount: 1
+        );
+        _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
+        _groups.Insert(_currentGroupIndex, newGroup);
+        _slots.InsertModifiersStatePair(_currentSlotIndex);
+        EnterGroup();
+        _currentSlotIndex += ModifierGroup.MetadataSize;
+    }
+
+    public void EndModifierGroup(int key)
+    {
+#if LOGGING
+        Log($"EndModifierGroup({key})");
+#endif
+        var parent = CurrentParent();
+#if ASSERTIONS
+        if (parent.Key != key)
+            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
+#endif
+        ExitGroup(parent);
+        _enteredModifierGroups.Pop();
+    }
+
+    public void PushModifiers(IModifier? before, IModifier? after)
+    {
+        _enteredModifiersPairs.Push(new ModifiersPair(before, after));
+        var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
+        var pair = _slots.GetModifiersStatePair(slotIndex);
+        pair?.Update(new ModifiersPair(before, after));
+    }
+
+    public ModifiersPair GetModifiers()
+    {
+        if (_enteredModifierGroups.IsEmpty())
+            return _rootModifiers != null ? _rootModifiers.ToModifiersPair() : new ModifiersPair();
+        var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
+        var pair = _slots.GetModifiersStatePair(slotIndex);
+        if (pair == null)
+        {
+            pair = new ModifiersStatePair();
+            pair.Update(_enteredModifiersPairs.Peek());
+            _slots.SetModifiersStatePair(slotIndex, pair);
+        }
+
+        return pair.ToModifiersPair();
+    }
+
+    public ModifiersStatePair? RequireModifiersStatePair()
+    {
+        if (_enteredModifierGroups.IsEmpty())
+            return _rootModifiers;
+        var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
+        var pair = _slots.GetModifiersStatePair(slotIndex);
+        if (pair == null)
+        {
+            pair = new ModifiersStatePair();
+            _slots.SetModifiersStatePair(slotIndex, pair);
+        }
+
+        return pair;
+    }
+
+    #endregion
+
+
     #region Restarting
 
     public void Clear()
@@ -744,12 +828,13 @@ internal class SlotTableWriter
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
+        _enteredModifierGroups.Clear();
         _pendingOffsets.Clear();
 
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
         _enteredElements.Clear();
-        _enteredModifiers.Clear();
+        _enteredModifiersPairs.Clear();
         _rootVisualElement = null;
         _rootCompositionLocalMap = null;
 
@@ -767,7 +852,7 @@ internal class SlotTableWriter
         int groupIndex,
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
         VisualElement? element,
-        ModifiersPair modifiers
+        ModifiersStatePair? modifiers
     )
     {
 #if LOGGING
@@ -798,18 +883,20 @@ internal class SlotTableWriter
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
+        _enteredModifierGroups.Clear();
+        
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
         _pendingOffsets.Clear();
         _enteredElements.Clear();
-        _enteredModifiers.Clear();
+        _enteredModifiersPairs.Clear();
     }
 
     public void ResetTo(
         AnchorId groupAnchor,
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
         VisualElement? element,
-        ModifiersPair modifiers
+        ModifiersStatePair? modifiers
     )
     {
         if (!groupAnchor.IsValid)
@@ -1212,3 +1299,15 @@ internal readonly record struct ModifiersPair(
     IModifier? Before,
     IModifier? After
 );
+
+internal class ModifiersStatePair
+{
+    private readonly IMutableState<ModifiersPair> _pair = MutableStateOf(new ModifiersPair(null, null));
+
+    public ModifiersPair ToModifiersPair() => _pair.Value;
+
+    public void Update(ModifiersPair pair)
+    {
+        _pair.Value = pair;
+    }
+}

@@ -117,6 +117,24 @@ public class Composer
 
     #endregion
 
+    #region Modifier Group
+
+    public void StartModifierGroup(int key) => _writer.StartModifierGroup(key);
+
+    public void EndModifierGroup(int key) => _writer.EndModifierGroup(key);
+
+    public void PushModifiers(IModifier? before, IModifier? after)
+    {
+        _writer.PushModifiers(before, after);
+    }
+
+    internal ModifiersPair GetModifiers()
+    {
+        return _writer.GetModifiers();
+    }
+
+    #endregion
+
     #region Remember
 
     public bool Changed()
@@ -161,7 +179,7 @@ public class Composer
     }
 
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
-    
+
     public T UpdateRememberedValueAsStruct<T>(T update) where T : struct
     {
         _writer.WriteAsStruct(update);
@@ -215,21 +233,6 @@ public class Composer
     public void EnterVisualElement(VisualElement element)
     {
         _writer.EnterVisualElement(element);
-    }
-
-    public void PushModifiers(IModifier? before, IModifier? after)
-    {
-        _writer.PushModifiers(before, after);
-    }
-
-    public void PopModifiers()
-    {
-        _writer.PopModifiers();
-    }
-
-    internal ModifiersPair GetModifiers()
-    {
-        return _writer.GetModifiers();
     }
 
     #endregion

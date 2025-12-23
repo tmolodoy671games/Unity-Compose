@@ -22,9 +22,10 @@ public static partial class ComposeFunctions
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __before, __after)))
         {
             var composer = CurrentComposer;
+            composer.StartModifierGroup(1337);
             composer.PushModifiers(before, after);
             content();
-            composer.PopModifiers();
+            composer.EndModifierGroup(1337);
         }
         else
         {
@@ -40,7 +41,7 @@ public static partial class ComposeFunctions
     {
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(256884564);
+        __composer.StartRestartGroup(439300949);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__modifier, __initializer, __content)))
         {
@@ -53,18 +54,18 @@ public static partial class ComposeFunctions
             node.VisualElement ??= new T();
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
-            __composer.StartReplaceGroup(1896744871);
+            __composer.StartReplaceGroup(380723356);
             if (true)
                 modifier = modifier?.Compose();
-            __composer.EndReplaceGroup(1896744871);
+            __composer.EndReplaceGroup(380723356);
             node.Update(parent: parent, indexInParent: indexInParent, modifiers: modifiers, modifier: modifier, initializer: initializer);
-            __composer.StartReplaceGroup(-1648260218);
+            __composer.StartReplaceGroup(1340148949);
             if (content != null)
             {
                 WithModifiers(before: null, after: null, content: content);
             }
 
-            __composer.EndReplaceGroup(-1648260218);
+            __composer.EndReplaceGroup(1340148949);
             composer.EndReusableGroup(123);
         }
         else
@@ -72,7 +73,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(256884564, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content));
+        __composer.EndRestartGroup(439300949, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content));
     }
 
     [Composable]
@@ -80,7 +81,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(357763738);
+        __composer.StartRestartGroup(-663587346);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -95,7 +96,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(357763738, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(-663587346, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -103,7 +104,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1893598177);
+        __composer.StartRestartGroup(996903933);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -119,7 +120,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1893598177, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(996903933, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -127,7 +128,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1604419473);
+        __composer.StartRestartGroup(601142390);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -142,7 +143,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1604419473, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(601142390, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -150,7 +151,7 @@ public static partial class ComposeFunctions
     {
         var __modifier = (modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-2046401109);
+        __composer.StartRestartGroup(934188623);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__modifier))
         {
@@ -161,7 +162,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-2046401109, __isRestarted)?.UpdateScope(() => __Spacer(__modifier));
+        __composer.EndRestartGroup(934188623, __isRestarted)?.UpdateScope(() => __Spacer(__modifier));
     }
 
     [Composable]
@@ -169,7 +170,7 @@ public static partial class ComposeFunctions
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1575905928);
+        __composer.StartRestartGroup(-1415061543);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
         {
@@ -228,7 +229,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1575905928, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier));
+        __composer.EndRestartGroup(-1415061543, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier));
     }
 
     [Composable]
@@ -236,7 +237,7 @@ public static partial class ComposeFunctions
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-707148126);
+        __composer.StartRestartGroup(1651052084);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__image, __tint, __modifier)))
         {
@@ -253,6 +254,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-707148126, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier));
+        __composer.EndRestartGroup(1651052084, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier));
     }
 }

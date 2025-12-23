@@ -18,7 +18,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public AnchorId _groupAnchor = default!;
     private Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap = null!;
     private VisualElement? _visualElement = null!;
-    private ModifiersPair _modifiers = default!;
+    private ModifiersStatePair? _modifiers = default!;
 
     private Action? _restartCallback;
     private int _lastCalledAtFrame = -1;
@@ -28,7 +28,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         SlotTableWriter writer,
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
         VisualElement? element,
-        ModifiersPair modifiers
+        ModifiersStatePair? modifiers
     )
     {
         var instance = _pool.Get();
