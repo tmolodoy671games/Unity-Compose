@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SharpExtensions;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace UnityCompose;
 
-internal class GapBufferList<T>
+internal class GapBufferList<T> : IList<T>
 {
     private const int DesiredGapSize = 10;
 
@@ -18,18 +19,151 @@ internal class GapBufferList<T>
     private Action<ItemsShiftEvent>? _onItemsShift;
 
     public int Count { get; private set; }
+    public bool IsReadOnly => false;
 
     public T this[int index]
     {
         get
         {
+            index = LogicalToAbsoluteIndex(index);
             if (IsIndexInsideGap(index))
-                throw new ArgumentOutOfRangeException("Cannot access items at gap!");
-            if (index >= Count)
                 throw new ArgumentOutOfRangeException();
             return _array[index];
         }
-        set => _array[index] = value;
+        set
+        {
+            index = LogicalToAbsoluteIndex(index);
+            if (IsIndexInsideGap(index))
+                throw new ArgumentOutOfRangeException();
+            _array[index] = value;
+        }
+    }
+
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= Count)
+            throw new IndexOutOfRangeException(nameof(index));
+        MoveGapAt(index);
+        _gapLength++;
+        Count--;
+    }
+
+    public void RemoveRange(int index, int count)
+    {
+        MoveGapAt(index);
+        _gapLength += count;
+        Count -= count;
+    }
+
+    public void Insert(int index, T item)
+    {
+        EnsureGapSize(1);
+        MoveGapAt(index);
+        EnsureCapacity(Count + _gapLength + 1);
+        _array[index] = item;
+        _gapStart++;
+        _gapLength--;
+        Count++;
+    }
+
+    public void InsertRange(int index, List<T> items)
+    {
+        EnsureGapSize(items.Count);
+        MoveGapAt(index);
+        EnsureCapacity(Count + _gapLength + items.Count);
+        for (var i = 0; i < items.Count; i++)
+            _array[i + index] = items[i];
+        _gapStart += items.Count;
+        _gapLength -= items.Count;
+        Count += items.Count;
+    }
+
+    public void Add(T item)
+    {
+        Insert(Count, item);
+    }
+
+    public void CopyTo(T[] array, int arrayIndex)
+    {
+        int firstPartCount = _gapStart;
+        if (firstPartCount > 0)
+        {
+            Array.Copy(
+                _array,
+                0,
+                array,
+                arrayIndex,
+                firstPartCount
+            );
+        }
+
+        int secondPartCount = Count - firstPartCount;
+        if (secondPartCount > 0)
+        {
+            Array.Copy(
+                _array,
+                _gapStart + _gapLength,
+                array,
+                arrayIndex + firstPartCount,
+                secondPartCount
+            );
+        }
+    }
+
+    public bool Remove(T item)
+    {
+        var index = IndexOf(item);
+        if (index < 0)
+            return false;
+        RemoveAt(index);
+        return true;
+    }
+
+    public int IndexOf(T item)
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            if (EqualityUtils.FastEquals(this[i], item))
+                return i;
+        }
+
+        return -1;
+    }
+
+    public bool Contains(T item)
+    {
+        return IndexOf(item) >= 0;
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            yield return this[i];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Clear()
+    {
+        _gapStart = 0;
+        _gapLength = _array.Length;
+        Count = 0;
+    }
+
+    public IEnumerable<Optional<T>> GetItems()
+    {
+        for (var i = 0; i < Math.Min(Count + _gapLength, _array.Length); i++)
+        {
+            if (IsIndexInsideGap(i))
+                yield return Optional.Empty<T>();
+            else
+                yield return _array[i];
+        }
     }
 
     public void AddItemsShiftObserver(Action<ItemsShiftEvent> onItemsShift)
@@ -42,43 +176,6 @@ internal class GapBufferList<T>
         _onItemsShift -= onItemsShift;
     }
 
-    public void RemoveAt(int index)
-    {
-        MoveGapAt(index);
-        _gapStart--;
-        Count--;
-    }
-
-    public void InsertAt(int index, T item)
-    {
-        MoveGapAt(index);
-        EnsureCapacity(1);
-        EnsureGapSize(1);
-        _array[index] = item;
-        _gapStart++;
-        _gapLength--;
-        Count++;
-    }
-
-    public void Add(T item)
-    {
-        InsertAt(Count, item);
-        // EnsureCapacity(1);
-        // _array[Count] = item;
-        // Count++;
-    }
-
-    public IEnumerable<Optional<T>> GetItems()
-    {
-        for (var i = 0; i < Count + _gapLength; i++)
-        {
-            if (IsIndexInsideGap(i))
-                yield return Optional.Empty<T>();
-            else
-                yield return _array[i];
-        }
-    }
-    
     public int LogicalToAbsoluteIndex(int logicalIndex)
     {
         if (logicalIndex < _gapStart)
@@ -86,10 +183,10 @@ internal class GapBufferList<T>
 
         return logicalIndex + _gapLength;
     }
-    
+
     public int AbsoluteToLogicalIndex(int absoluteIndex)
     {
-        if (absoluteIndex >= _gapStart && absoluteIndex < _gapStart + _gapLength)
+        if (absoluteIndex != Count + _gapLength && absoluteIndex >= _gapStart && absoluteIndex < _gapStart + _gapLength)
             throw new ArgumentOutOfRangeException(nameof(absoluteIndex));
 
         if (absoluteIndex < _gapStart)
@@ -101,7 +198,7 @@ internal class GapBufferList<T>
     public override string ToString()
     {
         var items = GetItems();
-        return $"Count: {Count}, Array Length: {_array.Length}, Gap Length: {_gapLength}\n" + items
+        return $"Count: {Count}, Gap Length: {_gapLength}, Array Length: {_array.Length}\n" + items
             .Select((it, index) => $"[{index}]\t" + (it.HasValue ? it.ToString() : "_"))
             .JoinToString("\n");
     }
@@ -121,13 +218,22 @@ internal class GapBufferList<T>
             // Left
             var count = _gapStart - index;
             _onItemsShift?.Invoke(new ItemsShiftEvent(index, _gapLength, count));
-            Array.Copy(
-                sourceArray: _array,
-                sourceIndex: index,
-                destinationArray: _array,
-                destinationIndex: index + _gapLength,
-                length: count
-            );
+            try
+            {
+                Array.Copy(
+                    sourceArray: _array,
+                    sourceIndex: index,
+                    destinationArray: _array,
+                    destinationIndex: index + _gapLength,
+                    length: count
+                );
+            }
+            catch (Exception)
+            {
+                Debug.Log(
+                    $"{_gapStart}->{index}: sourceIndex: {index}, destinationIndex: {index + _gapLength}, length: {count} \n{this}");
+                throw;
+            }
         }
         else
         {
@@ -146,17 +252,17 @@ internal class GapBufferList<T>
         _gapStart = index;
     }
 
-    private void EnsureCapacity(int insertionCount)
+    private void EnsureCapacity(int desiredSize)
     {
-        if (_array.Length >= Count + insertionCount)
+        if (_array.Length >= desiredSize)
             return;
-        var desiredSize = Math.Max(
+        var newSize = Math.Max(
             _array.Length * 2,
-            (Count + insertionCount) * 2
+            desiredSize * 2
         );
         Array.Resize(
             ref _array,
-            desiredSize
+            newSize
         );
     }
 
@@ -164,14 +270,8 @@ internal class GapBufferList<T>
     {
         if (_gapLength > insertionCount)
             return;
-        EnsureCapacity(DesiredGapSize - _gapLength);
-        _onItemsShift?.Invoke(
-            new ItemsShiftEvent(
-                _gapStart + _gapLength,
-                Count - (_gapStart + _gapLength),
-                DesiredGapSize - _gapLength
-            )
-        );
+        MoveGapAt(Count);
+        EnsureCapacity(Count + DesiredGapSize);
         _gapLength = DesiredGapSize;
     }
 }
