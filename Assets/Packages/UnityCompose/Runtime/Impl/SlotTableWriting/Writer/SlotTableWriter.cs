@@ -1,5 +1,4 @@
-// #define LOGGING
-
+#define LOGGING
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 // #define ANCHORS_FOR_EVERYONE
@@ -884,7 +883,7 @@ internal class SlotTableWriter
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
         _enteredModifierGroups.Clear();
-        
+
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
         _pendingOffsets.Clear();
