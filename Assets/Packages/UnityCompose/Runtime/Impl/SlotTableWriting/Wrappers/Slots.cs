@@ -25,8 +25,8 @@ internal readonly struct Slots
 
     public object? this[int index]
     {
-        get { return _slots[index]; }
-        set { _slots[index] = value; }
+        get => _slots[index];
+        set => _slots[index] = value;
     }
 
     public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);

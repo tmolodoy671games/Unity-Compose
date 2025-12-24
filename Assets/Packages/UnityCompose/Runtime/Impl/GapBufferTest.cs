@@ -15,31 +15,11 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
         [Button]
         private void Test()
         {
-            // GapBufferListTests.RunAll();
-            var list = new GapBufferList<int>();
-            list.AddItemsShiftObserver(it =>
-            {
-                for (var i = 0; i < list.Count; i++)
-                {
-                    var item = list[i];
-                    if (item >= it.StartIndex && item < it.StartIndex + it.Count)
-                        list[i] = item + it.Offset;
-                }
-            });
-            list.Add(0);
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-            list.Add(4);
-            list.Add(5);
-            list.Insert(4, 4);
-            list.Insert(2, 2);
-            list.Insert(5, 5);
-            list.RemoveAt(2);
-            list.RemoveAt(4);
-            list.RemoveAt(3);
-            
-            Debug.Log(list);
+            GapBufferListTests.RunAll();
+            // var list = new GapBufferList<int>();
+            // for (var i = 0; i < 10; i++)
+            //     list.Add(i);
+            // Debug.Log(list);
         }
     }
 }
@@ -296,6 +276,7 @@ public static class GapBufferListTests
                     int v = rnd.Next(1000);
                     gb.Add(v);
                     refList.Add(v);
+                    // Debug.Log($"Add({v})\b" + gb);
                     PerformAssert();
                     break;
                 }
@@ -306,6 +287,7 @@ public static class GapBufferListTests
                     int v = rnd.Next(1000);
                     gb.Insert(idx, v);
                     refList.Insert(idx, v);
+                    // Debug.Log($"Insert({idx}, {v})\b" + gb);
                     PerformAssert();
                     break;
                 }
@@ -315,6 +297,7 @@ public static class GapBufferListTests
                     int idx = rnd.Next(refList.Count);
                     gb.RemoveAt(idx);
                     refList.RemoveAt(idx);
+                    // Debug.Log($"RemoveAt({idx})\b" + gb);
                     PerformAssert();
                     break;
                 }
@@ -325,6 +308,7 @@ public static class GapBufferListTests
                     int v = rnd.Next(1000);
                     gb[idx] = v;
                     refList[idx] = v;
+                    // Debug.Log($"Set({idx}, {v})\b" + gb);
                     PerformAssert();
                     break;
                 }

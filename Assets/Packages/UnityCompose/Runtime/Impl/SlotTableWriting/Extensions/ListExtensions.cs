@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 
@@ -15,6 +16,7 @@ internal static class ListExtensions
         if (count == 0)
             return;
 
+        // Debug.Log("MOVE()");
         buffer.Clear();
         for (var i = startIndex; i < startIndex + count; i++)
             buffer.Add(list[i]);

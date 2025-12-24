@@ -61,9 +61,9 @@ internal readonly struct Groups
             var group = _groups[i];
             builder.Append($"[{i}]\t");
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
-            builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots));
+            builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots, this));
             var isSelfIndexInvalid = group.AnchorId.IsValid &&
-                                     (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors) != i);
+                                     (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors, this) != i);
             if (isSelfIndexInvalid)
                 builder.Append(" [SELF ANCHOR IS INVALID]");
             var isDataIndexInvalid = group.DataAnchorId.IsValid &&
@@ -85,45 +85,45 @@ internal readonly struct Groups
 
 internal static class ComposeGroupExtensions
 {
-    public static int Index(this ComposeGroup group, Anchors anchors)
+    public static int Index(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         if (!group.AnchorId.IsValid)
             return -1;
-        return anchors[group.AnchorId].Location;
+        return groups.AbsoluteToLogicalIndex(anchors[group.AnchorId].Location);
     }
 
-    public static int ParentIndex(this ComposeGroup group, Anchors anchors)
+    public static int ParentIndex(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         if (!group.ParentAnchorId.IsValid)
             return -1;
-        return anchors[group.ParentAnchorId].Location;
+        return groups.AbsoluteToLogicalIndex(anchors[group.ParentAnchorId].Location);
     }
 
-    public static int SlotIndex(this ComposeGroup group, Anchors anchors)
+    public static int SlotIndex(this ComposeGroup group, Anchors anchors, Slots slots)
     {
         if (!group.DataAnchorId.IsValid)
             return -1;
-        return anchors[group.DataAnchorId].Location;
+        return slots.AbsoluteToLogicalIndex(anchors[group.DataAnchorId].Location);
     }
 
-    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots)
+    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots, Groups groups)
     {
         var builder = new StringBuilder();
         builder.Append(group.Type + "Group");
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
-        builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors)}");
-        builder.Append($", Index: {group.Index(groupsAnchors)}");
+        builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors, groups)}");
+        builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
         builder.Append($", Size: {group.Size}");
-        builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors)}");
+        builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors, slots)}");
         builder.Append($", SlotsSize: {group.SlotsSize}");
         builder.Append($", ElementIndex: {group.ElementIndex}");
         builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
-        if (group.Type == ComposeGroupType.Key)
+        if (group.Type == ComposeGroupType.Key && group.DataAnchorId.IsValid)
         {
             var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
-            builder.Append($" DataKey: {slots[slotIndex]}");
+            builder.Append($" Data: {slots[slotIndex]}");
         }
 
         return builder.ToString();
@@ -132,12 +132,12 @@ internal static class ComposeGroupExtensions
     public static int AncestorsCount(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         var count = 0;
-        var parentIndex = group.ParentIndex(anchors);
+        var parentIndex = group.ParentIndex(anchors, groups);
         var i = 0;
         while (parentIndex >= 0 && i++ < 100)
         {
             count++;
-            parentIndex = groups[parentIndex].ParentIndex(anchors);
+            parentIndex = groups[parentIndex].ParentIndex(anchors, groups);
         }
 
         return count;

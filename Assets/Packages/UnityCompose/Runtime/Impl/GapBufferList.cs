@@ -11,12 +11,19 @@ namespace UnityCompose;
 
 internal class GapBufferList<T> : IList<T>
 {
-    private const int DesiredGapSize = 10;
+    private readonly int DesiredGapSize;
 
-    private T[] _array = new T[10];
+    private T[] _array;
     private int _gapStart;
-    private int _gapLength = DesiredGapSize;
+    private int _gapLength;
     private Action<ItemsShiftEvent>? _onItemsShift;
+
+    public GapBufferList(int capacity = 10, int initialGapSize = 10)
+    {
+        _array = new T[capacity];
+        _gapLength = initialGapSize;
+        DesiredGapSize = initialGapSize;
+    }
 
     public int Count { get; private set; }
     public bool IsReadOnly => false;
@@ -213,9 +220,10 @@ internal class GapBufferList<T> : IList<T>
         if (_gapStart == index)
             return;
 
+        // Debug.Log($"MoveGapAt({index})");
         if (index < _gapStart)
         {
-            // Left
+            // Left side:
             var count = _gapStart - index;
             _onItemsShift?.Invoke(new ItemsShiftEvent(index, count, _gapLength));
             Array.Copy(
@@ -228,7 +236,7 @@ internal class GapBufferList<T> : IList<T>
         }
         else
         {
-            // Right
+            // Right side:
             var count = index - _gapStart;
             _onItemsShift?.Invoke(new ItemsShiftEvent(_gapStart + _gapLength, count, -_gapLength));
             Array.Copy(
@@ -261,8 +269,20 @@ internal class GapBufferList<T> : IList<T>
     {
         if (_gapLength > insertionCount)
             return;
-        MoveGapAt(Count);
         EnsureCapacity(Count + DesiredGapSize);
+        if (_gapStart != Count)
+        {
+            var count = Count - (_gapStart + _gapLength) + 1;
+            _onItemsShift?.Invoke(new ItemsShiftEvent(_gapStart + _gapLength, count, DesiredGapSize - _gapLength));
+            Array.Copy(
+                sourceArray: _array,
+                destinationArray: _array,
+                sourceIndex: _gapStart + _gapLength,
+                destinationIndex: _gapStart + DesiredGapSize,
+                length: count
+            );
+        }
+
         _gapLength = DesiredGapSize;
     }
 }
