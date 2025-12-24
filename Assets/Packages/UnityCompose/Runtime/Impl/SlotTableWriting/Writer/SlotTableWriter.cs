@@ -425,18 +425,20 @@ internal class SlotTableWriter
             count: existingGroup.SlotsSize
         );
 
-        var newAbsoluteGroupIndex = AbsoluteGroupIndex(_currentGroupIndex);
-        var newAbsoluteSlotIndex = AbsoluteSlotIndex(_currentSlotIndex);
-        // Debug.Log($"ShiftGroupAnchors({_currentGroupIndex}, {existingGroup.Size}, {newAbsoluteGroupIndex - AbsoluteGroupIndex(_groupsAnchors[existingGroup.AnchorId].Location)})");
+        // var newAbsoluteGroupIndex = AbsoluteGroupIndex(_currentGroupIndex);
+        // var newAbsoluteSlotIndex = AbsoluteSlotIndex(_currentSlotIndex);
+        // Debug.Log(
+        //     $"ShiftGroupAnchors({_currentGroupIndex}, {existingGroup.Size}, {newAbsoluteGroupIndex - AbsoluteGroupIndex(_groupsAnchors[existingGroup.AnchorId].Location)})");
+        // Debug.Log(2 * existingGroupIndex - _currentGroupIndex + 1);
         // ShiftGroupsAnchors(
-        //     startIndex: _currentGroupIndex,
+        //     startIndex: 2 * existingGroupIndex - _currentGroupIndex + 1,
         //     count: existingGroup.Size,
-        //     offset: newAbsoluteGroupIndex - AbsoluteGroupIndex(_groupsAnchors[existingGroup.AnchorId].Location)
+        //     offset: _currentGroupIndex - existingGroupIndex
         // );
         // ShiftSlotsAnchors(
-        //     startIndex: _currentSlotIndex,
+        //     startIndex: 2 * existingGroupSlotIndex - _currentSlotIndex,
         //     count: existingGroup.SlotsSize,
-        //     offset: newAbsoluteSlotIndex - AbsoluteSlotIndex(_slotsAnchors[existingGroup.DataAnchorId].Location)
+        //     offset: _currentSlotIndex - existingGroupSlotIndex
         // );
         return true;
     }
@@ -1086,11 +1088,18 @@ internal class SlotTableWriter
         if (offset == 0)
             return;
 
+        // var gapStart = _groups.GapStart;
+        // var gapLength = _groups.GapLength;
         for (var i = 0; i < _groupsAnchors.Count; i++)
         {
             var anchor = _groupsAnchors[i];
-            if (anchor.IsValid && anchor.Location >= startIndex && anchor.Location < startIndex + count)
-                _groupsAnchors[i] = new Anchor(anchor.Location + offset);
+            if (!anchor.IsValid)
+                continue;
+            var location = anchor.Location;
+            // if (location >= gapStart && location < gapStart + gapLength)
+            //     continue;
+            if (location >= startIndex && location < startIndex + count)
+                _groupsAnchors[i] = new Anchor(location + offset);
         }
     }
 
@@ -1099,11 +1108,18 @@ internal class SlotTableWriter
         if (offset == 0)
             return;
 
+        // var gapStart = _slots.GapStart;
+        // var gapLength = _slots.GapLength;
         for (var i = 0; i < _slotsAnchors.Count; i++)
         {
             var anchor = _slotsAnchors[i];
-            if (anchor.IsValid && anchor.Location >= startIndex && anchor.Location < startIndex + count)
-                _slotsAnchors[i] = new Anchor(anchor.Location + offset);
+            if (!anchor.IsValid)
+                continue;
+            var location = anchor.Location;
+            // if (location >= gapStart && location < gapStart + gapLength)
+            //     continue;
+            if (location >= startIndex && location < startIndex + count)
+                _slotsAnchors[i] = new Anchor(location + offset);
         }
     }
 

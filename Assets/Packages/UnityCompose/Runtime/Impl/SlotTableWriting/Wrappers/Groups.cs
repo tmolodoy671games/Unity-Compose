@@ -27,6 +27,8 @@ internal readonly struct Groups
     }
 
     public int Count => _groups.Count;
+    public int GapStart => _groups.GapStart;
+    public int GapLength => _groups.GapLength;
 
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
 
@@ -122,8 +124,9 @@ internal static class ComposeGroupExtensions
         builder.Append(")");
         if (group.Type == ComposeGroupType.Key && group.DataAnchorId.IsValid)
         {
+            builder.Append($", Absolute Index: {groupsAnchors[group.AnchorId].Location}");
             var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
-            builder.Append($" Data: {slots[slotIndex]}");
+            builder.Append($", Data: {slots[slotIndex]}");
         }
 
         return builder.ToString();

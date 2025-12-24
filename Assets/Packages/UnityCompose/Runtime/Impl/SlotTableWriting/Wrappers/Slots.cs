@@ -22,6 +22,8 @@ internal readonly struct Slots
     }
 
     public int Count => _slots.Count;
+    public int GapStart => _slots.GapStart;
+    public int GapLength => _slots.GapLength;
 
     public object? this[int index]
     {

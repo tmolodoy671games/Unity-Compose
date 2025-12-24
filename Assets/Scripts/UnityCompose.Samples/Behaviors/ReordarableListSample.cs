@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Width(800),
                         content: () =>
                         {
-                            var items = Remember(() => MutableStateListOf(1));
+                            var items = Remember(() => MutableStateListOf(1, 2));
                             Text(
                                 text: "Add Item",
                                 color: Color.white,

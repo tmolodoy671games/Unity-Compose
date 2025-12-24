@@ -14,18 +14,19 @@ internal class GapBufferList<T> : IList<T>
     private readonly int DesiredGapSize;
 
     private T[] _array;
-    private int _gapStart;
-    private int _gapLength;
     private Action<ItemsShiftEvent>? _onItemsShift;
 
     public GapBufferList(int capacity = 10, int initialGapSize = 10)
     {
         _array = new T[capacity];
-        _gapLength = initialGapSize;
+        GapLength = initialGapSize;
         DesiredGapSize = initialGapSize;
     }
 
     public int Count { get; private set; }
+    public int GapStart { get; private set; }
+    public int GapLength { get; private set; }
+
     public bool IsReadOnly => false;
 
     public T this[int index]
@@ -51,14 +52,14 @@ internal class GapBufferList<T> : IList<T>
         if (index < 0 || index >= Count)
             throw new IndexOutOfRangeException(nameof(index));
         MoveGapAt(index);
-        _gapLength++;
+        GapLength++;
         Count--;
     }
 
     public void RemoveRange(int index, int count)
     {
         MoveGapAt(index);
-        _gapLength += count;
+        GapLength += count;
         Count -= count;
     }
 
@@ -66,10 +67,10 @@ internal class GapBufferList<T> : IList<T>
     {
         EnsureGapSize(1);
         MoveGapAt(index);
-        EnsureCapacity(Count + _gapLength + 1);
+        EnsureCapacity(Count + GapLength + 1);
         _array[index] = item;
-        _gapStart++;
-        _gapLength--;
+        GapStart++;
+        GapLength--;
         Count++;
     }
 
@@ -77,11 +78,11 @@ internal class GapBufferList<T> : IList<T>
     {
         EnsureGapSize(items.Count);
         MoveGapAt(index);
-        EnsureCapacity(Count + _gapLength + items.Count);
+        EnsureCapacity(Count + GapLength + items.Count);
         for (var i = 0; i < items.Count; i++)
             _array[i + index] = items[i];
-        _gapStart += items.Count;
-        _gapLength -= items.Count;
+        GapStart += items.Count;
+        GapLength -= items.Count;
         Count += items.Count;
     }
 
@@ -92,7 +93,7 @@ internal class GapBufferList<T> : IList<T>
 
     public void CopyTo(T[] array, int arrayIndex)
     {
-        int firstPartCount = _gapStart;
+        int firstPartCount = GapStart;
         if (firstPartCount > 0)
         {
             Array.Copy(
@@ -109,7 +110,7 @@ internal class GapBufferList<T> : IList<T>
         {
             Array.Copy(
                 _array,
-                _gapStart + _gapLength,
+                GapStart + GapLength,
                 array,
                 arrayIndex + firstPartCount,
                 secondPartCount
@@ -157,14 +158,14 @@ internal class GapBufferList<T> : IList<T>
 
     public void Clear()
     {
-        _gapStart = 0;
-        _gapLength = _array.Length;
+        GapStart = 0;
+        GapLength = _array.Length;
         Count = 0;
     }
 
     public IEnumerable<Optional<T>> GetItems()
     {
-        for (var i = 0; i < Math.Min(Count + _gapLength, _array.Length); i++)
+        for (var i = 0; i < Math.Min(Count + GapLength, _array.Length); i++)
         {
             if (IsIndexInsideGap(i))
                 yield return Optional.Empty<T>();
@@ -185,70 +186,70 @@ internal class GapBufferList<T> : IList<T>
 
     public int LogicalToAbsoluteIndex(int logicalIndex)
     {
-        if (logicalIndex < _gapStart)
+        if (logicalIndex < GapStart)
             return logicalIndex;
 
-        return logicalIndex + _gapLength;
+        return logicalIndex + GapLength;
     }
 
     public int AbsoluteToLogicalIndex(int absoluteIndex)
     {
-        if (absoluteIndex != Count + _gapLength && absoluteIndex >= _gapStart && absoluteIndex < _gapStart + _gapLength)
+        if (absoluteIndex != Count + GapLength && absoluteIndex >= GapStart && absoluteIndex < GapStart + GapLength)
             throw new ArgumentOutOfRangeException(nameof(absoluteIndex));
 
-        if (absoluteIndex < _gapStart)
+        if (absoluteIndex < GapStart)
             return absoluteIndex;
 
-        return absoluteIndex - _gapLength;
+        return absoluteIndex - GapLength;
     }
 
     public override string ToString()
     {
         var items = GetItems();
-        return $"Count: {Count}, Gap Length: {_gapLength}, Array Length: {_array.Length}\n" + items
+        return $"Count: {Count}, Gap Length: {GapLength}, Array Length: {_array.Length}\n" + items
             .Select((it, index) => $"[{index}]\t" + (it.HasValue ? it.ToString() : "_"))
             .JoinToString("\n");
     }
 
     private bool IsIndexInsideGap(int index)
     {
-        return index >= _gapStart && index < _gapStart + _gapLength;
+        return index >= GapStart && index < GapStart + GapLength;
     }
 
     private void MoveGapAt(int index)
     {
-        if (_gapStart == index)
+        if (GapStart == index)
             return;
 
         // Debug.Log($"MoveGapAt({index})");
-        if (index < _gapStart)
+        if (index < GapStart)
         {
             // Left side:
-            var count = _gapStart - index;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(index, count, _gapLength));
+            var count = GapStart - index;
+            _onItemsShift?.Invoke(new ItemsShiftEvent(index, count, GapLength));
             Array.Copy(
                 sourceArray: _array,
                 sourceIndex: index,
                 destinationArray: _array,
-                destinationIndex: index + _gapLength,
+                destinationIndex: index + GapLength,
                 length: count
             );
         }
         else
         {
             // Right side:
-            var count = index - _gapStart;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(_gapStart + _gapLength, count, -_gapLength));
+            var count = index - GapStart;
+            _onItemsShift?.Invoke(new ItemsShiftEvent(GapStart + GapLength, count, -GapLength));
             Array.Copy(
                 sourceArray: _array,
-                sourceIndex: _gapStart + _gapLength,
+                sourceIndex: GapStart + GapLength,
                 destinationArray: _array,
-                destinationIndex: _gapStart,
+                destinationIndex: GapStart,
                 length: count
             );
         }
 
-        _gapStart = index;
+        GapStart = index;
     }
 
     private void EnsureCapacity(int desiredSize)
@@ -267,23 +268,23 @@ internal class GapBufferList<T> : IList<T>
 
     private void EnsureGapSize(int insertionCount)
     {
-        if (_gapLength > insertionCount)
+        if (GapLength > insertionCount)
             return;
         EnsureCapacity(Count + DesiredGapSize);
-        if (_gapStart != Count)
+        if (GapStart != Count)
         {
-            var count = Count - (_gapStart + _gapLength) + 1;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(_gapStart + _gapLength, count, DesiredGapSize - _gapLength));
+            var count = Count - (GapStart + GapLength) + 1;
+            _onItemsShift?.Invoke(new ItemsShiftEvent(GapStart + GapLength, count, DesiredGapSize - GapLength));
             Array.Copy(
                 sourceArray: _array,
                 destinationArray: _array,
-                sourceIndex: _gapStart + _gapLength,
-                destinationIndex: _gapStart + DesiredGapSize,
+                sourceIndex: GapStart + GapLength,
+                destinationIndex: GapStart + DesiredGapSize,
                 length: count
             );
         }
 
-        _gapLength = DesiredGapSize;
+        GapLength = DesiredGapSize;
     }
 }
 

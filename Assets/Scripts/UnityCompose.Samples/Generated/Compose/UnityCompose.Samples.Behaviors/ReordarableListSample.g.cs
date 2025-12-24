@@ -20,7 +20,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("reordarable-list-sample").Padding(top: 100).FillMaxHeight().Width(800), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        var items = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<int>>(MutableStateListOf(1));
+                        var items = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<int>>(MutableStateListOf(1, 2));
                         Text(text: "Add Item", color: Color.white, fontSize: 40, modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32, vertical: 16).Border(radius: 16).OnClick(!__composer.Changed(items) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
                         {
                             for (var i = 1; i <= items.Count + 1; i++)
