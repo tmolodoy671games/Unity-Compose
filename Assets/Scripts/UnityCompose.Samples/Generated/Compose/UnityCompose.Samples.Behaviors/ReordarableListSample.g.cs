@@ -84,39 +84,18 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick)))
             {
-                Row(verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4).Border(radius: 12).Margin(vertical: 4), content: !__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Row(verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4).Border(radius: 12).Margin(vertical: 4), content: !__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     Text(text: $"Item no. {state}", color: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Margin(left: 32));
-                    // Spacer(Modifier.Weight(1));
-                    // var counter = Remember(() => MutableStateOf(0));
-                    // Text(
-                    //     text: counter.Value.ToString(),
-                    //     color: Color.white,
-                    //     fontSize: 40,
-                    //     modifier: Modifier
-                    //         .Background(Color.green)
-                    //         .Padding(horizontal: 16)
-                    //         .Border(12)
-                    //         .OnClick(() => counter.Value++)
-                    // );
+                    Spacer(Modifier.Weight(1));
+                    var counter = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<int>>(MutableStateOf(0));
+                    Text(text: counter.Value.ToString(), color: Color.white, fontSize: 40, modifier: Modifier.Background(Color.green).Padding(horizontal: 16).Border(12).OnClick(!__composer.Changed(counter) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => counter.Value++)));
                     Column(content: !__composer.ChangedAsStruct((onMoveUpClick, onMoveDownClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         Text(text: "↑", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("up-arrow-button").Background(Color.green).Padding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveUpClick));
                         Text(text: "↓", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("down-arrow-button").Background(Color.green).Padding(horizontal: 6, vertical: 4).Border(radius: 16).OnClick(onMoveDownClick));
                     }));
-                // Text(
-                //     text: "X",
-                //     color: Color.white,
-                //     fontSize: 40,
-                //     fontWeight: FontWeight.Bold,
-                //     textAlign: TextAlign.MiddleCenter,
-                //     modifier: Modifier
-                //         .Name("remove-button")
-                //         .Background(Color.red)
-                //         .Padding(horizontal: 16, vertical: 4)
-                //         .Border(radius: 16)
-                //         .OnClick(onRemoveClick)
-                // );
+                    Text(text: "X", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("remove-button").Background(Color.red).Padding(horizontal: 16, vertical: 4).Border(radius: 16).OnClick(onRemoveClick));
                 }));
             }
             else

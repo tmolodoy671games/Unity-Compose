@@ -1,7 +1,7 @@
-#define LOGGING
+// #define LOGGING
+
 #define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
-// #define ANCHORS_FOR_EVERYONE
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
@@ -61,6 +62,9 @@ internal class SlotTableWriter
         _slots = new Slots(table.Slots);
         _groupsAnchors = new Anchors(AnchorsType.Groups, table.GroupsAnchors, table.FreedGroupAnchors);
         _slotsAnchors = new Anchors(AnchorsType.Slots, table.SlotsAnchors, table.FreedSlotAnchors);
+
+        _groups.AddItemsShiftObserver(it => ShiftGroupsAnchors(it.StartIndex, it.Count, it.Offset));
+        _slots.AddItemsShiftObserver(it => ShiftSlotsAnchors(it.StartIndex, it.Count, it.Offset));
     }
 
     private ComposeGroup CurrentParent() => _groups[_currentParentIndex];
@@ -96,8 +100,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: RestartGroup.MetadataSize,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: AllocateSlotAnchor(),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 0
         );
@@ -143,7 +147,6 @@ internal class SlotTableWriter
         Log("SkipToGroupEnd()");
 #endif
         var parent = CurrentParent();
-        ShiftSkippedGroupIndices(parent);
 
         _currentGroupIndex += parent.Size - 1;
         _currentSlotIndex += parent.SlotsSize - RestartGroup.MetadataSize;
@@ -169,7 +172,10 @@ internal class SlotTableWriter
         var restartGroup = _groups[enteredRestartGroupIndex];
         if (!restartGroup.AnchorId.IsValid)
         {
-            restartGroup = restartGroup with { AnchorId = _groupsAnchors.AllocateAnchor(enteredRestartGroupIndex) };
+            restartGroup = restartGroup with
+            {
+                AnchorId = _groupsAnchors.AllocateAnchor(AbsoluteGroupIndex(enteredRestartGroupIndex))
+            };
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
 
@@ -177,7 +183,7 @@ internal class SlotTableWriter
         {
             restartGroup = restartGroup with
             {
-                DataAnchorId = _slotsAnchors.AllocateAnchor(enteredRestartGroupSlotIndex)
+                DataAnchorId = _slotsAnchors.AllocateAnchor(AbsoluteSlotIndex(enteredRestartGroupSlotIndex))
             };
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
@@ -244,8 +250,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchorForNonRestartGroup(),
             Size: 1,
             SlotsSize: 0,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: AllocateSlotAnchor(),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 0
         );
@@ -261,11 +267,6 @@ internal class SlotTableWriter
             throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
 #endif
         ExitGroup(parent);
-    }
-
-    public void EndReplaceGroup()
-    {
-        ExitGroup(CurrentParent());
     }
 
     #endregion
@@ -299,8 +300,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: 1,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: AllocateSlotAnchor(),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 1
         );
@@ -339,20 +340,10 @@ internal class SlotTableWriter
 #endif
         if (IsThereAlreadyAGroup())
         {
-            var existingGroup = _groups[_currentGroupIndex];
-            if (IsTheSameKeyGroup(existingGroup, key, dataKey))
-            {
-                Log($"Entering existing group {key}");
-                SyncIndices(existingGroup);
-                EnterGroup();
-                _currentSlotIndex += KeyGroup.MetadataSize;
-                return;
-            }
-
-            if (TryFindAndMoveExistingKeyGroup(key, dataKey))
+            if (TryFindAndMoveExisingKeyGroup(key, dataKey))
             {
                 Log($"Moving existing group {key}");
-                existingGroup = _groups[_currentGroupIndex];
+                var existingGroup = _groups[_currentGroupIndex];
                 SyncIndices(existingGroup);
                 EnterGroup();
                 _currentSlotIndex += KeyGroup.MetadataSize;
@@ -369,8 +360,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: KeyGroup.MetadataSize,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: _slotsAnchors.AllocateAnchor(_currentSlotIndex),
+            AnchorId: AnchorId.None,
+            DataAnchorId: _slotsAnchors.AllocateAnchor(AbsoluteSlotIndex(_currentSlotIndex)),
             ElementIndex: _currentElementIndex,
             ElementsCount: 0
         );
@@ -394,54 +385,44 @@ internal class SlotTableWriter
     {
         return group.Type == ComposeGroupType.Key &&
                group.Key == key &&
-               _slots.GetKey<T>(_slotsAnchors[group.DataAnchorId].Index).Equals(dataKey);
+               _slots.GetKey<T>(LogicalSlotIndex(_slotsAnchors[group.DataAnchorId].Location)).Equals(dataKey);
     }
 
-    private bool TryFindAndMoveExistingKeyGroup<T>(int key, T dataKey)
+    private int IndexOfExistingKey<T>(int key, T dataKey)
     {
-        var index = FindKeyGroup(key, dataKey);
-        if (index < 0)
+        var parent = CurrentParent();
+        var startIndex = _currentGroupIndex;
+        var endIndex = _currentParentIndex + parent.Size;
+        for (var i = startIndex; i < endIndex;)
+        {
+            var candidate = _groups[i];
+            Debug.Log(candidate + ": " + IsTheSameKeyGroup(candidate, key, dataKey));
+            if (IsTheSameKeyGroup(candidate, key, dataKey))
+                return i;
+            i += candidate.Size;
+        }
+
+        return -1;
+    }
+
+    private bool TryFindAndMoveExisingKeyGroup<T>(int key, T dataKey)
+    {
+        var existingIndex = IndexOfExistingKey(key, dataKey);
+        if (existingIndex < 0)
             return false;
-        var existingGroup = _groups[index];
+        var existingGroup = _groups[existingIndex];
+        var existingSlotIndex = LogicalSlotIndex(_slotsAnchors[_groups[existingIndex].AnchorId].Location);
         _groups.Move(
-            startIndex: index,
+            startIndex: existingIndex,
             targetIndex: _currentGroupIndex,
             count: existingGroup.Size
         );
         _slots.Move(
-            startIndex: _slotsAnchors[existingGroup.DataAnchorId].Index,
+            startIndex: existingSlotIndex,
             targetIndex: _currentSlotIndex,
             count: existingGroup.SlotsSize
         );
-        var parentElement = GetParentVisualElement().NotNull();
-        _elementsBuffer.Clear();
-        for (var i = existingGroup.ElementIndex; i < existingGroup.ElementIndex + existingGroup.ElementsCount; i++)
-            _elementsBuffer.Add(parentElement[i]);
-        for (var i = 0; i < existingGroup.ElementsCount; i++)
-            parentElement.RemoveAt(existingGroup.ElementIndex);
-        for (var i = 0; i < _elementsBuffer.Count; i++)
-            parentElement.Insert(_currentElementIndex + i, _elementsBuffer[i]);
-        _elementsBuffer.Clear();
-
         return true;
-    }
-
-    private int FindKeyGroup<T>(int key, T dataKey)
-    {
-        var currentParent = CurrentParent();
-        var initialIndex = _currentGroupIndex + _groups[_currentGroupIndex].Size;
-        var lastIndex = _currentGroupIndex + currentParent.Size - 1;
-        for (var i = initialIndex; i <= lastIndex;)
-        {
-            if (i >= _groups.Count)
-                return -1;
-            var group = _groups[i];
-            if (IsTheSameKeyGroup(group, key, dataKey))
-                return i;
-            i += group.Size;
-        }
-
-        return -1;
     }
 
     #endregion
@@ -612,8 +593,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchorForNonRestartGroup(),
             Size: 1,
             SlotsSize: LocalGroup.MetadataSize,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: AllocateSlotAnchor(),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 0
         );
@@ -746,8 +727,8 @@ internal class SlotTableWriter
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: 1,
-            AnchorId: AllocateGroupAnchor(),
-            DataAnchorId: AllocateSlotAnchor(),
+            AnchorId: AnchorId.None,
+            DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
             ElementsCount: 1
         );
@@ -868,7 +849,7 @@ internal class SlotTableWriter
 #endif
         _invalidationRoot = groupIndex;
         _currentGroupIndex = groupIndex;
-        _currentSlotIndex = _slotsAnchors[group.DataAnchorId].Index;
+        _currentSlotIndex = LogicalSlotIndex(_slotsAnchors[group.DataAnchorId].Location);
         _currentParentIndex = -1;
         _currentParentSlotIndex = -1;
         _currentElementIndex = group.ElementIndex;
@@ -904,17 +885,12 @@ internal class SlotTableWriter
         if (!anchor.IsValid)
             return;
         _composer.SetAsCurrentComposer();
-        ResetTo(anchor.Index, compositionLocalMap, element, modifiers);
+        ResetTo(LogicalGroupIndex(anchor.Location), compositionLocalMap, element, modifiers);
     }
 
     public void ReleaseCurrentComposer()
     {
         _composer.ResetAsCurrentComposer();
-    }
-
-    internal int GetGroupIndex(AnchorId groupAnchor)
-    {
-        return _groupsAnchors[groupAnchor].Index;
     }
 
     #endregion
@@ -938,7 +914,7 @@ internal class SlotTableWriter
         var parent = CurrentParent();
         if (parent.AnchorId.IsValid)
             return parent.AnchorId;
-        var newAnchor = _groupsAnchors.AllocateAnchor(_currentParentIndex);
+        var newAnchor = _groupsAnchors.AllocateAnchor(AbsoluteGroupIndex(_currentParentIndex));
         parent = parent with { AnchorId = newAnchor };
         _groups[_currentParentIndex] = parent;
         return newAnchor;
@@ -972,29 +948,7 @@ internal class SlotTableWriter
 
     private void SyncIndices(ComposeGroup group)
     {
-        SyncGroupIndex(group);
-        SyncSlotIndex(group);
         SyncElementIndex(group);
-    }
-
-    private void SyncGroupIndex(ComposeGroup group)
-    {
-        if (!group.AnchorId.IsValid)
-            return;
-        var index = _groupsAnchors[group.AnchorId].Index;
-        if (index == _currentGroupIndex)
-            return;
-        _groupsAnchors[group.AnchorId] = new Anchor(_currentGroupIndex);
-    }
-
-    private void SyncSlotIndex(ComposeGroup group)
-    {
-        if (!group.DataAnchorId.IsValid)
-            return;
-        var index = _slotsAnchors[group.DataAnchorId].Index;
-        if (index == _currentSlotIndex)
-            return;
-        _slotsAnchors[group.DataAnchorId] = new Anchor(_currentSlotIndex);
     }
 
     private void SyncElementIndex(ComposeGroup group)
@@ -1059,10 +1013,6 @@ internal class SlotTableWriter
 
         if (_enteredParents.Count == 1)
         {
-            var groupShiftStartIndex = _currentGroupIndex;
-            var slotShiftStartIndex = _currentSlotIndex;
-            ShiftGroupsAnchors(groupShiftStartIndex, groupSizeOffset);
-            ShiftSlotsAnchors(slotShiftStartIndex, slotsSizeOffset);
             ShiftAncestorsGroupSizes(groupSizeOffset);
             ShiftAncestorsSlotSizes(slotsSizeOffset);
             ShiftAncestorsElementsCounts(elementsCountOffset);
@@ -1095,8 +1045,9 @@ internal class SlotTableWriter
         var builder = new StringBuilder();
         builder.AppendLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
         builder.AppendLine("Groups:");
-        builder.AppendLine(_groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors,
-            _slotsAnchors));
+        builder.AppendLine(
+            _groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors, _slotsAnchors, _slots)
+        );
 
         builder.AppendLine("Slots:");
         builder.AppendLine(_slots.ToString(_currentSlotIndex));
@@ -1114,7 +1065,7 @@ internal class SlotTableWriter
         // }
     }
 
-    private void ShiftGroupsAnchors(int startIndex, int offset)
+    private void ShiftGroupsAnchors(int startIndex, int count, int offset)
     {
         if (offset == 0)
             return;
@@ -1122,12 +1073,12 @@ internal class SlotTableWriter
         for (var i = 0; i < _groupsAnchors.Count; i++)
         {
             var anchor = _groupsAnchors[i];
-            if (anchor.IsValid && anchor.Index >= startIndex)
-                _groupsAnchors[i] = new Anchor(anchor.Index + offset);
+            if (anchor.IsValid && anchor.Location >= startIndex && anchor.Location < startIndex + count)
+                _groupsAnchors[i] = new Anchor(anchor.Location + offset);
         }
     }
 
-    private void ShiftSlotsAnchors(int startIndex, int offset)
+    private void ShiftSlotsAnchors(int startIndex, int count, int offset)
     {
         if (offset == 0)
             return;
@@ -1135,8 +1086,8 @@ internal class SlotTableWriter
         for (var i = 0; i < _slotsAnchors.Count; i++)
         {
             var anchor = _slotsAnchors[i];
-            if (anchor.IsValid && anchor.Index >= startIndex)
-                _slotsAnchors[i] = new Anchor(anchor.Index + offset);
+            if (anchor.IsValid && anchor.Location >= startIndex && anchor.Location < startIndex + count)
+                _slotsAnchors[i] = new Anchor(anchor.Location + offset);
         }
     }
 
@@ -1156,7 +1107,7 @@ internal class SlotTableWriter
 
             if (!ancestor.ParentAnchorId.IsValid)
                 return;
-            ancestorIndex = _groupsAnchors[ancestor.ParentAnchorId].Index;
+            ancestorIndex = LogicalGroupIndex(_groupsAnchors[ancestor.ParentAnchorId].Location);
         }
     }
 
@@ -1176,7 +1127,7 @@ internal class SlotTableWriter
 
             if (!ancestor.ParentAnchorId.IsValid)
                 return;
-            ancestorIndex = _groupsAnchors[ancestor.ParentAnchorId].Index;
+            ancestorIndex = LogicalGroupIndex(_groupsAnchors[ancestor.ParentAnchorId].Location);
         }
     }
 
@@ -1199,7 +1150,7 @@ internal class SlotTableWriter
 
             if (!ancestor.ParentAnchorId.IsValid)
                 return;
-            ancestorIndex = _groupsAnchors[ancestor.ParentAnchorId].Index;
+            ancestorIndex = LogicalGroupIndex(_groupsAnchors[ancestor.ParentAnchorId].Location);
         }
     }
 
@@ -1229,47 +1180,10 @@ internal class SlotTableWriter
         }
     }
 
-    private AnchorId AllocateGroupAnchor()
-    {
-#if ANCHORS_FOR_EVERYONE
-        return _groupsAnchors.AllocateAnchor(_currentGroupIndex);
-#else
-        return AnchorId.None;
-#endif
-    }
-
-    private AnchorId AllocateSlotAnchor()
-    {
-#if ANCHORS_FOR_EVERYONE
-        return _slotsAnchors.AllocateAnchor(_currentSlotIndex);
-#else
-        return AnchorId.None;
-#endif
-    }
-
-    private void ShiftSkippedGroupIndices(ComposeGroup parent)
-    {
-        var offsets = _pendingOffsets[^2];
-        if (parent.Size == 1 || offsets is { GroupOffset: 0, SlotOffset: 0 })
-            return;
-        for (var i = _currentParentIndex + 1; i < _currentParentIndex + parent.Size; i++)
-        {
-            var descendant = _groups[i];
-            if (!descendant.AnchorId.IsValid && !descendant.DataAnchorId.IsValid)
-                continue;
-            if (descendant.AnchorId.IsValid)
-            {
-                var groupAnchor = _groupsAnchors[descendant.AnchorId];
-                _groupsAnchors[descendant.AnchorId] = new Anchor(groupAnchor.Index + offsets.GroupOffset);
-            }
-
-            if (descendant.DataAnchorId.IsValid)
-            {
-                var slotAnchor = _slotsAnchors[descendant.DataAnchorId];
-                _slotsAnchors[descendant.DataAnchorId] = new Anchor(slotAnchor.Index + offsets.SlotOffset);
-            }
-        }
-    }
+    private int AbsoluteGroupIndex(int index) => _groups.LogicalToAbsoluteIndex(index);
+    private int LogicalGroupIndex(int index) => _groups.AbsoluteToLogicalIndex(index);
+    private int AbsoluteSlotIndex(int index) => _slots.LogicalToAbsoluteIndex(index);
+    private int LogicalSlotIndex(int index) => _slots.AbsoluteToLogicalIndex(index);
 
     private void Log(object? message)
     {

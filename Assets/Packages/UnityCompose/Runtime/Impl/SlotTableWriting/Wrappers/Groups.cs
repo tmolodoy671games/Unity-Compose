@@ -12,10 +12,10 @@ internal readonly struct Groups
 {
     public const int GroupHeaderSize = 1;
 
-    private readonly List<ComposeGroup> _groups;
+    private readonly GapBufferList<ComposeGroup> _groups;
     private readonly List<ComposeGroup> _buffer = new(0);
 
-    public Groups(List<ComposeGroup> groups)
+    public Groups(GapBufferList<ComposeGroup> groups)
     {
         _groups = groups;
     }
@@ -34,17 +34,24 @@ internal readonly struct Groups
 
     public void Move(int startIndex, int targetIndex, int count)
     {
-        _groups.Move(
-            buffer: _buffer,
-            startIndex: startIndex,
-            targetIndex: targetIndex,
-            count: count
-        );
+        _groups.Move(_buffer, startIndex, targetIndex, count);
     }
+
+    public int LogicalToAbsoluteIndex(int index) => _groups.LogicalToAbsoluteIndex(index);
+    public int AbsoluteToLogicalIndex(int index) => _groups.AbsoluteToLogicalIndex(index);
+
+    public void AddItemsShiftObserver(Action<ItemsShiftEvent> onItemsShift) =>
+        _groups.AddItemsShiftObserver(onItemsShift);
 
     public void Clear() => _groups.Clear();
 
-    public string ToString(int currentParentIndex, int currentGroupIndex, Anchors groupsAnchors, Anchors slotsAnchors)
+    public string ToString(
+        int currentParentIndex,
+        int currentGroupIndex,
+        Anchors groupsAnchors,
+        Anchors slotsAnchors,
+        Slots slots
+    )
     {
         var builder = new StringBuilder();
         if (currentParentIndex == -1)
@@ -54,7 +61,7 @@ internal readonly struct Groups
             var group = _groups[i];
             builder.Append($"[{i}]\t");
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
-            builder.Append(group.ToString(groupsAnchors, slotsAnchors));
+            builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots));
             var isSelfIndexInvalid = group.AnchorId.IsValid &&
                                      (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors) != i);
             if (isSelfIndexInvalid)
@@ -82,24 +89,24 @@ internal static class ComposeGroupExtensions
     {
         if (!group.AnchorId.IsValid)
             return -1;
-        return anchors[group.AnchorId].Index;
+        return anchors[group.AnchorId].Location;
     }
 
     public static int ParentIndex(this ComposeGroup group, Anchors anchors)
     {
         if (!group.ParentAnchorId.IsValid)
             return -1;
-        return anchors[group.ParentAnchorId].Index;
+        return anchors[group.ParentAnchorId].Location;
     }
 
     public static int SlotIndex(this ComposeGroup group, Anchors anchors)
     {
         if (!group.DataAnchorId.IsValid)
             return -1;
-        return anchors[group.DataAnchorId].Index;
+        return anchors[group.DataAnchorId].Location;
     }
 
-    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors)
+    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots)
     {
         var builder = new StringBuilder();
         builder.Append(group.Type + "Group");
@@ -113,6 +120,12 @@ internal static class ComposeGroupExtensions
         builder.Append($", ElementIndex: {group.ElementIndex}");
         builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
+        if (group.Type == ComposeGroupType.Key)
+        {
+            var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
+            builder.Append($" DataKey: {slots[slotIndex]}");
+        }
+
         return builder.ToString();
     }
 

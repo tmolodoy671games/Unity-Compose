@@ -2,20 +2,21 @@
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 
-public static class ListExtensions
+internal static class ListExtensions
 {
     public static void Move<T>(
-        this List<T> list,
+        this GapBufferList<T> list,
         List<T> buffer,
         int startIndex,
         int targetIndex,
-        int count)
+        int count
+    )
     {
         if (count == 0)
             return;
 
         buffer.Clear();
-        for (var i = startIndex; i < startIndex + count; i++ )
+        for (var i = startIndex; i < startIndex + count; i++)
             buffer.Add(list[i]);
 
         list.RemoveRange(startIndex, count);

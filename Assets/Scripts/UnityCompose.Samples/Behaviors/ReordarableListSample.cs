@@ -132,18 +132,18 @@ namespace UnityCompose.Samples.Behaviors
                             .Name("item-name-label")
                             .Margin(left: 32)
                     );
-                    // Spacer(Modifier.Weight(1));
-                    // var counter = Remember(() => MutableStateOf(0));
-                    // Text(
-                    //     text: counter.Value.ToString(),
-                    //     color: Color.white,
-                    //     fontSize: 40,
-                    //     modifier: Modifier
-                    //         .Background(Color.green)
-                    //         .Padding(horizontal: 16)
-                    //         .Border(12)
-                    //         .OnClick(() => counter.Value++)
-                    // );
+                    Spacer(Modifier.Weight(1));
+                    var counter = Remember(() => MutableStateOf(0));
+                    Text(
+                        text: counter.Value.ToString(),
+                        color: Color.white,
+                        fontSize: 40,
+                        modifier: Modifier
+                            .Background(Color.green)
+                            .Padding(horizontal: 16)
+                            .Border(12)
+                            .OnClick(() => counter.Value++)
+                    );
                     Column(
                         content: () =>
                         {
@@ -175,19 +175,19 @@ namespace UnityCompose.Samples.Behaviors
                             );
                         }
                     );
-                    // Text(
-                    //     text: "X",
-                    //     color: Color.white,
-                    //     fontSize: 40,
-                    //     fontWeight: FontWeight.Bold,
-                    //     textAlign: TextAlign.MiddleCenter,
-                    //     modifier: Modifier
-                    //         .Name("remove-button")
-                    //         .Background(Color.red)
-                    //         .Padding(horizontal: 16, vertical: 4)
-                    //         .Border(radius: 16)
-                    //         .OnClick(onRemoveClick)
-                    // );
+                    Text(
+                        text: "X",
+                        color: Color.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.Bold,
+                        textAlign: TextAlign.MiddleCenter,
+                        modifier: Modifier
+                            .Name("remove-button")
+                            .Background(Color.red)
+                            .Padding(horizontal: 16, vertical: 4)
+                            .Border(radius: 16)
+                            .OnClick(onRemoveClick)
+                    );
                 }
             );
         }

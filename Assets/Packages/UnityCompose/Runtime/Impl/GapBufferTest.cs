@@ -15,7 +15,31 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
         [Button]
         private void Test()
         {
-            GapBufferListTests.RunAll();
+            // GapBufferListTests.RunAll();
+            var list = new GapBufferList<int>();
+            list.AddItemsShiftObserver(it =>
+            {
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var item = list[i];
+                    if (item >= it.StartIndex && item < it.StartIndex + it.Count)
+                        list[i] = item + it.Offset;
+                }
+            });
+            list.Add(0);
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Insert(4, 4);
+            list.Insert(2, 2);
+            list.Insert(5, 5);
+            list.RemoveAt(2);
+            list.RemoveAt(4);
+            list.RemoveAt(3);
+            
+            Debug.Log(list);
         }
     }
 }
@@ -309,7 +333,8 @@ public static class GapBufferListTests
 
         void PerformAssert()
         {
-            Assert(gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()), $"\n{refList.ToImmutableStableList()} vs\n{gb.ToImmutableStableList()}");
+            Assert(gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),
+                $"\n{refList.ToImmutableStableList()} vs\n{gb.ToImmutableStableList()}");
         }
     }
 }

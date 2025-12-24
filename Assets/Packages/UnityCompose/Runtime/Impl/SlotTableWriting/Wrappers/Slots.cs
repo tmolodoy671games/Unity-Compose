@@ -13,10 +13,10 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrapp
 
 internal readonly struct Slots
 {
-    private readonly List<object?> _slots;
+    private readonly GapBufferList<object?> _slots;
     private readonly List<object?> _buffer = new(0);
 
-    public Slots(List<object?> slots)
+    public Slots(GapBufferList<object?> slots)
     {
         _slots = slots;
     }
@@ -78,17 +78,18 @@ internal readonly struct Slots
         _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 
+    public void Clear() => _slots.Clear();
+    
     public void Move(int startIndex, int targetIndex, int count)
     {
-        _slots.Move(
-            buffer: _buffer,
-            startIndex: startIndex,
-            targetIndex: targetIndex,
-            count: count
-        );
+        _slots.Move(_buffer, startIndex, targetIndex, count);
     }
 
-    public void Clear() => _slots.Clear();
+    public int LogicalToAbsoluteIndex(int index) => _slots.LogicalToAbsoluteIndex(index);
+    public int AbsoluteToLogicalIndex(int index) => _slots.AbsoluteToLogicalIndex(index);
+    
+    public void AddItemsShiftObserver(Action<ItemsShiftEvent> onItemsShift) =>
+        _slots.AddItemsShiftObserver(onItemsShift);
 
     public override string ToString()
     {

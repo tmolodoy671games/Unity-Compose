@@ -49,35 +49,22 @@ public static partial class ComposeFunctions
                     var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                     CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        // content(pair.First.Value, pair.First.Modifier);
                         WithModifiers(after: pair.First.Modifier, content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(pair.First.Value)));
                     }));
                 }
 
                 __composer.EndReplaceGroup(329013806);
-            // if (!isSwitched.Value || isAnimationRunning)
-            // {
-            //     var state = TransitionResolvedState.Create(
-            //         state: pair.Second.ContentState,
-            //         absoluteProgress: resolvedProgress,
-            //         duration: resolvedTransition.TotalDuration
-            //     );
-            //     CompositionLocalProvider(
-            //         LocalTransitionState.Provides(state.State),
-            //         LocalTransitionProgress.Provides(state.Progress),
-            //         LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-            //         LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-            //         LocalTransitionDuration.Provides(state.Duration),
-            //         content: () =>
-            //         {
-            //             // content(pair.Second.Value, pair.Second.Modifier);
-            //             WithModifiers(
-            //                 after: pair.Second.Modifier,
-            //                 content: () => content(pair.Second.Value)
-            //             );
-            //         }
-            //     );
-            // }
+                __composer.StartReplaceGroup(-2106566898);
+                if (!isSwitched.Value || isAnimationRunning)
+                {
+                    var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
+                    CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    {
+                        WithModifiers(after: pair.Second.Modifier, content: !__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(pair.Second.Value)));
+                    }));
+                }
+
+                __composer.EndReplaceGroup(-2106566898);
             }));
         }
         else

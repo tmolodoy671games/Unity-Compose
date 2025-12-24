@@ -104,7 +104,6 @@ public static partial class ComposeFunctions
                         LocalTransitionDuration.Provides(state.Duration),
                         content: () =>
                         {
-                            // content(pair.First.Value, pair.First.Modifier);
                             WithModifiers(
                                 after: pair.First.Modifier,
                                 content: () => content(pair.First.Value)
@@ -113,29 +112,28 @@ public static partial class ComposeFunctions
                     );
                 }
 
-                // if (!isSwitched.Value || isAnimationRunning)
-                // {
-                //     var state = TransitionResolvedState.Create(
-                //         state: pair.Second.ContentState,
-                //         absoluteProgress: resolvedProgress,
-                //         duration: resolvedTransition.TotalDuration
-                //     );
-                //     CompositionLocalProvider(
-                //         LocalTransitionState.Provides(state.State),
-                //         LocalTransitionProgress.Provides(state.Progress),
-                //         LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                //         LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                //         LocalTransitionDuration.Provides(state.Duration),
-                //         content: () =>
-                //         {
-                //             // content(pair.Second.Value, pair.Second.Modifier);
-                //             WithModifiers(
-                //                 after: pair.Second.Modifier,
-                //                 content: () => content(pair.Second.Value)
-                //             );
-                //         }
-                //     );
-                // }
+                if (!isSwitched.Value || isAnimationRunning)
+                {
+                    var state = TransitionResolvedState.Create(
+                        state: pair.Second.ContentState,
+                        absoluteProgress: resolvedProgress,
+                        duration: resolvedTransition.TotalDuration
+                    );
+                    CompositionLocalProvider(
+                        LocalTransitionState.Provides(state.State),
+                        LocalTransitionProgress.Provides(state.Progress),
+                        LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                        LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                        LocalTransitionDuration.Provides(state.Duration),
+                        content: () =>
+                        {
+                            WithModifiers(
+                                after: pair.Second.Modifier,
+                                content: () => content(pair.Second.Value)
+                            );
+                        }
+                    );
+                }
             }
         );
     }

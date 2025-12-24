@@ -217,29 +217,20 @@ internal class GapBufferList<T> : IList<T>
         {
             // Left
             var count = _gapStart - index;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(index, _gapLength, count));
-            try
-            {
-                Array.Copy(
-                    sourceArray: _array,
-                    sourceIndex: index,
-                    destinationArray: _array,
-                    destinationIndex: index + _gapLength,
-                    length: count
-                );
-            }
-            catch (Exception)
-            {
-                Debug.Log(
-                    $"{_gapStart}->{index}: sourceIndex: {index}, destinationIndex: {index + _gapLength}, length: {count} \n{this}");
-                throw;
-            }
+            _onItemsShift?.Invoke(new ItemsShiftEvent(index, count, _gapLength));
+            Array.Copy(
+                sourceArray: _array,
+                sourceIndex: index,
+                destinationArray: _array,
+                destinationIndex: index + _gapLength,
+                length: count
+            );
         }
         else
         {
             // Right
             var count = index - _gapStart;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(index, _gapLength, -count));
+            _onItemsShift?.Invoke(new ItemsShiftEvent(_gapStart + _gapLength, count, -_gapLength));
             Array.Copy(
                 sourceArray: _array,
                 sourceIndex: _gapStart + _gapLength,
