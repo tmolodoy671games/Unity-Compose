@@ -1,5 +1,5 @@
 ﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
 

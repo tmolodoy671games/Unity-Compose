@@ -817,7 +817,7 @@ internal class SlotTableWriter
         return pair.ToModifiersPair();
     }
 
-    public ModifiersStatePair? RequireModifiersStatePair()
+    private ModifiersStatePair? RequireModifiersStatePair()
     {
         if (_enteredModifierGroups.IsEmpty())
             return _rootModifiers;
@@ -1257,20 +1257,3 @@ internal readonly record struct ComposeGroupOffset(
     int GroupOffset,
     int SlotOffset
 );
-
-internal readonly record struct ModifiersPair(
-    IModifier? Before,
-    IModifier? After
-);
-
-internal class ModifiersStatePair
-{
-    private readonly IMutableState<ModifiersPair> _pair = MutableStateOf(new ModifiersPair(null, null));
-
-    public ModifiersPair ToModifiersPair() => _pair.Value;
-
-    public void Update(ModifiersPair pair)
-    {
-        _pair.Value = pair;
-    }
-}
