@@ -30,6 +30,8 @@ internal readonly struct Groups
     public int GapStart => _groups.GapStart;
     public int GapLength => _groups.GapLength;
 
+    public void MoveGapAt(int index) => _groups.MoveGapAt(index);
+
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
 
     public void RemoveRange(int index, int count) => _groups.RemoveRange(index, count);
@@ -124,9 +126,9 @@ internal static class ComposeGroupExtensions
         builder.Append(")");
         if (group.Type == ComposeGroupType.Key && group.DataAnchorId.IsValid)
         {
-            builder.Append($", Absolute Index: {groupsAnchors[group.AnchorId].Location}");
-            var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
-            builder.Append($", Data: {slots[slotIndex]}");
+            // builder.Append($", Absolute Index: {groupsAnchors[group.AnchorId].Location}");
+            // var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
+            // builder.Append($", Data: {slots[slotIndex]}");
         }
 
         return builder.ToString();
@@ -140,6 +142,8 @@ internal static class ComposeGroupExtensions
         while (parentIndex >= 0 && i++ < 100)
         {
             count++;
+            if (parentIndex >= groups.Count)
+                return 100;
             parentIndex = groups[parentIndex].ParentIndex(anchors, groups);
         }
 

@@ -216,7 +216,7 @@ internal class GapBufferList<T> : IList<T>
         return index >= GapStart && index < GapStart + GapLength;
     }
 
-    private void MoveGapAt(int index)
+    public void MoveGapAt(int index)
     {
         if (GapStart == index)
             return;

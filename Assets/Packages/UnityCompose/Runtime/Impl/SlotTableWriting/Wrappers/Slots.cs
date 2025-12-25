@@ -86,6 +86,8 @@ internal readonly struct Slots
     {
         _slots.Move(_buffer, startIndex, targetIndex, count);
     }
+    
+    public void MoveGapAt(int index) => _slots.MoveGapAt(index);
 
     public int LogicalToAbsoluteIndex(int index) => _slots.LogicalToAbsoluteIndex(index);
     public int AbsoluteToLogicalIndex(int index) => _slots.AbsoluteToLogicalIndex(index);
