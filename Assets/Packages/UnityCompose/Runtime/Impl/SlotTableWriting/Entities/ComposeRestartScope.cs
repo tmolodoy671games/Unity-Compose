@@ -15,38 +15,32 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     private static readonly NewObjectPool<ComposeRestartScope> _pool = new(() => new());
 
     private SlotTableWriter _writer = null!;
-    public AnchorId _groupAnchor = default!;
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap = null!;
-    private VisualElement? _visualElement = null!;
-    private ModifiersPair _modifiers = default!;
+    public AnchorId _groupAnchor;
+    private Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap;
+    private ModifiersStatePair? _modifiers;
+    private ElementAnchorId _elementAnchorId;
 
     private Action? _restartCallback;
-    private int _lastCalledAtFrame = -1;
 
     public static ComposeRestartScope Get(
         AnchorId groupAnchor,
         SlotTableWriter writer,
         Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
-        VisualElement? element,
-        ModifiersPair modifiers
+        ModifiersStatePair? modifiers,
+        ElementAnchorId elementAnchorId
     )
     {
         var instance = _pool.Get();
         instance._groupAnchor = groupAnchor;
         instance._writer = writer;
         instance._compositionLocalMap = compositionLocalMap;
-        instance._visualElement = element;
+        instance._elementAnchorId = elementAnchorId;
         instance._modifiers = modifiers;
         return instance;
     }
 
     private ComposeRestartScope()
     {
-    }
-
-    public void SyncFrame()
-    {
-        _lastCalledAtFrame = Time.frameCount;
     }
 
     public void UpdateScope(Action restartCallback)
@@ -56,10 +50,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
-        // if (Time.frameCount == _lastCalledAtFrame)
-        //     return;
-        _lastCalledAtFrame = Time.frameCount;
-        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement, _modifiers);
+        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _modifiers, _elementAnchorId);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();
     }

@@ -19,9 +19,10 @@ public static partial class ComposeFunctions
     )
     {
         var composer = CurrentComposer;
+        composer.StartModifierGroup(1337);
         composer.PushModifiers(before, after);
         content();
-        composer.PopModifiers();
+        composer.EndModifierGroup(1337);
     }
 
     [Composable]

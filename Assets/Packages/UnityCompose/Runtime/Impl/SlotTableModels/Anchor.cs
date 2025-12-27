@@ -4,19 +4,19 @@ internal readonly struct Anchor
 {
     public static readonly Anchor None = new(-1);
     
-    public readonly int Index;
+    public readonly int Location;
 
-    public Anchor(int index)
+    public Anchor(int location)
     {
-        Index = index;
+        Location = location;
     }
 
-    public bool IsValid => Index >= 0;
+    public bool IsValid => Location >= 0;
 
     public override string ToString()
     {
         if (!IsValid)
             return "None";
-        return $"Anchor({Index})";
+        return $"Anchor({Location})";
     }
 }

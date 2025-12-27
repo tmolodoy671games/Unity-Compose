@@ -11,17 +11,15 @@ public static partial class ComposeFunctions
     )
     {
         var composer = CurrentComposer;
-        composer.StartRestartGroup(4357447, key);
-        var isRestarted = composer.IsRestarted();
-        if (isRestarted || composer.ShouldExecuteAsStruct((key, content)))
-        {
-            content();
-        }
-        else
-        {
-            composer.SkipToGroupEnd();
-        }
+        var intKey = key?.GetHashCode() ?? 0;
+        composer.StartKeyGroup(intKey, key);
+        KeyImpl(content);
+        composer.EndKeyGroup(intKey);
+    }
 
-        composer.EndRestartGroup(4357447, isRestarted)?.UpdateScope(() => Key(key, content));
+    [Composable]
+    private static void KeyImpl(ComposableContent content)
+    {
+        content();
     }
 }

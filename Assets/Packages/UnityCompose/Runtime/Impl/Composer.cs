@@ -13,9 +13,7 @@ namespace UnityCompose;
 
 public class Composer
 {
-    private static Composer? _current;
-
-    public static Composer? Current => _current;
+    public static Composer? Current { get; private set; }
 
     private readonly SlotTableWriter _writer;
 
@@ -26,7 +24,7 @@ public class Composer
 
     public void SetAsCurrentComposer()
     {
-        _current = this;
+        Current = this;
     }
 
     public void ResetAsCurrentComposer()
@@ -111,6 +109,32 @@ public class Composer
 
     #endregion
 
+    #region Key Group
+
+    public void StartKeyGroup<T>(int key, T dataKey) => _writer.StartKeyGroup(key, dataKey);
+
+    public void EndKeyGroup(int key) => _writer.EndKeyGroup(key);
+
+    #endregion
+
+    #region Modifier Group
+
+    public void StartModifierGroup(int key) => _writer.StartModifierGroup(key);
+
+    public void EndModifierGroup(int key) => _writer.EndModifierGroup(key);
+
+    public void PushModifiers(IModifier? before, IModifier? after)
+    {
+        _writer.PushModifiers(before, after);
+    }
+
+    internal ModifiersPair GetModifiers()
+    {
+        return _writer.GetModifiers();
+    }
+
+    #endregion
+
     #region Remember
 
     public bool Changed()
@@ -155,7 +179,7 @@ public class Composer
     }
 
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
-    
+
     public T UpdateRememberedValueAsStruct<T>(T update) where T : struct
     {
         _writer.WriteAsStruct(update);
@@ -209,21 +233,6 @@ public class Composer
     public void EnterVisualElement(VisualElement element)
     {
         _writer.EnterVisualElement(element);
-    }
-
-    public void PushModifiers(IModifier? before, IModifier? after)
-    {
-        _writer.PushModifiers(before, after);
-    }
-
-    public void PopModifiers()
-    {
-        _writer.PopModifiers();
-    }
-
-    internal ModifiersPair GetModifiers()
-    {
-        return _writer.GetModifiers();
     }
 
     #endregion

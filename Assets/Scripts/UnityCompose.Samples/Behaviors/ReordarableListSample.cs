@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Width(800),
                         content: () =>
                         {
-                            var items = Remember(() => MutableStateListOf(1));
+                            var items = Remember(() => MutableStateListOf(1, 2));
                             Text(
                                 text: "Add Item",
                                 color: Color.white,
@@ -130,8 +130,19 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40,
                         modifier: Modifier
                             .Name("item-name-label")
-                            .Weight(1)
                             .Margin(left: 32)
+                    );
+                    Spacer(Modifier.Weight(1));
+                    var counter = Remember(() => MutableStateOf(0));
+                    Text(
+                        text: counter.Value.ToString(),
+                        color: Color.white,
+                        fontSize: 40,
+                        modifier: Modifier
+                            .Background(Color.green)
+                            .Padding(horizontal: 16)
+                            .Border(12)
+                            .OnClick(() => counter.Value++)
                     );
                     Column(
                         content: () =>

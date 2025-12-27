@@ -8,7 +8,7 @@ internal readonly record struct ComposeGroup(
     int Size,
     AnchorId DataAnchorId,
     int SlotsSize,
-    int ElementIndex,
+    ElementAnchorId ElementAnchorId,
     int ElementsCount
 );
 
@@ -18,4 +18,6 @@ internal enum ComposeGroupType : byte
     Restart,
     Reusable,
     Local,
+    Key,
+    Modifier,
 }
