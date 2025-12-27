@@ -67,7 +67,8 @@ internal readonly struct Groups
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
             builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots, this));
             var isSelfIndexInvalid = group.AnchorId.IsValid &&
-                                     (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors, this) != i);
+                                     (!groupsAnchors.ContainsIndex(group.AnchorId) ||
+                                      group.Index(groupsAnchors, this) != i);
             if (isSelfIndexInvalid)
                 builder.Append(" [SELF ANCHOR IS INVALID]");
             var isDataIndexInvalid = group.DataAnchorId.IsValid &&
@@ -110,7 +111,13 @@ internal static class ComposeGroupExtensions
         return slots.AbsoluteToLogicalIndex(anchors[group.DataAnchorId].Location);
     }
 
-    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots, Groups groups)
+    public static string ToString(
+        this ComposeGroup group,
+        Anchors groupsAnchors,
+        Anchors slotsAnchors,
+        Slots slots,
+        Groups groups
+    )
     {
         var builder = new StringBuilder();
         builder.Append(group.Type + "Group");
