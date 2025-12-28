@@ -54,6 +54,7 @@ internal readonly struct Groups
         int currentGroupIndex,
         Anchors groupsAnchors,
         Anchors slotsAnchors,
+        ElementAnchors elementAnchors,
         Slots slots
     )
     {
@@ -65,7 +66,7 @@ internal readonly struct Groups
             var group = _groups[i];
             builder.Append($"[{i}]\t");
             builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
-            builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots, this));
+            builder.Append(group.ToString(groupsAnchors, slotsAnchors, elementAnchors, slots, this));
             var isSelfIndexInvalid = group.AnchorId.IsValid &&
                                      (!groupsAnchors.ContainsIndex(group.AnchorId) ||
                                       group.Index(groupsAnchors, this) != i);
@@ -115,6 +116,7 @@ internal static class ComposeGroupExtensions
         this ComposeGroup group,
         Anchors groupsAnchors,
         Anchors slotsAnchors,
+        ElementAnchors elementAnchors,
         Slots slots,
         Groups groups
     )
@@ -128,7 +130,13 @@ internal static class ComposeGroupExtensions
         builder.Append($", Size: {group.Size}");
         builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors, slots)}");
         builder.Append($", SlotsSize: {group.SlotsSize}");
-        builder.Append($", ElementIndex: {group.ElementIndex}");
+        if (group.ElementAnchorId.IsValid)
+        {
+            var anchor = elementAnchors[group.ElementAnchorId];
+            builder.Append($", ParenElement: {anchor.Parent?.GetType().Name}");
+            builder.Append($", ElementIndex: {anchor.Index}");
+        }
+
         builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
         if (group.Type == ComposeGroupType.Key && group.DataAnchorId.IsValid)

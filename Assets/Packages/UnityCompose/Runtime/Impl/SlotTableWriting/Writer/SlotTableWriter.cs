@@ -287,7 +287,6 @@ internal class SlotTableWriter
             if (existingGroup.Type != ComposeGroupType.Reusable)
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Reusable group!");
 #endif
-            SyncIndices(existingGroup);
             EnterGroup();
             _currentSlotIndex += ReusableGroup.MetadataSize;
             return;
@@ -301,7 +300,7 @@ internal class SlotTableWriter
             SlotsSize: 1,
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
-            ElementIndex: _currentElementIndex,
+            ElementAnchorId: _elementAnchors.Allocate(GetParentVisualElement(), _currentElementIndex),
             ElementsCount: 1
         );
         _groups.Insert(_currentGroupIndex, newGroup);
@@ -1073,7 +1072,14 @@ internal class SlotTableWriter
         builder.AppendLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
         builder.AppendLine("Groups:");
         builder.AppendLine(
-            _groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors, _slotsAnchors, _slots)
+            _groups.ToString(
+                _currentParentIndex,
+                _currentGroupIndex,
+                _groupsAnchors,
+                _slotsAnchors,
+                _elementAnchors,
+                _slots
+            )
         );
 
         builder.AppendLine("Slots:");

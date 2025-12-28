@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1221927178);
+            __composer.StartRestartGroup(1221827665);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -32,7 +32,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1221927178, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1221827665, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

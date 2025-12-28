@@ -75,7 +75,6 @@ public class Composer
     {
         var scope = _writer.GetRestartScope();
         _writer.EndRestartGroup(groupKey);
-        scope?.SyncFrame();
         return restarted ? null : scope;
     }
 
