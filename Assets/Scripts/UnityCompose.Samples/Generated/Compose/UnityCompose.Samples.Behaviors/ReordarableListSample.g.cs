@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1688504399);
+            __composer.StartRestartGroup(2098652250);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors
                         })));
                         Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: !__composer.Changed(items) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                         {
-                            __composer.StartReplaceGroup(33742406);
+                            __composer.StartReplaceGroup(408333595);
                             foreach (var item in items)
                             {
                                 Key(key: item, content: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -62,7 +62,7 @@ namespace UnityCompose.Samples.Behaviors
                                 }));
                             }
 
-                            __composer.EndReplaceGroup(33742406);
+                            __composer.EndReplaceGroup(408333595);
                         }));
                     }));
                 }));
@@ -72,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1688504399, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(2098652250, __isRestarted)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
@@ -80,7 +80,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick) = (state, onMoveUpClick, onMoveDownClick, onRemoveClick);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-9847894);
+            __composer.StartRestartGroup(-886418716);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick)))
             {
@@ -103,7 +103,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-9847894, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick));
+            __composer.EndRestartGroup(-886418716, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick));
         }
     }
 }

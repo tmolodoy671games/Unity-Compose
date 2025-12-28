@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __animationSpec) = (content, modifier, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1891320552);
+        __composer.StartRestartGroup(1826694553);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __animationSpec)))
         {
@@ -37,7 +37,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1891320552, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec));
+        __composer.EndRestartGroup(1826694553, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec));
     }
 
     [Composable]
@@ -52,7 +52,7 @@ public static partial class ComposeFunctions
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         }));
-        __composer.StartReplaceGroup(-1812171419);
+        __composer.StartReplaceGroup(-1962144375);
         if (!IsInPreview)
         {
             contentStyle = contentStyle.OnLocallyPositioned(!__composer.Changed(contentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it =>
@@ -63,7 +63,7 @@ public static partial class ComposeFunctions
                 contentSize.Value = resolvedSize.Approximate();
             }));
             var isSizeValid = contentSize.Value is { x: > 0, y: > 0 } && containerPaddings.Value is { x: >= 0, y: >= 0 };
-            __composer.StartReplaceGroup(757765570);
+            __composer.StartReplaceGroup(1019799749);
             if (isSizeValid)
             {
                 var animatedSize = key != null ? AnimateVector2AsState(key: key, targetValueFactory: !__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value), animationSpec: resolvedAnimationSpec).Value : AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value;
@@ -71,10 +71,10 @@ public static partial class ComposeFunctions
                 contentStyle = contentStyle.Float();
             }
 
-            __composer.EndReplaceGroup(757765570);
+            __composer.EndReplaceGroup(1019799749);
         }
 
-        __composer.EndReplaceGroup(-1812171419);
+        __composer.EndReplaceGroup(-1962144375);
         return (containerStyle, contentStyle);
     }
 }

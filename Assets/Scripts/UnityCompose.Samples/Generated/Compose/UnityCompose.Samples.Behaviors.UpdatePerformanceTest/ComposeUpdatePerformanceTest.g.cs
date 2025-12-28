@@ -11,14 +11,14 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1967612674);
+            __composer.StartRestartGroup(-631616914);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
                 var parentSize = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(IMutableStableProperty.Create(Vector2.zero));
                 Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(!__composer.Changed(parentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.SizeWithPaddings)), content: !__composer.Changed(parentSize) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    __composer.StartReplaceGroup(939546545);
+                    __composer.StartReplaceGroup(1675840306);
                     for (var i = 0; i < 1_00; i++)
                     {
                         var currentI = i;
@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                         }));
                     }
 
-                    __composer.EndReplaceGroup(939546545);
+                    __composer.EndReplaceGroup(1675840306);
                 }));
             }
             else
@@ -39,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1967612674, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-631616914, __isRestarted)?.UpdateScope(() => __Content());
         }
     }
 }
