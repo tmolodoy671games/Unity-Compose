@@ -121,7 +121,7 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
 
         VisualElement = null;
         _indexInParent = -1;
-        _lastModifiersPair = new();
+        _lastModifiersPair = new ModifiersPair();
         _lastModifier = null;
         _lastInitializer = null;
         _lastTranslate = StyleKeyword.Null;

@@ -287,11 +287,48 @@ internal class SlotTableWriter
             if (existingGroup.Type != ComposeGroupType.Reusable)
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Reusable group!");
 #endif
+            var existingAnchor = _elementAnchors[existingGroup.ElementAnchorId];
+            ShiftElementAnchors(
+                parent: existingAnchor.Parent,
+                startIndex: existingAnchor.Index,
+                count: 1,
+                offset: AnchorLockOffset,
+                checkLock: true
+            );
+            ShiftElementAnchors(
+                parent: existingAnchor.Parent,
+                startIndex: existingAnchor.Index + 1,
+                count: 1_000_000_000,
+                offset: -1,
+                checkLock: true
+            );
+            ShiftElementAnchors(
+                parent: existingAnchor.Parent,
+                startIndex: _currentElementIndex,
+                count: 1_000_000_000,
+                offset: 1,
+                checkLock: true
+            );
+            ShiftElementAnchors(
+                parent: existingAnchor.Parent,
+                startIndex: existingAnchor.Index + AnchorLockOffset,
+                count: 1,
+                offset: -AnchorLockOffset + (_currentElementIndex - existingAnchor.Index),
+                checkLock: false
+            );
+            
             EnterGroup();
             _currentSlotIndex += ReusableGroup.MetadataSize;
             return;
         }
 
+        ShiftElementAnchors(
+            parent: GetParentVisualElement(),
+            startIndex: _currentElementIndex,
+            count: 1_000_000_000,
+            offset: 1,
+            checkLock: true
+        );
         var newGroup = new ComposeGroup(
             Key: key,
             Type: ComposeGroupType.Reusable,
@@ -1093,6 +1130,8 @@ internal class SlotTableWriter
         return builder.ToString();
     }
 
+    #region Anchors
+
     private void ShiftGroupsAnchors(int startIndex, int count, int offset, bool checkLock)
     {
         if (offset == 0)
@@ -1128,6 +1167,33 @@ internal class SlotTableWriter
                 _slotsAnchors[i] = new Anchor(location + offset);
         }
     }
+
+    private void ShiftElementAnchors(VisualElement? parent, int startIndex, int count, int offset, bool checkLock)
+    {
+        if (count == 0 || offset == 0 || parent == null)
+            return;
+        if (startIndex == parent.childCount)
+            return;
+        var anchorsCount = _elementAnchors.Count;
+        var maxIndex = startIndex + count;
+        for (var i = 0; i < anchorsCount; i++)
+        {
+            var anchor = _elementAnchors[i];
+            if (!anchor.IsValid)
+                continue;
+            if (anchor.Parent != parent)
+                continue;
+            if (checkLock && anchor.Index >= AnchorLockOffset)
+                continue;
+            if (anchor.Index < startIndex || anchor.Index >= maxIndex)
+                continue;
+            _elementAnchors[i] = anchor with { Index = anchor.Index + offset };
+        }
+    }
+
+    #endregion
+
+    #region Sizes
 
     private void ShiftAncestorsGroupSizes(int offset)
     {
@@ -1191,6 +1257,8 @@ internal class SlotTableWriter
             ancestorIndex = LogicalGroupIndex(ancestor.ParentAnchorId);
         }
     }
+
+    #endregion
 
     private void CleanupGroups(int startIndex, int count)
     {
