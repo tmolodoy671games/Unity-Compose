@@ -84,11 +84,10 @@ internal class SlotTableWriter
             if (existingGroup.Type != ComposeGroupType.Restart)
                 throw new InvalidOperationException($"Found {existingGroup.Type} instead of RestartGroup!");
 #endif
-            SyncIndices(existingGroup);
             _enteredRestartGroups.Push(
                 new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
             );
-            EnterGroup();
+            EnterGroup(existingGroup);
             _currentSlotIndex += RestartGroup.MetadataSize;
             return;
         }
@@ -110,7 +109,7 @@ internal class SlotTableWriter
         _enteredRestartGroups.Push(
             new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
         );
-        EnterGroup();
+        EnterGroup(newGroup);
         _currentSlotIndex += RestartGroup.MetadataSize;
     }
 
@@ -238,8 +237,7 @@ internal class SlotTableWriter
                 _groups[_currentGroupIndex] = existingGroup;
             }
 
-            SyncIndices(existingGroup);
-            EnterGroup();
+            EnterGroup(existingGroup);
             return;
         }
 
@@ -255,7 +253,7 @@ internal class SlotTableWriter
             ElementsCount: 0
         );
         _groups.Insert(_currentGroupIndex, newGroup);
-        EnterGroup();
+        EnterGroup(newGroup);
     }
 
     public void EndReplaceGroup(int key)
@@ -287,8 +285,7 @@ internal class SlotTableWriter
             if (existingGroup.Type != ComposeGroupType.Reusable)
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Reusable group!");
 #endif
-            SyncIndices(existingGroup);
-            EnterGroup();
+            EnterGroup(existingGroup);
             _currentSlotIndex += ReusableGroup.MetadataSize;
             return;
         }
@@ -306,7 +303,7 @@ internal class SlotTableWriter
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertVisualElement(_currentSlotIndex);
-        EnterGroup();
+        EnterGroup(newGroup);
         _currentSlotIndex += ReusableGroup.MetadataSize;
     }
 
@@ -343,8 +340,7 @@ internal class SlotTableWriter
             {
                 // Debug.Log($"Moving existing group {key}");
                 var existingGroup = _groups[_currentGroupIndex];
-                SyncIndices(existingGroup);
-                EnterGroup();
+                EnterGroup(existingGroup);
                 _currentSlotIndex += KeyGroup.MetadataSize;
                 return;
             }
@@ -368,7 +364,7 @@ internal class SlotTableWriter
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertKey(_currentSlotIndex, dataKey);
-        EnterGroup();
+        EnterGroup(newGroup);
         _currentSlotIndex += KeyGroup.MetadataSize;
     }
 
@@ -620,9 +616,8 @@ internal class SlotTableWriter
             if (existingGroup.Key != key)
                 throw new InvalidOperationException($"Found {existingGroup.Key} group instead of {key}!");
 #endif
-            SyncIndices(existingGroup);
             _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
-            EnterGroup();
+            EnterGroup(existingGroup);
             _currentSlotIndex += LocalGroup.MetadataSize;
             return;
         }
@@ -641,7 +636,7 @@ internal class SlotTableWriter
         _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertCompositionLocalMap(_currentSlotIndex);
-        EnterGroup();
+        EnterGroup(newGroup);
         _currentSlotIndex += LocalGroup.MetadataSize;
     }
 
@@ -755,8 +750,7 @@ internal class SlotTableWriter
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Modifier group!");
 #endif
             _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
-            SyncIndices(existingGroup);
-            EnterGroup();
+            EnterGroup(existingGroup);
             _currentSlotIndex += ModifierGroup.MetadataSize;
             return;
         }
@@ -775,7 +769,7 @@ internal class SlotTableWriter
         _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertModifiersStatePair(_currentSlotIndex);
-        EnterGroup();
+        EnterGroup(newGroup);
         _currentSlotIndex += ModifierGroup.MetadataSize;
     }
 
@@ -986,25 +980,33 @@ internal class SlotTableWriter
             _pendingOffsets.GetOrDefault(_pendingOffsets.Count - 1, new ComposeGroupOffset(0, 0)).SlotOffset;
     }
 
-    private void SyncIndices(ComposeGroup group)
+    private void EnterGroup(ComposeGroup group)
     {
         SyncElementIndex(group);
-    }
-
-    private void SyncElementIndex(ComposeGroup group)
-    {
-        if (group.ElementIndex == _currentElementIndex)
-            return;
-        _groups[_currentGroupIndex] = group with { ElementIndex = _currentElementIndex };
-    }
-
-    private void EnterGroup()
-    {
         _currentParentIndex = _currentGroupIndex;
         _enteredParents.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _pendingOffsets.Add(new ComposeGroupOffset(0, 0));
         _currentParentSlotIndex = _currentSlotIndex;
         _currentGroupIndex++;
+    }
+    
+    private void SyncElementIndex(ComposeGroup group)
+    {
+        if (group.ElementIndex == _currentElementIndex)
+            return;
+        var offset = _currentElementIndex - group.ElementIndex;
+        var maxIndex = _currentGroupIndex + group.Size;
+        for (var i = _currentGroupIndex; i < maxIndex;)
+        {
+            var checkedGroup = _groups[i];
+            checkedGroup = checkedGroup with { ElementIndex = checkedGroup.ElementIndex + offset };
+            _groups[i] = checkedGroup;
+            if (checkedGroup.Type == ComposeGroupType.Reusable)
+                i += checkedGroup.Size;
+            else
+                i++;
+        }
+        _groups[_currentGroupIndex] = group with { ElementIndex = _currentElementIndex };
     }
 
     private void ExitGroup(ComposeGroup currentParent)
