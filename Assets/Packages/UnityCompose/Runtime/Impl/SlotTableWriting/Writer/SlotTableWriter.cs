@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SharpExtensions;
@@ -382,6 +383,11 @@ internal class SlotTableWriter
     {
         return group.Type == ComposeGroupType.Key &&
                group.Key == key &&
+               // _slots.Let(_ =>
+               // {
+               //     Debug.Log(_slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)));
+               //     return true;
+               // }) &&
                _slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)).Equals(dataKey);
     }
 
@@ -393,7 +399,7 @@ internal class SlotTableWriter
         for (var i = startIndex; i < endIndex;)
         {
             var candidate = _groups[i];
-            // Debug.Log(candidate + ": " + IsTheSameKeyGroup(candidate, key, dataKey));
+            // Debug.Log($"{key}, {dataKey}" + ": " + IsTheSameKeyGroup(candidate, key, dataKey));
             if (IsTheSameKeyGroup(candidate, key, dataKey))
                 return i;
             i += candidate.Size;
@@ -405,6 +411,7 @@ internal class SlotTableWriter
     private bool TryFindAndMoveExisingKeyGroup<T>(int key, T dataKey)
     {
         var existingGroupIndex = IndexOfExistingKey(key, dataKey);
+        // Debug.Log($"{key}, {dataKey}: {existingGroupIndex}");
         if (existingGroupIndex < 0)
             return false;
         if (existingGroupIndex == _currentGroupIndex)
@@ -412,52 +419,55 @@ internal class SlotTableWriter
         var existingGroup = _groups[existingGroupIndex];
         var existingGroupSlotIndex = LogicalSlotIndex(_groups[existingGroupIndex].DataAnchorId);
 
+        Debug.Log($"Moving group {key}");
+        FileLog("1. Before Move", "Before Move:");
         _groups.MoveGapAt(existingGroupIndex);
         _slots.MoveGapAt(existingGroupSlotIndex);
+        FileLog("2. After Move Gap", "After Move Gap:");
         var existingGroupAbsoluteIndex = AbsoluteGroupIndex(existingGroupIndex);
-        Log("Before shift");
+        var existingGroupAbsoluteSlotIndex = AbsoluteSlotIndex(existingGroupSlotIndex);
+
         ShiftGroupsAnchors(
             startIndex: existingGroupAbsoluteIndex,
             count: existingGroup.Size,
             offset: AnchorLockOffset,
             checkLock: false
         );
-
-        var existingGroupAbsoluteSlotIndex = AbsoluteSlotIndex(existingGroupSlotIndex);
-        ShiftSlotsAnchors(
-            startIndex: existingGroupAbsoluteSlotIndex,
-            count: existingGroup.SlotsSize,
-            offset: AnchorLockOffset,
-            checkLock: false
-        );
-        Log("Before move");
-
-        _groups.Move(
+        _groups. Move(
             startIndex: existingGroupIndex,
             targetIndex: _currentGroupIndex,
             count: existingGroup.Size
         );
-        _slots.Move(
-            startIndex: existingGroupSlotIndex,
-            targetIndex: _currentSlotIndex,
-            count: existingGroup.SlotsSize
-        );
-        Log("After move");
         ShiftGroupsAnchors(
             startIndex: AnchorLockOffset + existingGroupAbsoluteIndex,
             count: existingGroup.Size,
             offset: -AnchorLockOffset + _currentGroupIndex - existingGroupAbsoluteIndex,
             checkLock: false
         );
+        FileLog("3. After Move Groups", "After Move Groups:");
+        ShiftSlotsAnchors(
+            startIndex: existingGroupAbsoluteSlotIndex,
+            count: existingGroup.SlotsSize,
+            offset: AnchorLockOffset,
+            checkLock: false
+        );
+        FileLog("3.1. After locking anchors", "After locking anchors:");
+        Debug.Log(_slots.GapLength);
+        _slots.Move(
+            startIndex: existingGroupSlotIndex,
+            targetIndex: _currentSlotIndex,
+            count: existingGroup.SlotsSize
+        );
+        FileLog("3.2. After moving slot values", "After moving slot values:");
         ShiftSlotsAnchors(
             startIndex: AnchorLockOffset + existingGroupAbsoluteSlotIndex,
             count: existingGroup.SlotsSize,
             offset: -AnchorLockOffset + _currentSlotIndex - existingGroupAbsoluteSlotIndex,
             checkLock: false
         );
-        Log("After shift");
+        FileLog("3.3. After Move Slots", "After Move Slots:");
+        FileLog("4. After Move", "After move:");
 
-        
         return true;
     }
 
@@ -982,15 +992,15 @@ internal class SlotTableWriter
 
     private void EnterGroup(ComposeGroup group)
     {
-        SyncElementIndex(group);
+        SyncElementIndex(group, canReinsert: true);
         _currentParentIndex = _currentGroupIndex;
         _enteredParents.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _pendingOffsets.Add(new ComposeGroupOffset(0, 0));
         _currentParentSlotIndex = _currentSlotIndex;
         _currentGroupIndex++;
     }
-    
-    private void SyncElementIndex(ComposeGroup group)
+
+    private void SyncElementIndex(ComposeGroup group, bool canReinsert)
     {
         if (group.ElementIndex == _currentElementIndex)
             return;
@@ -1002,11 +1012,29 @@ internal class SlotTableWriter
             checkedGroup = checkedGroup with { ElementIndex = checkedGroup.ElementIndex + offset };
             _groups[i] = checkedGroup;
             if (checkedGroup.Type == ComposeGroupType.Reusable)
+            {
+                if (canReinsert)
+                    RepositionVisualElement(group);
                 i += checkedGroup.Size;
+            }
             else
                 i++;
         }
+
         _groups[_currentGroupIndex] = group with { ElementIndex = _currentElementIndex };
+    }
+
+    private void RepositionVisualElement(ComposeGroup group)
+    {
+        var slotAnchorId = group.DataAnchorId;
+        if (!slotAnchorId.IsValid)
+            return;
+        var slotAnchor = _slotsAnchors[slotAnchorId];
+        if (!slotAnchor.IsValid)
+            return;
+        var slotIndex = LogicalSlotIndex(slotAnchor.Location);
+        var node = _slots.GetReusableNode(slotIndex);
+        node?.ReInsert(group.ElementIndex);
     }
 
     private void ExitGroup(ComposeGroup currentParent)
@@ -1228,8 +1256,10 @@ internal class SlotTableWriter
     private int AbsoluteGroupIndex(int index) => _groups.LogicalToAbsoluteIndex(index);
     private int LogicalGroupIndex(int index) => _groups.AbsoluteToLogicalIndex(index);
     private int AbsoluteGroupIndex(AnchorId anchorId) => _groupsAnchors[anchorId].Location;
-    private int LogicalGroupIndex(AnchorId anchorId) => _groups.AbsoluteToLogicalIndex(_groupsAnchors[anchorId].Location);
-    
+
+    private int LogicalGroupIndex(AnchorId anchorId) =>
+        _groups.AbsoluteToLogicalIndex(_groupsAnchors[anchorId].Location);
+
     private int AbsoluteSlotIndex(int index) => _slots.LogicalToAbsoluteIndex(index);
     private int LogicalSlotIndex(int index) => _slots.AbsoluteToLogicalIndex(index);
     private int AbsoluteSlotIndex(AnchorId anchorId) => _slotsAnchors[anchorId].Location;
@@ -1237,7 +1267,15 @@ internal class SlotTableWriter
 
     private void Log(object? message)
     {
-        Debug.Log(message + "\n\n" + ToString());
+        var formattedMessage = message + "\n\n" + ToString();
+        Debug.Log(formattedMessage);
+    }
+
+    private void FileLog(string fileName, object? message)
+    {
+        var formattedMessage = message + "\n\n" + ToString();
+        Debug.Log(formattedMessage);
+        SimpleLogger.ReplaceLog(fileName, formattedMessage);
     }
 
     #endregion
@@ -1257,3 +1295,29 @@ internal readonly record struct ComposeGroupOffset(
     int GroupOffset,
     int SlotOffset
 );
+
+public static class SimpleLogger
+{
+    private static readonly string logFilePath = Path.Combine(Application.dataPath, "logs.txt");
+
+    private static readonly string divider =
+        "\n\n-----------------------------------------------------------------------------------------------------------------\n\n";
+
+    public static void Log(object? message)
+    {
+        // Check if file exists
+        if (!File.Exists(logFilePath))
+        {
+            File.WriteAllText(logFilePath, message?.ToString() ?? "");
+        }
+        else
+        {
+            File.AppendAllText(logFilePath, divider + message);
+        }
+    }
+
+    public static void ReplaceLog(string fileName, object? message)
+    {
+        File.WriteAllText(Path.Combine(Application.dataPath, fileName + ".txt"), message?.ToString() ?? "");
+    }
+}

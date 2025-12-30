@@ -8,15 +8,17 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
-internal static class ReusableComposeNode
+internal abstract class ReusableComposeNode
 {
+    public abstract void ReInsert(int index);
+    
     public static ReusableComposeNode<T> Get<T>() where T : VisualElement
     {
         return ReusableComposeNode<T>.Get();
     }
 }
 
-internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
+internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T : VisualElement
 {
     private static readonly NewObjectPool<ReusableComposeNode<T>> _pool = new NewObjectPool<ReusableComposeNode<T>>(
         factory: () => new ReusableComposeNode<T>()
@@ -128,5 +130,18 @@ internal class ReusableComposeNode<T> : IDisposable where T : VisualElement
         _lastTranslate = StyleKeyword.Null;
         
         _pool.Release(this);
+    }
+
+    public override void ReInsert(int index)
+    {
+        if (VisualElement == null)
+            return;
+        var parent = VisualElement.parent;
+        if (parent == null)
+            return;
+        if (parent.GetOrNull(_indexInParent) == VisualElement)
+            return;
+        parent.FastRemove(_indexInParent, VisualElement);
+        parent.FastReinsert(index, VisualElement);
     }
 }

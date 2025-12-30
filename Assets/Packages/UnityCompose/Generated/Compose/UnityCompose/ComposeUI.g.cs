@@ -2,6 +2,7 @@ using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,7 +17,7 @@ public abstract partial class ComposeUI
     private void __Preview()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(2060217662);
+        __composer.StartRestartGroup(1802603447);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -26,6 +27,6 @@ public abstract partial class ComposeUI
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(2060217662, __isRestarted)?.UpdateScope(() => __Preview());
+        __composer.EndRestartGroup(1802603447, __isRestarted)?.UpdateScope(() => __Preview());
     }
 }

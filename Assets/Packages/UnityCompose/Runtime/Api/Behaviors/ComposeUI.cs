@@ -2,6 +2,7 @@ using System;
 using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -47,5 +48,6 @@ public abstract partial class ComposeUI : MonoBehaviour
     protected void PrintTreeStructure()
     {
         Debug.Log(CurrentComposer);
+        SimpleLogger.Log(CurrentComposer);
     }
 }

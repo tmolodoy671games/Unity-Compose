@@ -26,6 +26,12 @@ internal static class ReusableGroupSlotsExtensions
         }
         return reusableNode;
     }
+    
+    public static ReusableComposeNode? GetReusableNode(this Slots slots, int index)
+    {
+        var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
+        return existingNode as ReusableComposeNode;
+    }
 
     public static void SetVisualElement<T>(this Slots slots, int index, T visualElement) where T : VisualElement
     {
