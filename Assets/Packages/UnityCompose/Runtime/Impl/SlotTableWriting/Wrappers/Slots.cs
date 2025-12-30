@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
 
@@ -77,6 +74,8 @@ internal readonly struct Slots
 
     public void InsertAsStruct<T>(int index, T value)
     {
+        if (index == 133)
+            Debug.Log("Insert()");
         _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 
@@ -84,7 +83,7 @@ internal readonly struct Slots
     
     public void Move(int startIndex, int targetIndex, int count)
     {
-        _slots.Move(_buffer, startIndex, targetIndex, count);
+        _slots.Move(startIndex, targetIndex, count);
     }
     
     public void MoveGapAt(int index) => _slots.MoveGapAt(index);

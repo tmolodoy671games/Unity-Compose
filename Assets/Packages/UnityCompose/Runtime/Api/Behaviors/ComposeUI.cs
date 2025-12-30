@@ -50,4 +50,11 @@ public abstract partial class ComposeUI : MonoBehaviour
         Debug.Log(CurrentComposer);
         SimpleLogger.Log(CurrentComposer);
     }
+    
+    [Button]
+    protected void PrintSlots()
+    {
+        Debug.Log(CurrentComposer.SlotsToString());
+        SimpleLogger.Log(CurrentComposer.SlotsToString());
+    }
 }

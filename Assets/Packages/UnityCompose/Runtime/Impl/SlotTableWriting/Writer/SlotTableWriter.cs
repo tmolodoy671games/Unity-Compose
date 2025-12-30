@@ -20,8 +20,6 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Write
 
 internal class SlotTableWriter
 {
-    private const int AnchorLockOffset = 1_000_000;
-
     private readonly Groups _groups;
     private readonly Slots _slots;
     private readonly Anchors _groupsAnchors;
@@ -63,8 +61,8 @@ internal class SlotTableWriter
         _groupsAnchors = new Anchors(AnchorsType.Groups, table.GroupsAnchors, table.FreedGroupAnchors);
         _slotsAnchors = new Anchors(AnchorsType.Slots, table.SlotsAnchors, table.FreedSlotAnchors);
 
-        _groups.AddItemsShiftObserver(it => ShiftGroupsAnchors(it.StartIndex, it.Count, it.Offset, true));
-        _slots.AddItemsShiftObserver(it => ShiftSlotsAnchors(it.StartIndex, it.Count, it.Offset, true));
+        _groups.AddItemsShiftObserver(it => ShiftGroupsAnchors(it.StartIndex, it.Count, it.Offset));
+        _slots.AddItemsShiftObserver(it => ShiftSlotsAnchors(it.StartIndex, it.Count, it.Offset));
     }
 
     private ComposeGroup CurrentParent() => _groups[_currentParentIndex];
@@ -381,14 +379,12 @@ internal class SlotTableWriter
 
     private bool IsTheSameKeyGroup<T>(ComposeGroup group, int key, T dataKey)
     {
-        return group.Type == ComposeGroupType.Key &&
-               group.Key == key &&
-               // _slots.Let(_ =>
-               // {
-               //     Debug.Log(_slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)));
-               //     return true;
-               // }) &&
-               _slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)).Equals(dataKey);
+        if (group.Type != ComposeGroupType.Key)
+            return false;
+        if (group.Key != key)
+            return false;
+        Debug.Log(_slots[LogicalSlotIndex(group.DataAnchorId)]);
+        return _slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)).Equals(dataKey);
     }
 
     private int IndexOfExistingKey<T>(int key, T dataKey)
@@ -418,55 +414,34 @@ internal class SlotTableWriter
             return true;
         var existingGroup = _groups[existingGroupIndex];
         var existingGroupSlotIndex = LogicalSlotIndex(_groups[existingGroupIndex].DataAnchorId);
+        
+        // FileLog("1. Before Move", "Before Move:");
+        _groups.MoveGapAt(_groups.Count);
+        _slots.MoveGapAt(_slots.Count);
+        // FileLog("2. After Move Gap", "After Move Gap:");
+        Log("Before move:");
+        Debug.Log(SlotsToString());
 
-        Debug.Log($"Moving group {key}");
-        FileLog("1. Before Move", "Before Move:");
-        _groups.MoveGapAt(existingGroupIndex);
-        _slots.MoveGapAt(existingGroupSlotIndex);
-        FileLog("2. After Move Gap", "After Move Gap:");
-        var existingGroupAbsoluteIndex = AbsoluteGroupIndex(existingGroupIndex);
-        var existingGroupAbsoluteSlotIndex = AbsoluteSlotIndex(existingGroupSlotIndex);
-
-        ShiftGroupsAnchors(
-            startIndex: existingGroupAbsoluteIndex,
-            count: existingGroup.Size,
-            offset: AnchorLockOffset,
-            checkLock: false
-        );
-        _groups. Move(
+        _groups.Move(
             startIndex: existingGroupIndex,
             targetIndex: _currentGroupIndex,
             count: existingGroup.Size
         );
-        ShiftGroupsAnchors(
-            startIndex: AnchorLockOffset + existingGroupAbsoluteIndex,
-            count: existingGroup.Size,
-            offset: -AnchorLockOffset + _currentGroupIndex - existingGroupAbsoluteIndex,
-            checkLock: false
-        );
-        FileLog("3. After Move Groups", "After Move Groups:");
-        ShiftSlotsAnchors(
-            startIndex: existingGroupAbsoluteSlotIndex,
-            count: existingGroup.SlotsSize,
-            offset: AnchorLockOffset,
-            checkLock: false
-        );
-        FileLog("3.1. After locking anchors", "After locking anchors:");
-        Debug.Log(_slots.GapLength);
+        // FileLog("3. After Move Groups", "After Move Groups:");
+
+        Debug.Log($"SlotsMove({existingGroupSlotIndex}, {_currentSlotIndex}, {existingGroup.SlotsSize})");
         _slots.Move(
             startIndex: existingGroupSlotIndex,
             targetIndex: _currentSlotIndex,
             count: existingGroup.SlotsSize
         );
-        FileLog("3.2. After moving slot values", "After moving slot values:");
-        ShiftSlotsAnchors(
-            startIndex: AnchorLockOffset + existingGroupAbsoluteSlotIndex,
-            count: existingGroup.SlotsSize,
-            offset: -AnchorLockOffset + _currentSlotIndex - existingGroupAbsoluteSlotIndex,
-            checkLock: false
-        );
-        FileLog("3.3. After Move Slots", "After Move Slots:");
-        FileLog("4. After Move", "After move:");
+        Log("After slots move:");
+        Debug.Log(SlotsToString());
+        // FileLog("3.1. After locking anchors", "After locking anchors:");
+        // FileLog("3.2. After moving slot values", "After moving slot values:");
+
+        // FileLog("3.3. After Move Slots", "After Move Slots:");
+        // FileLog("4. After Move", "After move:");
 
         return true;
     }
@@ -1128,25 +1103,34 @@ internal class SlotTableWriter
         return builder.ToString();
     }
 
-    private void ShiftGroupsAnchors(int startIndex, int count, int offset, bool checkLock)
+    public string SlotsToString()
+    {
+        return _slots.ToString(_currentSlotIndex);
+    }
+
+    #region Group Anchors
+
+    private void ShiftGroupsAnchors(int startIndex, int count, int offset)
     {
         if (offset == 0)
             return;
-
+        
         for (var i = 0; i < _groupsAnchors.Count; i++)
         {
             var anchor = _groupsAnchors[i];
             if (!anchor.IsValid)
                 continue;
             var location = anchor.Location;
-            if (checkLock && location >= AnchorLockOffset)
-                continue;
             if (location >= startIndex && location < startIndex + count)
                 _groupsAnchors[i] = new Anchor(location + offset);
         }
     }
 
-    private void ShiftSlotsAnchors(int startIndex, int count, int offset, bool checkLock)
+    #endregion
+
+    #region Slot Anchors
+
+    private void ShiftSlotsAnchors(int startIndex, int count, int offset)
     {
         if (offset == 0)
             return;
@@ -1157,12 +1141,13 @@ internal class SlotTableWriter
             if (!anchor.IsValid)
                 continue;
             var location = anchor.Location;
-            if (checkLock && location >= AnchorLockOffset)
-                continue;
             if (location >= startIndex && location < startIndex + count)
                 _slotsAnchors[i] = new Anchor(location + offset);
         }
     }
+
+    #endregion
+
 
     private void ShiftAncestorsGroupSizes(int offset)
     {

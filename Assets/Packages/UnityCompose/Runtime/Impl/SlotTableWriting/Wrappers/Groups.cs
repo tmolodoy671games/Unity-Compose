@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -13,7 +10,6 @@ internal readonly struct Groups
     public const int GroupHeaderSize = 1;
 
     private readonly GapBufferList<ComposeGroup> _groups;
-    private readonly List<ComposeGroup> _buffer = new(0);
 
     public Groups(GapBufferList<ComposeGroup> groups)
     {
@@ -38,7 +34,7 @@ internal readonly struct Groups
 
     public void Move(int startIndex, int targetIndex, int count)
     {
-        _groups.Move(_buffer, startIndex, targetIndex, count);
+        _groups.Move(startIndex, targetIndex, count);
     }
 
     public int LogicalToAbsoluteIndex(int index) => _groups.LogicalToAbsoluteIndex(index);

@@ -74,6 +74,50 @@ internal class GapBufferList<T> : IList<T>
         Count++;
     }
 
+    public void Move(int sourceIndex, int targetIndex, int count)
+    {
+        const int LockOffset = 1_000_000_000;
+        if (sourceIndex == targetIndex || count == 0)
+            return;
+        MoveGapAt(Count);
+        var buffer = new T[count];
+
+        // Copy to buffer:
+        Array.Copy(
+            sourceArray: _array,
+            sourceIndex: sourceIndex,
+            destinationArray: buffer,
+            destinationIndex: 0,
+            length: count
+        );
+        NotifyElementsShift(sourceIndex, count, LockOffset);
+
+        // Remove space:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: sourceIndex + count,
+            destinationIndex: sourceIndex,
+            length: Count - (sourceIndex + count)
+        );
+        NotifyElementsShift(sourceIndex + count, Count - (sourceIndex + count), -count);
+
+        // Allocate space:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: targetIndex,
+            destinationIndex: targetIndex + count,
+            length: Count - (targetIndex + count)
+        );
+        NotifyElementsShift(targetIndex, Count - (targetIndex + count), count);
+
+        // Set elements:
+        for (var i = 0; i < count; i++)
+            _array[targetIndex + i] = buffer[i];
+        NotifyElementsShift(sourceIndex + LockOffset, count, targetIndex - sourceIndex - LockOffset);
+    }
+
     public void InsertRange(int index, List<T> items)
     {
         EnsureGapSize(items.Count);
@@ -226,7 +270,7 @@ internal class GapBufferList<T> : IList<T>
         {
             // Left side:
             var count = GapStart - index;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(index, count, GapLength));
+            NotifyElementsShift(index, count, GapLength);
             Array.Copy(
                 sourceArray: _array,
                 sourceIndex: index,
@@ -239,7 +283,7 @@ internal class GapBufferList<T> : IList<T>
         {
             // Right side:
             var count = index - GapStart;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(GapStart + GapLength, count, -GapLength));
+            NotifyElementsShift(GapStart + GapLength, count, -GapLength);
             Array.Copy(
                 sourceArray: _array,
                 sourceIndex: GapStart + GapLength,
@@ -274,7 +318,7 @@ internal class GapBufferList<T> : IList<T>
         if (GapStart != Count)
         {
             var count = Count - (GapStart + GapLength) + 1;
-            _onItemsShift?.Invoke(new ItemsShiftEvent(GapStart + GapLength, count, DesiredGapSize - GapLength));
+            NotifyElementsShift(GapStart + GapLength, count, DesiredGapSize - GapLength);
             Array.Copy(
                 sourceArray: _array,
                 destinationArray: _array,
@@ -285,6 +329,13 @@ internal class GapBufferList<T> : IList<T>
         }
 
         GapLength = DesiredGapSize;
+    }
+
+    private void NotifyElementsShift(int startIndex, int count, int offset)
+    {
+        if (count == 0 || offset == 0)
+            return;
+        _onItemsShift?.Invoke(new ItemsShiftEvent(startIndex, count, offset));
     }
 }
 

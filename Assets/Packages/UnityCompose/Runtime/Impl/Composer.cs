@@ -265,4 +265,9 @@ public class Composer
     {
         return _writer.ToString();
     }
+
+    public string SlotsToString()
+    {
+        return _writer.SlotsToString();
+    }
 }
