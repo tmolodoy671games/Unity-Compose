@@ -9,7 +9,9 @@ internal readonly record struct ComposeGroup(
     AnchorId DataAnchorId,
     int SlotsSize,
     int ElementIndex,
-    int ElementsCount
+    int ElementsCount,
+    bool ContainsKeyGroups,
+    bool CalledThisComposition
 );
 
 internal enum ComposeGroupType : byte

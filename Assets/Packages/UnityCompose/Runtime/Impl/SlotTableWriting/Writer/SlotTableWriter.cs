@@ -32,6 +32,7 @@ internal class SlotTableWriter
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
     private readonly List<ComposeGroupOffset> _pendingOffsets = new();
     private readonly Stack<ComposeGroupEntry> _enteredModifierGroups = new();
+    private readonly Stack<ComposeGroupEntry> _enteredKeyGroups = new();
 
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
@@ -100,7 +101,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 0
+            ElementsCount: 0,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertPreviousState(_currentSlotIndex);
@@ -249,7 +252,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 0
+            ElementsCount: 0,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         EnterGroup(newGroup);
@@ -298,7 +303,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 1
+            ElementsCount: 1,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertVisualElement(_currentSlotIndex);
@@ -335,6 +342,7 @@ internal class SlotTableWriter
 #endif
         if (IsThereAlreadyAGroup())
         {
+            var indexOfExistingKeyGroup = IndexOfExistingKey(key, dataKey);
             if (TryFindAndMoveExisingKeyGroup(key, dataKey))
             {
                 // Debug.Log($"Moving existing group {key}");
@@ -347,9 +355,12 @@ internal class SlotTableWriter
             // throw new ArgumentOutOfRangeException("Should be unreachable");
         }
 
-        // Debug.Log(
-        //     $"Inserting new group {key}. currentSlotIndex: {_currentSlotIndex}, absoluteSlotIndex: {AbsoluteSlotIndex(_currentSlotIndex)}"
-        // );
+        var parent = CurrentParent();
+        if (!parent.ContainsKeyGroups)
+        {
+            parent = parent with { ContainsKeyGroups = true };
+            _groups[_currentParentIndex] = parent;
+        }
         var newGroup = new ComposeGroup(
             Key: key,
             Type: ComposeGroupType.Key,
@@ -359,7 +370,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: _slotsAnchors.AllocateAnchor((_currentSlotIndex)),
             ElementIndex: _currentElementIndex,
-            ElementsCount: 0
+            ElementsCount: 0,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertKey(_currentSlotIndex, dataKey);
@@ -390,7 +403,7 @@ internal class SlotTableWriter
     private int IndexOfExistingKey<T>(int key, T dataKey)
     {
         var parent = CurrentParent();
-        var startIndex = _currentGroupIndex;
+        var startIndex = _currentParentIndex + 1;
         var endIndex = _currentParentIndex + parent.Size;
         for (var i = startIndex; i < endIndex;)
         {
@@ -435,13 +448,6 @@ internal class SlotTableWriter
             targetIndex: _currentSlotIndex,
             count: existingGroup.SlotsSize
         );
-        Log("After slots move:");
-        Debug.Log(SlotsToString());
-        // FileLog("3.1. After locking anchors", "After locking anchors:");
-        // FileLog("3.2. After moving slot values", "After moving slot values:");
-
-        // FileLog("3.3. After Move Slots", "After Move Slots:");
-        // FileLog("4. After Move", "After move:");
 
         return true;
     }
@@ -616,7 +622,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 0
+            ElementsCount: 0,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
@@ -749,7 +757,9 @@ internal class SlotTableWriter
             AnchorId: AnchorId.None,
             DataAnchorId: AnchorId.None,
             ElementIndex: _currentElementIndex,
-            ElementsCount: 1
+            ElementsCount: 1,
+            ContainsKeyGroups: false,
+            CalledThisComposition: true
         );
         _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
