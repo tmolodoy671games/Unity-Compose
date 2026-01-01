@@ -9,6 +9,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         [Composable]
         protected override void Content()
         {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = -1;
             var parentSize = Remember(() => IMutableStableProperty.Create(Vector2.zero));
             Box(
                 modifier: Modifier

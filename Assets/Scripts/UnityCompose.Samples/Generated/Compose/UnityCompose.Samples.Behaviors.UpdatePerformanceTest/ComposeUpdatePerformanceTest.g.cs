@@ -15,10 +15,12 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
+                QualitySettings.vSyncCount = 0;
+                Application.targetFrameRate = -1;
                 var parentSize = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityEngine.Vector2>>(IMutableStableProperty.Create(Vector2.zero));
                 Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned(!__composer.Changed(parentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.SizeWithPaddings)), content: !__composer.Changed(parentSize) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    __composer.StartReplaceGroup(-1806804379);
+                    __composer.StartReplaceGroup(-773339715);
                     for (var i = 0; i < 1_00; i++)
                     {
                         var currentI = i;
@@ -31,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                         }));
                     }
 
-                    __composer.EndReplaceGroup(-1806804379);
+                    __composer.EndReplaceGroup(-773339715);
                 }));
             }
             else
