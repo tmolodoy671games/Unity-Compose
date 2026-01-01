@@ -342,7 +342,7 @@ internal class SlotTableWriter
 #endif
         if (IsThereAlreadyAGroup())
         {
-            if (TryFindAndMoveExisingKeyGroup(key, dataKey))
+            if (TryFindAndSwapExisingKeyGroup(key, dataKey))
             {
                 // Debug.Log($"Moving existing group {key}");
                 var existingGroup = _groups[_currentGroupIndex];
@@ -416,7 +416,7 @@ internal class SlotTableWriter
         return -1;
     }
 
-    private bool TryFindAndMoveExisingKeyGroup<T>(int key, T dataKey)
+    private bool TryFindAndSwapExisingKeyGroup<T>(int key, T dataKey)
     {
         var existingGroupIndex = IndexOfExistingKey(key, dataKey);
         // Debug.Log($"{key}, {dataKey}: {existingGroupIndex}");
@@ -426,26 +426,27 @@ internal class SlotTableWriter
             return true;
         var existingGroup = _groups[existingGroupIndex];
         var existingGroupSlotIndex = LogicalSlotIndex(_groups[existingGroupIndex].DataAnchorId);
+        var currentGroup = _groups[_currentGroupIndex];
         
-        // FileLog("1. Before Move", "Before Move:");
-        _groups.MoveGapAt(_groups.Count);
-        _slots.MoveGapAt(_slots.Count);
-        // FileLog("2. After Move Gap", "After Move Gap:");
+        FileLog("1. Before Move", "Before Move:");
+        FileLog("2. After Move Gap", "After Move Gap:");
         Log("Before move:");
         Debug.Log(SlotsToString());
 
-        _groups.Move(
-            startIndex: existingGroupIndex,
+        _groups.Swap(
+            sourceIndex: existingGroupIndex,
+            sourceCount: existingGroup.Size,
             targetIndex: _currentGroupIndex,
-            count: existingGroup.Size
+            targetCount: currentGroup.Size
         );
-        // FileLog("3. After Move Groups", "After Move Groups:");
+        FileLog("3. After Move Groups", "After Move Groups:");
 
         Debug.Log($"SlotsMove({existingGroupSlotIndex}, {_currentSlotIndex}, {existingGroup.SlotsSize})");
-        _slots.Move(
-            startIndex: existingGroupSlotIndex,
+        _slots.Swap(
+            sourceIndex: existingGroupSlotIndex,
+            sourceCount: existingGroup.SlotsSize,
             targetIndex: _currentSlotIndex,
-            count: existingGroup.SlotsSize
+            targetCount: currentGroup.SlotsSize
         );
 
         return true;

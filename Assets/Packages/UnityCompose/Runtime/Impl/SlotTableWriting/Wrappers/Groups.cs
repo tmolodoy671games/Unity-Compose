@@ -36,6 +36,11 @@ internal readonly struct Groups
     {
         _groups.Move(startIndex, targetIndex, count);
     }
+    
+    public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
+    {
+        _groups.Swap(sourceIndex, sourceCount, targetIndex, targetCount);
+    }
 
     public int LogicalToAbsoluteIndex(int index) => _groups.LogicalToAbsoluteIndex(index);
     public int AbsoluteToLogicalIndex(int index) => _groups.AbsoluteToLogicalIndex(index);
