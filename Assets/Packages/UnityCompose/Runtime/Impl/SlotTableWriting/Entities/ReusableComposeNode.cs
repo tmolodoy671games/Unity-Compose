@@ -134,6 +134,9 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
     public override void ReInsert(int index)
     {
+        if (_indexInParent == index)
+            return;
+        _indexInParent = index;
         if (VisualElement == null)
             return;
         var parent = VisualElement.parent;
@@ -143,5 +146,10 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
             return;
         parent.FastRemove(_indexInParent, VisualElement);
         parent.FastReinsert(index, VisualElement);
+    }
+
+    public override string ToString()
+    {
+        return $"ReusableComposeNode({VisualElement?.Format()})";
     }
 }

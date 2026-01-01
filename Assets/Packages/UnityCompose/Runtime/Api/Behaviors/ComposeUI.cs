@@ -48,13 +48,13 @@ public abstract partial class ComposeUI : MonoBehaviour
     protected void PrintTreeStructure()
     {
         Debug.Log(CurrentComposer);
-        SimpleLogger.Log(CurrentComposer);
+        // SimpleLogger.Log(CurrentComposer);
     }
     
     [Button]
     protected void PrintSlots()
     {
         Debug.Log(CurrentComposer.SlotsToString());
-        SimpleLogger.Log(CurrentComposer.SlotsToString());
+        // SimpleLogger.Log(CurrentComposer.SlotsToString());
     }
 }

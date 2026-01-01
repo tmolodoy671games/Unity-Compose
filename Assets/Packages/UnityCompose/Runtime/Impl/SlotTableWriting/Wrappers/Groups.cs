@@ -90,6 +90,20 @@ internal readonly struct Groups
 
 internal static class ComposeGroupExtensions
 {
+    public static int MetadataSlotsSize(this ComposeGroup group)
+    {
+        return group.Type switch
+        {
+            ComposeGroupType.Replace => 0,
+            ComposeGroupType.Restart => RestartGroup.MetadataSize,
+            ComposeGroupType.Reusable => ReusableGroup.MetadataSize,
+            ComposeGroupType.Local => LocalGroup.MetadataSize,
+            ComposeGroupType.Movable => MovableGroup.MetadataSize,
+            ComposeGroupType.Modifier => ModifierGroup.MetadataSize,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+    
     public static int Index(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         if (!group.AnchorId.IsValid)

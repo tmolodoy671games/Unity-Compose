@@ -14,7 +14,7 @@ public partial interface IModifier
 
     void Revert(VisualElement element);
 
-    [Composable]
+    [Composable, Compiled]
     IModifier Compose() => this;
     
     public static IModifier operator +(IModifier left, IModifier right)

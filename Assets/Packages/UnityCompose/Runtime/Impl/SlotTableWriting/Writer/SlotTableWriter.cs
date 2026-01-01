@@ -301,7 +301,7 @@ internal class SlotTableWriter
             Size: 1,
             SlotsSize: 1,
             AnchorId: AnchorId.None,
-            DataAnchorId: AnchorId.None,
+            DataAnchorId: _slotsAnchors.AllocateAnchor(_currentSlotIndex),
             ElementIndex: _currentElementIndex,
             ElementsCount: 1,
             ContainsKeyGroups: false,
@@ -347,7 +347,7 @@ internal class SlotTableWriter
                 // Debug.Log($"Moving existing group {key}");
                 var existingGroup = _groups[_currentGroupIndex];
                 EnterGroup(existingGroup);
-                _currentSlotIndex += KeyGroup.MetadataSize;
+                _currentSlotIndex += MovableGroup.MetadataSize;
                 return;
             }
 
@@ -360,12 +360,13 @@ internal class SlotTableWriter
             parent = parent with { ContainsKeyGroups = true };
             _groups[_currentParentIndex] = parent;
         }
+
         var newGroup = new ComposeGroup(
             Key: key,
             Type: ComposeGroupType.Movable,
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
-            SlotsSize: KeyGroup.MetadataSize,
+            SlotsSize: MovableGroup.MetadataSize,
             AnchorId: AnchorId.None,
             DataAnchorId: _slotsAnchors.AllocateAnchor((_currentSlotIndex)),
             ElementIndex: _currentElementIndex,
@@ -376,7 +377,7 @@ internal class SlotTableWriter
         _groups.Insert(_currentGroupIndex, newGroup);
         _slots.InsertKey(_currentSlotIndex, dataKey);
         EnterGroup(newGroup);
-        _currentSlotIndex += KeyGroup.MetadataSize;
+        _currentSlotIndex += MovableGroup.MetadataSize;
     }
 
     public void EndMovableGroup(int key)
@@ -395,7 +396,6 @@ internal class SlotTableWriter
             return false;
         if (group.Key != key)
             return false;
-        Debug.Log(_slots[LogicalSlotIndex(group.DataAnchorId)]);
         return _slots.GetKey<T>(LogicalSlotIndex(group.DataAnchorId)).Equals(dataKey);
     }
 
@@ -427,11 +427,8 @@ internal class SlotTableWriter
         var existingGroup = _groups[existingGroupIndex];
         var existingGroupSlotIndex = LogicalSlotIndex(_groups[existingGroupIndex].DataAnchorId);
         var currentGroup = _groups[_currentGroupIndex];
-        
-        FileLog("1. Before Move", "Before Move:");
-        FileLog("2. After Move Gap", "After Move Gap:");
-        Log("Before move:");
-        Debug.Log(SlotsToString());
+
+        // FileLog("1. Before Move");
 
         _groups.Swap(
             sourceIndex: existingGroupIndex,
@@ -439,15 +436,16 @@ internal class SlotTableWriter
             targetIndex: _currentGroupIndex,
             targetCount: currentGroup.Size
         );
-        FileLog("3. After Move Groups", "After Move Groups:");
+        // FileLog("2. After Move Groups");
 
-        Debug.Log($"SlotsMove({existingGroupSlotIndex}, {_currentSlotIndex}, {existingGroup.SlotsSize})");
+        // Debug.Log($"SlotsMove({existingGroupSlotIndex}, {_currentSlotIndex}, {existingGroup.SlotsSize})");
         _slots.Swap(
             sourceIndex: existingGroupSlotIndex,
             sourceCount: existingGroup.SlotsSize,
             targetIndex: _currentSlotIndex,
             targetCount: currentGroup.SlotsSize
         );
+        // FileLog("2. After Move Slots");
 
         return true;
     }
@@ -989,27 +987,28 @@ internal class SlotTableWriter
     {
         if (group.ElementIndex == _currentElementIndex)
             return;
+        // Log($"SyncElementIndex: {group.ElementIndex} vs {_currentElementIndex}");
         var offset = _currentElementIndex - group.ElementIndex;
         var maxIndex = _currentGroupIndex + group.Size;
-        for (var i = _currentGroupIndex; i < maxIndex;)
+        for (var groupIndex = _currentGroupIndex; groupIndex < maxIndex;)
         {
-            var checkedGroup = _groups[i];
+            var checkedGroup = _groups[groupIndex];
             checkedGroup = checkedGroup with { ElementIndex = checkedGroup.ElementIndex + offset };
-            _groups[i] = checkedGroup;
+            _groups[groupIndex] = checkedGroup;
             if (checkedGroup.Type == ComposeGroupType.Reusable)
             {
                 if (canReinsert)
-                    RepositionVisualElement(group);
-                i += checkedGroup.Size;
+                    RepositionVisualElement(checkedGroup, checkedGroup.ElementIndex);
+                groupIndex += checkedGroup.Size;
             }
             else
-                i++;
+                groupIndex++;
         }
 
-        _groups[_currentGroupIndex] = group with { ElementIndex = _currentElementIndex };
+        // Log("After SyncElementIndex");
     }
 
-    private void RepositionVisualElement(ComposeGroup group)
+    private void RepositionVisualElement(ComposeGroup group, int elementIndex)
     {
         var slotAnchorId = group.DataAnchorId;
         if (!slotAnchorId.IsValid)
@@ -1019,7 +1018,7 @@ internal class SlotTableWriter
             return;
         var slotIndex = LogicalSlotIndex(slotAnchor.Location);
         var node = _slots.GetReusableNode(slotIndex);
-        node?.ReInsert(group.ElementIndex);
+        node?.ReInsert(elementIndex);
     }
 
     private void ExitGroup(ComposeGroup currentParent)
@@ -1124,7 +1123,7 @@ internal class SlotTableWriter
     {
         if (offset == 0)
             return;
-        
+
         for (var i = 0; i < _groupsAnchors.Count; i++)
         {
             var anchor = _groupsAnchors[i];
@@ -1266,9 +1265,9 @@ internal class SlotTableWriter
         Debug.Log(formattedMessage);
     }
 
-    private void FileLog(string fileName, object? message)
+    private void FileLog(string fileName)
     {
-        var formattedMessage = message + "\n\n" + ToString();
+        var formattedMessage = fileName + ":\n\n" + ToString();
         Debug.Log(formattedMessage);
         SimpleLogger.ReplaceLog(fileName, formattedMessage);
     }
