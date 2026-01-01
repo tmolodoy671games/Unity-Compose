@@ -12,9 +12,9 @@ public static partial class ComposeFunctions
     {
         var composer = CurrentComposer;
         var intKey = key?.GetHashCode() ?? 0;
-        composer.StartKeyGroup(intKey, key);
+        composer.StartMovableGroup(intKey, key);
         KeyImpl(content);
-        composer.EndKeyGroup(intKey);
+        composer.EndMovableGroup(intKey);
     }
 
     [Composable]

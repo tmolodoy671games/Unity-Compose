@@ -74,8 +74,6 @@ internal readonly struct Slots
 
     public void InsertAsStruct<T>(int index, T value)
     {
-        if (index == 133)
-            Debug.Log("Insert()");
         _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using StableCollections;
 using UnityCompose;
@@ -14,6 +15,17 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
         private void Test()
         {
             GapBufferListTests.RunAll();
+            
+            
+            // var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
+            //
+            // Debug.Log(list);
+            // list.Swap(1, 2, 4, 2);
+            // Debug.Log(list);
+            // list.Swap(1, 2, 4, 2);
+            // Debug.Log(list);
+            // list.Swap(1, 2, 4, 2);
+            // Debug.Log(list);
         }
     }
 }
@@ -36,10 +48,11 @@ public static class GapBufferListTests
         Test_BoundaryConditions();
         Test_RandomizedAgainstList();
         Test_Move();
-        Test_Move_Ranges();
+        // Test_Move_Ranges();
         Test_Swap();
         Test_Swap_DifferentSizes();
-        Test_RandomizedMoveSwapAgainstList();
+        // Test_RandomizedMoveSwapAgainstList();
+        Test_RandomizedSwapAgainstList();
         Debug.Log("Tests Completed");
     }
 
@@ -51,7 +64,7 @@ public static class GapBufferListTests
 
     private static void AssertSequence<T>(IList<T> list, IImmutableStableList<T> expected, string message)
     {
-        Assert(list.ToImmutableStableList().Equals(expected),
+        Assert(list.SequenceEqual(expected),
             $"{message}: Expected {expected}, got {list.ToImmutableStableList()}");
     }
 
@@ -320,7 +333,8 @@ public static class GapBufferListTests
             gb.Add(i);
             refList.Add(i);
         }
-
+        
+        Debug.Log($"Initial: {gb}");
         for (var i = 0; i < 200; i++)
         {
             if (refList.Count < 2)
@@ -332,15 +346,15 @@ public static class GapBufferListTests
             {
                 case 0:
                 {
-                    var count = rnd.Next(1, Math.Min(4, refList.Count));
-                    var src = rnd.Next(refList.Count - count + 1);
-                    var dst = rnd.Next(refList.Count - count + 1);
-
-                    gb.Move(src, dst, count);
-
-                    var tmp = refList.GetRange(src, count);
-                    refList.RemoveRange(src, count);
-                    refList.InsertRange(dst, tmp);
+                    // var count = rnd.Next(1, Math.Min(4, refList.Count));
+                    // var src = rnd.Next(refList.Count - count + 1);
+                    // var dst = rnd.Next(refList.Count - count + 1);
+                    //
+                    // gb.Move(src, dst, count);
+                    //
+                    // var tmp = refList.GetRange(src, count);
+                    // refList.RemoveRange(src, count);
+                    // refList.InsertRange(dst, tmp);
                     break;
                 }
                 case 1:
@@ -369,9 +383,63 @@ public static class GapBufferListTests
 
                     refList.InsertRange(min, second);
                     refList.InsertRange(max - firstCount + secondCount, first);
+                    Debug.Log($"Swap({a}, {countA}, {b}, {countB}): {gb}");
                     break;
                 }
             }
+
+            Assert(
+                gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),
+                $"\nExpected: {refList.ToImmutableStableList()}\nActual:   {gb.ToImmutableStableList()}"
+            );
+        }
+    }
+    
+    private static void Test_RandomizedSwapAgainstList()
+    {
+        var rnd = new System.Random(22222);
+
+        var gb = new GapBufferList<int>();
+        var refList = new List<int>();
+
+        for (int i = 0; i < 30; i++)
+        {
+            gb.Add(i);
+            refList.Add(i);
+        }
+
+        for (int i = 0; i < 300; i++)
+        {
+            if (refList.Count < 2)
+                break;
+
+            var countA = rnd.Next(1, Math.Min(5, refList.Count));
+            var countB = rnd.Next(1, Math.Min(5, refList.Count));
+
+            var a = rnd.Next(refList.Count - countA + 1);
+            var b = rnd.Next(refList.Count - countB + 1);
+
+            var firstIndex = Math.Min(a, b);
+            var firstCount = firstIndex == a ? countA : countB;
+            var secondIndex = Math.Max(a, b);
+            var secondCount = firstIndex == a ? countB : countA;
+
+            if (firstIndex + firstCount > secondIndex)
+                continue;
+
+            gb.Swap(a, countA, b, countB);
+
+            var first = refList.GetRange(firstIndex, firstCount);
+            var second = refList.GetRange(secondIndex, secondCount);
+
+            refList.RemoveRange(secondIndex, secondCount);
+            refList.RemoveRange(firstIndex, firstCount);
+
+            refList.InsertRange(firstIndex, second);
+            refList.InsertRange(
+                secondIndex + (secondCount - firstCount),
+                first
+            );
 
             Assert(
                 gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),

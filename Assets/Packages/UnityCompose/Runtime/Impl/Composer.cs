@@ -111,9 +111,9 @@ public class Composer
 
     #region Key Group
 
-    public void StartKeyGroup<T>(int key, T dataKey) => _writer.StartKeyGroup(key, dataKey);
+    public void StartMovableGroup<T>(int key, T dataKey) => _writer.StartMovableGroup(key, dataKey);
 
-    public void EndKeyGroup(int key) => _writer.EndKeyGroup(key);
+    public void EndMovableGroup(int key) => _writer.EndMovableGroup(key);
 
     #endregion
 

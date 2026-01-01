@@ -20,6 +20,6 @@ internal enum ComposeGroupType : byte
     Restart,
     Reusable,
     Local,
-    Key,
+    Movable,
     Modifier,
 }

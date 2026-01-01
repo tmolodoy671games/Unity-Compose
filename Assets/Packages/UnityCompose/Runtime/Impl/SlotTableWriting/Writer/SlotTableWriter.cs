@@ -335,7 +335,7 @@ internal class SlotTableWriter
 
     #region Key Group
 
-    public void StartKeyGroup<T>(int key, T dataKey)
+    public void StartMovableGroup<T>(int key, T dataKey)
     {
 #if LOGGING
         Log($"StartKeyGroup({key}, {dataKey})");
@@ -362,7 +362,7 @@ internal class SlotTableWriter
         }
         var newGroup = new ComposeGroup(
             Key: key,
-            Type: ComposeGroupType.Key,
+            Type: ComposeGroupType.Movable,
             ParentAnchorId: GetOrAllocateParentAnchor(),
             Size: 1,
             SlotsSize: KeyGroup.MetadataSize,
@@ -379,7 +379,7 @@ internal class SlotTableWriter
         _currentSlotIndex += KeyGroup.MetadataSize;
     }
 
-    public void EndKeyGroup(int key)
+    public void EndMovableGroup(int key)
     {
         var currentParent = CurrentParent();
 #if ASSERTIONS
@@ -391,7 +391,7 @@ internal class SlotTableWriter
 
     private bool IsTheSameKeyGroup<T>(ComposeGroup group, int key, T dataKey)
     {
-        if (group.Type != ComposeGroupType.Key)
+        if (group.Type != ComposeGroupType.Movable)
             return false;
         if (group.Key != key)
             return false;

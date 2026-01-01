@@ -120,7 +120,7 @@ internal static class ComposeGroupExtensions
         builder.Append($", ElementIndex: {group.ElementIndex}");
         builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
-        if (group.Type == ComposeGroupType.Key && group.DataAnchorId.IsValid)
+        if (group.Type == ComposeGroupType.Movable && group.DataAnchorId.IsValid)
         {
             // builder.Append($", Absolute Index: {groupsAnchors[group.AnchorId].Location}");
             // var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
