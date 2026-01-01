@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1383445055);
+            __composer.StartRestartGroup(-1756185062);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -23,14 +23,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1383445055, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-1756185062, __isRestarted)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-509352147);
+            __composer.StartRestartGroup(570443786);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -41,14 +41,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-509352147, __isRestarted)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(570443786, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(53511151);
+            __composer.StartRestartGroup(-2037096602);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -72,14 +72,14 @@ namespace UnityCompose.Samples.Behaviors
                         }));
                     }));
                     Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
-                    __composer.StartReplaceGroup(-1135001532);
+                    __composer.StartReplaceGroup(-1311451559);
                     if (layout.Value.HasValue && parentCoordinates.Value.HasValue)
                     {
                         var parentCoordinatesValue = parentCoordinates.Value.Value;
                         Spacer(modifier: Modifier.Size(10).Background(Color.red).Float().Position(left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x, top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y));
                     }
 
-                    __composer.EndReplaceGroup(-1135001532);
+                    __composer.EndReplaceGroup(-1311451559);
                 }));
             }
             else
@@ -87,7 +87,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(53511151, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(-2037096602, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

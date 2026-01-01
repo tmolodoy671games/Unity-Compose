@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
     {
         var(__key, __coroutine) = (key, coroutine);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1604925717);
+        __composer.StartRestartGroup(585726792);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __coroutine)))
         {
@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1604925717, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __coroutine));
+        __composer.EndRestartGroup(585726792, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __coroutine));
     }
 
     [Composable]
@@ -34,7 +34,7 @@ public static partial class ComposeFunctions
     {
         var(__key, __delay, __block) = (key, delay, block);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-545396455);
+        __composer.StartRestartGroup(-1688951455);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __delay, __block)))
         {
@@ -45,7 +45,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-545396455, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block));
+        __composer.EndRestartGroup(-1688951455, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block));
     }
 
     [Composable]
@@ -53,7 +53,7 @@ public static partial class ComposeFunctions
     {
         var(__key, __delay, __block) = (key, delay, block);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(758945577);
+        __composer.StartRestartGroup(-1698339585);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __delay, __block)))
         {
@@ -64,7 +64,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(758945577, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block));
+        __composer.EndRestartGroup(-1698339585, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block));
     }
 
     [Composable]
@@ -72,7 +72,7 @@ public static partial class ComposeFunctions
     {
         var(__key, __effect) = (key, effect);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-2032713307);
+        __composer.StartRestartGroup(-80690675);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__key, __effect)))
         {
@@ -83,6 +83,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-2032713307, __isRestarted)?.UpdateScope(() => __DisposableEffect(__key, __effect));
+        __composer.EndRestartGroup(-80690675, __isRestarted)?.UpdateScope(() => __DisposableEffect(__key, __effect));
     }
 }
