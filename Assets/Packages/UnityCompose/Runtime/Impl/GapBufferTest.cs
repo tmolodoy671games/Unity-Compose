@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SharpExtensions;
 using Sirenix.OdinInspector;
 using StableCollections;
 using UnityCompose;
@@ -16,26 +14,14 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
         private void Test()
         {
             GapBufferListTests.RunAll();
-            // var list = new GapBufferList<int>();
-            // for (var i = 0; i < 10; i++)
-            //     list.Add(i);
-            // Debug.Log(list);
         }
     }
 }
 
 public static class GapBufferListTests
 {
-    private static int _tests;
-    private static int _failures;
-
     public static void RunAll()
     {
-        _tests = 0;
-        _failures = 0;
-
-        Debug.Log("=== GapBufferList<T> Tests START ===");
-
         Test_EmptyList();
         Test_Add();
         Test_IndexerGetSet();
@@ -49,50 +35,25 @@ public static class GapBufferListTests
         Test_InsertRemovePatterns();
         Test_BoundaryConditions();
         Test_RandomizedAgainstList();
-
-        Debug.Log($"=== GapBufferList<T> Tests END === Tests: {_tests}, Failures: {_failures}");
+        Test_Move();
+        Test_Move_Ranges();
+        Test_Swap();
+        Test_Swap_DifferentSizes();
+        Test_RandomizedMoveSwapAgainstList();
+        Debug.Log("Tests Completed");
     }
-
-    // ---------------------------------------------------------
-    // Helpers
-    // ---------------------------------------------------------
 
     private static void Assert(bool condition, string message)
     {
-        _tests++;
-        if (!condition)
-        {
-            _failures++;
-            Debug.LogError("[GapBufferListTest FAILED] " + message);
-        }
+        if (condition) return;
+        Debug.LogError("[TEST FAILED] " + message);
     }
 
-    private static GapBufferList<int> NewIntList(params int[] values)
+    private static void AssertSequence<T>(IList<T> list, IImmutableStableList<T> expected, string message)
     {
-        var list = new GapBufferList<int>();
-        for (int i = 0; i < values.Length; i++)
-            list.Add(values[i]);
-        return list;
+        Assert(list.ToImmutableStableList().Equals(expected),
+            $"{message}: Expected {expected}, got {list.ToImmutableStableList()}");
     }
-
-    private static void AssertSequence<T>(IList<T> list, params T[] expected)
-    {
-        Assert(list.Count == expected.Length,
-            $"Count mismatch. Expected {expected.Length}, got {list.Count}");
-
-        int n = Math.Min(list.Count, expected.Length);
-        for (int i = 0; i < n; i++)
-        {
-            Assert(
-                EqualityComparer<T>.Default.Equals(list[i], expected[i]),
-                $"Element mismatch at {i}. Expected {expected[i]}, got {list[i]}: [{expected.JoinToString()}] vs [{list.JoinToString()}]"
-            );
-        }
-    }
-
-    // ---------------------------------------------------------
-    // Tests
-    // ---------------------------------------------------------
 
     private static void Test_EmptyList()
     {
@@ -104,60 +65,56 @@ public static class GapBufferListTests
 
     private static void Test_Add()
     {
-        var list = new GapBufferList<int>();
+        var list = new GapBufferList<int> { 1, 2, 3 };
 
-        list.Add(1);
-        list.Add(2);
-        list.Add(3);
-
-        AssertSequence(list, 1, 2, 3);
+        AssertSequence(list, IImmutableStableList.Create(1, 2, 3), "Test_Add");
     }
 
     private static void Test_IndexerGetSet()
     {
-        var list = NewIntList(10, 20, 30);
+        var list = new GapBufferList<int> { 10, 20, 30 };
 
         Assert(list[1] == 20, "Indexer get failed");
 
         list[1] = 99;
-        AssertSequence(list, 10, 99, 30);
+        AssertSequence(list, IImmutableStableList.Create(10, 99, 30), "Test_IndexerGetSet");
     }
 
     private static void Test_Insert()
     {
-        var list = NewIntList(1, 3, 4);
+        var list = new GapBufferList<int> { 1, 3, 4 };
 
         list.Insert(1, 2);
-        AssertSequence(list, 1, 2, 3, 4);
+        AssertSequence(list, IImmutableStableList.Create(1, 2, 3, 4), "Test_Insert");
 
         list.Insert(0, 0);
-        AssertSequence(list, 0, 1, 2, 3, 4);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4), "Test_Insert");
 
         list.Insert(list.Count, 5);
-        AssertSequence(list, 0, 1, 2, 3, 4, 5);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 5), "Test_Insert");
     }
 
     private static void Test_RemoveAt()
     {
-        var list = NewIntList(0, 1, 2, 3, 4);
+        var list = new GapBufferList<int> { 0, 1, 2, 3, 4 };
 
         list.RemoveAt(2);
-        AssertSequence(list, 0, 1, 3, 4);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 3, 4), "Test_RemoveAt");
 
         list.RemoveAt(0);
-        AssertSequence(list, 1, 3, 4);
+        AssertSequence(list, IImmutableStableList.Create(1, 3, 4), "Test_RemoveAt");
 
         list.RemoveAt(list.Count - 1);
-        AssertSequence(list, 1, 3);
+        AssertSequence(list, IImmutableStableList.Create(1, 3), "Test_RemoveAt");
     }
 
     private static void Test_Remove()
     {
-        var list = NewIntList(1, 2, 3, 2);
+        var list = new GapBufferList<int> { 1, 2, 3, 2 };
 
         bool removed = list.Remove(2);
         Assert(removed, "Remove returned false for existing value");
-        AssertSequence(list, 1, 3, 2);
+        AssertSequence(list, IImmutableStableList.Create(1, 3, 2), "Test_Remove");
 
         removed = list.Remove(999);
         Assert(!removed, "Remove returned true for non-existing value");
@@ -165,18 +122,18 @@ public static class GapBufferListTests
 
     private static void Test_Clear()
     {
-        var list = NewIntList(1, 2, 3);
+        var list = new GapBufferList<int> { 1, 2, 3 };
 
         list.Clear();
         Assert(list.Count == 0, "Clear did not reset Count");
 
         list.Add(42);
-        AssertSequence(list, 42);
+        AssertSequence(list, IImmutableStableList.Create(42), "Test_Clear");
     }
 
     private static void Test_Contains()
     {
-        var list = NewIntList(5, 6, 7);
+        var list = new GapBufferList<int> { 5, 6, 7 };
 
         Assert(list.Contains(6), "Contains failed for existing value");
         Assert(!list.Contains(10), "Contains returned true for missing value");
@@ -184,7 +141,7 @@ public static class GapBufferListTests
 
     private static void Test_CopyTo()
     {
-        var list = NewIntList(1, 2, 3);
+        var list = new GapBufferList<int> { 1, 2, 3 };
         var array = new int[5];
 
         list.CopyTo(array, 1);
@@ -196,7 +153,7 @@ public static class GapBufferListTests
 
     private static void Test_Enumeration()
     {
-        var list = NewIntList(1, 2, 3, 4);
+        var list = new GapBufferList<int> { 1, 2, 3, 4 };
 
         int sum = 0;
         foreach (var v in list)
@@ -205,9 +162,6 @@ public static class GapBufferListTests
         Assert(sum == 10, "Enumeration produced incorrect values");
     }
 
-    /// <summary>
-    /// Stress gap movement: middle inserts/removes
-    /// </summary>
     private static void Test_InsertRemovePatterns()
     {
         var list = new GapBufferList<int>();
@@ -219,7 +173,7 @@ public static class GapBufferListTests
         list.Insert(5, 101);
         list.RemoveAt(6);
 
-        AssertSequence(list, 0, 1, 2, 3, 4, 101, 5, 6, 7, 8, 9);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 101, 5, 6, 7, 8, 9), "Test_InsertRemovePatterns");
     }
 
     private static void Test_BoundaryConditions()
@@ -254,10 +208,6 @@ public static class GapBufferListTests
         }
     }
 
-    /// <summary>
-    /// Compares behavior against List<T> using random ops
-    /// This is the most important test for a gap buffer.
-    /// </summary>
     private static void Test_RandomizedAgainstList()
     {
         var rnd = new System.Random(12345);
@@ -265,60 +215,168 @@ public static class GapBufferListTests
         var gb = new GapBufferList<int>();
         var refList = new List<int>();
 
-        for (int i = 0; i < 500; i++)
+        for (var i = 0; i < 500; i++)
         {
-            int op = rnd.Next(4);
+            var op = rnd.Next(4);
 
             switch (op)
             {
                 case 0: // Add
                 {
-                    int v = rnd.Next(1000);
+                    var v = rnd.Next(1000);
                     gb.Add(v);
                     refList.Add(v);
-                    // Debug.Log($"Add({v})\b" + gb);
                     PerformAssert();
                     break;
                 }
                 case 1: // Insert
                 {
                     if (refList.Count == 0) break;
-                    int idx = rnd.Next(refList.Count);
-                    int v = rnd.Next(1000);
+                    var idx = rnd.Next(refList.Count);
+                    var v = rnd.Next(1000);
                     gb.Insert(idx, v);
                     refList.Insert(idx, v);
-                    // Debug.Log($"Insert({idx}, {v})\b" + gb);
                     PerformAssert();
                     break;
                 }
                 case 2: // RemoveAt
                 {
                     if (refList.Count == 0) break;
-                    int idx = rnd.Next(refList.Count);
+                    var idx = rnd.Next(refList.Count);
                     gb.RemoveAt(idx);
                     refList.RemoveAt(idx);
-                    // Debug.Log($"RemoveAt({idx})\b" + gb);
                     PerformAssert();
                     break;
                 }
                 case 3: // Set
                 {
                     if (refList.Count == 0) break;
-                    int idx = rnd.Next(refList.Count);
-                    int v = rnd.Next(1000);
+                    var idx = rnd.Next(refList.Count);
+                    var v = rnd.Next(1000);
                     gb[idx] = v;
                     refList[idx] = v;
-                    // Debug.Log($"Set({idx}, {v})\b" + gb);
                     PerformAssert();
                     break;
                 }
             }
         }
 
+        return;
+
         void PerformAssert()
         {
             Assert(gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),
                 $"\n{refList.ToImmutableStableList()} vs\n{gb.ToImmutableStableList()}");
+        }
+    }
+
+    private static void Test_Move()
+    {
+        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
+
+        list.Move(1, 4, 1);
+        AssertSequence(list, IImmutableStableList.Create(0, 2, 3, 4, 1, 5), "Test_Move");
+
+        list.Move(4, 1, 1);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 5), "Test_Move");
+    }
+
+    private static void Test_Move_Ranges()
+    {
+        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5, 6 };
+
+        list.Move(1, 5, 2);
+        AssertSequence(list, IImmutableStableList.Create(0, 3, 4, 5, 1, 2, 6), "Test_Move_Ranges");
+
+        list.Move(4, 1, 2);
+        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 5, 6), "Test_Move_Ranges");
+    }
+
+    private static void Test_Swap()
+    {
+        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
+
+        list.Swap(1, 2, 4, 2);
+        AssertSequence(list, IImmutableStableList.Create(0, 4, 5, 3, 1, 2), "Test_Swap");
+    }
+
+    private static void Test_Swap_DifferentSizes()
+    {
+        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5, 6 };
+
+        list.Swap(1, 3, 5, 1);
+        AssertSequence(list, IImmutableStableList.Create(0, 5, 4, 1, 2, 3, 6), "Test_Swap_DifferentSizes");
+    }
+
+    private static void Test_RandomizedMoveSwapAgainstList()
+    {
+        var rnd = new System.Random(54321);
+
+        var gb = new GapBufferList<int>();
+        var refList = new List<int>();
+
+        for (var i = 0; i < 20; i++)
+        {
+            gb.Add(i);
+            refList.Add(i);
+        }
+
+        for (var i = 0; i < 200; i++)
+        {
+            if (refList.Count < 2)
+                break;
+
+            var op = rnd.Next(2);
+
+            switch (op)
+            {
+                case 0:
+                {
+                    var count = rnd.Next(1, Math.Min(4, refList.Count));
+                    var src = rnd.Next(refList.Count - count + 1);
+                    var dst = rnd.Next(refList.Count - count + 1);
+
+                    gb.Move(src, dst, count);
+
+                    var tmp = refList.GetRange(src, count);
+                    refList.RemoveRange(src, count);
+                    refList.InsertRange(dst, tmp);
+                    break;
+                }
+                case 1:
+                {
+                    var countA = rnd.Next(1, Math.Min(4, refList.Count));
+                    var countB = rnd.Next(1, Math.Min(4, refList.Count));
+
+                    var a = rnd.Next(refList.Count - countA + 1);
+                    var b = rnd.Next(refList.Count - countB + 1);
+
+                    if (a == b) break;
+
+                    gb.Swap(a, countA, b, countB);
+
+                    var min = Math.Min(a, b);
+                    var max = Math.Max(a, b);
+
+                    var firstCount = min == a ? countA : countB;
+                    var secondCount = min == a ? countB : countA;
+
+                    var first = refList.GetRange(min, firstCount);
+                    var second = refList.GetRange(max, secondCount);
+
+                    refList.RemoveRange(max, secondCount);
+                    refList.RemoveRange(min, firstCount);
+
+                    refList.InsertRange(min, second);
+                    refList.InsertRange(max - firstCount + secondCount, first);
+                    break;
+                }
+            }
+
+            Assert(
+                gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),
+                $"\nExpected: {refList.ToImmutableStableList()}\nActual:   {gb.ToImmutableStableList()}"
+            );
         }
     }
 }

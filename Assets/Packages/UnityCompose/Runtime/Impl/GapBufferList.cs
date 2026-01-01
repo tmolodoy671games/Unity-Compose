@@ -118,6 +118,96 @@ internal class GapBufferList<T> : IList<T>
         NotifyElementsShift(sourceIndex + LockOffset, count, targetIndex - sourceIndex - LockOffset);
     }
 
+    public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
+    {
+        const int LockOffset = 1_000_000_000;
+        if (sourceIndex == targetIndex || sourceCount == 0 && targetCount == 0)
+            return;
+        MoveGapAt(Count);
+
+        var (firstIndex, firstCount, secondIndex, secondCount) = sourceIndex < targetCount
+            ? (sourceIndex, sourceCount, targetIndex, targetCount)
+            : (targetIndex, targetCount, sourceIndex, sourceCount);
+        var firstBuffer = new T[firstCount];
+        var secondBuffer = new T[secondCount];
+
+        // Copy to buffers:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: firstBuffer,
+            sourceIndex: firstIndex,
+            destinationIndex: 0,
+            length: firstCount
+        );
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: secondBuffer,
+            sourceIndex: secondIndex,
+            destinationIndex: 0,
+            length: secondCount
+        );
+
+        // Remove space:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: secondIndex + secondCount,
+            destinationIndex: secondIndex,
+            length: Count - (secondIndex + secondCount)
+        );
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: firstIndex + firstCount,
+            destinationIndex: firstIndex,
+            length: (Count - secondCount) - (firstIndex + firstCount)
+        );
+
+        // Insert second buffer into first index:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: firstIndex,
+            destinationIndex: firstIndex + secondCount,
+            length: (Count - firstCount - secondCount) - firstIndex
+        );
+        Array.Copy(
+            sourceArray: secondBuffer,
+            destinationArray: _array,
+            sourceIndex: 0,
+            destinationIndex: firstIndex,
+            length: secondCount
+        );
+
+        // Insert first buffer into second index:
+        Array.Copy(
+            sourceArray: _array,
+            destinationArray: _array,
+            sourceIndex: secondIndex,
+            destinationIndex: secondIndex + firstCount,
+            length: (Count - firstCount) - secondIndex
+        );
+        Array.Copy(
+            sourceArray: firstBuffer,
+            destinationArray: _array,
+            sourceIndex: 0,
+            destinationIndex: secondIndex,
+            length: firstCount
+        );
+
+        // Notify observers:
+        // Lock ranges:
+        NotifyElementsShift(firstIndex, firstCount, LockOffset);
+        NotifyElementsShift(secondIndex, secondCount, LockOffset);
+
+        // Move gap between:
+        NotifyElementsShift(firstIndex + firstCount, secondIndex - (firstIndex + firstCount), secondCount - firstCount);
+
+        // Unlock ranges:
+        NotifyElementsShift(firstIndex + LockOffset, firstCount, secondIndex - firstIndex - LockOffset);
+        NotifyElementsShift(secondIndex + LockOffset, secondCount, firstIndex - secondIndex - LockOffset);
+    }
+
     public void InsertRange(int index, List<T> items)
     {
         EnsureGapSize(items.Count);

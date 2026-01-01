@@ -342,7 +342,6 @@ internal class SlotTableWriter
 #endif
         if (IsThereAlreadyAGroup())
         {
-            var indexOfExistingKeyGroup = IndexOfExistingKey(key, dataKey);
             if (TryFindAndMoveExisingKeyGroup(key, dataKey))
             {
                 // Debug.Log($"Moving existing group {key}");
