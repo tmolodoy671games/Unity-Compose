@@ -40,7 +40,7 @@ public static partial class ComposeFunctions
         IComposeCoordinator coordinator,
         Func<ContentTransform>? transition = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
-        Action<float>? onTransitionProgressChanged = null,
+        // Action<float>? onTransitionProgressChanged = null,
         Action<INavigationScope>? content = null,
         IModifier? modifier = null
     )
@@ -110,79 +110,94 @@ public static partial class ComposeFunctions
             modifier: modifier,
             content: () =>
             {
-                LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
-                if (IsInPreview)
-                    return;
-                foreach (var screen in allScreens)
+                // LaunchedEffect(resolvedProgress, () => onTransitionProgressChanged?.Invoke(resolvedProgress));
+
+                var screens = appearingScreens.IsNotEmpty() ? appearingScreens :
+                    disappearingScreens.IsNotEmpty() ? disappearingScreens : allScreens;
+                foreach (var screen in screens)
                 {
-                    var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
-                        () => Switch()
-                            .Case(appearingScreens.Contains(screen), TransitionState.Entering)
-                            .Case(disappearingScreens.Contains(screen), TransitionState.Exiting)
-                            .Default(TransitionState.Idle)
-                            .Get()
-                    );
-                    if (screenState == TransitionState.Exiting && isTransitionFinished)
-                        continue;
-                    if (screenState == TransitionState.Entering && isTransitionFinished)
-                        screenState = TransitionState.Idle;
-                    Key(
-                        key: screen,
-                        content: () =>
-                        {
-                            var parent = CurrentComposer.GetParentVisualElement().NotNull();
-                            var isCurrentScreen = screen.Equals(currentBackStack[^1]);
-                            var contentModifier = screenState switch
-                            {
-                                TransitionState.Idle => Modifier
-                                    .Float(!isCurrentScreen),
-                                TransitionState.Entering => resolvedTransition.Enter
-                                    .Get(resolvedDuration, parent)
-                                    .Float(!isCurrentScreen),
-                                TransitionState.Exiting => resolvedTransition.Exit
-                                    .Get(resolvedDuration, parent)
-                                    .Float(),
-                                _ => throw new ArgumentOutOfRangeException()
-                            };
-                            var state = TransitionResolvedState.Create(
-                                state: screenState,
-                                absoluteProgress: resolvedProgress,
-                                duration: resolvedTransition.TotalDuration
-                            );
-                            var isActive = LocalIsActive.Current;
-                            var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
-                            CompositionLocalProvider(
-                                LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
-                                LocalIsActive.Provides(
-                                    new IsActiveEntry(
-                                        IsActiveSelf: isCurrentScreen &&
-                                                      resolvedProgress.AlmostEquals(1f),
-                                        Parent: isActive
-                                    )
-                                ),
-                                LocalTransitionState.Provides(state.State),
-                                LocalTransitionProgress.Provides(state.Progress),
-                                LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                                LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                                LocalTransitionDuration.Provides(state.Duration),
-                                content: () =>
-                                {
-                                    WithModifiers(
-                                        after: CurrentComposer.GetModifiers().After.OrEmpty()
-                                            .Then(contentModifier),
-                                        content: () =>
-                                        {
-                                            if (content != null)
-                                                content(scope);
-                                            else
-                                                scope.Content();
-                                        }
-                                    );
-                                }
-                            );
-                        }
-                    );
+                    Key(screen, () =>
+                    {
+                        CompositionLocalProvider(
+                            LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
+                            () => screen.Content()
+                        );
+                    });
                 }
+
+                // if (IsInPreview)
+                //     return;
+                // foreach (var screen in allScreens)
+                // {
+                //     var screenState = Remember((screen, currentBackStack, previousBackStack.Value),
+                //         () => Switch()
+                //             .Case(appearingScreens.Contains(screen), TransitionState.Entering)
+                //             .Case(disappearingScreens.Contains(screen), TransitionState.Exiting)
+                //             .Default(TransitionState.Idle)
+                //             .Get()
+                //     );
+                //     if (screenState != TransitionState.Exiting || !isTransitionFinished)
+                //     {
+                //         if (screenState == TransitionState.Entering && isTransitionFinished)
+                //             screenState = TransitionState.Idle;
+                //         Key(
+                //             key: screen,
+                //             content: () =>
+                //             {
+                //                 var parent = CurrentComposer.GetParentVisualElement().NotNull();
+                //                 var isCurrentScreen = screen.Equals(currentBackStack[^1]);
+                //                 var contentModifier = screenState switch
+                //                 {
+                //                     TransitionState.Idle => Modifier
+                //                         .Float(!isCurrentScreen),
+                //                     TransitionState.Entering => resolvedTransition.Enter
+                //                         .Get(resolvedDuration, parent)
+                //                         .Float(!isCurrentScreen),
+                //                     TransitionState.Exiting => resolvedTransition.Exit
+                //                         .Get(resolvedDuration, parent)
+                //                         .Float(),
+                //                     _ => throw new ArgumentOutOfRangeException()
+                //                 };
+                //                 var state = TransitionResolvedState.Create(
+                //                     state: screenState,
+                //                     absoluteProgress: resolvedProgress,
+                //                     duration: resolvedTransition.TotalDuration
+                //                 );
+                //                 var isActive = LocalIsActive.Current;
+                //                 var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
+                //                 CompositionLocalProvider(
+                //                     LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
+                //                     LocalIsActive.Provides(
+                //                         new IsActiveEntry(
+                //                             IsActiveSelf: isCurrentScreen &&
+                //                                           resolvedProgress.AlmostEquals(1f),
+                //                             Parent: isActive
+                //                         )
+                //                     ),
+                //                     LocalTransitionState.Provides(state.State),
+                //                     LocalTransitionProgress.Provides(state.Progress),
+                //                     LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
+                //                     LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
+                //                     LocalTransitionDuration.Provides(state.Duration),
+                //                     content: () =>
+                //                     {
+                //                         WithModifiers(
+                //                             after: CurrentComposer.GetModifiers().After.OrEmpty()
+                //                                 .Then(contentModifier),
+                //                             content: () =>
+                //                             {
+                //                                 if (content != null)
+                //                                     content(scope);
+                //                                 else
+                //                                     scope.Content();
+                //                             }
+                //                         );
+                //                     }
+                //                 );
+                //             }
+                //         );
+                //     }
+                // }
             }
         );
         if (isTransitionFinished)
