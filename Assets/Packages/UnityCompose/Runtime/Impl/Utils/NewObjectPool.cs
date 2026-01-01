@@ -30,7 +30,7 @@ internal class NewObjectPool<T>
         return newInstance;
     }
 
-    public void Release(T instance)
+    public void Return(T instance)
     {
         _onRelease?.Invoke(instance);
         _pool.Push(instance);

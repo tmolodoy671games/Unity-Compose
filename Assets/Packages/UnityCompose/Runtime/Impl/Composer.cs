@@ -254,7 +254,7 @@ public class Composer
         return _writer.GetCompositionLocal(compositionLocal, defaultValueFactory);
     }
 
-    public void UpdateCompositionLocal(IImmutableStableList<CompositionLocalProvides> provides, bool log = false)
+    internal void UpdateCompositionLocal(ICompositionLocalProviders provides)
     {
         _writer.SetCompositionLocal(provides);
     }

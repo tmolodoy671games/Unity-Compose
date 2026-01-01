@@ -10,7 +10,11 @@ public interface IState<out T>
     T Value { get; }
 }
 
-public interface IMutableState<T> : IState<T>
+public interface IMutableState
+{
+}
+
+public interface IMutableState<T> : IState<T>, IMutableState
 {
     new T Value { get; set; }
 }

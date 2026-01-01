@@ -37,6 +37,6 @@ internal class MutableSlotEntry<T> : IDisposable
 
     public void Dispose()
     {
-        _pool.Release(this);
+        _pool.Return(this);
     }
 }

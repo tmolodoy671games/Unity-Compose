@@ -129,7 +129,7 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
         _lastTranslate = StyleKeyword.Null;
         _lastTranslate = StyleKeyword.Null;
         
-        _pool.Release(this);
+        _pool.Return(this);
     }
 
     public override void ReInsert(int index)

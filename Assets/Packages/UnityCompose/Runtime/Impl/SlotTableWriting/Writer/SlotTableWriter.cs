@@ -41,8 +41,8 @@ internal class SlotTableWriter
     private ModifiersStatePair? _rootModifiers;
 
     private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
-    private readonly List<IImmutableStableList<CompositionLocalProvides>> _enteredProvides = new();
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? _rootCompositionLocalMap = null;
+    private readonly List<ICompositionLocalProviders> _enteredProvides = new();
+    private CompositionLocalMap? _rootCompositionLocalMap = null;
 
     private int _currentGroupIndex = 0;
     private int _currentParentIndex = -1;
@@ -657,33 +657,15 @@ internal class SlotTableWriter
         var map = RequireCompositionLocalMap() ?? _rootCompositionLocalMap;
         if (map == null)
             return defaultValueFactory();
-        if (map.TryGetValue(compositionLocal, out var state))
-        {
-            if (state.Value is not T castedValue)
-            {
-                Debug.LogError($"Invalid cast of {state.Value?.GetType()} to {typeof(T)}");
-                throw new InvalidCastException();
-            }
-
-            return castedValue;
-        }
-
-        return defaultValueFactory();
+        return map.Get(compositionLocal, defaultValueFactory);
     }
 
-    public void SetCompositionLocal(IImmutableStableList<CompositionLocalProvides> providers)
+    public void SetCompositionLocal(ICompositionLocalProviders providers)
     {
         var map = GetCurrentLocalGroupCompositionLocalMap();
         if (map != null)
         {
-            foreach (var provider in providers)
-            {
-                if (map.TryGetValue(provider.CompositionLocal, out var state))
-                    state.Value = provider.Value;
-                else
-                    map[provider.CompositionLocal] = MutableStateOf(provider.Value);
-            }
-
+            providers.Apply(map);
             _enteredCompositionLocalMaps.Push(new CompositionLocalMapEntry(_enteredLocalGroups.Peek().GroupIndex, map));
             return;
         }
@@ -691,14 +673,14 @@ internal class SlotTableWriter
         _enteredProvides.Add(providers);
     }
 
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? GetCurrentLocalGroupCompositionLocalMap()
+    private CompositionLocalMap? GetCurrentLocalGroupCompositionLocalMap()
     {
         if (_enteredLocalGroups.IsEmpty())
             return null;
         return _slots.GetCompositionLocalMap(_enteredLocalGroups.Peek().SlotIndex);
     }
 
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? RequireCompositionLocalMap()
+    private CompositionLocalMap? RequireCompositionLocalMap()
     {
         var map = GetCurrentLocalGroupCompositionLocalMap();
         if (map != null)
@@ -710,11 +692,11 @@ internal class SlotTableWriter
             ? _enteredCompositionLocalMaps.Peek().Map
             : _rootCompositionLocalMap;
         map = parentDictionary != null
-            ? parentDictionary.ToDictionary(static it => it.Key, static it => it.Value)
-            : new Dictionary<ICompositionLocal, IMutableState<object?>>();
+            ? parentDictionary.Copy()
+            : CompositionLocalMap.Get();
         // Log("RequireCompositionLocalMap: " + map.GetHashCode());
-        foreach (var provider in _enteredProvides.SelectMany(static it => it))
-            map[provider.CompositionLocal] = MutableStateOf(provider.Value);
+        foreach (var provider in _enteredProvides)
+            provider.Apply(map);
         _slots.SetCompositionLocalMap(slotIndex, map);
         _enteredProvides.RemoveAt(_enteredProvides.Count - 1);
         _enteredCompositionLocalMaps.Push(new CompositionLocalMapEntry(groupIndex, map));
@@ -857,7 +839,7 @@ internal class SlotTableWriter
 
     public void ResetTo(
         int groupIndex,
-        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        CompositionLocalMap? compositionLocalMap,
         VisualElement? element,
         ModifiersStatePair? modifiers
     )
@@ -901,7 +883,7 @@ internal class SlotTableWriter
 
     public void ResetTo(
         AnchorId groupAnchor,
-        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        CompositionLocalMap? compositionLocalMap,
         VisualElement? element,
         ModifiersStatePair? modifiers
     )
@@ -1282,7 +1264,7 @@ internal readonly record struct ComposeGroupEntry(
 
 internal readonly record struct CompositionLocalMapEntry(
     int GroupIndex,
-    Dictionary<ICompositionLocal, IMutableState<object?>> Map
+    CompositionLocalMap Map
 );
 
 internal readonly record struct ComposeGroupOffset(

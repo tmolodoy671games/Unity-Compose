@@ -16,7 +16,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     private SlotTableWriter _writer = null!;
     public AnchorId _groupAnchor = default!;
-    private Dictionary<ICompositionLocal, IMutableState<object?>>? _compositionLocalMap = null!;
+    private CompositionLocalMap? _compositionLocalMap = null!;
     private VisualElement? _visualElement = null!;
     private ModifiersStatePair? _modifiers = default!;
 
@@ -26,7 +26,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public static ComposeRestartScope Get(
         AnchorId groupAnchor,
         SlotTableWriter writer,
-        Dictionary<ICompositionLocal, IMutableState<object?>>? compositionLocalMap,
+        CompositionLocalMap? compositionLocalMap,
         VisualElement? element,
         ModifiersStatePair? modifiers
     )
@@ -65,11 +65,11 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     }
 
     public override string ToString() =>
-        $"RestartScope({_groupAnchor}, {_restartCallback != null}, {_compositionLocalMap?.ToImmutableStableDictionary()})";
+        $"RestartScope({_groupAnchor}, {_restartCallback != null}, {_compositionLocalMap})";
 
     public void Dispose()
     {
         ComposeInvalidator.CancelInvalidate(this);
-        _pool.Release(this);
+        _pool.Return(this);
     }
 }
