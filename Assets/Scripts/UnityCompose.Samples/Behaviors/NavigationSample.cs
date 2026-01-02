@@ -39,9 +39,9 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             Navigation(
                                 coordinator: Remember(() => new SampleCoordinatorImpl()),
-                                // transition: () => SlideInHorizontally(static it => -it)
-                                //     .TogetherWith(SlideOutHorizontally(static it => it))
-                                //     .With(animationSpec),
+                                transition: () => SlideInHorizontally(static it => -it)
+                                    .TogetherWith(SlideOutHorizontally(static it => it))
+                                    .With(animationSpec),
                                 initialScreens: Remember(() =>
                                     IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 modifier: Modifier
