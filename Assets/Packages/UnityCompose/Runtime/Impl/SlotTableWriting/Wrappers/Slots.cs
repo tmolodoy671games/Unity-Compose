@@ -25,7 +25,12 @@ internal readonly struct Slots
     public object? this[int index]
     {
         get => _slots[index];
-        set => _slots[index] = value;
+        set
+        {
+            if (_slots[index] is IDisposable disposable)
+                disposable.Dispose();
+            _slots[index] = value;
+        }
     }
 
     public void RemoveRange(int index, int count) => _slots.RemoveRange(index, count);
@@ -64,7 +69,7 @@ internal readonly struct Slots
         if (slot is MutableSlotEntry<T> mutableSlotEntry)
             mutableSlotEntry.Value = value;
         else
-            _slots[index] = MutableSlotEntry.Get(value);
+            this[index] = MutableSlotEntry.Get(value);
     }
 
     public void Insert(int index, object? value)

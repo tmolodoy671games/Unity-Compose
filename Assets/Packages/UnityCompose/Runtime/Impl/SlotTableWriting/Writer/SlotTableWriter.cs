@@ -1,15 +1,13 @@
 // #define LOGGING
+// #define ASSERTIONS
 
-#define ASSERTIONS
 #define PARENT_ANCHORS_FOR_EVERYONE
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using SharpExtensions;
-using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -87,6 +85,7 @@ internal class SlotTableWriter
             _enteredRestartGroups.Push(
                 new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
             );
+            SyncTypeAndKey(existingGroup, ComposeGroupType.Restart, key);
             EnterGroup(existingGroup);
             _currentSlotIndex += RestartGroup.MetadataSize;
             return;
@@ -233,11 +232,7 @@ internal class SlotTableWriter
                 throw new InvalidOperationException(
                     $"Found {existingGroup.Type}({existingGroup.Key}) group instead of replace group!");
 #endif
-            if (existingGroup.Key != key)
-            {
-                existingGroup = existingGroup with { Key = key };
-                _groups[_currentGroupIndex] = existingGroup;
-            }
+            SyncTypeAndKey(existingGroup, ComposeGroupType.Replace, key);
 
             EnterGroup(existingGroup);
             return;
@@ -289,6 +284,7 @@ internal class SlotTableWriter
             if (existingGroup.Type != ComposeGroupType.Reusable)
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Reusable group!");
 #endif
+            SyncTypeAndKey(existingGroup, ComposeGroupType.Reusable, key);
             EnterGroup(existingGroup);
             _currentSlotIndex += ReusableGroup.MetadataSize;
             return;
@@ -606,6 +602,7 @@ internal class SlotTableWriter
                 throw new InvalidOperationException($"Found {existingGroup.Key} group instead of {key}!");
 #endif
             _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
+            SyncTypeAndKey(existingGroup, ComposeGroupType.Local, key);
             EnterGroup(existingGroup);
             _currentSlotIndex += LocalGroup.MetadataSize;
             return;
@@ -723,6 +720,7 @@ internal class SlotTableWriter
                 throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Modifier group!");
 #endif
             _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
+            SyncTypeAndKey(existingGroup, ComposeGroupType.Modifier, key);
             EnterGroup(existingGroup);
             _currentSlotIndex += ModifierGroup.MetadataSize;
             return;
@@ -906,6 +904,16 @@ internal class SlotTableWriter
 
 
     #region Utils
+
+    private void SyncTypeAndKey(ComposeGroup group, ComposeGroupType type, int key)
+    {
+        if (group.Type == type && group.Key == key)
+            return;
+        group = group with { Type = type, Key = key};
+        _groups[_currentGroupIndex] = group;
+        for (var i = _currentSlotIndex; i < _currentSlotIndex + group.SlotsSize; i++)
+            _slots[i] = ComposeEmptySlot.Instance;
+    }
 
     private AnchorId GetOrAllocateParentAnchorForNonRestartGroup()
     {
