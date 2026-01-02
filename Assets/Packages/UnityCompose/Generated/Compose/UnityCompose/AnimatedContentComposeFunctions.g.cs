@@ -33,7 +33,7 @@ public static partial class ComposeFunctions
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var resolvedTimeElapsed = resolvedProgress * transitionDuration;
-            var(containerModifier, contentModifier) = AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState);
+            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? __composer.WithReplaceGroup(-1138676624, () => AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState)) : __composer.WithReplaceGroup(-1488763163, () => (Modifier, Modifier));
             ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: !__composer.ChangedAsStruct((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 var parent = CurrentComposer.GetParentVisualElement().NotNull();
@@ -43,7 +43,7 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Modifier: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Modifier: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
-                __composer.StartReplaceGroup(-49587938);
+                __composer.StartReplaceGroup(1085212836);
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
@@ -53,8 +53,8 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(-49587938);
-                __composer.StartReplaceGroup(1716274511);
+                __composer.EndReplaceGroup(1085212836);
+                __composer.StartReplaceGroup(-1993533318);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
@@ -64,7 +64,7 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(1716274511);
+                __composer.EndReplaceGroup(-1993533318);
             }));
         }
         else

@@ -57,10 +57,9 @@ public static partial class ComposeFunctions
         var resolvedTimeElapsed = resolvedProgress * transitionDuration;
 
         // Animating size:
-        // var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
-        //     ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState)
-        //     : (Modifier, Modifier);
-        var (containerModifier, contentModifier) = AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState);
+        var (containerModifier, contentModifier) = sizeAnimationSpec.HasValue
+            ? AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState)
+            : (Modifier, Modifier);
 
         // Layout:
         ReusableComposeView<AnimatedContent>(

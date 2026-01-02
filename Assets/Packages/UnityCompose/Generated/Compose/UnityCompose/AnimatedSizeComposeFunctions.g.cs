@@ -66,7 +66,7 @@ public static partial class ComposeFunctions
             __composer.StartReplaceGroup(919929414);
             if (isSizeValid)
             {
-                var animatedSize = key != null ? __composer.WithReplaceGroup(1735673295, !__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => AnimateVector2AsState(key: key, targetValueFactory: () => contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value)) : __composer.WithReplaceGroup(476553404, () => __composer.WithReplaceGroup(1735673295, () => AnimateVector2AsState(key: key, targetValueFactory: () => contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value));
+                var animatedSize = key != null ? __composer.WithReplaceGroup(1735673295, () => AnimateVector2AsState(key: key, targetValueFactory: !__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value), animationSpec: resolvedAnimationSpec).Value) : __composer.WithReplaceGroup(476553404, () => AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: resolvedAnimationSpec).Value);
                 containerStyle = containerStyle.Size(width: animatedSize.x, height: animatedSize.y);
                 contentStyle = contentStyle.Float();
             }
