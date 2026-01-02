@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(891579555);
+            __composer.StartRestartGroup(-1340125706);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors
                     var count = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<int>>(MutableStateOf(0));
                     Text(text: count.Value.ToString(), color: Color.white, fontSize: 40, modifier: Modifier.Name("test-label").Background(Color.red).Padding(all: 10));
                     var isEffectRunning = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    __composer.StartReplaceGroup(-50444833);
+                    __composer.StartReplaceGroup(2066868923);
                     if (isEffectRunning.Value)
                     {
                         IEnumerator EffectCoroutine()
@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
                         LaunchedEffect(key: string.Empty, coroutine: !__composer.Changed(count) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => EffectCoroutine()));
                     }
 
-                    __composer.EndReplaceGroup(-50444833);
+                    __composer.EndReplaceGroup(2066868923);
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                     Text(text: $"Launched Effect is {onOrOff}", color: Color.white, fontSize: 40, modifier: Modifier.Name("test-button").Background(isHovered.Value ? Color.cyan : Color.blue, Transition()).Padding(vertical: 20).Padding(horizontal: isHovered.Value ? 40 : 20, transition: Transition()).Border(radius: 16).Margin(top: 32).OnMouseEnter(!__composer.Changed(isHovered) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isHovered.Value = true)).OnMouseLeave(!__composer.Changed(isHovered) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isHovered.Value = false)).OnClick(!__composer.Changed(isEffectRunning) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isEffectRunning.Value = !isEffectRunning.Value)));
@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(891579555, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(-1340125706, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

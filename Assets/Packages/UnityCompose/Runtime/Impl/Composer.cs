@@ -93,6 +93,14 @@ public class Composer
         _writer.EndReplaceGroup(groupKey);
     }
 
+    public T WithReplaceGroup<T>(int groupKey, Func<T> factory)
+    {
+        StartReplaceGroup(groupKey);
+        var result = factory();
+        EndReplaceGroup(groupKey);
+        return result;
+    }
+
     #endregion
 
     #region Reusable Group

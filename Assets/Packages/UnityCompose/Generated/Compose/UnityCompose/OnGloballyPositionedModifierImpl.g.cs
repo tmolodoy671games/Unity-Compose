@@ -15,7 +15,7 @@ public static partial class ModifierExtensions
     private static IModifier __OnGloballyPositionedImpl(Action<LayoutCoordinates> onGloballyPositioned)
     {
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(-1156243350);
+        __composer.StartReplaceGroup(-1601962195);
         if (true)
         {
             var previousCoordinates = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
@@ -39,7 +39,7 @@ public static partial class ModifierExtensions
             LaunchedEffect(onGloballyPositioned, !__composer.ChangedAsStruct((previousCoordinates, element)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => EveryFrameCoroutine()));
         }
 
-        __composer.EndReplaceGroup(-1156243350);
+        __composer.EndReplaceGroup(-1601962195);
         return Modifier;
     }
 
@@ -47,7 +47,7 @@ public static partial class ModifierExtensions
     private static IModifier __OnGloballyPositionedImplDeprecated(Action<LayoutCoordinates> onGloballyPositioned)
     {
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(-348093594);
+        __composer.StartReplaceGroup(931312751);
         if (true)
         {
             var element = CurrentComposer.GetParentVisualElement().NotNull();
@@ -74,7 +74,7 @@ public static partial class ModifierExtensions
             }));
         }
 
-        __composer.EndReplaceGroup(-348093594);
+        __composer.EndReplaceGroup(931312751);
         return Modifier;
     }
 }

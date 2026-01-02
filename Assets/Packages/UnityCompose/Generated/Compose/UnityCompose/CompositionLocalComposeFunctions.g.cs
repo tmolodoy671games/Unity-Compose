@@ -16,7 +16,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __content) = (provides1, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1813847380);
+        __composer.StartRestartGroup(-703960699);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __content)))
         {
@@ -29,7 +29,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1813847380, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
+        __composer.EndRestartGroup(-703960699, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
     }
 
     [Composable]
@@ -37,7 +37,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __content) = (provides1, provides2, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1856442143);
+        __composer.StartRestartGroup(-2015728891);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __content)))
         {
@@ -50,7 +50,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1856442143, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
+        __composer.EndRestartGroup(-2015728891, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
     }
 
     [Composable]
@@ -58,7 +58,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __content) = (provides1, provides2, provides3, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-103829936);
+        __composer.StartRestartGroup(-896819872);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __content)))
         {
@@ -71,7 +71,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-103829936, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
+        __composer.EndRestartGroup(-896819872, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
     }
 
     [Composable]
@@ -79,7 +79,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __content) = (provides1, provides2, provides3, provides4, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-2026084158);
+        __composer.StartRestartGroup(1861977477);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __content)))
         {
@@ -92,7 +92,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-2026084158, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
+        __composer.EndRestartGroup(1861977477, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
     }
 
     [Composable]
@@ -100,7 +100,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __content) = (provides1, provides2, provides3, provides4, provides5, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1305678165);
+        __composer.StartRestartGroup(-1617866357);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __content)))
         {
@@ -113,7 +113,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1305678165, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
+        __composer.EndRestartGroup(-1617866357, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
     }
 
     [Composable]
@@ -121,7 +121,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1795347189);
+        __composer.StartRestartGroup(369200937);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content)))
         {
@@ -134,7 +134,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1795347189, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
+        __composer.EndRestartGroup(369200937, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
     }
 
     [Composable]
@@ -142,7 +142,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1590754059);
+        __composer.StartRestartGroup(-1780236285);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content)))
         {
@@ -155,7 +155,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1590754059, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
+        __composer.EndRestartGroup(-1780236285, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
     }
 
     [Composable]
@@ -163,7 +163,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1994836879);
+        __composer.StartRestartGroup(-1093146676);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content)))
         {
@@ -176,7 +176,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1994836879, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
+        __composer.EndRestartGroup(-1093146676, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
     }
 
     [Composable]
@@ -184,7 +184,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1343280012);
+        __composer.StartRestartGroup(1383627550);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content)))
         {
@@ -197,7 +197,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1343280012, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
+        __composer.EndRestartGroup(1383627550, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
     }
 
     [Composable]
@@ -205,7 +205,7 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, provides10, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1918424973);
+        __composer.StartRestartGroup(-1822671578);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content)))
         {
@@ -218,6 +218,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1918424973, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content));
+        __composer.EndRestartGroup(-1822671578, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content));
     }
 }

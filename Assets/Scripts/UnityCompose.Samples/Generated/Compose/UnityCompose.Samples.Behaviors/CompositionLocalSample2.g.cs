@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
         private void __Content()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-484343399);
+            __composer.StartRestartGroup(-282645618);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -22,14 +22,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-484343399, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-282645618, __isRestarted)?.UpdateScope(() => __Content());
         }
 
         [Composable]
         private void __Preview()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-307676507);
+            __composer.StartRestartGroup(-1107021593);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -40,14 +40,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-307676507, __isRestarted)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(-1107021593, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
         [Composable]
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1939741268);
+            __composer.StartRestartGroup(-1170808269);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -75,7 +75,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1939741268, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(-1170808269, __isRestarted)?.UpdateScope(() => __Layout());
         }
     }
 }

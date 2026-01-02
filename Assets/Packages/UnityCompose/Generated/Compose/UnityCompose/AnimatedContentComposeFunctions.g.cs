@@ -15,7 +15,7 @@ public static partial class ComposeFunctions
     {
         var(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier) = (targetState, transitionSpec, content, sizeAnimationSpec, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1246191099);
+        __composer.StartRestartGroup(-1366895982);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier)))
         {
@@ -43,7 +43,7 @@ public static partial class ComposeFunctions
                 var next = (Value: targetState, Modifier: nextModifier, ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering);
                 var previous = (Value: previousValue.Value, Modifier: previousModifier, ContentState: TransitionState.Exiting);
                 var pair = isSwitched.Value ? (First: next, Second: previous) : (First: previous, Second: next);
-                __composer.StartReplaceGroup(1278983541);
+                __composer.StartReplaceGroup(-49587938);
                 if (isSwitched.Value || isAnimationRunning)
                 {
                     var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
@@ -53,8 +53,8 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(1278983541);
-                __composer.StartReplaceGroup(961053517);
+                __composer.EndReplaceGroup(-49587938);
+                __composer.StartReplaceGroup(1716274511);
                 if (!isSwitched.Value || isAnimationRunning)
                 {
                     var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
@@ -64,7 +64,7 @@ public static partial class ComposeFunctions
                     }));
                 }
 
-                __composer.EndReplaceGroup(961053517);
+                __composer.EndReplaceGroup(1716274511);
             }));
         }
         else
@@ -72,6 +72,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1246191099, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
+        __composer.EndRestartGroup(-1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier));
     }
 }
