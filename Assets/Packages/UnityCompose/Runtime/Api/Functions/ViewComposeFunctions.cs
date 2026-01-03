@@ -27,8 +27,8 @@ public static partial class ComposeFunctions
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
-        if (true)
-            modifier = modifier?.Compose();
+        if (modifier != null)
+            modifier = modifier.Compose();
         node.Update(
             parent: parent,
             indexInParent: indexInParent,
@@ -36,10 +36,7 @@ public static partial class ComposeFunctions
             initializer: initializer
         );
 
-        if (content != null)
-        {
-            content();
-        }
+        content?.Invoke();
 
         composer.EndReusableGroup(123);
     }

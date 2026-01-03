@@ -18,7 +18,7 @@ internal static class ComposeReleaseAssembliesFinder
             .SelectMany(FindComposeSources);
     }
 
-    public static IEnumerable<DirectoryInfo> FindComposeDirectories()
+    private static IEnumerable<DirectoryInfo> FindComposeDirectories()
     {
         return new DirectoryInfo(".")
             .EnumerateDirectories("*", SearchOption.AllDirectories)
@@ -46,9 +46,8 @@ internal static class ComposeReleaseAssembliesFinder
                     .FirstOrDefault()
                     ?.Name.ToString();
                 var generatedFile = generatedFiles
-                    .Where(it => it.Name == originalFile.Name.Replace(".cs", ".g.cs"))
-                    .Where(it => it.Directory?.Name == (namespaceName ?? "Compose"))
-                    .FirstOrDefault();
+                    .Where(it => it. Name == originalFile.Name.Replace(".cs", ".g.cs"))
+                    .FirstOrDefault(it => it.Directory?.Name == (namespaceName ?? "Compose"));
                 return generatedFile == null ? null : originalFile;
             });
     }
@@ -59,9 +58,7 @@ internal static class ComposeReleaseAssembliesFinder
         //     return true;
         var definitionFile = directory.EnumerateFiles()
             .FirstOrDefault(it => it.Extension == ".asmdef");
-        if (definitionFile == null)
-            return false;
-        return File.ReadAllText(definitionFile.FullName).Contains("UnityCompose");
+        return definitionFile != null && File.ReadAllText(definitionFile.FullName).Contains("\"UnityCompose\"");
     }
 
     private static bool IsComposeGeneratedFile(this FileInfo fileInfo, DirectoryInfo directoryInfo)
