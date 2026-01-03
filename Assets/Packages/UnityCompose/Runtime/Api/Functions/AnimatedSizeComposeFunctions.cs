@@ -1,7 +1,5 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using SharpExtensions;
-using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,17 +12,17 @@ public static partial class ComposeFunctions
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     [Composable]
     public static void AnimatedSize(
-        ComposableContent content,
+        ComposableContent<IModifier> content,
         IModifier? modifier = null,
         Optional<AnimationSpec> animationSpec = default
     )
     {
         var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
-        var (containerStyle, contentStyle) = AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault());
+        var (containerModifier, contentModifier) = AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault());
 
         ReusableComposeView<AnimatedSize>(
             modifier: modifier.OrEmpty()
-                .Then(containerStyle),
+                .Then(containerModifier),
             initializer: it =>
             {
                 it.style.alignItems = Align.Center;
@@ -32,10 +30,7 @@ public static partial class ComposeFunctions
             },
             content: () =>
             {
-                WithModifiers(
-                    after: contentStyle,
-                    content: content
-                );
+                content(contentModifier);
             }
         );
     }
@@ -46,11 +41,10 @@ public static partial class ComposeFunctions
         object? key = null
     )
     {
-        var resolvedAnimationSpec = animationSpec;
         var containerPaddings = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
-        var contentStyle = Modifier;
-        var containerStyle = Modifier
+        var contentModifier = Modifier;
+        var containerModifier = Modifier
             .Clip()
             .OnLocallyPositioned(it =>
             {
@@ -62,7 +56,7 @@ public static partial class ComposeFunctions
 
         if (!IsInPreview)
         {
-            contentStyle = contentStyle
+            contentModifier = contentModifier
                 .OnLocallyPositioned(it =>
                 {
                     var resolvedSize = it.SizeWithPaddings;
@@ -78,19 +72,19 @@ public static partial class ComposeFunctions
                     ? AnimateVector2AsState(
                         key: key,
                         targetValueFactory: () => contentSize.Value + containerPaddings.Value,
-                        animationSpec: resolvedAnimationSpec
+                        animationSpec: animationSpec
                     ).Value
                     : AnimateVector2AsState(
                         targetValue: contentSize.Value + containerPaddings.Value,
-                        animationSpec: resolvedAnimationSpec
+                        animationSpec: animationSpec
                     ).Value;
-                containerStyle = containerStyle
+                containerModifier = containerModifier
                     .Size(width: animatedSize.x, height: animatedSize.y);
-                contentStyle = contentStyle
+                contentModifier = contentModifier
                     .Float();
             }
         }
 
-        return (containerStyle, contentStyle);
+        return (containerModifier, contentModifier);
     }
 }

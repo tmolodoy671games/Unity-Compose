@@ -21,5 +21,4 @@ internal enum ComposeGroupType : byte
     Reusable,
     Local,
     Movable,
-    Modifier,
 }

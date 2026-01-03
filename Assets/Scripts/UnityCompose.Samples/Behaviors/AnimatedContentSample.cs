@@ -57,12 +57,13 @@ namespace UnityCompose.Samples.Behaviors
                                             animationSpec: animationSpec
                                         ).Value
                                     ),
-                                content: (state) =>
+                                content: (state, modifier) =>
                                 {
                                     Text(
                                         text: state.ToString(),
                                         color: Color.white,
-                                        fontSize: 64
+                                        fontSize: 64,
+                                        modifier: modifier
                                     );
                                 }
                             );

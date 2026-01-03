@@ -13,35 +13,12 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    private static void __WithModifiers(ComposableContent content, IModifier? before = null, IModifier? after = null)
-    {
-        var(__content, __before, __after) = (content, before, after);
-        var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-715795794);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __before, __after)))
-        {
-            var composer = CurrentComposer;
-            composer.StartModifierGroup(1337);
-            composer.PushModifiers(before, after);
-            content();
-            composer.EndModifierGroup(1337);
-        }
-        else
-        {
-            __composer.SkipToGroupEnd();
-        }
-
-        __composer.EndRestartGroup(-715795794, __isRestarted)?.UpdateScope(() => __WithModifiers(__content, __before, __after));
-    }
-
-    [Composable]
     private static void __ReusableComposeView<T>(IModifier? modifier = null, Action<T>? initializer = null, ComposableContent? content = null)
         where T : VisualElement, new()
     {
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1542014769);
+        __composer.StartRestartGroup(-715795794);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__modifier, __initializer, __content)))
         {
@@ -50,22 +27,21 @@ public static partial class ComposeFunctions
             var parent = composer.GetParentVisualElement().NotNull();
             var indexInParent = composer.GetElementIndex();
             var node = composer.GetReusableNode<T>();
-            var modifiers = composer.GetModifiers();
             node.VisualElement ??= new T();
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
-            __composer.StartReplaceGroup(-99615638);
+            __composer.StartReplaceGroup(-2007986185);
             if (true)
                 modifier = modifier?.Compose();
-            __composer.EndReplaceGroup(-99615638);
-            node.Update(parent: parent, indexInParent: indexInParent, modifiers: modifiers, modifier: modifier, initializer: initializer);
-            __composer.StartReplaceGroup(1164795679);
+            __composer.EndReplaceGroup(-2007986185);
+            node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
+            __composer.StartReplaceGroup(945714250);
             if (content != null)
             {
-                WithModifiers(before: null, after: null, content: content);
+                content();
             }
 
-            __composer.EndReplaceGroup(1164795679);
+            __composer.EndReplaceGroup(945714250);
             composer.EndReusableGroup(123);
         }
         else
@@ -73,7 +49,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1542014769, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content));
+        __composer.EndRestartGroup(-715795794, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content));
     }
 
     [Composable]
@@ -81,7 +57,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1116128861);
+        __composer.StartRestartGroup(1922237605);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -96,7 +72,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1116128861, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(1922237605, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -104,7 +80,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-734131074);
+        __composer.StartRestartGroup(2110962436);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -120,7 +96,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-734131074, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(2110962436, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -128,7 +104,7 @@ public static partial class ComposeFunctions
     {
         var(__content, __modifier, __horizontalAlignment, __verticalAlignment) = (content, modifier, horizontalAlignment, verticalAlignment);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1810854548);
+        __composer.StartRestartGroup(-734131074);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__content, __modifier, __horizontalAlignment, __verticalAlignment)))
         {
@@ -143,7 +119,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1810854548, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment));
+        __composer.EndRestartGroup(-734131074, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __horizontalAlignment, __verticalAlignment));
     }
 
     [Composable]
@@ -151,7 +127,7 @@ public static partial class ComposeFunctions
     {
         var __modifier = (modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1615684835);
+        __composer.StartRestartGroup(-1827887989);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__modifier))
         {
@@ -162,7 +138,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1615684835, __isRestarted)?.UpdateScope(() => __Spacer(__modifier));
+        __composer.EndRestartGroup(-1827887989, __isRestarted)?.UpdateScope(() => __Spacer(__modifier));
     }
 
     [Composable]
@@ -170,7 +146,7 @@ public static partial class ComposeFunctions
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1729161436);
+        __composer.StartRestartGroup(-1741945300);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier)))
         {
@@ -229,7 +205,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1729161436, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier));
+        __composer.EndRestartGroup(-1741945300, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier));
     }
 
     [Composable]
@@ -237,7 +213,7 @@ public static partial class ComposeFunctions
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(581872771);
+        __composer.StartRestartGroup(1038014583);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__image, __tint, __modifier)))
         {
@@ -254,6 +230,6 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(581872771, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier));
+        __composer.EndRestartGroup(1038014583, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier));
     }
 }

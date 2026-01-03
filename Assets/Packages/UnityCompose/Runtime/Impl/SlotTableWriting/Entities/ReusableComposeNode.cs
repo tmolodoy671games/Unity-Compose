@@ -26,11 +26,8 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
     public T? VisualElement;
     private int _indexInParent = -1;
-    private ModifiersPair _lastModifiersPair;
     private IModifier? _lastModifier;
     private Action<T>? _lastInitializer;
-    private StyleTranslate _lastTranslate;
-    private StyleScale _lastScale;
 
     private readonly IMutableStableSet<ComposeModifiedProperty> _lastProperties =
         IMutableStableSet.Create<ComposeModifiedProperty>();
@@ -48,7 +45,6 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
     public void Update(
         VisualElement parent,
         int indexInParent,
-        ModifiersPair modifiers,
         IModifier? modifier,
         Action<T>? initializer
     )
@@ -61,15 +57,9 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
             _indexInParent = indexInParent;
         }
 
-        if (_lastModifiersPair != modifiers || !Equals(_lastModifier, modifier))
+        if (!Equals(_lastModifier, modifier))
         {
-            var newModifier = modifier.OrEmpty();
-            if (modifiers.Before != null)
-                newModifier = modifiers.Before.Then(newModifier);
-            if (modifiers.After != null)
-                newModifier = newModifier.Then(modifiers.After);
-
-            newModifier.Apply(_newProperties);
+            modifier?.Apply(_newProperties);
             foreach (var property in _lastProperties)
             {
                 if (_newProperties.Contains(property))
@@ -89,9 +79,8 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
             VisualElement.style.transitionTimingFunction.value?.Clear();
             VisualElement.pickingMode = PickingMode.Ignore;
             VisualElement.style.overflow = Overflow.Visible;
-            _lastModifiersPair = modifiers;
-            _lastModifier = newModifier;
-            newModifier.Apply(VisualElement);
+            _lastModifier = modifier;
+            modifier?.Apply(VisualElement);
         }
 
         if (initializer != null && _lastInitializer != initializer)
@@ -99,17 +88,6 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
             initializer(VisualElement);
             _lastInitializer = initializer;
         }
-
-        // var callback = VisualElement.OnGloballyPositionedCallbackOrNull();
-        // if (callback == null || callback.InvokedAtFrame >= Time.frameCount)
-        //     return;
-        // var style = VisualElement.style;
-        // if (_lastTranslate != style.translate || _lastScale != style.scale)
-        // {
-        //     _lastTranslate = style.translate;
-        //     _lastScale = style.scale;
-        //     callback.ReInvoke();
-        // }
     }
 
     public void Dispose()
@@ -123,11 +101,8 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
         VisualElement = null;
         _indexInParent = -1;
-        _lastModifiersPair = new();
         _lastModifier = null;
         _lastInitializer = null;
-        _lastTranslate = StyleKeyword.Null;
-        _lastTranslate = StyleKeyword.Null;
         
         _pool.Return(this);
     }

@@ -76,14 +76,14 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class FirstScreen : ComposeScreen
     {
         [Composable]
-        public override void Content()
+        public override void Content(IModifier modifier)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowSecondScreen());
             Box(
                 horizontalAlignment: Alignment.Horizontal.Center,
                 verticalAlignment: Alignment.Vertical.Center,
-                modifier: Modifier
+                modifier: modifier
                     .FillMaxSize()
                     .Background(Color.green),
                 content: () =>
@@ -102,12 +102,12 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class SecondScreen : ComposeScreen
     {
         [Composable]
-        public override void Content()
+        public override void Content(IModifier modifier)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowFirstScreen());
             Spacer(
-                modifier: Modifier
+                modifier: modifier
                     .FillMaxSize()
                     .Background(Color.red)
             );

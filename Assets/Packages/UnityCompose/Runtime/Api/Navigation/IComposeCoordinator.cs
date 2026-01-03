@@ -1,18 +1,18 @@
 ﻿// ReSharper disable CheckNamespace
+
+using StableCollections;
+
 namespace UnityCompose;
 
 public interface IComposeCoordinator
 {
-    private class MockComposeCoordinator : IComposeCoordinator
+    private class MockComposeCoordinator : BaseComposeCoordinator
     {
-        public ComposeCommandBuffer CommandBuffer { get; } = new();
-
-        public void GoBack()
-        {
-        }
     }
 
     public static readonly IComposeCoordinator Mock = new MockComposeCoordinator();
+
+    IImmutableStableList<ComposeScreen> InitialScreens();
 
     ComposeCommandBuffer CommandBuffer { get; }
 
@@ -22,6 +22,8 @@ public interface IComposeCoordinator
 public abstract class BaseComposeCoordinator : IComposeCoordinator
 {
     protected readonly ComposeRouter Router = new();
+
+    public virtual IImmutableStableList<ComposeScreen> InitialScreens() => IImmutableStableList.Empty<ComposeScreen>();
 
     public ComposeCommandBuffer CommandBuffer => Router.CommandBuffer;
 

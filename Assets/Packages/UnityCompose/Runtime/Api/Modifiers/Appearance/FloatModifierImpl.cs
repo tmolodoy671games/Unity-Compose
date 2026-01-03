@@ -43,4 +43,9 @@ internal class FloatModifierImpl : BaseModifier<FloatModifierImpl>
     {
         return true;
     }
+
+    public override string ToString()
+    {
+        return "Float";
+    }
 }

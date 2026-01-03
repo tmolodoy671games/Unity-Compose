@@ -13,14 +13,13 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, IImmutableStableList<ComposeScreen>? initialScreens = null, // Action<float>? onTransitionProgressChanged = null,
-    Action<INavigationScope>? content = null, IModifier? modifier = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, IImmutableStableList<ComposeScreen>? initialScreens = null, IModifier? modifier = null)
     {
-        var(__coordinator, __transition, __initialScreens, __content, __modifier) = (coordinator, transition, initialScreens, content, modifier);
+        var(__coordinator, __transition, __initialScreens, __modifier) = (coordinator, transition, initialScreens, modifier);
         var __composer = CurrentComposer;
         __composer.StartRestartGroup(-112916579);
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__coordinator, __transition, __initialScreens, __content, __modifier)))
+        if (__isRestarted || __composer.ShouldExecuteAsStruct((__coordinator, __transition, __initialScreens, __modifier)))
         {
             var backStack = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateList<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
             var coordinatorEntry = LocalCoordinator.Current;
@@ -54,17 +53,11 @@ public static partial class ComposeFunctions
                     screenState = TransitionState.Idle;
                 return (Screen: screen, ScreenState: screenState);
             }).Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished).ToImmutableStableList());
-            __composer.StartReplaceGroup(-525281989);
-            if (content == null)
-                content = !__composer.Changed() ? __composer.RememberedValue<System.Action<UnityCompose.INavigationScope>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.INavigationScope>?>(it => it.Content());
-            __composer.EndReplaceGroup(-525281989);
-            ReusableComposeView<Navigation>(modifier: modifier, content: !__composer.ChangedAsStruct((coordinator, content, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screensToRender)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
+            ReusableComposeView<Navigation>(modifier: modifier, content: !__composer.ChangedAsStruct((coordinator, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screensToRender)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
-                // if (IsInPreview)
-                //     return;
                 foreach (var(screen, screenState)in screensToRender)
                 {
-                    Key(key: screen, content: !__composer.ChangedAsStruct((coordinator, content, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    Key(key: screen, content: !__composer.ChangedAsStruct((coordinator, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screen, screenState)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         var parent = CurrentComposer.GetParentVisualElement().NotNull();
                         var isCurrentScreen = screen.Equals(currentBackStack[^1]);
@@ -76,11 +69,7 @@ public static partial class ComposeFunctions
                             _ => throw new ArgumentOutOfRangeException()};
                         var state = TransitionResolvedState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                         var isActive = LocalIsActive.Current;
-                        var scope = !__composer.Changed(screen) ? __composer.RememberedValue<UnityCompose.NavigationScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.NavigationScopeImpl>(new NavigationScopeImpl(screen.Content));
-                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((content, contentModifier, scope)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                        {
-                            WithModifiers(after: CurrentComposer.GetModifiers().After.OrEmpty().Then(contentModifier), content: !__composer.ChangedAsStruct((content, scope)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(scope)));
-                        }));
+                        CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: !__composer.ChangedAsStruct((screen, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => screen.Content(contentModifier)));
                     }));
                 }
             }));
@@ -92,7 +81,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __initialScreens, __content, __modifier));
+        __composer.EndRestartGroup(-112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __initialScreens, __modifier));
     }
 }
 
@@ -102,7 +91,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1287361566);
+        __composer.StartRestartGroup(-2118662864);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -113,6 +102,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1287361566, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(-2118662864, __isRestarted)?.UpdateScope(() => __Content());
     }
 }

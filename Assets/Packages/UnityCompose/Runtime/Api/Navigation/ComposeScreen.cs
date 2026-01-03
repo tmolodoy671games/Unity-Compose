@@ -18,7 +18,7 @@ public abstract partial class ComposeScreen
     public virtual int Priority => 0;
     public virtual ScreenTransitions? Transitions => null;
 
-    public abstract void Content();
+    public abstract void Content(IModifier modifier);
 
     public override bool Equals(object? obj)
     {

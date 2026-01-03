@@ -125,24 +125,6 @@ public class Composer
 
     #endregion
 
-    #region Modifier Group
-
-    public void StartModifierGroup(int key) => _writer.StartModifierGroup(key);
-
-    public void EndModifierGroup(int key) => _writer.EndModifierGroup(key);
-
-    public void PushModifiers(IModifier? before, IModifier? after)
-    {
-        _writer.PushModifiers(before, after);
-    }
-
-    internal ModifiersPair GetModifiers()
-    {
-        return _writer.GetModifiers();
-    }
-
-    #endregion
-
     #region Remember
 
     public bool Changed()

@@ -73,6 +73,13 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
     {
         return length.ToLength();
     }
+
+    public override string ToString()
+    {
+        if (_px.HasValue)
+            return _px.ToString();
+        return _percent.ToString();
+    }
 }
 
 public readonly struct Px : IEquatable<Px>

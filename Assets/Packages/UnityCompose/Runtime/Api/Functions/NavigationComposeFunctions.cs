@@ -40,8 +40,6 @@ public static partial class ComposeFunctions
         IComposeCoordinator coordinator,
         Func<ContentTransform>? transition = null,
         IImmutableStableList<ComposeScreen>? initialScreens = null,
-        // Action<float>? onTransitionProgressChanged = null,
-        Action<INavigationScope>? content = null,
         IModifier? modifier = null
     )
     {
@@ -122,15 +120,11 @@ public static partial class ComposeFunctions
                 .Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished)
                 .ToImmutableStableList()
         );
-        if (content == null)
-            content = it => it.Content();
 
         ReusableComposeView<Navigation>(
             modifier: modifier,
             content: () =>
             {
-                // if (IsInPreview)
-                //     return;
                 foreach (var (screen, screenState) in screensToRender)
                 {
                     Key(
@@ -157,7 +151,6 @@ public static partial class ComposeFunctions
                                 duration: resolvedTransition.TotalDuration
                             );
                             var isActive = LocalIsActive.Current;
-                            var scope = Remember(screen, () => new NavigationScopeImpl(screen.Content));
                             CompositionLocalProvider(
                                 LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
                                 LocalIsActive.Provides(
@@ -172,14 +165,7 @@ public static partial class ComposeFunctions
                                 LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                                 LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                                 LocalTransitionDuration.Provides(state.Duration),
-                                content: () =>
-                                {
-                                    WithModifiers(
-                                        after: CurrentComposer.GetModifiers().After.OrEmpty()
-                                            .Then(contentModifier),
-                                        content: () => content(scope)
-                                    );
-                                }
+                                content: () => screen.Content(contentModifier)
                             );
                         }
                     );
@@ -220,7 +206,7 @@ public interface INavigationScope
     void Content();
 }
 
-internal partial class NavigationScopeImpl : INavigationScope, IEquatable<NavigationScopeImpl>
+internal partial class NavigationScopeImpl : INavigationScope
 {
     private readonly ComposableContent _content;
 
@@ -233,24 +219,6 @@ internal partial class NavigationScopeImpl : INavigationScope, IEquatable<Naviga
     public void Content()
     {
         _content();
-    }
-
-    public bool Equals(NavigationScopeImpl other)
-    {
-        return _content.Equals(other._content);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((NavigationScopeImpl)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return _content.GetHashCode();
     }
 }
 

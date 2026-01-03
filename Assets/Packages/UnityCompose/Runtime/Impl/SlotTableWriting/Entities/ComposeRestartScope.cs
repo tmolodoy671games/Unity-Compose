@@ -18,7 +18,6 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public AnchorId _groupAnchor;
     private CompositionLocalMap? _compositionLocalMap;
     private VisualElement? _visualElement;
-    private ModifiersStatePair? _modifiers;
 
     private Action? _restartCallback;
 
@@ -26,8 +25,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         AnchorId groupAnchor,
         SlotTableWriter writer,
         CompositionLocalMap? compositionLocalMap,
-        VisualElement? element,
-        ModifiersStatePair? modifiers
+        VisualElement? element
     )
     {
         var instance = _pool.Get();
@@ -35,7 +33,6 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         instance._writer = writer;
         instance._compositionLocalMap = compositionLocalMap;
         instance._visualElement = element;
-        instance._modifiers = modifiers;
         return instance;
     }
 
@@ -50,7 +47,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
-        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement, _modifiers);
+        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();
     }

@@ -75,16 +75,17 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class FirstScreen
     {
         [Composable]
-        private void __Content()
+        private void __Content(IModifier modifier)
         {
+            var __modifier = (modifier);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(-1637960454);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute(__modifier))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowSecondScreen()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().Background(Color.green), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: modifier.FillMaxSize().Background(Color.green), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
@@ -94,30 +95,31 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1637960454, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(-1637960454, __isRestarted)?.UpdateScope(() => __Content(__modifier));
         }
     }
 
     internal partial class SecondScreen
     {
         [Composable]
-        private void __Content()
+        private void __Content(IModifier modifier)
         {
+            var __modifier = (modifier);
             var __composer = CurrentComposer;
             __composer.StartRestartGroup(1226698643);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isRestarted || __composer.ShouldExecute(__modifier))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowFirstScreen()));
-                Spacer(modifier: Modifier.FillMaxSize().Background(Color.red));
+                Spacer(modifier: modifier.FillMaxSize().Background(Color.red));
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1226698643, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1226698643, __isRestarted)?.UpdateScope(() => __Content(__modifier));
         }
     }
 

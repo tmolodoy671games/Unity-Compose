@@ -12,20 +12,6 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    public static void WithModifiers(
-        ComposableContent content,
-        IModifier? before = null,
-        IModifier? after = null
-    )
-    {
-        var composer = CurrentComposer;
-        composer.StartModifierGroup(1337);
-        composer.PushModifiers(before, after);
-        content();
-        composer.EndModifierGroup(1337);
-    }
-
-    [Composable]
     public static void ReusableComposeView<T>(
         IModifier? modifier = null,
         Action<T>? initializer = null,
@@ -37,7 +23,6 @@ public static partial class ComposeFunctions
         var parent = composer.GetParentVisualElement().NotNull();
         var indexInParent = composer.GetElementIndex();
         var node = composer.GetReusableNode<T>();
-        var modifiers = composer.GetModifiers();
         node.VisualElement ??= new T();
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
@@ -47,18 +32,13 @@ public static partial class ComposeFunctions
         node.Update(
             parent: parent,
             indexInParent: indexInParent,
-            modifiers: modifiers,
             modifier: modifier,
             initializer: initializer
         );
 
         if (content != null)
         {
-            WithModifiers(
-                before: null,
-                after: null,
-                content: content
-            );
+            content();
         }
 
         composer.EndReusableGroup(123);

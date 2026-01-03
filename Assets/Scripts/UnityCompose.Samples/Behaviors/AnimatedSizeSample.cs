@@ -42,14 +42,14 @@ namespace UnityCompose.Samples.Behaviors
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(AnimationDuration))
                                     .Padding(all: 16),
                                 animationSpec: animationSpec,
-                                content: () =>
+                                content: modifier =>
                                 {
                                     Text(
                                         text: text,
                                         color: Color.white,
                                         fontSize: 64,
                                         textAlign: TextAlign.MiddleCenter,
-                                        modifier: Modifier
+                                        modifier: modifier
                                             .Name("animated-label-child")
                                     );
                                 }

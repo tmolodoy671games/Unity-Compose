@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Text;
 using StableCollections;
 using UnityEngine.UIElements;
 
@@ -136,5 +137,14 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         return _depth == other._depth &&
                _first.Equals(other._first) &&
                _second.Equals(other._second);
+    }
+
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
+        builder.Append(_first);
+        builder.AppendLine();
+        builder.Append(_second);
+        return builder.ToString();
     }
 }

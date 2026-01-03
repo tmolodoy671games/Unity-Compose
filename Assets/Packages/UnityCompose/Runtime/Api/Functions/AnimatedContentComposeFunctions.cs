@@ -21,7 +21,7 @@ public static partial class ComposeFunctions
     public static void AnimatedContent<T>(
         T targetState,
         Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
-        ComposableContent<T> content,
+        ComposableContent<T, IModifier> content,
         Optional<AnimationSpec> sizeAnimationSpec = default,
         IModifier? modifier = null
     )
@@ -101,13 +101,7 @@ public static partial class ComposeFunctions
                         LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                         LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                         LocalTransitionDuration.Provides(state.Duration),
-                        content: () =>
-                        {
-                            WithModifiers(
-                                after: pair.First.Modifier,
-                                content: () => content(pair.First.Value)
-                            );
-                        }
+                        content: () => content(pair.First.Value, pair.First.Modifier)
                     );
                 }
 
@@ -124,13 +118,7 @@ public static partial class ComposeFunctions
                         LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
                         LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
                         LocalTransitionDuration.Provides(state.Duration),
-                        content: () =>
-                        {
-                            WithModifiers(
-                                after: pair.Second.Modifier,
-                                content: () => content(pair.Second.Value)
-                            );
-                        }
+                        content: () => content(pair.Second.Value, pair.Second.Modifier)
                     );
                 }
             }

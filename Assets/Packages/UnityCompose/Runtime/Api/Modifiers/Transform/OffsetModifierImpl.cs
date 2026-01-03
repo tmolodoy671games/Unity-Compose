@@ -55,4 +55,9 @@ internal class OffsetModifierImpl : BaseModifier<OffsetModifierImpl>
     {
         return _x.Equals(other._x) && _y.Equals(other._y);
     }
+
+    public override string ToString()
+    {
+        return $"Offset({_x}, {_y})";
+    }
 }
