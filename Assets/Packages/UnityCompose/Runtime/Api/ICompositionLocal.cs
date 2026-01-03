@@ -39,19 +39,8 @@ internal class CompositionLocalImpl<T> : ICompositionLocal<T>
     }
 }
 
-public readonly record struct CompositionLocalProvides(
-    ICompositionLocal CompositionLocal,
-    object? Value
-)
-{
-    public override string ToString()
-    {
-        return $"{CompositionLocal} Provides {Value}";
-    }
-}
-
 public readonly record struct CompositionLocalProvides<T>(
-    ICompositionLocal<T>? CompositionLocal,
+    ICompositionLocal<T> CompositionLocal,
     T Value
 )
 {

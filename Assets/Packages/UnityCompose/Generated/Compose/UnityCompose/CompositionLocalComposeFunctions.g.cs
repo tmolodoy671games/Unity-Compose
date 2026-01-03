@@ -1,9 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
-using UnityEngine;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
@@ -16,20 +12,23 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __content) = (provides1, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-703960699);
+        __composer.StartRestartGroup(-636805308);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_1);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            content();
+            composer.EndLocalGroup(123_1);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-703960699, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
+        __composer.EndRestartGroup(-636805308, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
     }
 
     [Composable]
@@ -37,20 +36,24 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __content) = (provides1, provides2, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-2015728891);
+        __composer.StartRestartGroup(-2075615182);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_2);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            content();
+            composer.EndLocalGroup(123_2);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-2015728891, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
+        __composer.EndRestartGroup(-2075615182, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
     }
 
     [Composable]
@@ -58,20 +61,25 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __content) = (provides1, provides2, provides3, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-896819872);
+        __composer.StartRestartGroup(150642065);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, Unit, Unit, Unit, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_3);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            content();
+            composer.EndLocalGroup(123_3);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-896819872, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
+        __composer.EndRestartGroup(150642065, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
     }
 
     [Composable]
@@ -79,20 +87,26 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __content) = (provides1, provides2, provides3, provides4, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1861977477);
+        __composer.StartRestartGroup(850864666);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, Unit, Unit, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_4);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            content();
+            composer.EndLocalGroup(123_4);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1861977477, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
+        __composer.EndRestartGroup(850864666, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
     }
 
     [Composable]
@@ -100,20 +114,27 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __content) = (provides1, provides2, provides3, provides4, provides5, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1617866357);
+        __composer.StartRestartGroup(-1390334920);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, Unit, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_5);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            content();
+            composer.EndLocalGroup(123_5);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1617866357, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
+        __composer.EndRestartGroup(-1390334920, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
     }
 
     [Composable]
@@ -121,20 +142,28 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(369200937);
+        __composer.StartRestartGroup(732686622);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, Unit, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5, provides6);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_6);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            map.Set(provides6);
+            content();
+            composer.EndLocalGroup(123_6);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(369200937, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
+        __composer.EndRestartGroup(732686622, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
     }
 
     [Composable]
@@ -142,20 +171,29 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1780236285);
+        __composer.StartRestartGroup(398130733);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, UnityCompose.Unit, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, Unit, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_7);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            map.Set(provides6);
+            map.Set(provides7);
+            content();
+            composer.EndLocalGroup(123_7);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1780236285, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
+        __composer.EndRestartGroup(398130733, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
     }
 
     [Composable]
@@ -163,20 +201,30 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1093146676);
+        __composer.StartRestartGroup(-56820169);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, UnityCompose.Unit, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, UnityCompose.Unit, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, Unit, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_8);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            map.Set(provides6);
+            map.Set(provides7);
+            map.Set(provides8);
+            content();
+            composer.EndLocalGroup(123_8);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1093146676, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
+        __composer.EndRestartGroup(-56820169, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
     }
 
     [Composable]
@@ -184,20 +232,31 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(1383627550);
+        __composer.StartRestartGroup(-2060835784);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, UnityCompose.Unit>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, UnityCompose.Unit>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, Unit>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_9);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            map.Set(provides6);
+            map.Set(provides7);
+            map.Set(provides8);
+            map.Set(provides9);
+            content();
+            composer.EndLocalGroup(123_9);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1383627550, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
+        __composer.EndRestartGroup(-2060835784, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
     }
 
     [Composable]
@@ -205,19 +264,31 @@ public static partial class ComposeFunctions
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, provides10, content);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1822671578);
+        __composer.StartRestartGroup(-1885066283);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content)))
         {
-            var provides = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>() : __composer.UpdateRememberedValue<UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities.CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>(new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>());
-            provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, provides10);
-            CompositionLocalProviderImpl(provides, content);
+            var composer = CurrentComposer;
+            composer.StartLocalGroup(123_10);
+            var map = composer.RequireCompositionLocalMap();
+            map.Set(provides1);
+            map.Set(provides2);
+            map.Set(provides3);
+            map.Set(provides4);
+            map.Set(provides5);
+            map.Set(provides6);
+            map.Set(provides7);
+            map.Set(provides8);
+            map.Set(provides9);
+            map.Set(provides10);
+            content();
+            composer.EndLocalGroup(123_10);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1822671578, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content));
+        __composer.EndRestartGroup(-1885066283, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content));
     }
 }

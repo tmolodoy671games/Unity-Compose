@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
@@ -12,25 +13,16 @@ internal static class LocalGroup
 
 internal static class LocalGroupSlotsExtensions
 {
-    public static CompositionLocalMap? GetCompositionLocalMap(
+    public static CompositionLocalMap GetCompositionLocalMap(
         this Slots slots,
         int index
     )
     {
-        return slots[index + LocalGroup.CompositionLocalMapOffset] as CompositionLocalMap;
+        return (CompositionLocalMap) slots[index + LocalGroup.CompositionLocalMapOffset].NotNull();
     }
 
-    public static void SetCompositionLocalMap(
-        this Slots slots,
-        int index,
-        CompositionLocalMap? map
-    )
+    public static void InsertCompositionLocalMap(this Slots slots, int index, CompositionLocalMap map)
     {
-        slots[index + LocalGroup.CompositionLocalMapOffset] = map;
-    }
-
-    public static void InsertCompositionLocalMap(this Slots slots, int index)
-    {
-        slots.Insert(index + LocalGroup.CompositionLocalMapOffset, ComposeEmptySlot.Instance);
+        slots.Insert(index + LocalGroup.CompositionLocalMapOffset, map);
     }
 }

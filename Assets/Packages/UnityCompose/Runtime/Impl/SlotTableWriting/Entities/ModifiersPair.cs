@@ -11,11 +11,15 @@ internal readonly record struct ModifiersPair(
 internal class ModifiersStatePair : IDisposable
 {
     private static readonly NewObjectPool<ModifiersStatePair> _pool = new(() => new ModifiersStatePair());
-    
+
     public static ModifiersStatePair Get() => _pool.Get();
-        
+
     private readonly IMutableState<ModifiersPair> _pair = MutableStateOf(new ModifiersPair(null, null));
-    
+
+    private ModifiersStatePair()
+    {
+    }
+
     public ModifiersPair ToModifiersPair() => _pair.Value;
 
     public void Update(ModifiersPair pair)
@@ -25,7 +29,7 @@ internal class ModifiersStatePair : IDisposable
 
     public void Dispose()
     {
-        _pair.Clear();
+        _pair.ClearScopes();
         _pool.Return(this);
     }
 }

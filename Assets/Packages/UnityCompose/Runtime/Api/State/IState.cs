@@ -12,16 +12,15 @@ public interface IState<out T>
 
 public interface IMutableState
 {
+    void ClearScopes();
 }
 
 public interface IMutableState<T> : IState<T>, IMutableState
 {
     new T Value { get; set; }
-
-    void Clear();
 }
 
-public abstract class BaseMutableStateImpl
+public abstract class BaseMutableStateImpl : IMutableState
 {
     private readonly HashSet<ComposeRestartScope> _scopes = new();
     private readonly bool _isCompositionLocal;
@@ -53,7 +52,7 @@ public abstract class BaseMutableStateImpl
 
     internal bool Add(ComposeRestartScope restartScope) => _scopes.Add(restartScope);
     
-    internal void Clear() => _scopes.Clear();
+    public void ClearScopes() => _scopes.Clear();
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
@@ -79,8 +78,6 @@ internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
             Notify();
         }
     }
-
-    public new void Clear() => base.Clear();
 
     public override string ToString()
     {

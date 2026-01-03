@@ -7,17 +7,25 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 
 internal class CompositionLocalMap : IDisposable
 {
+    private readonly record struct ProvidedValue(
+        IMutableState State,
+        bool IsInherited
+    );
+
     private static readonly NewObjectPool<CompositionLocalMap> _pool = new(() => new CompositionLocalMap());
-    
-    private readonly Dictionary<ICompositionLocal, IMutableState> _customValues = new();
-    
+
+    private readonly Dictionary<ICompositionLocal, ProvidedValue> _customValues = new();
+
     public static CompositionLocalMap Get() => _pool.Get();
-    
-    private CompositionLocalMap() {}
+
+    private CompositionLocalMap()
+    {
+    }
 
     public T Get<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
     {
-        if (_customValues.TryGetValue(compositionLocal, out var state) && state is IMutableState<T> mutableState)
+        if (_customValues.TryGetValue(compositionLocal, out var providedValue) &&
+            providedValue.State is IMutableState<T> mutableState)
             return mutableState.Value;
         return defaultValueFactory();
     }
@@ -26,20 +34,28 @@ internal class CompositionLocalMap : IDisposable
     {
         var result = _pool.Get();
         foreach (var pair in _customValues)
-            result._customValues[pair.Key] = pair.Value;
+            result._customValues[pair.Key] = pair.Value with { IsInherited = true };
         return result;
     }
 
     public void Set<T>(ICompositionLocal<T> compositionLocal, T customValue)
     {
-        if (_customValues.TryGetValue(compositionLocal, out var state) && state is IMutableState<T> mutableState)
+        if (_customValues.TryGetValue(compositionLocal, out var providedValue) &&
+            providedValue is { IsInherited: false, State: IMutableState<T> mutableState })
             mutableState.Value = customValue;
         else
-            _customValues[compositionLocal] = MutableStateOf(customValue);
+            _customValues[compositionLocal] = new ProvidedValue(MutableStateOf(customValue), false);
     }
-    
+
+    public void Set<T>(CompositionLocalProvides<T> provides)
+    {
+        Set(provides.CompositionLocal, provides.Value);
+    }
+
     public void Dispose()
     {
+        foreach (var customValue in _customValues.Values)
+            customValue.State.ClearScopes();
         _customValues.Clear();
         _pool.Return(this);
     }

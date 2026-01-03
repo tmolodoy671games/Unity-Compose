@@ -44,7 +44,8 @@ namespace UnityCompose.Samples.Behaviors
                                         {
                                             Text(LocalDebugString.Current);
                                             Text(LocalDebugString.Current);
-                                        });
+                                        }
+                                    );
                                     Text(LocalDebugString.Current);
                                 }
                             );

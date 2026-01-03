@@ -2,6 +2,7 @@
 // ReSharper disable CheckNamespace
 
 using System;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
@@ -262,10 +263,7 @@ public class Composer
         return _writer.GetCompositionLocal(compositionLocal, defaultValueFactory);
     }
 
-    internal void UpdateCompositionLocal(ICompositionLocalProviders provides)
-    {
-        _writer.SetCompositionLocal(provides);
-    }
+    internal CompositionLocalMap RequireCompositionLocalMap() => _writer.GetCompositionLocalMap().NotNull();
 
     #endregion
 

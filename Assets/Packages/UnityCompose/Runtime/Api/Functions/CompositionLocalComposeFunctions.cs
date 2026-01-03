@@ -1,9 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
-using UnityEngine;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -27,11 +23,12 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_1);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        content();
+        composer.EndLocalGroup(123_1);
     }
 
     [Composable]
@@ -41,11 +38,13 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, Unit, Unit, Unit, Unit, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_2);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        content();
+        composer.EndLocalGroup(123_2);
     }
 
     [Composable]
@@ -56,11 +55,14 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, Unit, Unit, Unit, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_3);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        content();
+        composer.EndLocalGroup(123_3);
     }
 
     [Composable]
@@ -72,11 +74,15 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, Unit, Unit, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3, provides4);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_4);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        content();
+        composer.EndLocalGroup(123_4);
     }
 
     [Composable]
@@ -89,11 +95,16 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, Unit, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3, provides4, provides5);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_5);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        content();
+        composer.EndLocalGroup(123_5);
     }
 
     [Composable]
@@ -107,11 +118,17 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, Unit, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3, provides4, provides5, provides6);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_6);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        map.Set(provides6);
+        content();
+        composer.EndLocalGroup(123_6);
     }
 
     [Composable]
@@ -126,11 +143,18 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, Unit, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_7);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        map.Set(provides6);
+        map.Set(provides7);
+        content();
+        composer.EndLocalGroup(123_7);
     }
 
     [Composable]
@@ -146,11 +170,19 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, Unit, Unit>()
-        );
-        provides.Update(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8);
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_8);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        map.Set(provides6);
+        map.Set(provides7);
+        map.Set(provides8);
+        content();
+        composer.EndLocalGroup(123_8);
     }
 
     [Composable]
@@ -167,21 +199,20 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, Unit>()
-        );
-        provides.Update(
-            provides1,
-            provides2,
-            provides3,
-            provides4,
-            provides5,
-            provides6,
-            provides7,
-            provides8,
-            provides9
-        );
-        CompositionLocalProviderImpl(provides, content);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_9);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        map.Set(provides6);
+        map.Set(provides7);
+        map.Set(provides8);
+        map.Set(provides9);
+        content();
+        composer.EndLocalGroup(123_9);
     }
 
     [Composable]
@@ -199,34 +230,20 @@ public static partial class ComposeFunctions
         ComposableContent content
     )
     {
-        var provides = Remember(() =>
-            new CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
-        );
-        provides.Update(
-            provides1,
-            provides2,
-            provides3,
-            provides4,
-            provides5,
-            provides6,
-            provides7,
-            provides8,
-            provides9,
-            provides10
-        );
-        CompositionLocalProviderImpl(provides, content);
-    }
-
-    [Composable, Compiled]
-    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
-    private static void CompositionLocalProviderImpl<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
-        CompositionLocalProviders<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> provides,
-        ComposableContent content
-    )
-    {
-        CurrentComposer.StartLocalGroup(123);
-        CurrentComposer.UpdateCompositionLocal(provides);
+        var composer = CurrentComposer;
+        composer.StartLocalGroup(123_10);
+        var map = composer.RequireCompositionLocalMap();
+        map.Set(provides1);
+        map.Set(provides2);
+        map.Set(provides3);
+        map.Set(provides4);
+        map.Set(provides5);
+        map.Set(provides6);
+        map.Set(provides7);
+        map.Set(provides8);
+        map.Set(provides9);
+        map.Set(provides10);
         content();
-        CurrentComposer.EndLocalGroup(123);
+        composer.EndLocalGroup(123_10);
     }
 }

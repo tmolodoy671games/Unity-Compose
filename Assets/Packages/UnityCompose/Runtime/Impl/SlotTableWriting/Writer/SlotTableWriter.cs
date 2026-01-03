@@ -36,9 +36,6 @@ internal class SlotTableWriter
     private VisualElement? _rootVisualElement;
 
     private ModifiersStatePair? _rootModifiers;
-
-    private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
-    private readonly List<ICompositionLocalProviders> _enteredProvides = new();
     private CompositionLocalMap? _rootCompositionLocalMap = null;
 
     private int _currentGroupIndex = 0;
@@ -189,7 +186,7 @@ internal class SlotTableWriter
         restartScope = ComposeRestartScope.Get(
             groupAnchor: restartGroup.AnchorId,
             writer: this,
-            compositionLocalMap: RequireCompositionLocalMap(),
+            compositionLocalMap: GetCompositionLocalMap(),
             element: GetParentVisualElement(),
             modifiers: RequireModifiersStatePair()
         );
@@ -607,6 +604,12 @@ internal class SlotTableWriter
             return;
         }
 
+        var parentDictionary = _enteredLocalGroups.IsNotEmpty()
+            ? _slots.GetCompositionLocalMap(_enteredLocalGroups.Peek().SlotIndex)
+            : _rootCompositionLocalMap;
+        var map = parentDictionary != null
+            ? parentDictionary.Copy()
+            : CompositionLocalMap.Get();
         var newGroup = new ComposeGroup(
             Key: key,
             Type: ComposeGroupType.Local,
@@ -622,7 +625,7 @@ internal class SlotTableWriter
         );
         _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.InsertCompositionLocalMap(_currentSlotIndex);
+        _slots.InsertCompositionLocalMap(_currentSlotIndex, map);
         EnterGroup(newGroup);
         _currentSlotIndex += LocalGroup.MetadataSize;
     }
@@ -637,65 +640,21 @@ internal class SlotTableWriter
         if (parent.Key != key)
             throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
 #endif
-        var map = GetCurrentLocalGroupCompositionLocalMap();
-        if (map != null)
-            _enteredCompositionLocalMaps.Pop();
-        else if (_enteredProvides.IsNotEmpty())
-            _enteredProvides.RemoveAt(_enteredProvides.Count - 1);
         ExitGroup(parent);
-        if (parent.Key == _invalidationRoot)
-            _invalidationRoot = -1;
         _enteredLocalGroups.Pop();
     }
 
     public T GetCompositionLocal<T>(ICompositionLocal<T> compositionLocal, Func<T> defaultValueFactory)
     {
-        var map = RequireCompositionLocalMap() ?? _rootCompositionLocalMap;
-        if (map == null)
-            return defaultValueFactory();
-        return map.Get(compositionLocal, defaultValueFactory);
+        var map = GetCompositionLocalMap() ?? _rootCompositionLocalMap;
+        return map == null ? defaultValueFactory() : map.Get(compositionLocal, defaultValueFactory);
     }
 
-    public void SetCompositionLocal(ICompositionLocalProviders providers)
-    {
-        var map = GetCurrentLocalGroupCompositionLocalMap();
-        if (map != null)
-        {
-            providers.Apply(map);
-            _enteredCompositionLocalMaps.Push(new CompositionLocalMapEntry(_enteredLocalGroups.Peek().GroupIndex, map));
-            return;
-        }
-
-        _enteredProvides.Add(providers);
-    }
-
-    private CompositionLocalMap? GetCurrentLocalGroupCompositionLocalMap()
+    public CompositionLocalMap? GetCompositionLocalMap()
     {
         if (_enteredLocalGroups.IsEmpty())
-            return null;
-        return _slots.GetCompositionLocalMap(_enteredLocalGroups.Peek().SlotIndex);
-    }
-
-    private CompositionLocalMap? RequireCompositionLocalMap()
-    {
-        var map = GetCurrentLocalGroupCompositionLocalMap();
-        if (map != null)
-            return map;
-        if (map == null && _enteredProvides.IsEmpty())
             return _rootCompositionLocalMap;
-        var (groupIndex, slotIndex) = _enteredLocalGroups.Peek();
-        var parentDictionary = _enteredCompositionLocalMaps.IsNotEmpty()
-            ? _enteredCompositionLocalMaps.Peek().Map
-            : _rootCompositionLocalMap;
-        map = parentDictionary != null
-            ? parentDictionary.Copy()
-            : CompositionLocalMap.Get();
-        // Log("RequireCompositionLocalMap: " + map.GetHashCode());
-        foreach (var provider in _enteredProvides)
-            provider.Apply(map);
-        _slots.SetCompositionLocalMap(slotIndex, map);
-        _enteredProvides.RemoveAt(_enteredProvides.Count - 1);
-        _enteredCompositionLocalMaps.Push(new CompositionLocalMapEntry(groupIndex, map));
+        var map = _slots.GetCompositionLocalMap(_enteredLocalGroups.Peek().SlotIndex);
         return map;
     }
 
@@ -803,8 +762,6 @@ internal class SlotTableWriter
         _enteredModifierGroups.Clear();
         _pendingOffsets.Clear();
 
-        _enteredCompositionLocalMaps.Clear();
-        _enteredProvides.Clear();
         _enteredElements.Clear();
         _rootVisualElement = null;
         _rootCompositionLocalMap = null;
@@ -819,7 +776,7 @@ internal class SlotTableWriter
         _alreadyRemovedSlots = 0;
     }
 
-    public void ResetTo(
+    private void ResetTo(
         int groupIndex,
         CompositionLocalMap? compositionLocalMap,
         VisualElement? element,
@@ -856,8 +813,6 @@ internal class SlotTableWriter
         _enteredLocalGroups.Clear();
         _enteredModifierGroups.Clear();
 
-        _enteredCompositionLocalMaps.Clear();
-        _enteredProvides.Clear();
         _pendingOffsets.Clear();
         _enteredElements.Clear();
     }
@@ -892,7 +847,7 @@ internal class SlotTableWriter
     {
         if (group.Type == type && group.Key == key)
             return;
-        group = group with { Type = type, Key = key};
+        group = group with { Type = type, Key = key };
         _groups[_currentGroupIndex] = group;
         for (var i = _currentSlotIndex; i < _currentSlotIndex + group.SlotsSize; i++)
             _slots[i] = ComposeEmptySlot.Instance;
