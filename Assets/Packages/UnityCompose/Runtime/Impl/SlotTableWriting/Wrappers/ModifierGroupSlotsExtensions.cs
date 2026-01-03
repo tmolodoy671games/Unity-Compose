@@ -1,4 +1,5 @@
-﻿using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
+﻿using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;
@@ -11,18 +12,13 @@ internal static class ModifierGroup
 
 internal static class ModifierGroupSlotsExtensions
 {
-    public static ModifiersStatePair? GetModifiersStatePair(this Slots slots, int slotIndex)
+    public static ModifiersStatePair GetModifiersStatePair(this Slots slots, int slotIndex)
     {
-        return slots[slotIndex + ModifierGroup.ModifiersOffset] as ModifiersStatePair;
+        return (ModifiersStatePair) slots[slotIndex + ModifierGroup.ModifiersOffset].NotNull();
     }
 
-    public static void InsertModifiersStatePair(this Slots slots, int slotIndex)
+    public static void InsertModifiersStatePair(this Slots slots, int slotIndex, ModifiersStatePair state)
     {
-        slots.Insert(slotIndex + ModifierGroup.ModifiersOffset, ComposeEmptySlot.Instance);
-    }
-
-    public static void SetModifiersStatePair(this Slots slots, int slotIndex, ModifiersStatePair state)
-    {
-        slots[slotIndex + ModifierGroup.ModifiersOffset] = state;
+        slots.Insert(slotIndex + ModifierGroup.ModifiersOffset, state);
     }
 }

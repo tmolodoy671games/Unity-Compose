@@ -17,6 +17,8 @@ public interface IMutableState
 public interface IMutableState<T> : IState<T>, IMutableState
 {
     new T Value { get; set; }
+
+    void Clear();
 }
 
 public abstract class BaseMutableStateImpl
@@ -50,6 +52,8 @@ public abstract class BaseMutableStateImpl
     }
 
     internal bool Add(ComposeRestartScope restartScope) => _scopes.Add(restartScope);
+    
+    internal void Clear() => _scopes.Clear();
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
@@ -75,6 +79,8 @@ internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
             Notify();
         }
     }
+
+    public new void Clear() => base.Clear();
 
     public override string ToString()
     {

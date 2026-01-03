@@ -35,7 +35,6 @@ internal class SlotTableWriter
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
 
-    private readonly Stack<ModifiersPair> _enteredModifiersPairs = new();
     private ModifiersStatePair? _rootModifiers;
 
     private readonly Stack<CompositionLocalMapEntry> _enteredCompositionLocalMaps = new();
@@ -741,7 +740,7 @@ internal class SlotTableWriter
         );
         _enteredModifierGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.InsertModifiersStatePair(_currentSlotIndex);
+        _slots.InsertModifiersStatePair(_currentSlotIndex, ModifiersStatePair.Get());
         EnterGroup(newGroup);
         _currentSlotIndex += ModifierGroup.MetadataSize;
     }
@@ -762,7 +761,6 @@ internal class SlotTableWriter
 
     public void PushModifiers(IModifier? before, IModifier? after)
     {
-        _enteredModifiersPairs.Push(new ModifiersPair(before, after));
         var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
         var pair = _slots.GetModifiersStatePair(slotIndex);
         pair?.Update(new ModifiersPair(before, after));
@@ -774,13 +772,6 @@ internal class SlotTableWriter
             return _rootModifiers != null ? _rootModifiers.ToModifiersPair() : new ModifiersPair();
         var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
         var pair = _slots.GetModifiersStatePair(slotIndex);
-        if (pair == null)
-        {
-            pair = new ModifiersStatePair();
-            pair.Update(_enteredModifiersPairs.Peek());
-            _slots.SetModifiersStatePair(slotIndex, pair);
-        }
-
         return pair.ToModifiersPair();
     }
 
@@ -790,12 +781,6 @@ internal class SlotTableWriter
             return _rootModifiers;
         var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
         var pair = _slots.GetModifiersStatePair(slotIndex);
-        if (pair == null)
-        {
-            pair = new ModifiersStatePair();
-            _slots.SetModifiersStatePair(slotIndex, pair);
-        }
-
         return pair;
     }
 
@@ -821,7 +806,6 @@ internal class SlotTableWriter
         _enteredCompositionLocalMaps.Clear();
         _enteredProvides.Clear();
         _enteredElements.Clear();
-        _enteredModifiersPairs.Clear();
         _rootVisualElement = null;
         _rootCompositionLocalMap = null;
 
@@ -876,7 +860,6 @@ internal class SlotTableWriter
         _enteredProvides.Clear();
         _pendingOffsets.Clear();
         _enteredElements.Clear();
-        _enteredModifiersPairs.Clear();
     }
 
     public void ResetTo(
