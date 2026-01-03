@@ -116,7 +116,9 @@ namespace UnityCompose
         {
             // if (!ApplicationUtils.IsPlaying) return;
             if (Instance._instantInvalidatedGroups.Count == 0) return;
-            var groupsToInvalidate = Instance._instantInvalidatedGroups.ToImmutableStableList();
+            var groupsToInvalidate = Instance._groupsToRestart;
+            groupsToInvalidate.Clear();
+            groupsToInvalidate.AddRange(Instance._instantInvalidatedGroups);
             Instance._instantInvalidatedGroups.Clear();
             foreach (var group in groupsToInvalidate)
                 group.Restart();

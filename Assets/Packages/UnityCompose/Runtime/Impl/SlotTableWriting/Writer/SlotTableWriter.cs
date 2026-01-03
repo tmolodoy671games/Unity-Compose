@@ -722,7 +722,7 @@ internal class SlotTableWriter
     {
         var slotIndex = _enteredModifierGroups.Peek().SlotIndex;
         var pair = _slots.GetModifiersStatePair(slotIndex);
-        pair?.Update(new ModifiersPair(before, after));
+        pair.Update(new ModifiersPair(before, after));
     }
 
     public ModifiersPair GetModifiers()
@@ -1000,6 +1000,7 @@ internal class SlotTableWriter
             ShiftAncestorsElementsCounts(elementsCountOffset);
             _alreadyRemovedGroups = 0;
             _alreadyRemovedSlots = 0;
+            ComposeInvalidator.InstantInvalidate();
         }
 
         _enteredParents.Pop();

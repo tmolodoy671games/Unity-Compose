@@ -15,13 +15,12 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     private static readonly NewObjectPool<ComposeRestartScope> _pool = new(() => new());
 
     private SlotTableWriter _writer = null!;
-    public AnchorId _groupAnchor = default!;
-    private CompositionLocalMap? _compositionLocalMap = null!;
-    private VisualElement? _visualElement = null!;
-    private ModifiersStatePair? _modifiers = default!;
+    public AnchorId _groupAnchor;
+    private CompositionLocalMap? _compositionLocalMap;
+    private VisualElement? _visualElement;
+    private ModifiersStatePair? _modifiers;
 
     private Action? _restartCallback;
-    private int _lastCalledAtFrame = -1;
 
     public static ComposeRestartScope Get(
         AnchorId groupAnchor,
@@ -44,11 +43,6 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     {
     }
 
-    public void SyncFrame()
-    {
-        _lastCalledAtFrame = Time.frameCount;
-    }
-
     public void UpdateScope(Action restartCallback)
     {
         _restartCallback = restartCallback;
@@ -56,9 +50,6 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
-        // if (Time.frameCount == _lastCalledAtFrame)
-        //     return;
-        _lastCalledAtFrame = Time.frameCount;
         _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement, _modifiers);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();

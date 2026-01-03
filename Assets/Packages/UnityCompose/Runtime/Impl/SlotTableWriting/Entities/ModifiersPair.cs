@@ -14,7 +14,7 @@ internal class ModifiersStatePair : IDisposable
 
     public static ModifiersStatePair Get() => _pool.Get();
 
-    private readonly IMutableState<ModifiersPair> _pair = MutableStateOf(new ModifiersPair(null, null));
+    private readonly IMutableState<ModifiersPair> _pair = LocalMutableStateOf(new ModifiersPair(null, null));
 
     private ModifiersStatePair()
     {

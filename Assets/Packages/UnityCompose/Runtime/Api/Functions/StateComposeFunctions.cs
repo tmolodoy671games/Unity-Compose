@@ -15,9 +15,9 @@ public static partial class ComposeFunctions
         return new MutableStateImpl<T>(value, log: true);
     }
     
-    internal static IMutableState<T> MutableStateOf<T>(T value, bool isCompositionLocal)
+    internal static IMutableState<T> LocalMutableStateOf<T>(T value)
     {
-        return new MutableStateImpl<T>(value, isCompositionLocal);
+        return new MutableStateImpl<T>(value, true);
     }
 
     public static IMutableStateList<T> MutableStateListOf<T>()
