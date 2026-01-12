@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 
 // ReSharper disable CheckNamespace
@@ -91,7 +92,15 @@ public static partial class ComposeFunctions
     )
     {
         var property = Remember(() => MutableStateOf(targetValue));
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (!ApplicationUtils.IsPlaying)
+        {
+            property.Value = targetValue;
+            return property;
+        }
+        
+        // TODO: Find out the reason
+        // if (EqualityUtils.FastEquals(property.Value, targetValue))
+        //     return property;
 
         LaunchedEffect(
             key: targetValue,
@@ -129,7 +138,11 @@ public static partial class ComposeFunctions
     {
         var targetValue = targetValueFactory();
         var property = Remember(() => MutableStateOf(targetValue));
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (!ApplicationUtils.IsPlaying)
+        {
+            property.Value = targetValue;
+            return property;
+        }
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
         LaunchedEffect(
