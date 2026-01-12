@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable CheckNamespace
+
 using System;
 using System.Collections;
 using StableCollections;

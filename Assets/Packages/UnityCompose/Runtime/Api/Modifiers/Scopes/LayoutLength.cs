@@ -1,7 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Runtime.CompilerServices;
 using SharpExtensions;
 using UnityEngine.UIElements;
 
@@ -9,33 +8,30 @@ namespace UnityCompose;
 
 public readonly struct LayoutLength : IEquatable<LayoutLength>
 {
-    private readonly Optional<Px> _px;
-    private readonly Optional<Percent> _percent;
+    private readonly Length _value;
 
-    public LayoutLength(Optional<Px> px) : this()
+    private LayoutLength(Px px) : this()
     {
-        _px = px;
-        _percent = Optional.Empty<Percent>();
+        _value = px.ToLength();
+        HasValue = true;
     }
 
-    public LayoutLength(Optional<Percent> percent) : this()
+    private LayoutLength(Percent percent) : this()
     {
-        _px = Optional.Empty<Px>();
-        _percent = percent;
+        _value = percent.ToLength();
+        HasValue = true;
     }
 
-    public bool HasValue => _px.HasValue || _percent.HasValue;
+    public bool HasValue { get; }
 
     internal Length ToLength()
     {
-        if (_px.HasValue) return _px.Value.ToLength();
-        if (_percent.HasValue) return _percent.Value.ToLength();
-        return 0f;
+        return _value;
     }
 
     public bool Equals(LayoutLength other)
     {
-        return _px.Equals(other._px) && _percent.Equals(other._percent);
+        return HasValue == other.HasValue && _value == other._value;
     }
 
     public override bool Equals(object? obj)
@@ -45,14 +41,12 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_px, _percent);
+        return HashCode.Combine(HasValue, _value);
     }
 
     public static implicit operator LayoutLength(Px px) => new(px);
 
     public static implicit operator LayoutLength(Percent percent) => new(percent);
-
-    public static implicit operator LayoutLength(float value) => new Px(value);
 
     public static bool operator ==(LayoutLength lhs, LayoutLength rhs)
     {
@@ -76,9 +70,12 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
 
     public override string ToString()
     {
-        if (_px.HasValue)
-            return _px.ToString();
-        return _percent.ToString();
+        return _value.unit switch
+        {
+            LengthUnit.Pixel => _value.value.Px().ToString(),
+            LengthUnit.Percent => _value.value.Percent().ToString(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }
 
@@ -110,8 +107,6 @@ public readonly struct Px : IEquatable<Px>
         return $"{_value}px";
     }
 
-    public static implicit operator Px(float value) => new Px(value);
-
     public static Px operator +(Px left, Px right)
     {
         return new Px(left._value + right._value);
@@ -125,6 +120,26 @@ public readonly struct Px : IEquatable<Px>
     public static Px operator *(Px left, Px right)
     {
         return new Px(left._value * right._value);
+    }
+    
+    public static Px operator *(float left, Px right)
+    {
+        return new Px(left * right._value);
+    }
+    
+    public static Px operator *(Px left, float right)
+    {
+        return new Px(left._value * right);
+    }
+    
+    public static Px operator *(int left, Px right)
+    {
+        return new Px(left * right._value);
+    }
+    
+    public static Px operator *(Px left, int right)
+    {
+        return new Px(left._value * right);
     }
     
     public static Px operator /(Px left, Px right)

@@ -45,11 +45,6 @@ internal class BackgroundImageModifierImpl : BaseModifier<BackgroundImageModifie
         element.style.backgroundImage = _background;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.BackgroundImage);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.backgroundImage = StyleKeyword.Null;

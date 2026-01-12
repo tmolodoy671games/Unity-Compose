@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using System.Drawing;
 using System;
 using UnityCompose;
@@ -53,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 CompositionLocalProvider(LocalTextStyle.Provides(new TextStyle(FontSize: 80, Color: Color.white)), !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         Text(LocalDebugString.Current);
                         CompositionLocalProvider(LocalDebugString.Provides("Nested"), !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>

@@ -42,8 +42,6 @@ namespace UnityCompose.Samples.Behaviors
                                 transition: () => SlideInHorizontally(static it => -it)
                                     .TogetherWith(SlideOutHorizontally(static it => it))
                                     .With(animationSpec),
-                                initialScreens: Remember(() =>
-                                    IImmutableStableList.Create<ComposeScreen>(new FirstScreen())),
                                 modifier: Modifier
                                     .FillMaxSize()
                             );
@@ -62,6 +60,9 @@ namespace UnityCompose.Samples.Behaviors
 
     internal class SampleCoordinatorImpl : BaseComposeCoordinator, ISampleCoordinator
     {
+        public override IImmutableStableList<ComposeScreen> InitialScreens() =>
+            IImmutableStableList.Create<ComposeScreen>(new FirstScreen());
+
         public void ShowSecondScreen()
         {
             Router.ReplaceScreen(new SecondScreen());
@@ -81,8 +82,7 @@ namespace UnityCompose.Samples.Behaviors
             var coordinator = FindCoordinator<ISampleCoordinator>();
             CollectSpace(() => coordinator.ShowSecondScreen());
             Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                alignment: Alignment.Center,
                 modifier: modifier
                     .FillMaxSize()
                     .Background(Color.green),
@@ -90,7 +90,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Spacer(
                         modifier: Modifier
-                            .Size(100)
+                            .Size(100.Px())
                             .Background(Color.blue)
                             .Scale(1 + 2 * LocalTransitionProgress.Current)
                     );

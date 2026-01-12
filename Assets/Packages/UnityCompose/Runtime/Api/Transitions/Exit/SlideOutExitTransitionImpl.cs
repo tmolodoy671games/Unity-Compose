@@ -98,7 +98,7 @@ internal class SlideOutExitTransitionImpl : IExitTransition
                         a: _initialOffsetX(parentSize),
                         b: _targetOffsetX?.Invoke(parentSize) ?? 0,
                         t: resolvedProgress
-                    )
+                    ).Px()
                 );
         }
 
@@ -110,7 +110,7 @@ internal class SlideOutExitTransitionImpl : IExitTransition
                         a: _initialOffsetY(parentSize),
                         b: _targetOffsetY?.Invoke(parentSize) ?? 0,
                         t: resolvedProgress
-                    )
+                    ).Px()
                 );
         }
 

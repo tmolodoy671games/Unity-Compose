@@ -18,8 +18,7 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
@@ -27,54 +26,27 @@ namespace UnityCompose.Samples.Behaviors
                     Box(
                         modifier: Modifier
                             .Background(Color.red)
-                            .Size(400),
+                            .Size(400.Px()),
                         content: () =>
                         {
                             Spacer(
                                 modifier: Modifier
-                                    .Size(100)
+                                    .Size(100.Px())
                                     .Float()
                                     .Background(Color.yellow)
-                                    .Position(top: 5)
+                                    .Position(top: 5.Px())
                             );
                             Spacer(
                                 modifier: Modifier
-                                    .Size(100)
+                                    .Size(100.Px())
                                     .Float()
                                     .Background(Color.yellow)
-                                    .Position(bottom: 5)
+                                    .Position(bottom: 5.Px())
                             );
                         }
                     );
                 }
             );
-
-            // Box(
-            //     alignHorizontally: Align.Center,
-            //     alignVertically: Justify.Center,
-            //     style: ComposeStyle.Empty
-            //         .Width(100.Percent())
-            //         .Height(100.Percent()),
-            //     content: () =>
-            //     {
-            //         Box(
-            //             alignHorizontally: Align.Center,
-            //             alignVertically: Justify.Center,
-            //             style: ComposeStyle.Empty
-            //                 .Background(Color.darkRed)
-            //                 .Size(400),
-            //             content: () =>
-            //             {
-            //                 Spacer(
-            //                     style: ComposeStyle.Empty
-            //                         .Size(100)
-            //                         .Position(Position.Absolute)
-            //                         .Background(Color.greenYellow)
-            //                 );
-            //             }
-            //         );
-            //     }
-            // );
         }
     }
 }

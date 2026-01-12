@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SharpExtensions;
 using StableCollections;
@@ -39,11 +40,11 @@ public static partial class ComposeFunctions
     public static void Navigation(
         IComposeCoordinator coordinator,
         Func<ContentTransform>? transition = null,
-        IImmutableStableList<ComposeScreen>? initialScreens = null,
         IModifier? modifier = null
     )
     {
-        var backStack = Remember(() => MutableStateListOf(initialScreens.OrEmpty().ToImmutableStableList()));
+        var initialScreens = Remember(coordinator.InitialScreens);
+        var backStack = Remember(() => MutableStateListOf(initialScreens));
         var coordinatorEntry = LocalCoordinator.Current;
         var parentCoordinator = coordinatorEntry.Coordinator;
         IComposeNavigator navigator = Remember((parentCoordinator, backStack),
@@ -60,9 +61,9 @@ public static partial class ComposeFunctions
         );
 
         var isSwitched = Remember(() => MutableStateOf(false));
-        var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, IImmutableStableList.Empty<ComposeScreen>());
+        var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, ImmutableStableListOf<ComposeScreen>());
         var previousBackStack = Remember(() =>
-            IMutableStableProperty.Create(initialScreens.OrEmpty().ToImmutableStableList())
+            MutableStablePropertyOf(initialScreens.OrEmpty().ToImmutableStableList())
         );
         LaunchedEffect(currentBackStack, () =>
         {
@@ -104,7 +105,7 @@ public static partial class ComposeFunctions
         var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
         var resolvedDuration = resolvedProgress * resolvedTransition.TotalDuration;
         var screensToRender = Remember(
-            (allScreens, resolvedProgress, currentBackStack, previousBackStack.Value),
+            (allScreens, appearingScreens, disappearingScreens, isTransitionFinished),
             () => allScreens
                 .Select(screen =>
                 {
@@ -132,7 +133,9 @@ public static partial class ComposeFunctions
                         content: () =>
                         {
                             var parent = CurrentComposer.GetParentVisualElement().NotNull();
-                            var isCurrentScreen = screen.Equals(currentBackStack[^1]);
+                            var isCurrentScreen = screen.Equals(
+                                currentBackStack!.GetOrDefault(currentBackStack.Count - 1, null)
+                            );
                             var contentModifier = screenState switch
                             {
                                 TransitionState.Idle => Modifier
@@ -236,7 +239,7 @@ internal class ComposeNavigatorImpl : IComposeNavigator
         _parentCoordinator = parentCoordinator;
     }
 
-    public void ApplyCommands(IStableList<ComposeNavigationCommand> commands)
+    public void ApplyCommands(IEnumerable<ComposeNavigationCommand> commands)
     {
         foreach (var command in commands)
             ApplyCommand(command);

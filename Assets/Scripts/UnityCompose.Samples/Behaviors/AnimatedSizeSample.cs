@@ -20,14 +20,13 @@ namespace UnityCompose.Samples.Behaviors
             const int AnimationDuration = 2;
             var animationSpec = Tween(AnimationDuration);
             Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        horizontalAlignment: Alignment.Horizontal.Center,
+                        horizontalAlignment: Alignment.CenterHorizontally,
                         modifier: Modifier
                             .Name("animated-size-sample"),
                         content: () =>
@@ -40,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .Name("animated-size")
                                     .Background(isSwitched.Value ? Color.green : Color.red, Transition(AnimationDuration))
-                                    .Padding(all: 16),
+                                    .Padding(all: 16.Px()),
                                 animationSpec: animationSpec,
                                 content: modifier =>
                                 {
@@ -61,10 +60,10 @@ namespace UnityCompose.Samples.Behaviors
                                 fontSize: 64,
                                 modifier: Modifier
                                     .Name("switch-button")
-                                    .Padding(all: 32)
+                                    .Padding(all: 32.Px())
                                     .Background(Color.blue)
-                                    .Margin(top: 16)
-                                    .Border(radius: 16)
+                                    .Margin(top: 16.Px())
+                                    .Border(radius: 16.Px())
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );
                         }

@@ -44,7 +44,7 @@ internal class CompositionLocalMap : IDisposable
             providedValue is { IsInherited: false, State: IMutableState<T> mutableState })
             mutableState.Value = customValue;
         else
-            _customValues[compositionLocal] = new ProvidedValue(MutableStateOf(customValue), false);
+            _customValues[compositionLocal] = new ProvidedValue(LocalMutableStateOf(customValue), false);
     }
 
     public void Set<T>(CompositionLocalProvides<T> provides)
@@ -62,6 +62,6 @@ internal class CompositionLocalMap : IDisposable
 
     public override string ToString()
     {
-        return $"CompositionLocalMap{_customValues.ToImmutableStableDictionary().ToString()}";
+        return $"CompositionLocalMap{_customValues.ToImmutableStableDictionary()}";
     }
 }

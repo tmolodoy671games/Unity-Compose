@@ -1,9 +1,7 @@
 ﻿using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
@@ -11,7 +9,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 internal abstract class ReusableComposeNode
 {
     public abstract void ReInsert(int index);
-    
+
     public static ReusableComposeNode<T> Get<T>() where T : VisualElement
     {
         return ReusableComposeNode<T>.Get();
@@ -20,7 +18,7 @@ internal abstract class ReusableComposeNode
 
 internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T : VisualElement
 {
-    private static readonly NewObjectPool<ReusableComposeNode<T>> _pool = new NewObjectPool<ReusableComposeNode<T>>(
+    private static readonly NewObjectPool<ReusableComposeNode<T>> _pool = new(
         factory: () => new ReusableComposeNode<T>()
     );
 
@@ -29,18 +27,20 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
     private IModifier? _lastModifier;
     private Action<T>? _lastInitializer;
 
-    private readonly IMutableStableSet<ComposeModifiedProperty> _lastProperties =
-        IMutableStableSet.Create<ComposeModifiedProperty>();
+    private readonly IMutableStableList<IModifier> _lastModifiers =
+        IMutableStableList.Create<IModifier>();
 
-    private readonly IMutableStableSet<ComposeModifiedProperty> _newProperties =
-        IMutableStableSet.Create<ComposeModifiedProperty>();
+    private readonly IMutableStableList<IModifier> _newModifiers =
+        IMutableStableList.Create<IModifier>();
 
     public static ReusableComposeNode<T> Get()
     {
         return _pool.Get();
     }
-    
-    private ReusableComposeNode() {}
+
+    private ReusableComposeNode()
+    {
+    }
 
     public void Update(
         VisualElement parent,
@@ -59,26 +59,24 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
         if (!Equals(_lastModifier, modifier))
         {
-            modifier?.Apply(_newProperties);
-            foreach (var property in _lastProperties)
+            _newModifiers.Clear();
+            modifier?.Flatten(_newModifiers);
+            for (var i = 0; i < _lastModifiers.Count; i++)
             {
-                if (_newProperties.Contains(property))
+                var eachModifier = _lastModifiers[i];
+                if (_newModifiers.Contains(eachModifier))
                     continue;
-                property.Revert(VisualElement);
+                eachModifier.Revert(VisualElement);
             }
 
-            _lastProperties.Clear();
-            if (_newProperties.IsNotEmpty())
-                _lastProperties.AddRange(_newProperties);
-            _newProperties.Clear();
+            _lastModifiers.Clear();
+            if (_newModifiers.IsNotEmpty())
+            {
+                for (var i = 0; i < _newModifiers.Count; i++)
+                    _lastModifiers.Add(_newModifiers[i]);
+            }
 
-            VisualElement.ClearCallbacks();
-            VisualElement.style.transitionDelay.value?.Clear();
-            VisualElement.style.transitionDuration.value?.Clear();
-            VisualElement.style.transitionProperty.value?.Clear();
-            VisualElement.style.transitionTimingFunction.value?.Clear();
-            VisualElement.pickingMode = PickingMode.Ignore;
-            VisualElement.style.overflow = Overflow.Visible;
+            _newModifiers.Clear();
             _lastModifier = modifier;
             modifier?.Apply(VisualElement);
         }
@@ -103,7 +101,7 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
         _indexInParent = -1;
         _lastModifier = null;
         _lastInitializer = null;
-        
+
         _pool.Return(this);
     }
 

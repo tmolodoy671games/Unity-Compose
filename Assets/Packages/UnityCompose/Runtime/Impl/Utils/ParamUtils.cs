@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using SharpExtensions;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 

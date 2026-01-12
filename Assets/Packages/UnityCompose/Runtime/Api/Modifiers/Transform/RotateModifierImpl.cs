@@ -37,11 +37,6 @@ internal class RotateModifierImpl : BaseModifier<RotateModifierImpl>
             element.AddTransition(_transition.Value, "rotate");
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Rotate);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.rotate = StyleKeyword.Null;

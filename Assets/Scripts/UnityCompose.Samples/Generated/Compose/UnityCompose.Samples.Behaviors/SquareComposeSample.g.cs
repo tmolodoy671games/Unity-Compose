@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -51,14 +54,14 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isRedSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    Spacer(Modifier.Size(100).Background(Color.red).Border(16).OnClick(!__composer.Changed(isRedSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isRedSwitched.Value = !isRedSwitched.Value)).Scale(AnimateFloatAsState(isRedSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40));
+                    Spacer(Modifier.Size(100.Px()).Background(Color.red).Border(16.Px()).OnClick(!__composer.Changed(isRedSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isRedSwitched.Value = !isRedSwitched.Value)).Scale(AnimateFloatAsState(isRedSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40.Px()));
                     var isGreenSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    Spacer(Modifier.Size(100).Background(Color.green).Border(16).OnClick(!__composer.Changed(isGreenSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isGreenSwitched.Value = !isGreenSwitched.Value)).Scale(AnimateFloatAsState(isGreenSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40));
+                    Spacer(Modifier.Size(100.Px()).Background(Color.green).Border(16.Px()).OnClick(!__composer.Changed(isGreenSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isGreenSwitched.Value = !isGreenSwitched.Value)).Scale(AnimateFloatAsState(isGreenSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40.Px()));
                     var isBlueSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
-                    Spacer(Modifier.Size(100).Background(Color.blue).Border(16).OnClick(!__composer.Changed(isBlueSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isBlueSwitched.Value = !isBlueSwitched.Value)).Scale(AnimateFloatAsState(isBlueSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40));
+                    Spacer(Modifier.Size(100.Px()).Background(Color.blue).Border(16.Px()).OnClick(!__composer.Changed(isBlueSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isBlueSwitched.Value = !isBlueSwitched.Value)).Scale(AnimateFloatAsState(isBlueSwitched.Value ? 1.5f : 1f).Value).Margin(top: 40.Px()));
                 }));
             }
             else

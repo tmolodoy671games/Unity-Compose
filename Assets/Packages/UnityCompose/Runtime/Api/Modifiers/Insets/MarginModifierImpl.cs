@@ -86,28 +86,35 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
         }
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_top.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginTop);
-        if (_bottom.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginBottom);
-        if (_left.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginLeft);
-        if (_right.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MarginRight);
-    }
-
     public override void Revert(VisualElement element)
     {
         if (_top.HasValue)
+        {
             element.style.marginTop = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("margin-top");
+        }
+
         if (_bottom.HasValue)
+        {
             element.style.marginBottom = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("margin-bottom");
+        }
+
         if (_left.HasValue)
+        {
             element.style.marginLeft = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("margin-left");
+        }
+
         if (_right.HasValue)
+        {
             element.style.marginRight = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("margin-right");
+        }
     }
 
     protected override bool Equals(MarginModifierImpl other)

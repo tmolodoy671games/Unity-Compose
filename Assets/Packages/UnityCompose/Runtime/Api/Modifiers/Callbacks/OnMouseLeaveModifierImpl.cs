@@ -52,11 +52,6 @@ internal class OnMouseLeaveModifierImpl : BaseModifier<OnMouseLeaveModifierImpl>
         element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave);
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.PickingMode);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.pickingMode = PickingMode.Ignore;

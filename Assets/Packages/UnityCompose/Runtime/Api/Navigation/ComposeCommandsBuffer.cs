@@ -1,4 +1,5 @@
-﻿using StableCollections;
+﻿using System.Collections.Generic;
+using StableCollections;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -20,11 +21,11 @@ public class ComposeCommandBuffer
 
     public void RemoveNavigator() => _navigator = null;
 
-    public void ExecuteCommands(IImmutableStableList<ComposeNavigationCommand> commands)
+    public void ExecuteCommands(IEnumerable<ComposeNavigationCommand> commands)
     {
         if (_navigator != null)
             _navigator.ApplyCommands(commands);
         else
-            _pendingCommands.Add(commands);
+            _pendingCommands.Add(commands.ToImmutableStableList());
     }
 }

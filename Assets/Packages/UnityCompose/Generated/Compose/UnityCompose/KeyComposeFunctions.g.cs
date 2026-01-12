@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable CheckNamespace
+
 using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;

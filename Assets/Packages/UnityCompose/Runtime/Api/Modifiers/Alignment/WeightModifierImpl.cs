@@ -28,11 +28,6 @@ internal class WeightModifierImpl : BaseModifier<WeightModifierImpl>
         element.style.flexGrow = _weight;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.FlexGrow);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.flexGrow = StyleKeyword.Null;

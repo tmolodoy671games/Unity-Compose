@@ -86,18 +86,6 @@ internal class SizeInModifierImpl : BaseModifier<SizeInModifierImpl>
             element.style.maxHeight = _maxHeight;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_minWidth.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MinWidth);
-        if (_maxWidth.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MaxWidth);
-        if (_minHeight.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MinHeight);
-        if (_maxHeight.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.MaxHeight);
-    }
-
     public override void Revert(VisualElement element)
     {
         if (_minWidth.HasValue)

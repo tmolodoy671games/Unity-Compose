@@ -58,11 +58,6 @@ internal class OnMouseEnterModifierImpl : BaseModifier<OnMouseEnterModifierImpl>
         element.GetComposeCallback<MouseEnterEvent>().Add(_onMouseEnter);
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.PickingMode);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.pickingMode = PickingMode.Ignore;

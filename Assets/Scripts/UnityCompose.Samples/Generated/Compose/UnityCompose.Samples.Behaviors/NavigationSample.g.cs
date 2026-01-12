@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using System.Collections;
 using StableCollections;
 using static UnityCompose.Samples.Behaviors.InputFunctions;
@@ -59,7 +62,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(modifier: Modifier.FillMaxSize(), content: !__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        Navigation(coordinator: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(new SampleCoordinatorImpl()), transition: !__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), initialScreens: !__composer.Changed() ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(IImmutableStableList.Create<ComposeScreen>(new FirstScreen())), modifier: Modifier.FillMaxSize());
+                        Navigation(coordinator: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.SampleCoordinatorImpl>(new SampleCoordinatorImpl()), transition: !__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.ContentTransform>?>(() => SlideInHorizontally(static it => -it).TogetherWith(SlideOutHorizontally(static it => it)).With(animationSpec)), modifier: Modifier.FillMaxSize());
                     }));
                 }));
             }
@@ -79,15 +82,15 @@ namespace UnityCompose.Samples.Behaviors
         {
             var __modifier = (modifier);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1637960454);
+            __composer.StartRestartGroup(-1558922142);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute(__modifier))
             {
                 var coordinator = FindCoordinator<ISampleCoordinator>();
                 CollectSpace(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowSecondScreen()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: modifier.FillMaxSize().Background(Color.green), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Spacer(modifier: Modifier.Size(100).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
+                    Spacer(modifier: Modifier.Size(100.Px()).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
                 }));
             }
             else
@@ -95,7 +98,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1637960454, __isRestarted)?.UpdateScope(() => __Content(__modifier));
+            __composer.EndRestartGroup(-1558922142, __isRestarted)?.UpdateScope(() => __Content(__modifier));
         }
     }
 

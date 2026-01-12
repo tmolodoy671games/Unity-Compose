@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections;
 using SharpExtensions;
@@ -59,9 +60,7 @@ public static partial class ComposeFunctions
             return property;
         }
 
-        // TODO: Find out the reason
-        // if (EqualityUtils.FastEquals(property.Value, targetValue))
-        //     return property;
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         LaunchedEffect(key: targetValue, coroutine: !__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         __composer.EndReplaceGroup(-130532738);
         return property;
@@ -91,19 +90,20 @@ public static partial class ComposeFunctions
     {
         var(__key, __targetValueFactory, __interpolator, __animationSpec) = (key, targetValueFactory, interpolator, animationSpec);
         var __composer = CurrentComposer;
-        __composer.StartReplaceGroup(-1393272249);
+        __composer.StartReplaceGroup(-1673470175);
         var targetValue = targetValueFactory();
         var property = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
-            __composer.EndReplaceGroup(-1393272249);
+            __composer.EndReplaceGroup(-1673470175);
             return property;
         }
 
+        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: key, coroutine: !__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
-        __composer.EndReplaceGroup(-1393272249);
+        __composer.EndReplaceGroup(-1673470175);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {

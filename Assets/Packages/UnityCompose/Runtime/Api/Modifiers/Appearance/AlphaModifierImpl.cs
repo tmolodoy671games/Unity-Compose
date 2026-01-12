@@ -33,14 +33,11 @@ internal class AlphaModifierImpl : BaseModifier<AlphaModifierImpl>
             element.AddTransition(_transition.Value, "opacity");
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Opacity);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.opacity = StyleKeyword.Null;
+        if (_transition.HasValue)
+            element.RemoveTransition("opacity");
     }
 
     protected override bool Equals(AlphaModifierImpl other)

@@ -59,6 +59,6 @@ public class ComposeRouter
 
     private void ExecuteCommands(params ComposeNavigationCommand[] commands)
     {
-        CommandBuffer.ExecuteCommands(IImmutableStableList.Create(commands));
+        CommandBuffer.ExecuteCommands(ImmutableStableListOf(commands));
     }
 }

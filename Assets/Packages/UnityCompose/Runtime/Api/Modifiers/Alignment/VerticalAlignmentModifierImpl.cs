@@ -25,7 +25,7 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
 
     public override void Apply(VisualElement element)
     {
-        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
+        switch (element.parent.NotNull().style.flexDirection.value)
         {
             case FlexDirection.Row:
             case FlexDirection.RowReverse:
@@ -34,20 +34,9 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
         }
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Row:
-            case FlexDirection.RowReverse:
-                modifiedProperties.Add(ComposeModifiedProperty.AlignSelf);
-                break;
-        }
-    }
-
     public override void Revert(VisualElement element)
     {
-        switch (CurrentComposer.GetParentVisualElement().NotNull().style.flexDirection.value)
+        switch (element.parent.NotNull().style.flexDirection.value)
         {
             case FlexDirection.Row:
             case FlexDirection.RowReverse:
@@ -59,5 +48,20 @@ internal class VerticalAlignModifierImpl : BaseModifier<VerticalAlignModifierImp
     protected override bool Equals(VerticalAlignModifierImpl other)
     {
         return _align == other._align;
+    }
+}
+
+internal static class VerticalAlignmentVisualElementExtensions
+{
+    public static void ApplyVerticalAlignment(this VisualElement element, Alignment.Vertical verticalAlignment)
+    {
+        if (element.parent.NotNull().style.flexDirection.value is FlexDirection.Row or FlexDirection.RowReverse)
+            element.style.alignSelf = verticalAlignment.ToAlign();
+    }
+
+    public static void RevertVerticalAlignment(this VisualElement element)
+    {
+        if (element.parent.NotNull().style.flexDirection.value is FlexDirection.Row or FlexDirection.RowReverse)
+            element.style.alignSelf = StyleKeyword.Null;
     }
 }

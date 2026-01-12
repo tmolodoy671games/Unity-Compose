@@ -15,7 +15,4 @@ public readonly record struct ComposeTransition(
         Delay: 0f,
         TimingFunction: EasingMode.EaseInOut
     );
-
-    public bool IsDefault() => Duration.AlmostEquals(0f);
-    public bool HasValue => Duration > 0;
 }

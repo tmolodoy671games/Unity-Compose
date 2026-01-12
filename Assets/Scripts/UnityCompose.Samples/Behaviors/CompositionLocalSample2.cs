@@ -27,8 +27,8 @@ namespace UnityCompose.Samples.Behaviors
                 () =>
                 {
                     Column(
-                        horizontalAlignment: Alignment.Horizontal.Center,
-                        verticalAlignment: Alignment.Vertical.Center,
+                        horizontalAlignment: Alignment.CenterHorizontally,
+                        verticalArrangement: Arrangement.Center,
                         modifier: Modifier.FillMaxSize(),
                         content: () =>
                         {

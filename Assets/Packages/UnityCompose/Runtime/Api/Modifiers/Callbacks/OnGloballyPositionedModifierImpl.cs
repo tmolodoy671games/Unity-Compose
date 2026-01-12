@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine.UIElements;
@@ -15,119 +12,46 @@ public static partial class ModifierExtensions
     public static IModifier OnGloballyPositioned(
         this IModifier modifier,
         Action<LayoutCoordinates> onGloballyPositioned
-    ) => modifier.Composed(() => OnGloballyPositionedImpl(onGloballyPositioned));
-
-    [Composable]
-    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
-    private static IModifier OnGloballyPositionedImpl(
-        Action<LayoutCoordinates> onGloballyPositioned
-    )
-    {
-        if (true)
-        {
-            var previousCoordinates =
-                Remember(() => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
-            var element = CurrentComposer.GetParentVisualElement().NotNull();
-
-            IEnumerator EveryFrameCoroutine()
-            {
-                yield return null;
-                while (true)
-                {
-                    var newCoordinates = LayoutCoordinates.Create(element);
-                    if (!previousCoordinates.Value.Equals(newCoordinates))
-                    {
-                        previousCoordinates.Value = newCoordinates;
-                        onGloballyPositioned(newCoordinates);
-                    }
-
-                    yield return null;
-                }
-            }
-
-            LaunchedEffect(onGloballyPositioned, () => EveryFrameCoroutine());
-        }
-
-        return Modifier;
-    }
-
-    [Composable]
-    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
-    private static IModifier OnGloballyPositionedImplDeprecated(
-        Action<LayoutCoordinates> onGloballyPositioned
-    )
-    {
-        if (true)
-        {
-            var element = CurrentComposer.GetParentVisualElement().NotNull();
-            var previousLayoutCoordinates =
-                Remember(static () => IMutableStableProperty.Create(Optional.Empty<LayoutCoordinates>()));
-            Action<GeometryChangedEvent> onGeometryChanged = _ =>
-            {
-                var newLayoutCoordinates = LayoutCoordinates.Create(element);
-                if (!previousLayoutCoordinates.Value.Equals(newLayoutCoordinates))
-                {
-                    previousLayoutCoordinates.Value = newLayoutCoordinates;
-                    onGloballyPositioned(newLayoutCoordinates);
-                }
-            };
-            DisposableEffect(
-                key: element,
-                effect: it =>
-                {
-                    var ancestors = element.Ancestors(includeSelf: true).ToImmutableStableList();
-                    foreach (var ancestor in ancestors)
-                        ancestor.OnGloballyPositionedCallback().Add(onGeometryChanged);
-                    return it.OnDispose(() =>
-                    {
-                        foreach (var ancestor in ancestors)
-                            ancestor.OnGloballyPositionedCallback().Remove(onGeometryChanged);
-                    });
-                }
-            );
-        }
-
-        return Modifier;
-    }
+    ) => modifier + new OnGloballyPositionedModifierImpl(onGloballyPositioned);
 }
 
-public static partial class VisualElementExtensions
+internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
 {
-    public static IEnumerable<VisualElement> Ancestors(this VisualElement element, bool includeSelf = false)
+    private record Key(
+        string Name,
+        object? Value
+    );
+
+    private readonly Action<LayoutCoordinates> _onGloballyPositioned;
+    private readonly Key _key;
+
+    public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
     {
-        if (includeSelf)
-            yield return element;
-        var parent = element.parent;
-        while (parent != null)
+        _onGloballyPositioned = onGloballyPositioned;
+        _key = new Key("__OnGloballyPositioned", onGloballyPositioned);
+    }
+
+    public override void Apply(VisualElement element)
+    {
+        if (element.UserData().ContainsKey(_key)) return;
+        var previousCoordinates = Optional.Empty<LayoutCoordinates>();
+        var onGloballyPositionedCallback = element.schedule.Execute(() =>
         {
-            yield return parent;
-            parent = parent.parent;
-        }
-    }
-}
-
-public static partial class VisualElementExtensions
-{
-    internal static ComposeCallback<GeometryChangedEvent> OnGloballyPositionedCallback(this VisualElement element)
-    {
-        var userData = element.UserData();
-        if (userData.TryGet("__OnGloballyPositioned", out var cached) &&
-            cached is ComposeCallback<GeometryChangedEvent> onGloballyPositioned)
-            return onGloballyPositioned;
-        var newCallback = new ComposeCallback<GeometryChangedEvent>();
-        userData["__OnGloballyPositioned"] = newCallback;
-        element.RegisterCallback(newCallback.Callback);
-        return newCallback;
+            var newCoordinates = LayoutCoordinates.Create(element);
+            if (previousCoordinates.Equals(newCoordinates)) return;
+            previousCoordinates = newCoordinates;
+            _onGloballyPositioned(newCoordinates);
+        }).Every(0);
+        element.UserData()[_key] = onGloballyPositionedCallback;
     }
 
-    internal static ComposeCallback<GeometryChangedEvent>? OnGloballyPositionedCallbackOrNull(
-        this VisualElement element
-    )
+    public override void Revert(VisualElement element)
     {
-        var userData = element.UserData();
-        if (userData.TryGet("__OnGloballyPositioned", out var cached) &&
-            cached is ComposeCallback<GeometryChangedEvent> onGloballyPositioned)
-            return onGloballyPositioned;
-        return null;
+        element.UserData().GetOrDefault(_key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
+    }
+
+    protected override bool Equals(OnGloballyPositionedModifierImpl other)
+    {
+        return _onGloballyPositioned == other._onGloballyPositioned;
     }
 }

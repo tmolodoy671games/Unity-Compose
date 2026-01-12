@@ -27,8 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     Box(
-                        horizontalAlignment: Alignment.Horizontal.Center,
-                        verticalAlignment: Alignment.Vertical.Center,
+                        alignment: Alignment.Center,
                         modifier: Modifier
                             .FillMaxSize(),
                         content: () =>
@@ -47,8 +46,8 @@ namespace UnityCompose.Samples.Behaviors
                                             modifier: Modifier
                                                 .FillMaxWidth()
                                                 .Background(Color.red)
-                                                .Padding(all: 20)
-                                                .Border(radius: 16)
+                                                .Padding(all: 20.Px())
+                                                .Border(radius: 16.Px())
                                                 .OnClick(() => firstCount.Value++)
                                                 .Name("first-button")
                                         );
@@ -61,9 +60,9 @@ namespace UnityCompose.Samples.Behaviors
                                         modifier: Modifier
                                             .FillMaxWidth()
                                             .Background(Color.green)
-                                            .Padding(all: 20)
-                                            .Border(radius: 16)
-                                            .Margin(top: 16)
+                                            .Padding(all: 20.Px())
+                                            .Border(radius: 16.Px())
+                                            .Margin(top: 16.Px())
                                             .OnClick(() => secondCount.Value++)
                                             .Name("second-button")
                                     );
@@ -74,9 +73,9 @@ namespace UnityCompose.Samples.Behaviors
                                         modifier: Modifier
                                             .FillMaxWidth()
                                             .Background(Color.blue)
-                                            .Padding(all: 20)
-                                            .Border(radius: 16)
-                                            .Margin(top: 16)
+                                            .Padding(all: 20.Px())
+                                            .Border(radius: 16.Px())
+                                            .Margin(top: 16.Px())
                                             .OnClick(() => showFirst.Value = !showFirst.Value)
                                             .Name("switch-button")
                                     );

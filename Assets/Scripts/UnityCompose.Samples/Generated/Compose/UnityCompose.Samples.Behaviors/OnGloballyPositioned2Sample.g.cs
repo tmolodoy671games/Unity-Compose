@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using System;
 using SharpExtensions;
 using UnityEngine.UIElements;
@@ -53,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors
             if (__isRestarted || __composer.ShouldExecute())
             {
                 var layoutCoordinates = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(MutableStateOf(Optional.Empty<LayoutCoordinates>()));
-                Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.FillMaxSize().OnGloballyPositioned(!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layoutCoordinates.Value = it)), content: !__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().OnGloballyPositioned(!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layoutCoordinates.Value = it)), content: !__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var positions = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateDictionary<int, UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateDictionary<int, UnityEngine.Vector2>>(MutableStateDictionaryOf<int, Vector2>());
                     Row(!__composer.Changed(positions) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -66,14 +69,14 @@ namespace UnityCompose.Samples.Behaviors
                     }));
                     if (!layoutCoordinates.Value.HasValue)
                         return;
-                    __composer.StartReplaceGroup(-419617284);
+                    __composer.StartReplaceGroup(1630269357);
                     foreach (var position in positions.Values)
                     {
                         var coordinates = layoutCoordinates.Value.Value;
-                        Spacer(modifier: Modifier.Background(Color.red).Size(16).Border(4, topLeftRadius: 0).Float().Position(left: coordinates.GlobalToLocal(position).x, top: coordinates.GlobalToLocal(position).y));
+                        Spacer(modifier: Modifier.Background(Color.red).Size(16.Px()).Border(4.Px(), topLeftRadius: 0.Px()).Float().Position(left: coordinates.GlobalToLocal(position).x.Px(), top: coordinates.GlobalToLocal(position).y.Px()));
                     }
 
-                    __composer.EndReplaceGroup(-419617284);
+                    __composer.EndReplaceGroup(1630269357);
                 }));
             }
             else
@@ -89,11 +92,11 @@ namespace UnityCompose.Samples.Behaviors
         {
             var(__selected, __content, __modifier) = (selected, content, modifier);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1208178733);
+            __composer.StartRestartGroup(-1999327903);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
             {
-                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8, horizontal: AnimateFloatAsState(selected ? 160 : 20).Value).Margin(horizontal: 2).Border(16, topLeftRadius: 0).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: AnimateFloatAsState(selected ? 160 : 20).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content);
                 }));
@@ -103,7 +106,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1208178733, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
+            __composer.EndRestartGroup(-1999327903, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
         }
     }
 }

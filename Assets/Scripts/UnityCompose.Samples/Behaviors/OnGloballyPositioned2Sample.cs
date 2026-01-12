@@ -25,8 +25,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var layoutCoordinates = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
             Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize()
                     .OnGloballyPositioned(it => layoutCoordinates.Value = it),
@@ -75,12 +74,12 @@ namespace UnityCompose.Samples.Behaviors
                         Spacer(
                             modifier: Modifier
                                 .Background(Color.red)
-                                .Size(16)
-                                .Border(4, topLeftRadius: 0)
+                                .Size(16.Px())
+                                .Border(4.Px(), topLeftRadius: 0.Px())
                                 .Float()
                                 .Position(
-                                    left: coordinates.GlobalToLocal(position).x,
-                                    top: coordinates.GlobalToLocal(position).y
+                                    left: coordinates.GlobalToLocal(position).x.Px(),
+                                    top: coordinates.GlobalToLocal(position).y.Px()
                                 )
                         );
                     }
@@ -99,11 +98,11 @@ namespace UnityCompose.Samples.Behaviors
                 modifier: modifier.OrEmpty()
                     .Background(Color.grey)
                     .Padding(
-                        vertical: 8,
-                        horizontal: AnimateFloatAsState(selected ? 160 : 20).Value
+                        vertical: 8.Px(),
+                        horizontal: AnimateFloatAsState(selected ? 160 : 20).Value.Px()
                     )
-                    .Margin(horizontal: 2)
-                    .Border(16, topLeftRadius: 0)
+                    .Margin(horizontal: 2.Px())
+                    .Border(16.Px(), topLeftRadius: 0.Px())
                     .Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value),
                 content: () =>
                 {

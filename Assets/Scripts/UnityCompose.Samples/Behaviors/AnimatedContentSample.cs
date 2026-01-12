@@ -21,14 +21,13 @@ namespace UnityCompose.Samples.Behaviors
         {
             const float Duration = 0.5f;
             Box(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     Column(
-                        horizontalAlignment: Alignment.Horizontal.Center,
+                        horizontalAlignment: Alignment.CenterHorizontally,
                         modifier: Modifier
                             .Name("animated-content-sample"),
                         content: () =>
@@ -73,10 +72,10 @@ namespace UnityCompose.Samples.Behaviors
                                 color: Color.white,
                                 fontSize: 64,
                                 modifier: Modifier
-                                    .Padding(horizontal: 100, vertical: 32)
+                                    .Padding(horizontal: 100.Px(), vertical: 32.Px())
                                     .Background(Color.blue)
-                                    .Margin(top: 16)
-                                    .Border(radius: 16)
+                                    .Margin(top: 16.Px())
+                                    .Border(radius: 16.Px())
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );
                         }

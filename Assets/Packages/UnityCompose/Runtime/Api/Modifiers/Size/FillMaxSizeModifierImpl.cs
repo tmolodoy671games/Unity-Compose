@@ -44,14 +44,6 @@ internal class FillMaxSizeModifierImpl : BaseModifier<FillMaxSizeModifierImpl>
             element.style.height = new Length(_heightFraction * 100, LengthUnit.Percent);
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_widthFraction > 0)
-            modifiedProperties.Add(ComposeModifiedProperty.Width);
-        if (_heightFraction > 0)
-            modifiedProperties.Add(ComposeModifiedProperty.Height);
-    }
-
     public override void Revert(VisualElement element)
     {
         if (_widthFraction > 0)

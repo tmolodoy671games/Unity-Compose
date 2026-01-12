@@ -32,10 +32,6 @@ internal class OnLocallyPositionedModifierImpl : BaseModifier<OnLocallyPositione
         element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-    }
-
     public override void Revert(VisualElement element)
     {
         element.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged);

@@ -56,11 +56,6 @@ internal class ScaleModifierImpl : BaseModifier<ScaleModifierImpl>
             element.AddTransition(_transition.Value, "scale");
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Scale);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.scale = StyleKeyword.Null;

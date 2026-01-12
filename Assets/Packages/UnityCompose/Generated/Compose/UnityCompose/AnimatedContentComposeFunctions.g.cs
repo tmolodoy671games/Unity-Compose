@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;

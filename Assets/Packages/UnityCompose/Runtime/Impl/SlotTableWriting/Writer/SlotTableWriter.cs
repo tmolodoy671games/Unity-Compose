@@ -906,7 +906,6 @@ internal class SlotTableWriter
             ShiftAncestorsElementsCounts(elementsCountOffset);
             _alreadyRemovedGroups = 0;
             _alreadyRemovedSlots = 0;
-            ComposeInvalidator.InstantInvalidate();
         }
 
         _enteredParents.Pop();

@@ -1,3 +1,4 @@
+#nullable enable
 using StableCollections;
 using UnityEngine.SocialPlatforms;
 using System;
@@ -53,11 +54,11 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
-                Column(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Box(alignment: Alignment.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                     CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => SampleReader()));
-                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32).Border(radius: 16).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Margin(top: 80));
+                    Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32.Px()).Border(radius: 16.Px()).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)).Margin(top: 80.Px()));
                 }));
             }
             else
@@ -73,7 +74,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             var(__firstValue, __secondValue) = (firstValue, secondValue);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1665031383);
+            __composer.StartRestartGroup(-2017996857);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__firstValue, __secondValue)))
             {
@@ -84,14 +85,14 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1665031383, __isRestarted)?.UpdateScope(() => __OtherSampleReader(__firstValue, __secondValue));
+            __composer.EndRestartGroup(-2017996857, __isRestarted)?.UpdateScope(() => __OtherSampleReader(__firstValue, __secondValue));
         }
 
         [Composable]
         private static void __SampleReader()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1779364126);
+            __composer.StartRestartGroup(621485519);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -99,7 +100,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100));
+                        Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100.Px()));
                     }));
                 }));
             }
@@ -108,7 +109,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1779364126, __isRestarted)?.UpdateScope(() => __SampleReader());
+            __composer.EndRestartGroup(621485519, __isRestarted)?.UpdateScope(() => __SampleReader());
         }
     }
 }

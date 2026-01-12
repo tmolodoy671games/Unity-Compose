@@ -17,9 +17,8 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
-            Column(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+            Box(
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize()
                     .Background(Color.white),
@@ -28,9 +27,12 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
                         modifier: Modifier
-                            .Padding(horizontal: AnimateFloatAsState(isHovered.Value ? 80 : 40).Value, vertical: 16)
+                            .Padding(
+                                horizontal: AnimateFloatAsState(isHovered.Value ? 80 : 40).Value.Px(),
+                                vertical: 16.Px()
+                            )
                             .Background(Color.blue)
-                            .Border(radius: 16)
+                            .Border(radius: 16.Px())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false),
                         content: () =>

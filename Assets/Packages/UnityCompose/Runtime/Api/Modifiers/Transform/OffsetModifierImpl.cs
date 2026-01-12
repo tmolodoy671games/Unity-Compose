@@ -41,11 +41,6 @@ internal class OffsetModifierImpl : BaseModifier<OffsetModifierImpl>
         element.style.translate = new Translate(_x.ToLength(), _y.ToLength());
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Translate);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.translate = StyleKeyword.Null;

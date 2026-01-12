@@ -28,11 +28,6 @@ internal class NameModifierImpl : BaseModifier<NameModifierImpl>
         element.name = _name;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Name);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.name = "";

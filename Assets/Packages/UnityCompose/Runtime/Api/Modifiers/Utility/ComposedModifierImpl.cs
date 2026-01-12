@@ -26,10 +26,6 @@ internal class ComposedModifierImpl : BaseModifier<ComposedModifierImpl>
     {
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-    }
-
     public override void Revert(VisualElement element)
     {
     }

@@ -35,14 +35,11 @@ internal class BackgroundColorModifierImpl : BaseModifier<BackgroundColorModifie
             element.AddTransition(_transition.Value, "background-color");
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.BackgroundColor);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.backgroundColor = StyleKeyword.Null;
+        if (_transition.HasValue)
+            element.RemoveTransition("background-color");
     }
 
     protected override bool Equals(BackgroundColorModifierImpl other)

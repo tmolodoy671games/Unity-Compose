@@ -1,5 +1,4 @@
-﻿using StableCollections;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
@@ -50,18 +49,6 @@ internal class PositionModifierImpl : BaseModifier<PositionModifierImpl>
             element.style.left = _left.ToLength();
         if (_right.HasValue)
             element.style.right = _right.ToLength();
-    }
-
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_top.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.Top);
-        if (_bottom.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.Bottom);
-        if (_left.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.Left);
-        if (_right.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.Right);
     }
 
     public override void Revert(VisualElement element)

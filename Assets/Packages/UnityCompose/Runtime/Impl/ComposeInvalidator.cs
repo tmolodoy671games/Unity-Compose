@@ -47,17 +47,16 @@ namespace UnityCompose
                 if (!_instance)
                 {
                     _instance = new GameObject("ComposeInvalidator").AddComponent<ComposeInvalidator>();
-                    // _instance.gameObject.hideFlags = HideFlags.HideAndDontSave;
                     if (ApplicationUtils.IsPlaying)
                         DontDestroyOnLoad(_instance.gameObject);
                 }
-
+                
+                _instance!.gameObject.hideFlags = HideFlags.HideAndDontSave;
                 return _instance!;
             }
         }
 
         private readonly HashSet<ComposeRestartScope> _invalidatedGroups = new();
-        private readonly HashSet<ComposeRestartScope> _instantInvalidatedGroups = new();
         private readonly List<ComposeRestartScope> _groupsToRestart = new();
 
         public ComposeInvalidator()
@@ -68,7 +67,6 @@ namespace UnityCompose
         private void Awake()
         {
             _instance = this;
-            // gameObject.hideFlags = HideFlags.HideAndDontSave;
             if (ApplicationUtils.IsPlaying)
                 DontDestroyOnLoad(gameObject);
         }
@@ -92,36 +90,13 @@ namespace UnityCompose
 
         internal static void RequestInvalidate(ComposeRestartScope scope)
         {
-            if (!ApplicationUtils.IsPlaying) return;
-            if (Instance._instantInvalidatedGroups.Contains(scope)) return;
             Instance._invalidatedGroups.Add(scope);
         }
 
         internal static void CancelInvalidate(ComposeRestartScope scope)
         {
             if (!ApplicationUtils.IsPlaying) return;
-            Instance._instantInvalidatedGroups.Remove(scope);
             Instance._invalidatedGroups.Remove(scope);
-        }
-
-        internal static void RequestInstantInvalidate(ComposeRestartScope scope)
-        {
-            RequestInvalidate(scope);
-            // Instance._instantInvalidatedGroups.Add(groupDeprecated);
-            // Instance._invalidatedGroups.Remove(groupDeprecated);
-            // // CurrentComposer.Invalidate(group);
-        }
-
-        internal static void InstantInvalidate()
-        {
-            // if (!ApplicationUtils.IsPlaying) return;
-            if (Instance._instantInvalidatedGroups.Count == 0) return;
-            var groupsToInvalidate = Instance._groupsToRestart;
-            groupsToInvalidate.Clear();
-            groupsToInvalidate.AddRange(Instance._instantInvalidatedGroups);
-            Instance._instantInvalidatedGroups.Clear();
-            foreach (var group in groupsToInvalidate)
-                group.Restart();
         }
     }
 }

@@ -60,12 +60,6 @@ internal class SizeModifierImpl : BaseModifier<SizeModifierImpl>
             element.style.height = _height;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Width);
-        modifiedProperties.Add(ComposeModifiedProperty.Height);
-    }
-
     public override void Revert(VisualElement element)
     {
         if (_width.HasValue)

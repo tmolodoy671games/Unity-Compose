@@ -18,8 +18,8 @@ namespace UnityCompose.Samples.Behaviors
         private static void Layout()
         {
             Column(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+                horizontalAlignment: Alignment.CenterHorizontally,
+                verticalArrangement: Arrangement.Center,
                 modifier: Modifier
                     .Name("launched-effect-disposal")
                     .FillMaxSize(),
@@ -47,10 +47,10 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Name("test-button")
                             .Background(isHovered.Value ? Color.cyan : Color.blue, Transition())
-                            .Padding(vertical: 20)
-                            .Padding(horizontal: isHovered.Value ? 40 : 20, transition: Transition())
-                            .Border(radius: 16)
-                            .Margin(top: 32)
+                            .Padding(vertical: 20.Px())
+                            .Padding(horizontal: isHovered.Value ? 40.Px() : 20.Px(), transition: Transition())
+                            .Border(radius: 16.Px())
+                            .Margin(top: 32.Px())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .OnClick(() => isEffectRunning.Value = !isEffectRunning.Value)

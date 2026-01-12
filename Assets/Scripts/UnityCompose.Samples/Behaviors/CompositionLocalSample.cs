@@ -24,9 +24,8 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Layout()
         {
-            Column(
-                horizontalAlignment: Alignment.Horizontal.Center,
-                verticalAlignment: Alignment.Vertical.Center,
+            Box(
+                alignment: Alignment.Center,
                 modifier: Modifier
                     .Name("composition-local-sample")
                     .FillMaxSize(),
@@ -45,10 +44,10 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 32,
                         modifier: Modifier
                             .Background(Color.blue)
-                            .Padding(all: 32)
-                            .Border(radius: 16)
+                            .Padding(all: 32.Px())
+                            .Border(radius: 16.Px())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Margin(top: 80)
+                            .Margin(top: 80.Px())
                     );
                 }
             );
@@ -73,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                                 LocalIsSwitched.Current ? Color.green : Color.red,
                                 transition: Transition()
                             )
-                            .Padding(all: 100)
+                            .Padding(all: 100.Px())
                     );
                 });
             });

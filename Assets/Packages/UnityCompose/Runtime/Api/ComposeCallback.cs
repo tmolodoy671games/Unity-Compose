@@ -141,6 +141,20 @@ public static partial class VisualElementExtensions
         element.style.transitionDelay.value.Add(transition.Delay);
         element.style.transitionTimingFunction.value.Add(transition.TimingFunction);
     }
+    
+    public static void RemoveTransition(this VisualElement element,string name)
+    {
+        if (element.style.transitionProperty.value == null)
+            return;
+
+        var index = element.style.transitionProperty.value.IndexOf(name);
+        if (index < 0)
+            return;
+        element.style.transitionProperty.value.RemoveAt(index);
+        element.style.transitionDuration.value.RemoveAt(index);
+        element.style.transitionDelay.value.RemoveAt(index);
+        element.style.transitionTimingFunction.value.RemoveAt(index);
+    }
 
     public static void AddTransitions(this VisualElement element, ComposeTransition transition, params string[] names)
     {
@@ -148,11 +162,11 @@ public static partial class VisualElementExtensions
             element.AddTransition(transition, name);
     }
 
-    public static IMutableStableDictionary<string, object?> UserData(this VisualElement element)
+    public static IMutableStableDictionary<object, object?> UserData(this VisualElement element)
     {
-        if (element.userData is IMutableStableDictionary<string, object?> cachedUserData)
+        if (element.userData is IMutableStableDictionary<object, object?> cachedUserData)
             return cachedUserData;
-        var newUserData = IMutableStableDictionary.Create<string, object?>();
+        var newUserData = IMutableStableDictionary.Create<object, object?>();
         element.userData = newUserData;
         return newUserData;
     }

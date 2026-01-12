@@ -17,11 +17,11 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
             root.SetContent(() =>
             {
                 var rowModifier = Modifier
-                    .Margin(vertical: 2);
+                    .Margin(vertical: 2.Px());
                 var spacerModifier = Modifier
-                    .Size(4)
+                    .Size(4.Px())
                     .Background(Color.white)
-                    .Margin(horizontal: 2);
+                    .Margin(horizontal: 2.Px());
                 GC.Collect();
                 var time = TimeUtils.Measure(() =>
                 {

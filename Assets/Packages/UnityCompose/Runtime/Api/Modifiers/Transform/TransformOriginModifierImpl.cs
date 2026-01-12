@@ -41,11 +41,6 @@ internal class TransformOriginModifierImpl : BaseModifier<TransformOriginModifie
         element.style.transformOrigin = new TransformOrigin(_x.ToLength(), _y.ToLength());
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.TransformOrigin);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.transformOrigin = StyleKeyword.Null;

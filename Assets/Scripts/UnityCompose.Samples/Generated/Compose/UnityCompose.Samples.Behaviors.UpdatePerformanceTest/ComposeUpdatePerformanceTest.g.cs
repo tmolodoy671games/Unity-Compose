@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using StableCollections;
 using System;
 using UnityCompose;
@@ -28,8 +31,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                         {
                             var position = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(Vector2.zero));
                             LaunchedEffect(key: string.Empty, coroutine: !__composer.ChangedAsStruct((parentSize, position)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize.Value, it => position.Value = it)));
-                            var baseModifier = !__composer.ChangedAsStruct(currentI) ? __composer.RememberedValue<UnityCompose.IModifier>() : __composer.UpdateRememberedValue<UnityCompose.IModifier>(Modifier.Size(50).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float());
-                            Spacer(modifier: baseModifier.Position(left: position.Value.x, top: position.Value.y));
+                            var baseModifier = !__composer.ChangedAsStruct(currentI) ? __composer.RememberedValue<UnityCompose.IModifier>() : __composer.UpdateRememberedValue<UnityCompose.IModifier>(Modifier.Size(50.Px()).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float());
+                            Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()));
                         }));
                     }
 

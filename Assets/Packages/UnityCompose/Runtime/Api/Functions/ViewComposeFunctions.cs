@@ -45,16 +45,16 @@ public static partial class ComposeFunctions
     public static void Column(
         ComposableContent content,
         IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
+        Alignment.Horizontal? horizontalAlignment = null,
+        Arrangement.Vertical? verticalArrangement = null
     )
     {
         ReusableComposeView<Column>(
             modifier: modifier,
             initializer: it =>
             {
-                it.style.alignItems = horizontalAlignment.ToAlign();
-                it.style.justifyContent = verticalAlignment.ToJustify();
+                it.style.alignItems = (horizontalAlignment ?? Alignment.Left).ToAlign();
+                it.style.justifyContent = (verticalArrangement ?? Arrangement.Top).ToJustify();
             },
             content: content
         );
@@ -64,8 +64,8 @@ public static partial class ComposeFunctions
     public static void Row(
         ComposableContent content,
         IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
+        Arrangement.Horizontal? horizontalArrangement = null,
+        Alignment.Vertical? verticalAlignment = null
     )
     {
         ReusableComposeView<Row>(
@@ -73,8 +73,8 @@ public static partial class ComposeFunctions
             initializer: it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
-                it.style.alignItems = verticalAlignment.ToAlign();
-                it.style.justifyContent = horizontalAlignment.ToJustify();
+                it.style.alignItems = (verticalAlignment ?? Alignment.Top).ToAlign();
+                it.style.justifyContent = (horizontalArrangement ?? Arrangement.Left).ToJustify();
             },
             content: content
         );
@@ -84,16 +84,17 @@ public static partial class ComposeFunctions
     public static void Box(
         ComposableContent content,
         IModifier? modifier = null,
-        Alignment.Horizontal horizontalAlignment = Alignment.Horizontal.Left,
-        Alignment.Vertical verticalAlignment = Alignment.Vertical.Top
+        Alignment? alignment = null
     )
     {
         ReusableComposeView<Box>(
             modifier: modifier,
             initializer: it =>
             {
-                it.style.alignItems = horizontalAlignment.ToAlign();
-                it.style.justifyContent = verticalAlignment.ToJustify();
+                var resolvedAlignment = alignment ?? Alignment.TopLeft;
+                var (align, justify) = (resolvedAlignment.ToAlign(), resolvedAlignment.ToJustify());
+                it.style.alignItems = align;
+                it.style.justifyContent = justify;
             },
             content: content
         );

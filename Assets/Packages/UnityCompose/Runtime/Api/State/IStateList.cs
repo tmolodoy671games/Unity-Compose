@@ -20,12 +20,12 @@ internal class MutableStateListImpl<T> : BaseMutableStateImpl, IMutableStateList
 
     public MutableStateListImpl()
     {
-        _mutableList = IMutableStableList.Create<T>();
+        _mutableList = MutableStableListOf<T>();
     }
 
     public MutableStateListImpl(params T[] values)
     {
-        _mutableList = IMutableStableList.Create(values);
+        _mutableList = MutableStableListOf(values);
     }
 
     public MutableStateListImpl(IEnumerable<T> values)

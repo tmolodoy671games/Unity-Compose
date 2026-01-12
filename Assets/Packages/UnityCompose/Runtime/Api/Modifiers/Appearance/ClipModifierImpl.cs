@@ -27,11 +27,6 @@ internal class ClipModifierImpl : BaseModifier<ClipModifierImpl>
         element.style.overflow = Overflow.Hidden;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Overflow);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.overflow = StyleKeyword.Null;

@@ -29,11 +29,6 @@ internal class FloatModifierImpl : BaseModifier<FloatModifierImpl>
         element.style.position = Position.Absolute;
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        modifiedProperties.Add(ComposeModifiedProperty.Position);
-    }
-
     public override void Revert(VisualElement element)
     {
         element.style.position = StyleKeyword.Null;

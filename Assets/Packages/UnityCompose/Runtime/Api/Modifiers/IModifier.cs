@@ -11,9 +11,8 @@ public partial interface IModifier
 {
     void Apply(VisualElement element);
 
-    void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties);
-
     void Revert(VisualElement element);
+    void Flatten(IMutableStableCollection<IModifier> modifiers);
 
     [Composable, Compiled]
     IModifier Compose() => this;
@@ -28,10 +27,13 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
 {
     public abstract void Apply(VisualElement element);
 
-    public abstract void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties);
-
     public abstract void Revert(VisualElement element);
     
+    public virtual void Flatten(IMutableStableCollection<IModifier> modifiers)
+    {
+        modifiers.Add(this);
+    }
+
     public virtual IModifier Compose() => this;
 
     protected abstract bool Equals(T other);
@@ -77,7 +79,7 @@ internal class EmptyModifierImpl : BaseModifier<EmptyModifierImpl>
     {
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
+    public override void Flatten(IMutableStableCollection<IModifier> modifiers)
     {
     }
 
@@ -111,10 +113,10 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         _second.Apply(element);
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
+    public override void Flatten(IMutableStableCollection<IModifier> modifiers)
     {
-        _first.Apply(modifiedProperties);
-        _second.Apply(modifiedProperties);
+        _first.Flatten(modifiers);
+        _second.Flatten(modifiers);
     }
 
     public override void Revert(VisualElement element)

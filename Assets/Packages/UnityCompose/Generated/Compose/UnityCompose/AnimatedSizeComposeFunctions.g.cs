@@ -1,3 +1,4 @@
+#nullable enable
 using System.Diagnostics.CodeAnalysis;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
@@ -65,7 +66,7 @@ public static partial class ComposeFunctions
             if (isSizeValid)
             {
                 var animatedSize = key != null ? __composer.WithReplaceGroup(-1104282356, () => AnimateVector2AsState(key: key, targetValueFactory: !__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value), animationSpec: animationSpec).Value) : __composer.WithReplaceGroup(1065411164, () => AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: animationSpec).Value);
-                containerModifier = containerModifier.Size(width: animatedSize.x, height: animatedSize.y);
+                containerModifier = containerModifier.Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
                 contentModifier = contentModifier.Float();
             }
 

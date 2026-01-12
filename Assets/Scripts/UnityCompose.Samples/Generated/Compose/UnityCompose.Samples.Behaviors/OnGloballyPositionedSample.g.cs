@@ -1,3 +1,6 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
 using SharpExtensions;
 using UnityEngine.UIElements;
 using System;
@@ -53,33 +56,33 @@ namespace UnityCompose.Samples.Behaviors
             if (__isRestarted || __composer.ShouldExecute())
             {
                 var parentCoordinates = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(MutableStateOf(Optional.Empty<LayoutCoordinates>()));
-                Column(horizontalAlignment: Alignment.Horizontal.Center, modifier: Modifier.FillMaxSize().Padding(100).OnGloballyPositioned(!__composer.Changed(parentCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentCoordinates.Value = it)), content: !__composer.Changed(parentCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.FillMaxSize().Padding(100.Px()).OnGloballyPositioned(!__composer.Changed(parentCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentCoordinates.Value = it)), content: !__composer.Changed(parentCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false));
                     var layout = !__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityEngine.Vector2>>>(MutableStateOf(Optional.Empty<Vector2>()));
                     Box(modifier: Modifier.FillMaxSize(), content: !__composer.ChangedAsStruct((isSwitched, layout)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         var transitionSpec = Tween();
-                        Box(horizontalAlignment: Alignment.Horizontal.Center, verticalAlignment: Alignment.Vertical.Center, modifier: Modifier.Size(40).Background(Color.blue).Offset(x: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value), content: !__composer.Changed(layout) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        Box(alignment: Alignment.Center, modifier: Modifier.Size(40.Px()).Background(Color.blue).Offset(x: AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec).Value.Px()), content: !__composer.Changed(layout) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                         {
                             Box(!__composer.Changed(layout) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                             {
                                 Box(!__composer.Changed(layout) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                                 {
-                                    Spacer(Modifier.Background(Color.green).Size(20).OnGloballyPositioned(!__composer.Changed(layout) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter)));
+                                    Spacer(Modifier.Background(Color.green).Size(20.Px()).OnGloballyPositioned(!__composer.Changed(layout) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter)));
                                 }));
                             }));
                         }));
                     }));
-                    Text(modifier: Modifier.Background(Color.blue).Padding(32).Border(32).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
-                    __composer.StartReplaceGroup(-1428385077);
+                    Text(modifier: Modifier.Background(Color.blue).Padding(32.Px()).Border(32.Px()).OnClick(!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), color: Color.white, text: "Switch");
+                    __composer.StartReplaceGroup(-835651239);
                     if (layout.Value.HasValue && parentCoordinates.Value.HasValue)
                     {
                         var parentCoordinatesValue = parentCoordinates.Value.Value;
-                        Spacer(modifier: Modifier.Size(10).Background(Color.red).Float().Position(left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x, top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y));
+                        Spacer(modifier: Modifier.Size(10.Px()).Background(Color.red).Float().Position(left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x.Px(), top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y.Px()));
                     }
 
-                    __composer.EndReplaceGroup(-1428385077);
+                    __composer.EndReplaceGroup(-835651239);
                 }));
             }
             else

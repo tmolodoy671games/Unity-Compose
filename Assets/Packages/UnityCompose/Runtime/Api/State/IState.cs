@@ -41,17 +41,12 @@ public abstract class BaseMutableStateImpl : IMutableState
     {
         if (Log)
             Debug.Log($"{this}.Notify()");
-        foreach (var group in _scopes)
-        {
-            if (_isCompositionLocal)
-                ComposeInvalidator.RequestInstantInvalidate(group);
-            else
-                ComposeInvalidator.RequestInvalidate(group);
-        }
+        foreach (var group in _scopes) 
+            ComposeInvalidator.RequestInvalidate(group);
     }
 
     internal bool Add(ComposeRestartScope restartScope) => _scopes.Add(restartScope);
-    
+
     public void ClearScopes() => _scopes.Clear();
 }
 

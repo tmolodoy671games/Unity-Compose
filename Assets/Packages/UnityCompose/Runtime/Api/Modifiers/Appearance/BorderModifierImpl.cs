@@ -13,21 +13,21 @@ public static partial class ModifierExtensions
 {
     public static IModifier Border(
         this IModifier modifier,
-        float radius = -1,
-        float verticalRadius = -1,
-        float horizontalRadius = -1,
-        float topLeftRadius = -1,
-        float topRightRadius = -1,
-        float bottomLeftRadius = -1,
-        float bottomRightRadius = -1,
-        float allWidth = -1,
+        LayoutLength radius = default,
+        LayoutLength verticalRadius = default,
+        LayoutLength horizontalRadius = default,
+        LayoutLength topLeftRadius = default,
+        LayoutLength topRightRadius = default,
+        LayoutLength bottomLeftRadius = default,
+        LayoutLength bottomRightRadius = default,
+        float width = -1,
         float verticalWidth = -1,
         float horizontalWidth = -1,
         float topWidth = -1,
         float bottomWidth = -1,
         float leftWidth = -1,
         float rightWidth = -1,
-        Optional<Color> allColor = default,
+        Optional<Color> color = default,
         Optional<Color> verticalColor = default,
         Optional<Color> horizontalColor = default,
         Optional<Color> topColor = default,
@@ -42,14 +42,14 @@ public static partial class ModifierExtensions
             topRightRadius: ParamUtils.Resolve(topRightRadius, verticalRadius, horizontalRadius, radius),
             bottomLeftRadius: ParamUtils.Resolve(bottomLeftRadius, verticalRadius, horizontalRadius, radius),
             bottomRightRadius: ParamUtils.Resolve(bottomRightRadius, verticalRadius, horizontalRadius, radius),
-            topWidth: ParamUtils.Resolve(topWidth, verticalWidth, allWidth),
-            bottomWidth: ParamUtils.Resolve(bottomWidth, verticalWidth, allWidth),
-            leftWidth: ParamUtils.Resolve(leftWidth, horizontalWidth, allWidth),
-            rightWidth: ParamUtils.Resolve(rightWidth, horizontalWidth, allWidth),
-            topColor: ParamUtils.Resolve(topColor, verticalColor, allColor),
-            bottomColor: ParamUtils.Resolve(bottomColor, verticalColor, allColor),
-            leftColor: ParamUtils.Resolve(leftColor, horizontalColor, allColor),
-            rightColor: ParamUtils.Resolve(rightColor, horizontalColor, allColor),
+            topWidth: ParamUtils.Resolve(topWidth, verticalWidth, width),
+            bottomWidth: ParamUtils.Resolve(bottomWidth, verticalWidth, width),
+            leftWidth: ParamUtils.Resolve(leftWidth, horizontalWidth, width),
+            rightWidth: ParamUtils.Resolve(rightWidth, horizontalWidth, width),
+            topColor: ParamUtils.Resolve(topColor, verticalColor, color),
+            bottomColor: ParamUtils.Resolve(bottomColor, verticalColor, color),
+            leftColor: ParamUtils.Resolve(leftColor, horizontalColor, color),
+            rightColor: ParamUtils.Resolve(rightColor, horizontalColor, color),
             transition: transition
         );
     }
@@ -57,10 +57,10 @@ public static partial class ModifierExtensions
 
 internal class BorderModifierImpl : BaseModifier<BorderModifierImpl>
 {
-    private readonly float _topLeftRadius;
-    private readonly float _topRightRadius;
-    private readonly float _bottomLeftRadius;
-    private readonly float _bottomRightRadius;
+    private readonly LayoutLength _topLeftRadius;
+    private readonly LayoutLength _topRightRadius;
+    private readonly LayoutLength _bottomLeftRadius;
+    private readonly LayoutLength _bottomRightRadius;
     private readonly float _topWidth;
     private readonly float _bottomWidth;
     private readonly float _leftWidth;
@@ -72,10 +72,10 @@ internal class BorderModifierImpl : BaseModifier<BorderModifierImpl>
     private readonly Optional<ComposeTransition> _transition;
 
     public BorderModifierImpl(
-        float topLeftRadius,
-        float topRightRadius,
-        float bottomLeftRadius,
-        float bottomRightRadius,
+        LayoutLength topLeftRadius,
+        LayoutLength topRightRadius,
+        LayoutLength bottomLeftRadius,
+        LayoutLength bottomRightRadius,
         float topWidth,
         float bottomWidth,
         float leftWidth,
@@ -104,28 +104,28 @@ internal class BorderModifierImpl : BaseModifier<BorderModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        if (_topLeftRadius >= 0)
+        if (_topLeftRadius.HasValue)
         {
             element.style.borderTopLeftRadius = _topLeftRadius;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "border-top-left-radius");
         }
 
-        if (_topRightRadius >= 0)
+        if (_topRightRadius.HasValue)
         {
             element.style.borderTopRightRadius = _topRightRadius;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "border-top-right-radius");
         }
 
-        if (_bottomLeftRadius >= 0)
+        if (_bottomLeftRadius.HasValue)
         {
             element.style.borderBottomLeftRadius = _bottomLeftRadius;
             if (_transition.HasValue)
                 element.AddTransition(_transition.Value, "border-bottom-left-radius");
         }
 
-        if (_bottomRightRadius >= 0)
+        if (_bottomRightRadius.HasValue)
         {
             element.style.borderBottomRightRadius = _bottomRightRadius;
             if (_transition.HasValue)
@@ -189,90 +189,99 @@ internal class BorderModifierImpl : BaseModifier<BorderModifierImpl>
         }
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_topLeftRadius >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderTopLeftRadius);
-
-        if (_topRightRadius >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderTopRightRadius);
-
-        if (_bottomLeftRadius >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderBottomLeftRadius);
-
-        if (_bottomRightRadius >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderBottomRightRadius);
-
-        if (_topWidth >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderTopWidth);
-
-        if (_bottomWidth >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderBottomWidth);
-
-        if (_leftWidth >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderLeftWidth);
-
-        if (_rightWidth >= 0)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderRightWidth);
-
-        if (_topColor.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderTopColor);
-
-        if (_bottomColor.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderBottomColor);
-
-        if (_leftColor.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderLeftColor);
-
-        if (_rightColor.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.BorderRightColor);
-    }
-
     public override void Revert(VisualElement element)
     {
-        if (_topLeftRadius >= 0)
+        if (_topLeftRadius.HasValue)
+        {
             element.style.borderTopLeftRadius = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-top-left-radius");
+        }
 
-        if (_topRightRadius >= 0)
+        if (_topRightRadius.HasValue)
+        {
             element.style.borderTopRightRadius = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-top-right-radius");
+        }
 
-        if (_bottomLeftRadius >= 0)
+        if (_bottomLeftRadius.HasValue)
+        {
             element.style.borderBottomLeftRadius = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-bottom-left-radius");
+        }
 
-        if (_bottomRightRadius >= 0)
+        if (_bottomRightRadius.HasValue)
+        {
             element.style.borderBottomRightRadius = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-bottom-right-radius");
+        }
 
         if (_topWidth >= 0)
+        {
             element.style.borderTopWidth = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-top-width");
+        }
 
         if (_bottomWidth >= 0)
+        {
             element.style.borderBottomWidth = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-bottom-width");
+        }
 
         if (_leftWidth >= 0)
+        {
             element.style.borderLeftWidth = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-left-width");
+        }
 
         if (_rightWidth >= 0)
+        {
             element.style.borderRightWidth = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-right-width");
+        }
 
         if (_topColor.HasValue)
+        {
             element.style.borderTopColor = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-top-color");
+        }
 
         if (_bottomColor.HasValue)
+        {
             element.style.borderBottomColor = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-bottom-color");
+        }
 
         if (_leftColor.HasValue)
+        {
             element.style.borderLeftColor = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-left-color");
+        }
 
         if (_rightColor.HasValue)
+        {
             element.style.borderRightColor = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("border-right-color");
+        }
     }
 
     protected override bool Equals(BorderModifierImpl other)
     {
-        return _topLeftRadius.AlmostEquals(other._topLeftRadius) &&
-               _topRightRadius.AlmostEquals(other._topRightRadius) &&
-               _bottomLeftRadius.AlmostEquals(other._bottomLeftRadius) &&
-               _bottomRightRadius.AlmostEquals(other._bottomRightRadius) &&
+        return _topLeftRadius.Equals(other._topLeftRadius) &&
+               _topRightRadius.Equals(other._topRightRadius) &&
+               _bottomLeftRadius.Equals(other._bottomLeftRadius) &&
+               _bottomRightRadius.Equals(other._bottomRightRadius) &&
                _topWidth.AlmostEquals(other._topWidth) &&
                _bottomWidth.AlmostEquals(other._bottomWidth) &&
                _leftWidth.AlmostEquals(other._leftWidth) &&

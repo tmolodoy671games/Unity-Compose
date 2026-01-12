@@ -6,85 +6,51 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public static class Alignment
+public class Alignment
 {
-    public enum Horizontal
+    public class Vertical : Alignment
     {
-        Left,
-        Center,
-        Stretch,
-        Right,
-    }
-
-    public enum Vertical
-    {
-        Top,
-        Center,
-        Stretch,
-        Bottom,
-    }
-
-    public static Horizontal Left => Horizontal.Left;
-    public static Horizontal CenterHorizontally => Horizontal.Center;
-    public static Horizontal StretchHorizontally => Horizontal.Stretch;
-    public static Horizontal Right => Horizontal.Right;
-
-    public static Vertical Top => Vertical.Top;
-    public static Vertical CenterVertically => Vertical.Center;
-    public static Vertical StretchVertically => Vertical.Stretch;
-    public static Vertical Bottom => Vertical.Bottom;
-}
-
-internal static class AlignmentHorizontalExtensions
-{
-    public static Align ToAlign(this Alignment.Horizontal alignment)
-    {
-        return alignment switch
+        internal Vertical(Align align, Justify justify = Justify.FlexStart) : base(align, justify)
         {
-            Alignment.Horizontal.Left => Align.FlexStart,
-            Alignment.Horizontal.Center => Align.Center,
-            Alignment.Horizontal.Stretch => Align.Stretch,
-            Alignment.Horizontal.Right => Align.FlexEnd,
-            _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-        };
+        }
     }
     
-    public static Justify ToJustify(this Alignment.Horizontal alignment)
+    public class Horizontal : Alignment
     {
-        return alignment switch
+        internal Horizontal(Align align, Justify justify = Justify.FlexStart) : base(align, justify)
         {
-            Alignment.Horizontal.Left => Justify.FlexStart,
-            Alignment.Horizontal.Center => Justify.Center,
-            Alignment.Horizontal.Stretch => Justify.SpaceAround,
-            Alignment.Horizontal.Right => Justify.FlexEnd,
-            _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-        };
-    }
-}
-
-internal static class AlignmentVerticalExtensions
-{
-    public static Align ToAlign(this Alignment.Vertical alignment)
-    {
-        return alignment switch
-        {
-            Alignment.Vertical.Top => Align.FlexStart,
-            Alignment.Vertical.Center => Align.Center,
-            Alignment.Vertical.Stretch => Align.Stretch,
-            Alignment.Vertical.Bottom => Align.FlexEnd,
-            _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-        };
+        }
     }
     
-    public static Justify ToJustify(this Alignment.Vertical alignment)
+    private readonly Align _align;
+    private readonly Justify _justify;
+
+    public static readonly Horizontal Left = new(Align.FlexStart);
+    public static readonly Horizontal CenterHorizontally = new(Align.Center);
+    public static readonly Horizontal Right = new(Align.FlexEnd);
+    
+    public static readonly Vertical Top = new(Align.FlexStart);
+    public static readonly Vertical CenterVertically = new(Align.Center);
+    public static readonly Vertical Bottom = new(Align.FlexEnd);
+    
+    public static readonly Alignment TopLeft = new(Align.FlexStart);
+    public static readonly Alignment TopCenter = new(Align.Center);
+    public static readonly Alignment TopRight = new(Align.FlexEnd);
+    
+    public static readonly Alignment CenterLeft = new(Align.FlexStart, Justify.Center);
+    public static readonly Alignment Center = new(Align.Center, Justify.Center);
+    public static readonly Alignment CenterRight = new(Align.FlexEnd, Justify.Center);
+    
+    public static readonly Alignment BottomLeft = new(Align.FlexStart, Justify.FlexEnd);
+    public static readonly Alignment BottomCenter = new(Align.Center, Justify.FlexEnd);
+    public static readonly Alignment BottomRight = new(Align.FlexEnd, Justify.FlexEnd);
+    
+    private Alignment(Align align, Justify justify = Justify.FlexStart)
     {
-        return alignment switch
-        {
-            Alignment.Vertical.Top => Justify.FlexStart,
-            Alignment.Vertical.Center => Justify.Center,
-            Alignment.Vertical.Stretch => Justify.SpaceAround,
-            Alignment.Vertical.Bottom => Justify.FlexEnd,
-            _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-        };
+        _align = align;
+        _justify = justify;
     }
+    
+    internal Align ToAlign() => _align;
+    internal Justify ToJustify() => _justify;
 }

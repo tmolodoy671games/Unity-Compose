@@ -86,28 +86,35 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
         }
     }
 
-    public override void Apply(IMutableStableCollection<ComposeModifiedProperty> modifiedProperties)
-    {
-        if (_top.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.PaddingTop);
-        if (_bottom.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.PaddingBottom);
-        if (_left.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.PaddingLeft);
-        if (_right.HasValue)
-            modifiedProperties.Add(ComposeModifiedProperty.PaddingRight);
-    }
-
     public override void Revert(VisualElement element)
     {
         if (_top.HasValue)
+        {
             element.style.paddingTop = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("padding-top");
+        }
+
         if (_bottom.HasValue)
+        {
             element.style.paddingBottom = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("padding-bottom");
+        }
+
         if (_left.HasValue)
+        {
             element.style.paddingLeft = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("padding-left");
+        }
+
         if (_right.HasValue)
+        {
             element.style.paddingRight = StyleKeyword.Null;
+            if (_transition.HasValue)
+                element.RemoveTransition("padding-right");
+        }
     }
 
     protected override bool Equals(PaddingModifierImpl other)

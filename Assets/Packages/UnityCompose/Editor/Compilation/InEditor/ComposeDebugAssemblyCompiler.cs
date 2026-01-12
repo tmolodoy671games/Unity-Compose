@@ -20,31 +20,10 @@ internal static class ComposeDebugAssemblyCompiler
                          new FileInfo(Path.Combine("UnityCompose", ".unityComposeReleaseLock")).Exists;
         if (isBuilding)
             return;
-        MigrateDlls();
+        // MigrateDlls();
         GetAssemblies(isRelease)
             .AsParallel()
             .ForAll(it => ProcessAssembly(it, isRelease));
-    }
-
-    private static void MigrateDlls()
-    {
-        var outputDirectory = new DirectoryInfo(Path.Combine(Application.dataPath, "..", "UnityCompose"));
-        if (outputDirectory.Exists && outputDirectory.GetFiles().Length > 0)
-            return;
-        if (!outputDirectory.Exists)
-            outputDirectory.Create();
-        var assembliesFiles = new DirectoryInfo(Path.Combine(Application.dataPath, ".."))
-            .EnumerateDirectories("Assemblies", SearchOption.AllDirectories)
-            .Where(it => it.Parent?.Name == "Editor" && it.Parent?.Parent?.Name == "UnityCompose")
-            .SelectMany(it => it.EnumerateFiles())
-            .Where(it => it.Extension == ".unitycomposedll");
-        foreach (var file in assembliesFiles)
-        {
-            File.Copy(
-                file.FullName,
-                Path.Combine(outputDirectory.FullName, file.Name.Replace(".unitycomposedll", ".dll"))
-            );
-        }
     }
 
     private static IStableList<AssemblyDefinition> GetAssemblies(bool isRelease)
@@ -55,23 +34,27 @@ internal static class ComposeDebugAssemblyCompiler
             .Append("UnityCompose")
             .ToImmutableStableList();
         var resolver = new DefaultAssemblyResolver();
+        var projectRootDirectory = new DirectoryInfo(Application.dataPath).Parent.NotNull();
         resolver.RegisterFoldersRecursively(
-            new DirectoryInfo(Path.Combine(Application.dataPath, "..", "Build"))
+            projectRootDirectory.SubDirectory("Build")
         );
         if (!isRelease)
         {
             resolver.RegisterFoldersRecursively(
-                new DirectoryInfo(
-                    Path.Combine(Application.dataPath, "..", "Library", "ScriptAssemblies")
+                projectRootDirectory.SubDirectory("UnityCompose")
+            );
+            resolver.RegisterFoldersRecursively(
+                projectRootDirectory.SubDirectory(
+                    Path.Combine("Library", "ScriptAssemblies")
                 )
             );
             resolver.RegisterFoldersRecursively(
-                new DirectoryInfo(
-                    Path.Combine(Application.dataPath, "..", "Library", "PackageCache")
+                projectRootDirectory.SubDirectory(
+                    Path.Combine("Library", "PackageCache")
                 )
             );
             resolver.RegisterFoldersRecursively(
-                new DirectoryInfo(Path.Combine(Application.dataPath, "..", "UnityCompose"))
+                projectRootDirectory.SubDirectory("UnityCompose")
             );
         }
 
