@@ -662,6 +662,11 @@ internal class SlotTableWriter
     public void Clear()
     {
         _groups.Clear();
+        for (var i = 0; i < _slots.Count; i++)
+        {
+            if (_slots[i] is IDisposable disposable)
+                disposable.Dispose();
+        }
         _slots.Clear();
         _groupsAnchors.Clear();
         _slotsAnchors.Clear();

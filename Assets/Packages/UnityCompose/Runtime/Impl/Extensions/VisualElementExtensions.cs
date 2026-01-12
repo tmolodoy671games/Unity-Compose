@@ -7,7 +7,7 @@ internal static class VisualElementExtensions
 {
     public static VisualElement? GetOrNull(this VisualElement element, int index)
     {
-        return index >= element.childCount ? null : element[index];
+        return index >= element.childCount || index < 0 ? null : element[index];
     }
 
     public static string Format(this VisualElement element)
