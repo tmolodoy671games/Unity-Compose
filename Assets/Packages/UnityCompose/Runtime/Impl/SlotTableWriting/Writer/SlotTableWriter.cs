@@ -28,7 +28,7 @@ internal class SlotTableWriter
     private readonly Stack<int> _enteredElementIndices = new();
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
-    private readonly List<ComposeGroupOffset> _pendingOffsets = new();
+    private readonly Stack<ComposeGroupOffset> _pendingOffsets = new();
 
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
@@ -667,6 +667,7 @@ internal class SlotTableWriter
             if (_slots[i] is IDisposable disposable)
                 disposable.Dispose();
         }
+
         _slots.Clear();
         _groupsAnchors.Clear();
         _slotsAnchors.Clear();
@@ -796,7 +797,7 @@ internal class SlotTableWriter
         if (parent.Size == 0)
             return false;
         return _currentGroupIndex < _currentParentIndex + parent.Size +
-            _pendingOffsets.GetOrDefault(_pendingOffsets.Count - 1, new ComposeGroupOffset(0, 0)).GroupOffset;
+            _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
     }
 
     private bool IsThereAlreadyASlot()
@@ -809,7 +810,7 @@ internal class SlotTableWriter
         if (parent.SlotsSize == 0)
             return false;
         return _currentSlotIndex < _currentParentSlotIndex + parent.SlotsSize +
-            _pendingOffsets.GetOrDefault(_pendingOffsets.Count - 1, new ComposeGroupOffset(0, 0)).SlotOffset;
+            _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
     }
 
     private void EnterGroup(ComposeGroup group)
@@ -817,7 +818,7 @@ internal class SlotTableWriter
         SyncElementIndex(group, canReinsert: true);
         _currentParentIndex = _currentGroupIndex;
         _enteredParents.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
-        _pendingOffsets.Add(new ComposeGroupOffset(0, 0));
+        _pendingOffsets.Push(new ComposeGroupOffset(0, 0));
         _currentParentSlotIndex = _currentSlotIndex;
         _currentGroupIndex++;
     }
@@ -917,12 +918,11 @@ internal class SlotTableWriter
         var newParent = _enteredParents.PeekOrDefault(new ComposeGroupEntry(-1, -1));
         _currentParentIndex = newParent.GroupIndex;
         _currentParentSlotIndex = newParent.SlotIndex;
-        _pendingOffsets.RemoveAt(_pendingOffsets.Count - 1);
+        _pendingOffsets.Pop();
         if (_pendingOffsets.IsNotEmpty())
         {
-            var oldOffsets = _pendingOffsets[^1];
-            _pendingOffsets.RemoveAt(_pendingOffsets.Count - 1);
-            _pendingOffsets.Add(
+            var oldOffsets = _pendingOffsets.Pop();
+            _pendingOffsets.Push(
                 new ComposeGroupOffset(
                     oldOffsets.GroupOffset + groupSizeOffset,
                     oldOffsets.SlotOffset + slotsSizeOffset
