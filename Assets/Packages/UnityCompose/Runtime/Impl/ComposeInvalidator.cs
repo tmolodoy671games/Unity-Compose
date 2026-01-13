@@ -84,7 +84,7 @@ namespace UnityCompose
 
         internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
         {
-            if (!ApplicationUtils.IsPlaying) return new EmptyDisposableImpl();
+            // if (!ApplicationUtils.IsPlaying) return new EmptyDisposableImpl();
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
@@ -95,7 +95,6 @@ namespace UnityCompose
 
         internal static void CancelInvalidate(ComposeRestartScope scope)
         {
-            if (!ApplicationUtils.IsPlaying) return;
             Instance._invalidatedGroups.Remove(scope);
         }
     }

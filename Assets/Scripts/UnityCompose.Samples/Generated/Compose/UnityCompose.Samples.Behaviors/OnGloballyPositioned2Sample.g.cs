@@ -96,7 +96,8 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
             {
-                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: AnimateFloatAsState(selected ? 160 : 20).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                var animationSpec = Tween();
+                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: !__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content);
                 }));

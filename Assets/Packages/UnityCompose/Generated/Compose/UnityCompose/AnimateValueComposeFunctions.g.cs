@@ -60,7 +60,12 @@ public static partial class ComposeFunctions
             return property;
         }
 
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue))
+        {
+            __composer.EndReplaceGroup(-130532738);
+            return property;
+        }
+
         LaunchedEffect(key: targetValue, coroutine: !__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue)));
         __composer.EndReplaceGroup(-130532738);
         return property;
@@ -100,7 +105,12 @@ public static partial class ComposeFunctions
             return property;
         }
 
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue))
+        {
+            __composer.EndReplaceGroup(-1673470175);
+            return property;
+        }
+
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         LaunchedEffect(key: key, coroutine: !__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory)));
         __composer.EndReplaceGroup(-1673470175);

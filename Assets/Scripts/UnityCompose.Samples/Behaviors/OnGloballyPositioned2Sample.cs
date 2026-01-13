@@ -94,12 +94,13 @@ namespace UnityCompose.Samples.Behaviors
             IModifier? modifier = null
         )
         {
+            var animationSpec = Tween();
             Box(
                 modifier: modifier.OrEmpty()
                     .Background(Color.grey)
                     .Padding(
                         vertical: 8.Px(),
-                        horizontal: AnimateFloatAsState(selected ? 160 : 20).Value.Px()
+                        horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Px()
                     )
                     .Margin(horizontal: 2.Px())
                     .Border(16.Px(), topLeftRadius: 0.Px())
