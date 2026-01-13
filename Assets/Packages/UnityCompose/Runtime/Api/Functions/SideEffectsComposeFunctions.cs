@@ -53,7 +53,7 @@ public static partial class ComposeFunctions
         );
     }
 
-    // [Composable]
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         Action block
