@@ -389,7 +389,8 @@ internal class SlotTableWriter
     {
         var parent = CurrentParent();
         var startIndex = _currentParentIndex + 1;
-        var endIndex = _currentParentIndex + parent.Size;
+        var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
+        var endIndex = _currentParentIndex + resolvedParentSize;
         for (var i = startIndex; i < endIndex;)
         {
             var candidate = _groups[i];
@@ -788,10 +789,10 @@ internal class SlotTableWriter
         if (_currentParentIndex < 0)
             return _currentGroupIndex < _groups.Count;
         var parent = CurrentParent();
-        if (parent.Size == 0)
+        var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
+        if (resolvedParentSize == 0)
             return false;
-        return _currentGroupIndex < _currentParentIndex + parent.Size +
-            _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
+        return _currentGroupIndex < _currentParentIndex + resolvedParentSize;
     }
 
     private bool IsThereAlreadyASlot()
@@ -801,10 +802,11 @@ internal class SlotTableWriter
         if (_currentParentIndex < 0)
             return _currentSlotIndex < _slots.Count;
         var parent = CurrentParent();
-        if (parent.SlotsSize == 0)
+        var resolvedParentSlotSize = parent.SlotsSize + 
+                                     _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
+        if (resolvedParentSlotSize == 0)
             return false;
-        return _currentSlotIndex < _currentParentSlotIndex + parent.SlotsSize +
-            _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
+        return _currentSlotIndex < _currentParentSlotIndex + resolvedParentSlotSize;
     }
 
     private void EnterGroup(ComposeGroup group)
@@ -860,19 +862,24 @@ internal class SlotTableWriter
         var offsets = _pendingOffsets.Peek();
         var oldSize = currentParent.Size + offsets.GroupOffset;
         var oldSlotsSize = currentParent.SlotsSize + offsets.SlotOffset;
+        
         var newSize = _currentGroupIndex - _currentParentIndex;
         var newSlotsSize = _currentSlotIndex - _currentParentSlotIndex;
         var newElementsCount = _currentElementIndex - currentParent.ElementIndex;
         if (currentParent.Type == ComposeGroupType.Reusable)
             newElementsCount = 1;
+        
         var parentGroupSizeOffset = newSize - currentParent.Size;
         var parentSlotsSizeOffset = newSlotsSize - currentParent.SlotsSize;
-        var groupSizeOffset = newSize - oldSize;
-        var slotsSizeOffset = newSlotsSize - oldSlotsSize;
         var elementsCountOffset = newElementsCount - currentParent.ElementsCount;
         
-        if (newSize != currentParent.Size || newSlotsSize != currentParent.SlotsSize ||
-            newElementsCount != currentParent.ElementsCount)
+        var groupsToRemove = -(newSize - oldSize);
+        var slotsToRemove = -(newSlotsSize - oldSlotsSize);
+
+        var anySizeChanged = newSize != currentParent.Size ||
+                             newSlotsSize != currentParent.SlotsSize ||
+                             newElementsCount != currentParent.ElementsCount;
+        if (anySizeChanged)
         {
             currentParent = currentParent with
             {
@@ -883,25 +890,23 @@ internal class SlotTableWriter
             _groups[_currentParentIndex] = currentParent;
         }
 
-        var currentGroupSizeOffset = -groupSizeOffset;
-        if (currentGroupSizeOffset > 0)
+        if (groupsToRemove > 0)
         {
 #if LOGGING
-            Log($"_groups.RemoveRange({_currentGroupIndex}, {currentGroupSizeOffset})");
+            Log($"_groups.RemoveRange({_currentGroupIndex}, {groupsToRemove})");
 #endif
-            // Log($"RemoveRange({_currentGroupIndex}, {currentGroupSizeOffset})");
-            CleanupGroups(_currentGroupIndex, currentGroupSizeOffset);
-            _groups.RemoveRange(_currentGroupIndex, currentGroupSizeOffset);
+            // Log($"RemoveRange({_currentGroupIndex}, {groupsToRemove})");
+            CleanupGroups(_currentGroupIndex, groupsToRemove);
+            _groups.RemoveRange(_currentGroupIndex, groupsToRemove);
         }
 
-        var currentSlotsSizeOffset = -slotsSizeOffset;
-        if (currentSlotsSizeOffset > 0)
+        if (slotsToRemove > 0)
         {
 #if LOGGING
-            Log($"_slots.RemoveRange({_currentSlotIndex}, {currentSlotsSizeOffset})");
+            Log($"_slots.RemoveRange({_currentSlotIndex}, {slotsToRemove})");
 #endif
-            CleanupSlots(_currentSlotIndex, currentSlotsSizeOffset);
-            _slots.RemoveRange(_currentSlotIndex, currentSlotsSizeOffset);
+            CleanupSlots(_currentSlotIndex, slotsToRemove);
+            _slots.RemoveRange(_currentSlotIndex, slotsToRemove);
         }
 
         if (_enteredParents.Count == 1)

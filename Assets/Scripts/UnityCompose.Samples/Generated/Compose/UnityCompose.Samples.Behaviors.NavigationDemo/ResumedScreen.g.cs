@@ -1,0 +1,31 @@
+#nullable enable
+using System;
+using UnityCompose;
+using static UnityCompose.ComposeFunctions;
+
+namespace UnityCompose.Samples.Behaviors.NavigationDemo;
+internal partial class ResumedScreen
+{
+    [Composable]
+    private void __Content(IModifier modifier)
+    {
+        var __modifier = (modifier);
+        var __composer = CurrentComposer;
+        __composer.StartRestartGroup(671743790);
+        var __isRestarted = __composer.IsRestarted();
+        if (__isRestarted || __composer.ShouldExecute(__modifier))
+        {
+            var coordinator = FindCoordinator<ISampleCoordinator>();
+            Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowPausedScreen())), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            {
+                Spacer(modifier: Modifier.Size(100.Px()).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
+            }));
+        }
+        else
+        {
+            __composer.SkipToGroupEnd();
+        }
+
+        __composer.EndRestartGroup(671743790, __isRestarted)?.UpdateScope(() => __Content(__modifier));
+    }
+}

@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
         {
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = -1;
-            var parentSize = Remember(() => IMutableStableProperty.Create(Vector2.zero));
+            var parentSize = Remember(() => MutableStateOf(Vector2.zero));
             Box(
                 modifier: Modifier
                     .FillMaxSize()
@@ -23,35 +23,38 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                         var currentI = i;
                         Key(
                             key: currentI,
-                            content: () =>
-                            {
-                                var position = Remember(static () => MutableStateOf(Vector2.zero));
-                                LaunchedEffect(
-                                    key: string.Empty,
-                                    coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(
-                                        parentSize: () => parentSize.Value,
-                                        it => position.Value = it
-                                    )
-                                );
-
-                                var baseModifier = Remember(currentI, () => Modifier
-                                    .Size(50.Px())
-                                    .Background(
-                                        PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
-                                    .Float()
-                                );
-                                Spacer(
-                                    modifier:
-                                    baseModifier
-                                        .Position(
-                                            left: position.Value.x.Px(),
-                                            top: position.Value.y.Px()
-                                        )
-                                );
-                            }
+                            content: () => Item(currentI, parentSize.Value)
                         );
                     }
                 }
+            );
+        }
+
+        [Composable]
+        private static void Item(int currentI, Vector2 parentSize)
+        {
+            var position = Remember(static () => MutableStateOf(Vector2.zero));
+            LaunchedEffect(
+                key: parentSize,
+                coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(
+                    parentSize: () => parentSize,
+                    it => position.Value = it
+                )
+            );
+
+            var baseModifier = Remember(currentI, () => Modifier
+                .Size(50.Px())
+                .Background(
+                    PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
+                .Float()
+            );
+            Spacer(
+                modifier:
+                baseModifier
+                    .Position(
+                        left: position.Value.x.Px(),
+                        top: position.Value.y.Px()
+                    )
             );
         }
     }

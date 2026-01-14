@@ -10,9 +10,11 @@ public readonly record struct ContentTransform(
     IExitTransition Exit
 )
 {
+    private static readonly IModifier InvisibleModifier = Modifier.Alpha(0f);
+    
     public static readonly ContentTransform Instant = new(
         Enter: IEnterTransition.Empty(),
-        Exit: IExitTransition.Empty()
+        Exit: ComposeFunctions.Exit((_, _) => InvisibleModifier)
     );
 
     public float TotalDuration => Mathf.Max(Enter.TotalDuration, Exit.TotalDuration);
