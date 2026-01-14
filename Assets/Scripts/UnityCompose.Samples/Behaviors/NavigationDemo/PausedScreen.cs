@@ -48,7 +48,7 @@ internal partial class PausedScreen : ComposeScreen
                 Navigation(
                     modifier: Modifier.FillMaxSize()
                         .OnClick(onTabContentClick),
-                    transition: () => ResolveTransform(previousTab.Value, tab),
+                    transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
                     coordinator: pausedCoordinator
                 );
             }

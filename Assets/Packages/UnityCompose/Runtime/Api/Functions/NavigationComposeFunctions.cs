@@ -4,7 +4,6 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace
@@ -39,7 +38,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void Navigation(
         IComposeCoordinator coordinator,
-        Func<ContentTransform>? transition = null,
+        Optional<ContentTransform> transition = default,
         IModifier? modifier = null
     )
     {
@@ -91,9 +90,12 @@ public static partial class ComposeFunctions
                 .OrderBy(static it => it.Priority)
                 .ToImmutableStableList()
         );
-        var resolvedTransition = Remember((appearingScreens, disappearingScreens, transition), () =>
-            ResolveTransition(transition, appearingScreens, disappearingScreens)
-        );
+        
+        // var resolvedTransition = Remember((transition, appearingScreens, disappearingScreens), () =>
+        //     ResolveTransition(transition, appearingScreens, disappearingScreens)
+        // );
+        var resolvedTransition = ResolveTransition(transition, appearingScreens, disappearingScreens);
+        
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             animationSpec: Tween(
@@ -180,7 +182,7 @@ public static partial class ComposeFunctions
     }
 
     private static ContentTransform ResolveTransition(
-        Func<ContentTransform>? transition,
+        Optional<ContentTransform> transition,
         IStableList<ComposeScreen> enteringScreens,
         IStableList<ComposeScreen> exitingScreens
     )
@@ -199,7 +201,7 @@ public static partial class ComposeFunctions
                 return transitions.Exit;
         }
 
-        return transition?.Invoke() ?? ContentTransform.Instant;
+        return transition.GetOrDefault(ContentTransform.Instant);
     }
 }
 

@@ -34,9 +34,10 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
                         {
                             Navigation(
                                 coordinator: Remember(() => new SampleCoordinatorImpl()),
-                                transition: () => FadeIn()
+                                transition: Remember(animationSpec, () => FadeIn()
                                     .TogetherWith(FadeOut())
-                                    .With(animationSpec),
+                                    .With(animationSpec)
+                                ),
                                 modifier: Modifier
                                     .FillMaxSize()
                             );

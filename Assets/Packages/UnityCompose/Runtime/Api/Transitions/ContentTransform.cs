@@ -1,6 +1,5 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace UnityCompose;

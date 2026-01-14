@@ -47,7 +47,7 @@ internal partial class PausedScreen
             {
                 TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally));
                 // Spacer(Modifier.FillMaxSize().OnClick(onTabContentClick));
-                Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: !__composer.ChangedAsStruct((tab, previousTab)) ? __composer.RememberedValue<System.Func<UnityCompose.ContentTransform>?>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.ContentTransform>?>(() => ResolveTransform(previousTab.Value, tab)), coordinator: pausedCoordinator);
+                Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: !__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab)), coordinator: pausedCoordinator);
             }));
             previousTab.Value = tab;
         }

@@ -56,7 +56,7 @@ namespace UnityCompose
             }
         }
 
-        private readonly HashSet<ComposeRestartScope> _invalidatedGroups = new();
+        private readonly List<ComposeRestartScope> _invalidatedGroups = new();
         private readonly List<ComposeRestartScope> _groupsToRestart = new();
 
         public ComposeInvalidator()
@@ -84,7 +84,6 @@ namespace UnityCompose
 
         internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
         {
-            // if (!ApplicationUtils.IsPlaying) return new EmptyDisposableImpl();
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 

@@ -362,8 +362,12 @@ internal class GapBufferList<T> : IList<T>
 
     public int AbsoluteToLogicalIndex(int absoluteIndex)
     {
-        if (absoluteIndex != Count + GapLength && absoluteIndex >= GapStart && absoluteIndex < GapStart + GapLength)
-            throw new ArgumentOutOfRangeException(nameof(absoluteIndex));
+        // if (absoluteIndex != Count + GapLength && absoluteIndex >= GapStart && absoluteIndex < GapStart + GapLength)
+        // {
+        //     throw new ArgumentOutOfRangeException(
+        //         $"Index {absoluteIndex} is inside the gap buffer: length: {_array.Length}, gapStart: {GapStart}, gapLength: {GapLength}"
+        //     );
+        // }
 
         if (absoluteIndex < GapStart)
             return absoluteIndex;

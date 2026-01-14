@@ -5,7 +5,6 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -15,11 +14,11 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     [Composable]
-    private static void __Navigation(IComposeCoordinator coordinator, Func<ContentTransform>? transition = null, IModifier? modifier = null)
+    private static void __Navigation(IComposeCoordinator coordinator, Optional<ContentTransform> transition = default, IModifier? modifier = null)
     {
         var(__coordinator, __transition, __modifier) = (coordinator, transition, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1435617519);
+        __composer.StartRestartGroup(-112916579);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__coordinator, __transition, __modifier)))
         {
@@ -44,7 +43,7 @@ public static partial class ComposeFunctions
             var appearingScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(currentBackStack.WhereNot(previousBackStack.Value.Contains).ToImmutableStableList());
             var disappearingScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(previousBackStack.Value.WhereNot(currentBackStack.Contains).ToImmutableStableList());
             var allScreens = !__composer.ChangedAsStruct((currentBackStack, previousBackStack.Value)) ? __composer.RememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>() : __composer.UpdateRememberedValue<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>(previousBackStack.Value.Union(currentBackStack).Distinct().OrderBy(static it => it.Priority).ToImmutableStableList());
-            var resolvedTransition = !__composer.ChangedAsStruct((appearingScreens, disappearingScreens, transition)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransition(transition, appearingScreens, disappearingScreens));
+            var resolvedTransition = ResolveTransition(transition, appearingScreens, disappearingScreens);
             var progress = AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: resolvedTransition.TotalDuration)).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var isTransitionFinished = resolvedProgress.AlmostEquals(1f);
@@ -84,7 +83,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1435617519, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
+        __composer.EndRestartGroup(-112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
     }
 }
 
@@ -94,7 +93,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(661528408);
+        __composer.StartRestartGroup(-516650310);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -105,6 +104,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(661528408, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(-516650310, __isRestarted)?.UpdateScope(() => __Content());
     }
 }

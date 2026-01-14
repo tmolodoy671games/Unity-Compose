@@ -18,6 +18,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     public AnchorId _groupAnchor;
     private CompositionLocalMap? _compositionLocalMap;
     private VisualElement? _visualElement;
+    private bool _isRequestedToRestart;
 
     private Action? _restartCallback;
 
@@ -45,11 +46,20 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         _restartCallback = restartCallback;
     }
 
+    public void RequestRestart()
+    {
+        if (_isRequestedToRestart)
+            return;
+        ComposeInvalidator.RequestInvalidate(this);
+        _isRequestedToRestart = true;
+    }
+
     public void Restart()
     {
         _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement);
         _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();
+        _isRequestedToRestart = false;
     }
 
     public override string ToString() =>
@@ -57,7 +67,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Dispose()
     {
-        ComposeInvalidator.CancelInvalidate(this);
+        if (_isRequestedToRestart)
+            ComposeInvalidator.CancelInvalidate(this);
+        _isRequestedToRestart = false;
         _pool.Return(this);
     }
 }
