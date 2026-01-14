@@ -134,7 +134,7 @@ internal class GapBufferList<T> : IList<T>
             throw new ArgumentException("Ranges are intersecting!");
         var firstBuffer = new T[firstCount];
         var secondBuffer = new T[secondCount];
-        var areBuffersOfDifferentSizes = firstCount != secondCount;
+        var areBuffersOfDifferentSizes = true;
 
         // Copy to buffers:
         Array.Copy(

@@ -895,7 +895,6 @@ internal class SlotTableWriter
 #if LOGGING
             Log($"_groups.RemoveRange({_currentGroupIndex}, {groupsToRemove})");
 #endif
-            Debug.Log($"RemoveRange({_currentGroupIndex}, {groupsToRemove})");
             CleanupGroups(_currentGroupIndex, groupsToRemove);
             _groups.RemoveRange(_currentGroupIndex, groupsToRemove);
         }
