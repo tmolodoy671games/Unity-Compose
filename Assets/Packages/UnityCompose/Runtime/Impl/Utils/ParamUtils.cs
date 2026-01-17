@@ -69,4 +69,41 @@ public static class ParamUtils
             return second;
         return third.HasValue ? third : fourth;
     }
+
+    public static LayoutLength Resolve(
+        LayoutLength first,
+        LayoutLength second,
+        LayoutLength third,
+        LayoutLength fourth,
+        LayoutLength fifth
+    )
+    {
+        if (first.HasValue)
+            return first;
+        if (second.HasValue)
+            return second;
+        if (third.HasValue)
+            return third;
+        return fourth.HasValue ? fourth : fifth;
+    }
+
+    public static LayoutLength Resolve(
+        LayoutLength first,
+        LayoutLength second,
+        LayoutLength third,
+        LayoutLength fourth,
+        LayoutLength fifth,
+        LayoutLength sixth
+    )
+    {
+        if (first.HasValue)
+            return first;
+        if (second.HasValue)
+            return second;
+        if (third.HasValue)
+            return third;
+        if (fourth.HasValue)
+            return fourth;
+        return fifth.HasValue ? fifth : sixth;
+    }
 }

@@ -1,8 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System.Runtime.CompilerServices;
 using SharpExtensions;
-using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,6 +14,10 @@ public static partial class ModifierExtensions
         LayoutLength radius = default,
         LayoutLength verticalRadius = default,
         LayoutLength horizontalRadius = default,
+        LayoutLength topRadius = default,
+        LayoutLength bottomRadius = default,
+        LayoutLength leftRadius = default,
+        LayoutLength rightRadius = default,
         LayoutLength topLeftRadius = default,
         LayoutLength topRightRadius = default,
         LayoutLength bottomLeftRadius = default,
@@ -38,10 +40,14 @@ public static partial class ModifierExtensions
     )
     {
         return modifier + new BorderModifierImpl(
-            topLeftRadius: ParamUtils.Resolve(topLeftRadius, verticalRadius, horizontalRadius, radius),
-            topRightRadius: ParamUtils.Resolve(topRightRadius, verticalRadius, horizontalRadius, radius),
-            bottomLeftRadius: ParamUtils.Resolve(bottomLeftRadius, verticalRadius, horizontalRadius, radius),
-            bottomRightRadius: ParamUtils.Resolve(bottomRightRadius, verticalRadius, horizontalRadius, radius),
+            topLeftRadius: ParamUtils
+                .Resolve(topLeftRadius, topRadius, leftRadius, verticalRadius, horizontalRadius, radius),
+            topRightRadius: ParamUtils
+                .Resolve(topRightRadius, topRadius, rightRadius, verticalRadius, horizontalRadius, radius),
+            bottomLeftRadius: ParamUtils
+                .Resolve(bottomLeftRadius, bottomRadius, leftRadius, verticalRadius, horizontalRadius, radius),
+            bottomRightRadius: ParamUtils
+                .Resolve(bottomRightRadius, bottomRadius, rightRadius, verticalRadius, horizontalRadius, radius),
             topWidth: ParamUtils.Resolve(topWidth, verticalWidth, width),
             bottomWidth: ParamUtils.Resolve(bottomWidth, verticalWidth, width),
             leftWidth: ParamUtils.Resolve(leftWidth, horizontalWidth, width),
