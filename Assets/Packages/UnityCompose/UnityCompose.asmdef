@@ -1,8 +1,4 @@
 ﻿{
   "name": "UnityCompose",
-  "rootNamespace": "UnityCompose",
-  "references": [
-    "UnityCompose.Impl.SlotTable",
-    "UnityCompose.Impl.Composition"
-  ]
+  "rootNamespace": "UnityCompose"
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using SharpExtensions;
-using Sirenix.OdinInspector;
+﻿using SharpExtensions;
 using UnityEngine.UIElements;
+// ReSharper disable ArrangeNamespaceBody
 
 namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
 {
-    [DisallowMultipleComponent, HideMonoScript]
+    [DisallowMultipleComponent]
     internal class VisualElementBuildUpPerformanceTest : MonoBehaviour
     {
-        [Button]
+        // [Button]
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();

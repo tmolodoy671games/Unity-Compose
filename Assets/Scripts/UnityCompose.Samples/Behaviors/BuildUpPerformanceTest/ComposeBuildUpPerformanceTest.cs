@@ -1,14 +1,13 @@
 using System;
 using SharpExtensions;
-using Sirenix.OdinInspector;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
 {
-    [DisallowMultipleComponent, HideMonoScript]
+    [DisallowMultipleComponent]
     internal partial class ComposeBuildUpPerformanceTest : ComposeUI
     {
-        [Button]
+        // [Button]
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();

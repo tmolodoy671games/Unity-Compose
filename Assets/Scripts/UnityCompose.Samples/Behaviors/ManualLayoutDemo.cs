@@ -1,11 +1,10 @@
 using System;
 using SharpExtensions;
-using Sirenix.OdinInspector;
-using UnityEditor;
+// ReSharper disable ArrangeNamespaceBody
 
 namespace UnityCompose.Samples.Behaviors
 {
-    [DisallowMultipleComponent, HideMonoScript]
+    [DisallowMultipleComponent]
     internal partial class ManualLayoutDemo : MonoBehaviour
     {
         private static readonly IMutableState<bool> UpdateState = MutableStateOf(false);
@@ -20,32 +19,32 @@ namespace UnityCompose.Samples.Behaviors
             new ComposeView().SetContent(MockLayout);
         }
 
-        [Button("Log")]
+        // [Button("Log")]
         private static void LogButton()
         {
             Debug.Log(CurrentComposer);
         }
 
-        [Button("Switch")]
+        // [Button("Switch")]
         private static void SwitchButton()
         {
             SwitchState.Value = !SwitchState.Value;
         }
 
-        [Button("Update")]
+        // [Button("Update")]
         private static void UpdateButton()
         {
             UpdateState.Value = !UpdateState.Value;
         }
 
-        [PropertySpace]
-        [Button("Add")]
+        // [PropertySpace]
+        // [Button("Add")]
         private static void AddButton()
         {
             AddState.Value++;
         }
 
-        [Button("Remove")]
+        // [Button("Remove")]
         private static void RemoveButton()
         {
             AddState.Value = Math.Clamp(AddState.Value - 1, 0, 1000);
