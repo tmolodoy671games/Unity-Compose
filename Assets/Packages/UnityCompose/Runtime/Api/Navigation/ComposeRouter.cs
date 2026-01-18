@@ -39,11 +39,13 @@ public class ComposeRouter
 
     public void NewRootChain(params ComposeScreen[] screens)
     {
-        var commands = screens.SelectIndexed<ComposeScreen, ComposeNavigationCommand>((screen, index) =>
-            index == 0
-                ? new ComposeNavigationCommand.Forward(screen)
-                : new ComposeNavigationCommand.BackTo(null)
-        ).ToArray();
+        var commands = screens
+            .Select<ComposeScreen, ComposeNavigationCommand>(static (screen, index) =>
+                index == 0
+                    ? new ComposeNavigationCommand.Forward(screen)
+                    : new ComposeNavigationCommand.BackTo(null)
+            )
+            .ToArray();
         ExecuteCommands(commands);
     }
 
