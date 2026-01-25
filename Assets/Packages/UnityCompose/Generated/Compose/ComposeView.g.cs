@@ -20,7 +20,7 @@ public partial class ComposeView
             composer.StartReusableGroup(0);
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
-            content();
+            CompositionLocalProvider(LocalVisualElement.Provides(this), content);
             composer.EndReusableGroup(0);
         }
         else

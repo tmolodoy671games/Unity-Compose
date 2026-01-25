@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
@@ -19,4 +20,7 @@ public static partial class ComposeFunctions
     public static bool IsInPreview => !ApplicationUtils.IsPlaying;
     
     public static readonly IModifier Modifier = EmptyModifierImpl.Instance;
+
+    public static ICompositionLocal<VisualElement> LocalVisualElement =
+        CompositionLocalOf<VisualElement>(() => throw new ArgumentException("LocalVisualElement is not provided!"));
 }
