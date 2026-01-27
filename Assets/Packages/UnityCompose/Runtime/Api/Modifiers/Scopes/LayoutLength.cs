@@ -151,6 +151,16 @@ public readonly struct Px : IEquatable<Px>
     {
         return new Px(left._value / right._value);
     }
+    
+    public static Px operator /(Px left, float right)
+    {
+        return new Px(left._value / right);
+    }
+    
+    public static Px operator /(Px left, int right)
+    {
+        return new Px(left._value / right);
+    }
 
     public static bool operator ==(Px lhs, Px rhs)
     {
