@@ -47,7 +47,7 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
     public static implicit operator LayoutLength(Px px) => new(px);
 
     public static implicit operator LayoutLength(Percent percent) => new(percent);
-
+    
     public static bool operator ==(LayoutLength lhs, LayoutLength rhs)
     {
         return lhs.Equals(rhs);
@@ -105,6 +105,11 @@ public readonly struct Px : IEquatable<Px>
     public override string ToString()
     {
         return $"{_value}px";
+    }
+    
+    public static Px operator -(Px left)
+    {
+        return new Px(-left._value);
     }
 
     public static Px operator +(Px left, Px right)

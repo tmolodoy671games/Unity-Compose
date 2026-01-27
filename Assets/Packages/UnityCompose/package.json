@@ -1,6 +1,6 @@
 {
   "name": "t.molodoy.unitycompose",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "displayName": "Unity Compose",
   "description": "Compose Implementation for Unity",
   "unity": "2021.3",
