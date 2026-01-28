@@ -97,7 +97,7 @@ public static partial class ComposeFunctions
             property.Value = targetValue;
             return property;
         }
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
 
         LaunchedEffect(
             key: targetValue,
@@ -140,7 +140,7 @@ public static partial class ComposeFunctions
             property.Value = targetValue;
             return property;
         }
-        // if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
+        if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
         LaunchedEffect(
