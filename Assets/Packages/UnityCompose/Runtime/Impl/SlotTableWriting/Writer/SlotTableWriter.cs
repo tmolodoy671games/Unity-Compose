@@ -164,7 +164,7 @@ internal class SlotTableWriter
         {
             restartGroup = restartGroup with
             {
-                AnchorId = _groupsAnchors.AllocateAnchor((enteredRestartGroupIndex))
+                AnchorId = _groupsAnchors.AllocateAnchor(AbsoluteGroupIndex(enteredRestartGroupIndex))
             };
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
@@ -173,7 +173,7 @@ internal class SlotTableWriter
         {
             restartGroup = restartGroup with
             {
-                DataAnchorId = _slotsAnchors.AllocateAnchor((enteredRestartGroupSlotIndex))
+                DataAnchorId = _slotsAnchors.AllocateAnchor(AbsoluteSlotIndex(enteredRestartGroupSlotIndex))
             };
             _groups[enteredRestartGroupIndex] = restartGroup;
         }
@@ -287,7 +287,7 @@ internal class SlotTableWriter
             Size: 1,
             SlotsSize: 1,
             AnchorId: AnchorId.None,
-            DataAnchorId: _slotsAnchors.AllocateAnchor(_currentSlotIndex),
+            DataAnchorId: _slotsAnchors.AllocateAnchor(AbsoluteSlotIndex(_currentSlotIndex)),
             ElementIndex: _currentElementIndex,
             ElementsCount: 1,
             ContainsKeyGroups: false,
@@ -354,7 +354,7 @@ internal class SlotTableWriter
             Size: 1,
             SlotsSize: MovableGroup.MetadataSize,
             AnchorId: AnchorId.None,
-            DataAnchorId: _slotsAnchors.AllocateAnchor((_currentSlotIndex)),
+            DataAnchorId: _slotsAnchors.AllocateAnchor(AbsoluteSlotIndex(_currentSlotIndex)),
             ElementIndex: _currentElementIndex,
             ElementsCount: 0,
             ContainsKeyGroups: false,
@@ -776,7 +776,7 @@ internal class SlotTableWriter
         var parent = CurrentParent();
         if (parent.AnchorId.IsValid)
             return parent.AnchorId;
-        var newAnchor = _groupsAnchors.AllocateAnchor((_currentParentIndex));
+        var newAnchor = _groupsAnchors.AllocateAnchor(AbsoluteGroupIndex(_currentParentIndex));
         parent = parent with { AnchorId = newAnchor };
         _groups[_currentParentIndex] = parent;
         return newAnchor;

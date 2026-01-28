@@ -354,7 +354,7 @@ internal class GapBufferList<T> : IList<T>
 
     public int LogicalToAbsoluteIndex(int logicalIndex)
     {
-        if (logicalIndex < GapStart)
+        if (logicalIndex == Count || logicalIndex < GapStart)
             return logicalIndex;
 
         return logicalIndex + GapLength;
