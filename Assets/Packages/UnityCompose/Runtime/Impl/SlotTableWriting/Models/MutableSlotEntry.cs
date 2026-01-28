@@ -20,11 +20,13 @@ internal class MutableSlotEntry<T> : IDisposable
     public static MutableSlotEntry<T> Get(T initialValue)
     {
         var result = _pool.Get();
+        result._isDisposed = false;
         result.Value = initialValue;
         return result;
     }
     
     public T Value = default!;
+    private bool _isDisposed;
 
     private MutableSlotEntry()
     {
@@ -37,6 +39,9 @@ internal class MutableSlotEntry<T> : IDisposable
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         _pool.Return(this);
     }
 }

@@ -26,6 +26,7 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
     private int _indexInParent = -1;
     private IModifier? _lastModifier;
     private Action<T>? _lastInitializer;
+    private bool _isDisposed;
 
     private readonly IMutableStableList<IModifier> _lastModifiers =
         IMutableStableList.Create<IModifier>();
@@ -35,7 +36,9 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
     public static ReusableComposeNode<T> Get()
     {
-        return _pool.Get();
+        var instance = _pool.Get();
+        instance._isDisposed = false;
+        return instance;
     }
 
     private ReusableComposeNode()
@@ -90,6 +93,9 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         var visualElement = VisualElement;
         if (visualElement != null)
         {

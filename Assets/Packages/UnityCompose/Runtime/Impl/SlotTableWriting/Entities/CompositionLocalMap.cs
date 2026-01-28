@@ -15,8 +15,14 @@ internal class CompositionLocalMap : IDisposable
     private static readonly NewObjectPool<CompositionLocalMap> _pool = new(() => new CompositionLocalMap());
 
     private readonly Dictionary<ICompositionLocal, ProvidedValue> _customValues = new();
+    private bool _isDisposed;
 
-    public static CompositionLocalMap Get() => _pool.Get();
+    public static CompositionLocalMap Get()
+    {
+        var result = _pool.Get();
+        result._isDisposed = false;
+        return result;
+    }
 
     private CompositionLocalMap()
     {
@@ -54,6 +60,9 @@ internal class CompositionLocalMap : IDisposable
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         foreach (var customValue in _customValues.Values)
             customValue.State.ClearScopes();
         _customValues.Clear();

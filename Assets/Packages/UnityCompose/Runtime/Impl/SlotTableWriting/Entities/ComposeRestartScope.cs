@@ -19,6 +19,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     private CompositionLocalMap? _compositionLocalMap;
     private VisualElement? _visualElement;
     private bool _isRequestedToRestart;
+    private bool _isDisposed;
 
     private Action? _restartCallback;
 
@@ -31,6 +32,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     {
         var instance = _pool.Get();
         instance._groupAnchor = groupAnchor;
+        instance._isDisposed = false;
         instance._writer = writer;
         instance._compositionLocalMap = compositionLocalMap;
         instance._visualElement = element;
@@ -67,6 +69,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         if (_isRequestedToRestart)
             ComposeInvalidator.CancelInvalidate(this);
         _isRequestedToRestart = false;
