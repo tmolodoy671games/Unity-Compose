@@ -55,21 +55,25 @@ internal readonly struct Slots
 
     public Optional<T> GetAsStruct<T>(int index)
     {
-        if (index < 0 || index >= Count)
-            return Optional.Empty<T>();
-        var slot = _slots[index];
-        if (slot is MutableSlotEntry<T> mutableSlotEntry)
-            return mutableSlotEntry.Value;
-        return Optional.Empty<T>();
+        // BRUH
+        return GetAsOptional<T>(index);
+        // if (index < 0 || index >= Count)
+        //     return Optional.Empty<T>();
+        // var slot = _slots[index];
+        // if (slot is MutableSlotEntry<T> mutableSlotEntry)
+        //     return mutableSlotEntry.Value;
+        // return Optional.Empty<T>();
     }
 
     public void SetAsStruct<T>(int index, T value)
     {
-        var slot = _slots[index];
-        if (slot is MutableSlotEntry<T> mutableSlotEntry)
-            mutableSlotEntry.Value = value;
-        else
-            this[index] = MutableSlotEntry.Get(value);
+        // BRUH
+        this[index] = value;
+        // var slot = _slots[index];
+        // if (slot is MutableSlotEntry<T> mutableSlotEntry)
+        //     mutableSlotEntry.Value = value;
+        // else
+        //     this[index] = MutableSlotEntry.Get(value);
     }
 
     public void Insert(int index, object? value)
@@ -79,7 +83,9 @@ internal readonly struct Slots
 
     public void InsertAsStruct<T>(int index, T value)
     {
-        _slots.Insert(index, MutableSlotEntry.Get(value));
+        // BRUH
+        Insert(index, value);
+        // _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 
     public void Clear() => _slots.Clear();

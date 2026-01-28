@@ -91,10 +91,10 @@ public static partial class ComposeFunctions
                 .ToImmutableStableList()
         );
         
-        // var resolvedTransition = Remember((transition, appearingScreens, disappearingScreens), () =>
-        //     ResolveTransition(transition, appearingScreens, disappearingScreens)
-        // );
-        var resolvedTransition = ResolveTransition(transition, appearingScreens, disappearingScreens);
+        var resolvedTransition = Remember((transition, appearingScreens, disappearingScreens), () =>
+            ResolveTransition(transition, appearingScreens, disappearingScreens)
+        );
+        // var resolvedTransition = ResolveTransition(transition, appearingScreens, disappearingScreens);
         
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
