@@ -111,25 +111,62 @@ internal static class ComposeGroupExtensions
         return slots.AbsoluteToLogicalIndex(anchors[group.DataAnchorId].Location);
     }
 
+    private static int SafeParentIndex(this ComposeGroup group, Anchors anchors, Groups groups)
+    {
+        try
+        {
+            return group.ParentIndex(anchors, groups);
+        }
+        catch (Exception)
+        {
+            return -2;
+        }
+    }
+    
+    private static int SafeSlotIndex(this ComposeGroup group, Anchors anchors, Slots slots)
+    {
+        try
+        {
+            return group.SlotIndex(anchors, slots);
+        }
+        catch (Exception)
+        {
+            return -2;
+        }
+    }
+
     public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots, Groups groups)
     {
         var builder = new StringBuilder();
         builder.Append(group.Type + "Group");
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
-        builder.Append($", ParentIndex: {group.ParentIndex(groupsAnchors, groups)}");
+        // builder.Append($", ParentIndex: {group.SafeParentIndex(groupsAnchors, groups)}");
         builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
-        builder.Append($", Size: {group.Size}");
-        builder.Append($", DataIndex: {group.SlotIndex(slotsAnchors, slots)}");
-        builder.Append($", SlotsSize: {group.SlotsSize}");
-        builder.Append($", ElementIndex: {group.ElementIndex}");
-        builder.Append($", ElementsCount: {group.ElementsCount}");
+        // builder.Append($", Size: {group.Size}");
+        builder.Append($", DataIndex: {group.SafeSlotIndex(slotsAnchors, slots)}");
+        // builder.Append($", SlotsSize: {group.SlotsSize}");
+        // builder.Append($", ElementIndex: {group.ElementIndex}");
+        // builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
-        if (group.Type == ComposeGroupType.Movable && group.DataAnchorId.IsValid)
+        if (group.DataAnchorId.IsValid)
         {
-            // builder.Append($", Absolute Index: {groupsAnchors[group.AnchorId].Location}");
-            // var slotIndex = slots.AbsoluteToLogicalIndex(slotsAnchors[group.DataAnchorId].Location);
-            // builder.Append($", Data: {slots[slotIndex]}");
+            var slotIndex = group.SafeSlotIndex(slotsAnchors, slots);
+            if (slotIndex < 0)
+            {
+                builder.Append("\t\t");
+                builder.Append("[INVALID DATA INDEX]");
+                return builder.ToString();
+            }
+
+            switch (group.Type)
+            {
+                case ComposeGroupType.Reusable:
+                    builder.Append("\t\t");
+                    var visualElement = slots.GetReusableNode(slotIndex)?.GetVisualElement();
+                    builder.Append(visualElement?.GetType().Name ?? "[INVALID DATA INDEX]");
+                    break;
+            }
         }
 
         return builder.ToString();

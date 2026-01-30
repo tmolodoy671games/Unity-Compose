@@ -10,6 +10,8 @@ internal abstract class ReusableComposeNode
 {
     public abstract void ReInsert(int index);
 
+    public abstract VisualElement? GetVisualElement();
+
     public static ReusableComposeNode<T> Get<T>() where T : VisualElement
     {
         return ReusableComposeNode<T>.Get();
@@ -33,6 +35,8 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T
 
     private readonly IMutableStableList<IModifier> _newModifiers =
         IMutableStableList.Create<IModifier>();
+
+    public override VisualElement? GetVisualElement() => VisualElement;
 
     public static ReusableComposeNode<T> Get()
     {
