@@ -67,12 +67,6 @@ internal class SlotTableWriter
         if (IsThereAlreadyAGroup())
         {
             var existingGroup = _groups[_currentGroupIndex];
-#if ASSERTIONS
-            if (existingGroup.Key != key)
-                throw new InvalidOperationException($"Found {existingGroup.Key} instead of {key}!");
-            if (existingGroup.Type != ComposeGroupType.Restart)
-                throw new InvalidOperationException($"Found {existingGroup.Type} instead of RestartGroup!");
-#endif
             _enteredRestartGroups.Push(
                 new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
             );
@@ -194,10 +188,6 @@ internal class SlotTableWriter
         Log($"EndRestartGroup({key})");
 #endif
         var parent = CurrentParent();
-#if ASSERTIONS
-        if (parent.Key != key)
-            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
-#endif
         ExitGroup(parent);
         if (parent.Key == _invalidationRoot)
             _invalidationRoot = -1;
@@ -217,11 +207,6 @@ internal class SlotTableWriter
         if (IsThereAlreadyAGroup())
         {
             var existingGroup = _groups[_currentGroupIndex];
-#if ASSERTIONS
-            if (existingGroup.Type != ComposeGroupType.Replace)
-                throw new InvalidOperationException(
-                    $"Found {existingGroup.Type}({existingGroup.Key}) group instead of replace group!");
-#endif
             SyncTypeAndKey(existingGroup, ComposeGroupType.Replace, key);
 
             EnterGroup(existingGroup);
@@ -248,10 +233,6 @@ internal class SlotTableWriter
     public void EndReplaceGroup(int key)
     {
         var parent = CurrentParent();
-#if ASSERTIONS
-        if (parent.Key != key)
-            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
-#endif
         ExitGroup(parent);
     }
 
@@ -268,12 +249,6 @@ internal class SlotTableWriter
         if (IsThereAlreadyAGroup())
         {
             var existingGroup = _groups[_currentGroupIndex];
-#if ASSERTIONS
-            if (existingGroup.Key != key)
-                throw new InvalidOperationException($"Found {existingGroup.Key} instead of {key}!");
-            if (existingGroup.Type != ComposeGroupType.Reusable)
-                throw new InvalidOperationException($"Found {existingGroup.Type} group instead of Reusable group!");
-#endif
             SyncTypeAndKey(existingGroup, ComposeGroupType.Reusable, key);
             EnterGroup(existingGroup);
             _currentSlotIndex += ReusableGroup.MetadataSize;
@@ -305,10 +280,6 @@ internal class SlotTableWriter
         Log($"EndReusableGroup({key})");
 #endif
         var parent = CurrentParent();
-#if ASSERTIONS
-        if (parent.Key != key)
-            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
-#endif
         ExitGroup(parent);
         _currentElementIndex = _enteredElementIndices.PeekOrDefault(0);
         _currentElementIndex++;
@@ -369,10 +340,6 @@ internal class SlotTableWriter
     public void EndMovableGroup(int key)
     {
         var currentParent = CurrentParent();
-#if ASSERTIONS
-        if (currentParent.Key != key)
-            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {currentParent.Key}!");
-#endif
         ExitGroup(currentParent);
     }
 
@@ -582,12 +549,6 @@ internal class SlotTableWriter
         if (IsThereAlreadyAGroup())
         {
             var existingGroup = _groups[_currentGroupIndex];
-#if ASSERTIONS
-            if (existingGroup.Type != ComposeGroupType.Local)
-                throw new InvalidOperationException($"Found {existingGroup.Type} group instead of local group!");
-            if (existingGroup.Key != key)
-                throw new InvalidOperationException($"Found {existingGroup.Key} group instead of {key}!");
-#endif
             _enteredLocalGroups.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
             SyncTypeAndKey(existingGroup, ComposeGroupType.Local, key);
             EnterGroup(existingGroup);
@@ -627,10 +588,6 @@ internal class SlotTableWriter
         Log($"EndLocalGroup({key})");
 #endif
         var parent = CurrentParent();
-#if ASSERTIONS
-        if (parent.Key != key)
-            throw new InvalidOperationException($"Mismatching ending group key: {key} vs {parent.Key}!");
-#endif
         ExitGroup(parent);
         _enteredLocalGroups.Pop();
     }
@@ -746,6 +703,29 @@ internal class SlotTableWriter
 
     #region Utils
 
+    private bool TryEnterGroup(ComposeGroup group, ComposeGroupType type, int key)
+    {
+        if (group.Type == type && group.Key == key)
+        {
+            EnterGroup(group);
+            return true;
+        }
+
+        CleanupGroups(_currentGroupIndex, group.Size);
+        _groups.RemoveRange(_currentGroupIndex, group.Size);
+        CleanupSlots(_currentSlotIndex, group.SlotsSize);
+        _slots.RemoveRange(_currentSlotIndex, group.SlotsSize);
+
+        var oldOffset = _pendingOffsets.Pop();
+        _pendingOffsets.Push(
+            new ComposeGroupOffset(
+                GroupOffset: oldOffset.SlotOffset - group.Size,
+                SlotOffset: oldOffset.SlotOffset - group.SlotsSize
+            )
+        );
+        return false;
+    }
+
     private void SyncTypeAndKey(ComposeGroup group, ComposeGroupType type, int key)
     {
         if (group.Type == type && group.Key == key)
@@ -798,7 +778,7 @@ internal class SlotTableWriter
         if (_currentParentIndex < 0)
             return _currentSlotIndex < _slots.Count;
         var parent = CurrentParent();
-        var resolvedParentSlotSize = parent.SlotsSize + 
+        var resolvedParentSlotSize = parent.SlotsSize +
                                      _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
         if (resolvedParentSlotSize == 0)
             return false;
@@ -858,17 +838,17 @@ internal class SlotTableWriter
         var offsets = _pendingOffsets.Peek();
         var oldSize = currentParent.Size + offsets.GroupOffset;
         var oldSlotsSize = currentParent.SlotsSize + offsets.SlotOffset;
-        
+
         var newSize = _currentGroupIndex - _currentParentIndex;
         var newSlotsSize = _currentSlotIndex - _currentParentSlotIndex;
         var newElementsCount = _currentElementIndex - currentParent.ElementIndex;
         if (currentParent.Type == ComposeGroupType.Reusable)
             newElementsCount = 1;
-        
+
         var parentGroupSizeOffset = newSize - currentParent.Size;
         var parentSlotsSizeOffset = newSlotsSize - currentParent.SlotsSize;
         var elementsCountOffset = newElementsCount - currentParent.ElementsCount;
-        
+
         var groupsToRemove = -(newSize - oldSize);
         var slotsToRemove = -(newSlotsSize - oldSlotsSize);
 
@@ -1107,11 +1087,10 @@ internal class SlotTableWriter
         Debug.Log(formattedMessage);
     }
 
-    private void FileLog(string fileName)
+    private void LogWarning(object? message)
     {
-        var formattedMessage = fileName + ":\n\n" + ToString();
-        Debug.Log(formattedMessage);
-        SimpleLogger.ReplaceLog(fileName, formattedMessage);
+        var formattedMessage = message + "\n\n" + ToString();
+        Debug.LogWarning(formattedMessage);
     }
 
     #endregion
@@ -1122,38 +1101,7 @@ internal readonly record struct ComposeGroupEntry(
     int SlotIndex
 );
 
-internal readonly record struct CompositionLocalMapEntry(
-    int GroupIndex,
-    CompositionLocalMap Map
-);
-
 internal readonly record struct ComposeGroupOffset(
     int GroupOffset,
     int SlotOffset
 );
-
-public static class SimpleLogger
-{
-    private static readonly string logFilePath = Path.Combine(Application.dataPath, "logs.txt");
-
-    private static readonly string divider =
-        "\n\n-----------------------------------------------------------------------------------------------------------------\n\n";
-
-    public static void Log(object? message)
-    {
-        // Check if file exists
-        if (!File.Exists(logFilePath))
-        {
-            File.WriteAllText(logFilePath, message?.ToString() ?? "");
-        }
-        else
-        {
-            File.AppendAllText(logFilePath, divider + message);
-        }
-    }
-
-    public static void ReplaceLog(string fileName, object? message)
-    {
-        File.WriteAllText(Path.Combine(Application.dataPath, fileName + ".txt"), message?.ToString() ?? "");
-    }
-}
