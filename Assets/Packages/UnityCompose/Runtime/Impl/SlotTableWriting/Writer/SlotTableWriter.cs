@@ -729,19 +729,25 @@ internal class SlotTableWriter
             return true;
         }
 
+#if LOGGING
         LogWarning($"Remove existing group at {_currentGroupIndex}");
+#endif
         CleanupGroups(_currentGroupIndex, group.Size);
         _groups.RemoveRange(_currentGroupIndex, group.Size);
         CleanupSlots(_currentSlotIndex, group.SlotsSize);
         _slots.RemoveRange(_currentSlotIndex, group.SlotsSize);
 
-        var oldOffset = _pendingOffsets.Pop();
-        _pendingOffsets.Push(
-            new ComposeGroupOffset(
-                GroupOffset: oldOffset.SlotOffset - group.Size,
-                SlotOffset: oldOffset.SlotOffset - group.SlotsSize
-            )
-        );
+        if (_pendingOffsets.IsNotEmpty())
+        {
+            var oldOffset = _pendingOffsets.Pop();
+            _pendingOffsets.Push(
+                new ComposeGroupOffset(
+                    GroupOffset: oldOffset.SlotOffset - group.Size,
+                    SlotOffset: oldOffset.SlotOffset - group.SlotsSize
+                )
+            );
+        }
+
         return false;
     }
 
