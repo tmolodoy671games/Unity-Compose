@@ -142,10 +142,10 @@ internal static class ComposeGroupExtensions
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
         // builder.Append($", ParentIndex: {group.SafeParentIndex(groupsAnchors, groups)}");
-        builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
-        // builder.Append($", Size: {group.Size}");
-        builder.Append($", DataIndex: {group.SafeSlotIndex(slotsAnchors, slots)}");
-        // builder.Append($", SlotsSize: {group.SlotsSize}");
+        // builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
+        builder.Append($", Size: {group.Size}");
+        // builder.Append($", DataIndex: {group.SafeSlotIndex(slotsAnchors, slots)}");
+        builder.Append($", SlotsSize: {group.SlotsSize}");
         // builder.Append($", ElementIndex: {group.ElementIndex}");
         // builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");
@@ -165,6 +165,11 @@ internal static class ComposeGroupExtensions
                     builder.Append("\t\t");
                     var visualElement = slots.GetReusableNode(slotIndex)?.GetVisualElement();
                     builder.Append(visualElement?.GetType().Name ?? "[INVALID DATA INDEX]");
+                    break;
+                case ComposeGroupType.Movable:
+                    builder.Append("\t\t");
+                    var key = slotIndex > 0 && slotIndex < slots.Count ? slots[slotIndex] : null;
+                    builder.Append(key ?? "[INVALID DATA INDEX]");
                     break;
             }
         }

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,11 +31,13 @@ public abstract partial class ComposeUI : MonoBehaviour
         GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(Preview);
     }
 
+    [Button]
     protected void PrintTreeStructure()
     {
         Debug.Log(CurrentComposer);
     }
 
+    [Button]
     protected void PrintSlots()
     {
         Debug.Log(CurrentComposer.SlotsToString());

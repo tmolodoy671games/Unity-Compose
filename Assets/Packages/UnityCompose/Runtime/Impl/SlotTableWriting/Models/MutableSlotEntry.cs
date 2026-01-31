@@ -34,7 +34,7 @@ internal class MutableSlotEntry<T> : IDisposable
 
     public override string ToString()
     {
-        return $"MutableSlotEntry({Value})";
+        return $"{Value}";
     }
 
     public void Dispose()

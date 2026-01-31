@@ -1,4 +1,5 @@
 #nullable enable
+using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,7 +15,7 @@ public abstract partial class ComposeUI
     private void __Preview()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-885475722);
+        __composer.StartRestartGroup(-1401336462);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -24,6 +25,6 @@ public abstract partial class ComposeUI
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-885475722, __isRestarted)?.UpdateScope(() => __Preview());
+        __composer.EndRestartGroup(-1401336462, __isRestarted)?.UpdateScope(() => __Preview());
     }
 }

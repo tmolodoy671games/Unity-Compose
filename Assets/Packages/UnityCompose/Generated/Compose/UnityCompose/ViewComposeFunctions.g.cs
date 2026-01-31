@@ -31,10 +31,6 @@ public static partial class ComposeFunctions
             node.VisualElement ??= new T();
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
-            __composer.StartReplaceGroup(-2007986185);
-            if (modifier != null)
-                modifier = modifier.Compose();
-            __composer.EndReplaceGroup(-2007986185);
             node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
             __composer.StartReplaceGroup(945714250);
             content?.Invoke();

@@ -27,8 +27,8 @@ public static partial class ComposeFunctions
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
-        if (modifier != null)
-            modifier = modifier.Compose();
+        // if (modifier != null)
+        //     modifier = modifier.Compose();
         node.Update(
             parent: parent,
             indexInParent: indexInParent,
