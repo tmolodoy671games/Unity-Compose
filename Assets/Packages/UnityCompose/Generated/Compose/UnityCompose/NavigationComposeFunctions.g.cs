@@ -56,8 +56,6 @@ public static partial class ComposeFunctions
                     screenState = TransitionState.Idle;
                 return (Screen: screen, ScreenState: screenState);
             }).Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished).ToImmutableStableList());
-            var backStackList = screensToRender.ToImmutableStableList();
-            LaunchedEffect(backStackList, !__composer.Changed(backStackList) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => Debug.LogWarning(backStackList)));
             ReusableComposeView<Navigation>(modifier: modifier, content: !__composer.ChangedAsStruct((coordinator, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screensToRender)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 foreach (var(screen, screenState)in screensToRender)
@@ -96,7 +94,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1366604887);
+        __composer.StartRestartGroup(-1339697915);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -107,6 +105,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1366604887, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(-1339697915, __isRestarted)?.UpdateScope(() => __Content());
     }
 }

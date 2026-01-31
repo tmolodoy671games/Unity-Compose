@@ -124,8 +124,6 @@ public static partial class ComposeFunctions
                 .Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished)
                 .ToImmutableStableList()
         );
-        var backStackList = screensToRender.ToImmutableStableList();
-        LaunchedEffect(backStackList, () => Debug.LogWarning(backStackList));
 
         ReusableComposeView<Navigation>(
             modifier: modifier,

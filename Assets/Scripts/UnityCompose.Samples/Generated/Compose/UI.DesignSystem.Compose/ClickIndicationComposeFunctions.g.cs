@@ -10,7 +10,7 @@ namespace UI.DesignSystem.Compose;
 public static partial class DesignSystemComposeFunctions
 {
     [Composable]
-    private static void __DsClickIndication(ComposableContent content, bool hovered, Action onHover, Action onLeave, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
+    private static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, bool hovered, Action onHover, Action onLeave, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
     {
         var(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier) = (content, hovered, onHover, onLeave, rippleColor, hoverColor, animationSpec, modifier);
         var __composer = CurrentComposer;
@@ -28,31 +28,30 @@ public static partial class DesignSystemComposeFunctions
                 isPressed.Value = false;
             })).OnMouseDown(!__composer.Changed(isPressed) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isPressed.Value = true)).OnMouseUp(!__composer.Changed(isPressed) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isPressed.Value = false)), content: !__composer.ChangedAsStruct((content, hovered, animationSpec, resolvedHoverColor, resolvedPressColor, layout, isPressed)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                content();
+                content(new DsClickIndicationScope(hovered, isPressed.Value is { HasValue: true, Value: true }));
                 // Hover Indication:
                 Spacer(modifier: Modifier.Float().FillMaxSize().Position(top: 0.Px(), left: 0.Px()).Background(AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0)).Value));
                 var pressAnimation = RememberSingleAnimation(animationSpec);
-                // var releaseAnimation = RememberSingleAnimation(animationSpec);
+                var releaseAnimation = RememberSingleAnimation(animationSpec);
                 if (!layout.Value.HasValue || !isPressed.Value.HasValue)
                     return;
                 var layoutValue = layout.Value.Value;
                 var pressedValue = isPressed.Value.Value;
                 var pressPosition = layoutValue.Size / 2;
-                LaunchedEffect(pressedValue, !__composer.ChangedAsStruct((pressAnimation, pressedValue)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                LaunchedEffect(pressedValue, !__composer.ChangedAsStruct((pressAnimation, releaseAnimation, pressedValue)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
                 {
                     if (pressedValue)
                     {
-                        // releaseAnimation.Stop();
+                        releaseAnimation.Stop();
                         pressAnimation.Start();
                     }
-                // else
-                //     releaseAnimation.Start();
+                    else
+                        releaseAnimation.Start();
                 }));
                 var pressProgress = pressAnimation.Progress;
                 var maxSize = !__composer.ChangedAsStruct(layoutValue.Size) ? __composer.RememberedValueAsStruct<float>() : __composer.UpdateRememberedValueAsStruct<float>(layoutValue.Size.magnitude);
                 var size = maxSize * pressProgress;
-                Spacer(Modifier.Size(size.Px()).Border(size.Px() / 2).Background(resolvedPressColor)// .Alpha(1 - releaseAnimation.Progress)
-                .Float().Offset(x: -size.Px() / 2, y: -size.Px() / 2).Position(top: pressPosition.y.Px(), left: pressPosition.x.Px()));
+                Spacer(Modifier.Size(size.Px()).Border(size.Px() / 2).Background(resolvedPressColor).Alpha(1 - releaseAnimation.Progress).Float().Offset(x: -size.Px() / 2, y: -size.Px() / 2).Position(top: pressPosition.y.Px(), left: pressPosition.x.Px()));
             }));
         }
         else
@@ -64,7 +63,7 @@ public static partial class DesignSystemComposeFunctions
     }
 
     [Composable]
-    private static void __DsClickIndication(ComposableContent content, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
+    private static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
     {
         var(__content, __rippleColor, __hoverColor, __animationSpec, __modifier) = (content, rippleColor, hoverColor, animationSpec, modifier);
         var __composer = CurrentComposer;

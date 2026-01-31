@@ -14,6 +14,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 {
     private static readonly NewObjectPool<ComposeRestartScope> _pool = new(() => new());
 
+    private readonly HashSet<BaseMutableStateImpl> _states = new();
     private SlotTableWriter _writer = null!;
     public AnchorId _groupAnchor;
     private CompositionLocalMap? _compositionLocalMap;
@@ -47,6 +48,8 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     {
         _restartCallback = restartCallback;
     }
+    
+    public void Add(BaseMutableStateImpl state) => _states.Add(state);
 
     public void RequestRestart()
     {
@@ -74,6 +77,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
         _isDisposed = true;
         if (_isRequestedToRestart)
             ComposeInvalidator.CancelInvalidate(this);
+        foreach (var state in _states)
+            state.Remove(this);
+        _states.Clear();
         _isRequestedToRestart = false;
         _pool.Return(this);
     }

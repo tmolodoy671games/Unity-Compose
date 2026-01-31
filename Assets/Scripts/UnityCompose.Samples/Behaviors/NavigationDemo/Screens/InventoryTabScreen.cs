@@ -5,41 +5,37 @@ internal partial class InventoryTabScreen : ComposeScreen
     [Composable]
     public override void Content(IModifier modifier)
     {
-        Spacer(
-            modifier
-                .FillMaxSize()
+        Box(
+            alignment: Alignment.Center,
+            modifier: modifier.OrEmpty()
+                .FillMaxSize(),
+            content: () =>
+            {
+                Column(
+                    modifier: Modifier
+                        .Background(Color.black)
+                        .Padding(8.Px())
+                        .Border(16.Px()),
+                    content: () =>
+                    {
+                        Row(() =>
+                        {
+                            InventoryItem();    
+                            InventoryItem();    
+                            InventoryItem();
+                            InventoryItem();
+                        });
+                        Row(() =>
+                        {
+                            InventoryItem();    
+                            InventoryItem();    
+                            InventoryItem();
+                            InventoryItem();
+                        });
+                    }
+                );
+            }
         );
-        // Box(
-        //     alignment: Alignment.Center,
-        //     modifier: modifier.OrEmpty()
-        //         .FillMaxSize(),
-        //     content: () =>
-        //     {
-        //         Column(
-        //             modifier: Modifier
-        //                 .Background(Color.black)
-        //                 .Padding(8.Px())
-        //                 .Border(16.Px()),
-        //             content: () =>
-        //             {
-        //                 Row(() =>
-        //                 {
-        //                     InventoryItem();    
-        //                     InventoryItem();    
-        //                     InventoryItem();
-        //                     InventoryItem();
-        //                 });
-        //                 Row(() =>
-        //                 {
-        //                     InventoryItem();    
-        //                     InventoryItem();    
-        //                     InventoryItem();
-        //                     InventoryItem();
-        //                 });
-        //             }
-        //         );
-        //     }
-        // );
     }
 
     [Composable]

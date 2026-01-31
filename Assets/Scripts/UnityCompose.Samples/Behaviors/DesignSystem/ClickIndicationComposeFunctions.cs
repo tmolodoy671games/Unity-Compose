@@ -10,7 +10,7 @@ public static partial class DesignSystemComposeFunctions
 {
     [Composable]
     public static void DsClickIndication(
-        ComposableContent content,
+        ComposableContent<DsClickIndicationScope> content,
         bool hovered,
         Action onHover,
         Action onLeave,
@@ -38,7 +38,7 @@ public static partial class DesignSystemComposeFunctions
                 .OnMouseUp(() => isPressed.Value = false),
             content: () =>
             {
-                content();
+                content(new DsClickIndicationScope(hovered, isPressed.Value is { HasValue: true, Value: true }));
 
                 // Hover Indication:
                 Spacer(
@@ -56,7 +56,7 @@ public static partial class DesignSystemComposeFunctions
                 );
 
                 var pressAnimation = RememberSingleAnimation(animationSpec);
-                // var releaseAnimation = RememberSingleAnimation(animationSpec);
+                var releaseAnimation = RememberSingleAnimation(animationSpec);
                 if (!layout.Value.HasValue || !isPressed.Value.HasValue)
                     return;
                 var layoutValue = layout.Value.Value;
@@ -66,14 +66,14 @@ public static partial class DesignSystemComposeFunctions
                 {
                     if (pressedValue)
                     {
-                        // releaseAnimation.Stop();
+                        releaseAnimation.Stop();
                         pressAnimation.Start();
                     }
-                    // else
-                    //     releaseAnimation.Start();
+                    else
+                        releaseAnimation.Start();
                 });
                 var pressProgress = pressAnimation.Progress;
-                
+
                 var maxSize = Remember(layoutValue.Size, () => layoutValue.Size.magnitude);
                 var size = maxSize * pressProgress;
                 Spacer(
@@ -81,7 +81,7 @@ public static partial class DesignSystemComposeFunctions
                         .Size(size.Px())
                         .Border(size.Px() / 2)
                         .Background(resolvedPressColor)
-                        // .Alpha(1 - releaseAnimation.Progress)
+                        .Alpha(1 - releaseAnimation.Progress)
                         .Float()
                         .Offset(x: -size.Px() / 2, y: -size.Px() / 2)
                         .Position(
@@ -95,7 +95,7 @@ public static partial class DesignSystemComposeFunctions
 
     [Composable]
     public static void DsClickIndication(
-        ComposableContent content,
+        ComposableContent<DsClickIndicationScope> content,
         Optional<Color> rippleColor = default,
         Optional<Color> hoverColor = default,
         Optional<AnimationSpec> animationSpec = default,
@@ -114,7 +114,7 @@ public static partial class DesignSystemComposeFunctions
             modifier: modifier
         );
     }
-    
+
     public static Color With(
         this Color color,
         float r = -1,
@@ -134,3 +134,8 @@ public static partial class DesignSystemComposeFunctions
         );
     }
 }
+
+public readonly record struct DsClickIndicationScope(
+    bool IsHovered,
+    bool IsPressed
+);

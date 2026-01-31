@@ -70,9 +70,5 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer, IDisposable
         _coroutine = null;
     }
 
-    public void Dispose()
-    {
-        Debug.Log("Dispose()");
-        Stop();
-    }
+    public void Dispose() => Stop();
 }

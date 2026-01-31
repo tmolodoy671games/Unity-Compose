@@ -45,7 +45,18 @@ public abstract class BaseMutableStateImpl : IMutableState
             group.RequestRestart();
     }
 
-    internal bool Add(ComposeRestartScope restartScope) => _scopes.Add(restartScope);
+    internal bool Add(ComposeRestartScope restartScope)
+    {
+        var result = _scopes.Add(restartScope);
+        if (!result)
+            restartScope.Add(this);
+        return result;
+    }
+
+    internal void Remove(ComposeRestartScope restartScope)
+    {
+        _scopes.Remove(restartScope);
+    }
 
     public void ClearScopes() => _scopes.Clear();
 }

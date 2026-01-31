@@ -18,12 +18,7 @@ internal partial class ResumedScreen
             var coordinator = FindCoordinator<ISampleCoordinator>();
             Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick(!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowPausedScreen())), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-            // Spacer(
-            //     modifier: Modifier
-            //         .Size(100.Px())
-            //         .Background(Color.blue)
-            //         .Scale(1 + 2 * LocalTransitionProgress.Current)
-            // );
+                Spacer(modifier: Modifier.Size(100.Px()).Background(Color.blue).Scale(1 + 2 * LocalTransitionProgress.Current));
             }));
         }
         else
