@@ -14,12 +14,12 @@ internal partial class ResumedScreen : ComposeScreen
                 .OnClick(() => coordinator.ShowPausedScreen()),
             content: () =>
             {
-                Spacer(
-                    modifier: Modifier
-                        .Size(100.Px())
-                        .Background(Color.blue)
-                        .Scale(1 + 2 * LocalTransitionProgress.Current)
-                );
+                // Spacer(
+                //     modifier: Modifier
+                //         .Size(100.Px())
+                //         .Background(Color.blue)
+                //         .Scale(1 + 2 * LocalTransitionProgress.Current)
+                // );
             }
         );
     }

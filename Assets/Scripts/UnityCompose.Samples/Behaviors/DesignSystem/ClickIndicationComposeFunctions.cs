@@ -1,81 +1,136 @@
 ﻿using System;
 using SharpExtensions;
+using UnityCompose;
+using UnityEngine;
+using UnityEngine.UIElements;
 
-namespace UnityCompose.Samples.Behaviors.DesignSystem;
+namespace UI.DesignSystem.Compose;
 
-internal static partial class ClickIndicationComposeFunctions
+public static partial class DesignSystemComposeFunctions
 {
     [Composable]
     public static void DsClickIndication(
-        ComposableContent<DsClickIndicationScope> content,
-        IModifier? modifier = null,
-        Optional<bool> hovered = default,
-        Optional<bool> pressed = default,
-        Optional<AnimationSpec> animationSpec = default,
+        ComposableContent content,
+        bool hovered,
+        Action onHover,
+        Action onLeave,
+        Optional<Color> rippleColor = default,
         Optional<Color> hoverColor = default,
-        Optional<Color> pressedColor = default
+        Optional<AnimationSpec> animationSpec = default,
+        IModifier? modifier = null
     )
     {
-        var isHovered = Remember(() => MutableStateOf(false));
-        var isPressed = Remember(() => MutableStateOf(false));
-        var resolvedHoverColor = hoverColor.GetOrDefault(new Color(1, 1, 1, 0.25f));
-        var resolvedPressedColor = pressedColor.GetOrDefault(new Color(0, 0, 0, 0.75f));
-        var resolvedHovered = hovered.GetOrDefault(isHovered.Value);
-        var resolvedPressed = pressed.GetOrDefault(isPressed.Value);
-        var size = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
+        var resolvedHoverColor = hoverColor.GetOrDefault(Color.white.With(a: 0.1f));
+        var resolvedPressColor = rippleColor.GetOrDefault(Color.black.With(a: 0.75f));
+        var layout = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
+        var isPressed = Remember(() => MutableStateOf(Optional.Empty<bool>()));
         Box(
             modifier: modifier.OrEmpty()
-                .OnMouseEnter(() => isHovered.Value = true)
+                .Clip()
+                .OnGloballyPositioned(it => layout.Value = it)
+                .OnMouseEnter(() => onHover())
                 .OnMouseLeave(() =>
                 {
-                    isHovered.Value = false;
+                    onLeave();
                     isPressed.Value = false;
                 })
                 .OnMouseDown(() => isPressed.Value = true)
-                .OnMouseUp(() => isPressed.Value = false)
-                .OnGloballyPositioned(it => size.Value = it)
-                .Clip(),
+                .OnMouseUp(() => isPressed.Value = false),
             content: () =>
             {
-                content(
-                    new DsClickIndicationScope(
-                        IsHovered: isHovered.Value,
-                        IsPressed: isPressed.Value
-                    )
-                );
+                content();
+
+                // Hover Indication:
                 Spacer(
-                    Modifier
-                        .FillMaxSize()
-                        .Background(resolvedHoverColor)
-                        .Alpha(AnimateFloatAsState(resolvedHovered.ToInt(), animationSpec: animationSpec).Value)
+                    modifier: Modifier
                         .Float()
-                        .Position(top: 0.Px(), left: 0.Px())
+                        .FillMaxSize()
+                        .Position(
+                            top: 0.Px(),
+                            left: 0.Px()
+                        )
+                        .Background(
+                            AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0))
+                                .Value
+                        )
                 );
 
-                if (!size.Value.HasValue)
+                var pressAnimation = RememberSingleAnimation(animationSpec);
+                // var releaseAnimation = RememberSingleAnimation(animationSpec);
+                if (!layout.Value.HasValue || !isPressed.Value.HasValue)
                     return;
-                var resolvedSize = Math.Max(size.Value.Value.Width, size.Value.Value.Height);
-                var clickProgress = AnimateFloatAsState(resolvedPressed.ToInt(), animationSpec).Value;
-                var clickIndicationSize = clickProgress.Px() * resolvedSize * 1.1f;
+                var layoutValue = layout.Value.Value;
+                var pressedValue = isPressed.Value.Value;
+                var pressPosition = layoutValue.Size / 2;
+                LaunchedEffect(pressedValue, () =>
+                {
+                    if (pressedValue)
+                    {
+                        // releaseAnimation.Stop();
+                        pressAnimation.Start();
+                    }
+                    // else
+                    //     releaseAnimation.Start();
+                });
+                var pressProgress = pressAnimation.Progress;
+                
+                var maxSize = Remember(layoutValue.Size, () => layoutValue.Size.magnitude);
+                var size = maxSize * pressProgress;
                 Spacer(
                     Modifier
-                        .Size(clickIndicationSize)
-                        .Border(clickIndicationSize / 2)
-                        .Background(resolvedPressedColor)
-                        .Offset(x: -clickIndicationSize / 2, y: -clickIndicationSize / 2)
-                        .Alpha(clickProgress)
+                        .Size(size.Px())
+                        .Border(size.Px() / 2)
+                        .Background(resolvedPressColor)
+                        // .Alpha(1 - releaseAnimation.Progress)
                         .Float()
+                        .Offset(x: -size.Px() / 2, y: -size.Px() / 2)
                         .Position(
-                            top: 50.Percent(),
-                            left: 50.Percent()
+                            top: pressPosition.y.Px(),
+                            left: pressPosition.x.Px()
                         )
                 );
             }
         );
     }
-}
 
-public readonly record struct DsClickIndicationScope(
-    bool IsHovered,
-    bool IsPressed
-);
+    [Composable]
+    public static void DsClickIndication(
+        ComposableContent content,
+        Optional<Color> rippleColor = default,
+        Optional<Color> hoverColor = default,
+        Optional<AnimationSpec> animationSpec = default,
+        IModifier? modifier = null
+    )
+    {
+        var isHovered = Remember(() => MutableStateOf(false));
+        DsClickIndication(
+            content: content,
+            hovered: isHovered.Value,
+            onHover: () => isHovered.Value = true,
+            onLeave: () => isHovered.Value = false,
+            rippleColor: rippleColor,
+            hoverColor: hoverColor,
+            animationSpec: animationSpec,
+            modifier: modifier
+        );
+    }
+    
+    public static Color With(
+        this Color color,
+        float r = -1,
+        float g = -1,
+        float b = -1,
+        float a = -1,
+        float h = -1,
+        float s = -1,
+        float v = -1
+    )
+    {
+        return new Color(
+            r: r < 0 ? color.r : r,
+            g: g < 0 ? color.g : g,
+            b: b < 0 ? color.b : b,
+            a: a < 0 ? color.a : a
+        );
+    }
+}

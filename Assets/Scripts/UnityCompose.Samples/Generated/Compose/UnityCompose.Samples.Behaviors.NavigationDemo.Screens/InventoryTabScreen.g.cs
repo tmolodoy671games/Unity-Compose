@@ -15,26 +15,7 @@ internal partial class InventoryTabScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__modifier))
         {
-            Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-            {
-                Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                {
-                    Row(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                    {
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                    }));
-                    Row(!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
-                    {
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                    }));
-                }));
-            }));
+            Spacer(modifier.FillMaxSize());
         }
         else
         {
@@ -48,7 +29,7 @@ internal partial class InventoryTabScreen
     private static void __InventoryItem()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(794104995);
+        __composer.StartRestartGroup(-1874757568);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -59,6 +40,6 @@ internal partial class InventoryTabScreen
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(794104995, __isRestarted)?.UpdateScope(() => __InventoryItem());
+        __composer.EndRestartGroup(-1874757568, __isRestarted)?.UpdateScope(() => __InventoryItem());
     }
 }

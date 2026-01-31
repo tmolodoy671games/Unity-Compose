@@ -2,6 +2,7 @@
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;

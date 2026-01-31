@@ -45,13 +45,13 @@ internal partial class PausedScreen : ComposeScreen
                     onClick: onClick,
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
                 );
-                // Spacer(Modifier.FillMaxSize().OnClick(onTabContentClick));
-                Navigation(
-                    modifier: Modifier.FillMaxSize()
-                        .OnClick(onTabContentClick),
-                    transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
-                    coordinator: pausedCoordinator
-                );
+                Spacer(Modifier.FillMaxSize().OnClick(onTabContentClick));
+                // Navigation(
+                //     modifier: Modifier.FillMaxSize()
+                //         .OnClick(onTabContentClick),
+                //     transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
+                //     coordinator: pausedCoordinator
+                // );
             }
         );
         previousTab.Value = tab;
@@ -78,9 +78,9 @@ internal partial class PausedScreen : ComposeScreen
             content: () =>
             {
                 Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
-                Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
-                Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
-                Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
+                // Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
+                // Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
+                // Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
             }
         );
     }
@@ -100,15 +100,15 @@ internal partial class PausedScreen : ComposeScreen
                 .Border(8.Px())
                 .Margin(horizontal: 4.Px())
                 .OnClick(() => onClick(tab)),
-            content: it =>
+            content: () =>
             {
                 Text(
                     text: tab.ToString(),
                     color: Color.white,
                     fontSize: 20,
-                    fontWeight: FontWeight.Bold,
-                    modifier: Modifier
-                        .Scale(1 - AnimateFloatAsState(it.IsPressed.ToInt()).Value * 0.25f)
+                    fontWeight: FontWeight.Bold
+                    // modifier: Modifier
+                    //     .Scale(1 - AnimateFloatAsState(it.IsPressed.ToInt()).Value * 0.25f)
                 );
             }
         );

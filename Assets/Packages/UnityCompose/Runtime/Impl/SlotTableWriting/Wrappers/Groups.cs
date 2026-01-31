@@ -36,7 +36,7 @@ internal readonly struct Groups
     {
         _groups.Move(startIndex, targetIndex, count);
     }
-    
+
     public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
     {
         _groups.Swap(sourceIndex, sourceCount, targetIndex, targetCount);
@@ -65,16 +65,20 @@ internal readonly struct Groups
         {
             var group = _groups[i];
             builder.Append($"[{i}]\t");
-            builder.Append("-".Multiply(group.AncestorsCount(groupsAnchors, this)));
+            var ancestorsCount = group.AncestorsCount(groupsAnchors, this);
+            builder.Append("-".Multiply(ancestorsCount));
             builder.Append(group.ToString(groupsAnchors, slotsAnchors, slots, this));
             var isSelfIndexInvalid = group.AnchorId.IsValid &&
-                                     (!groupsAnchors.ContainsIndex(group.AnchorId) || group.Index(groupsAnchors, this) != i);
+                                     (!groupsAnchors.ContainsIndex(group.AnchorId) ||
+                                      group.SafeIndex(groupsAnchors, this) != i);
             if (isSelfIndexInvalid)
                 builder.Append(" [SELF ANCHOR IS INVALID]");
             var isDataIndexInvalid = group.DataAnchorId.IsValid &&
                                      !slotsAnchors.ContainsIndex(group.DataAnchorId);
             if (isDataIndexInvalid)
                 builder.Append(" [DATA ANCHOR IS INVALID]");
+            if (ancestorsCount < 0)
+                builder.Append(" [ANCESTORS STRUCTURE IS INVALID]");
             if (currentParentIndex == i)
                 builder.Append(" < CURRENT_PARENT_INDEX");
             if (currentGroupIndex == i)
@@ -111,6 +115,18 @@ internal static class ComposeGroupExtensions
         return slots.AbsoluteToLogicalIndex(anchors[group.DataAnchorId].Location);
     }
 
+    public static int SafeIndex(this ComposeGroup group, Anchors anchors, Groups groups)
+    {
+        try
+        {
+            return group.Index(anchors, groups);
+        }
+        catch (Exception)
+        {
+            return -2;
+        }
+    }
+
     private static int SafeParentIndex(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         try
@@ -122,7 +138,7 @@ internal static class ComposeGroupExtensions
             return -2;
         }
     }
-    
+
     private static int SafeSlotIndex(this ComposeGroup group, Anchors anchors, Slots slots)
     {
         try
@@ -135,7 +151,13 @@ internal static class ComposeGroupExtensions
         }
     }
 
-    public static string ToString(this ComposeGroup group, Anchors groupsAnchors, Anchors slotsAnchors, Slots slots, Groups groups)
+    public static string ToString(
+        this ComposeGroup group,
+        Anchors groupsAnchors,
+        Anchors slotsAnchors,
+        Slots slots,
+        Groups groups
+    )
     {
         var builder = new StringBuilder();
         builder.Append(group.Type + "Group");
@@ -163,8 +185,16 @@ internal static class ComposeGroupExtensions
             {
                 case ComposeGroupType.Reusable:
                     builder.Append("\t\t");
-                    var visualElement = slots.GetReusableNode(slotIndex)?.GetVisualElement();
-                    builder.Append(visualElement?.GetType().Name ?? "[INVALID DATA INDEX]");
+                    try
+                    {
+                        var visualElement = slots.GetReusableNode(slotIndex)?.GetVisualElement();
+                        builder.Append(visualElement?.GetType().Name ?? "[INVALID DATA INDEX]");
+                    }
+                    catch (Exception)
+                    {
+                        builder.Append("[INVALID DATA INDEX]");
+                    }
+
                     break;
                 case ComposeGroupType.Movable:
                     builder.Append("\t\t");
@@ -180,14 +210,18 @@ internal static class ComposeGroupExtensions
     public static int AncestorsCount(this ComposeGroup group, Anchors anchors, Groups groups)
     {
         var count = 0;
-        var parentIndex = group.ParentIndex(anchors, groups);
+        var parentIndex = group.SafeParentIndex(anchors, groups);
+        if (parentIndex == -2)
+            return -2;
         var i = 0;
         while (parentIndex >= 0 && i++ < 100)
         {
             count++;
             if (parentIndex >= groups.Count)
                 return 100;
-            parentIndex = groups[parentIndex].ParentIndex(anchors, groups);
+            parentIndex = groups[parentIndex].SafeParentIndex(anchors, groups);
+            if (parentIndex == -2)
+                return -2;
         }
 
         return count;

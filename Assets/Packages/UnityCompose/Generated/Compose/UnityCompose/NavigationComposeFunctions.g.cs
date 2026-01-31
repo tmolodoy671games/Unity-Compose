@@ -5,6 +5,7 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -18,7 +19,7 @@ public static partial class ComposeFunctions
     {
         var(__coordinator, __transition, __modifier) = (coordinator, transition, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-112916579);
+        __composer.StartRestartGroup(-1435617519);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__coordinator, __transition, __modifier)))
         {
@@ -55,6 +56,8 @@ public static partial class ComposeFunctions
                     screenState = TransitionState.Idle;
                 return (Screen: screen, ScreenState: screenState);
             }).Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished).ToImmutableStableList());
+            var backStackList = screensToRender.ToImmutableStableList();
+            LaunchedEffect(backStackList, !__composer.Changed(backStackList) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => Debug.LogWarning(backStackList)));
             ReusableComposeView<Navigation>(modifier: modifier, content: !__composer.ChangedAsStruct((coordinator, coordinatorEntry, currentBackStack, resolvedTransition, resolvedProgress, resolvedDuration, screensToRender)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 foreach (var(screen, screenState)in screensToRender)
@@ -83,7 +86,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
+        __composer.EndRestartGroup(-1435617519, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
     }
 }
 
@@ -93,7 +96,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-516650310);
+        __composer.StartRestartGroup(-1366604887);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -104,6 +107,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-516650310, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(-1366604887, __isRestarted)?.UpdateScope(() => __Content());
     }
 }
