@@ -59,7 +59,7 @@ public static partial class ComposeFunctions
             contentModifier = contentModifier
                 .OnLocallyPositioned(it =>
                 {
-                    var resolvedSize = it.SizeWithPaddings;
+                    var resolvedSize = it.Size;
                     resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
                     resolvedSize += Vector2.up * (it.MarginTop + it.MarginBottom);
                     contentSize.Value = resolvedSize.Approximate();

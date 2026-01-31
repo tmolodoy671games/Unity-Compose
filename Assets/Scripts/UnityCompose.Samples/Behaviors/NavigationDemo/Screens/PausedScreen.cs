@@ -1,7 +1,8 @@
 ﻿using System;
+using SharpExtensions;
 using StableCollections;
 
-namespace UnityCompose.Samples.Behaviors.NavigationDemo;
+namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 
 internal partial class PausedScreen : ComposeScreen
 {
@@ -10,7 +11,7 @@ internal partial class PausedScreen : ComposeScreen
     {
         var coordinator = FindCoordinator<ISampleCoordinator>();
         var pausedCoordinator = Remember(() => new PausedCoordinatorImpl());
-        var currentTab = Remember(() => MutableStateOf(PausedTab.First));
+        var currentTab = Remember(() => MutableStateOf(PausedTab.Inventory));
         Layout(
             tab: currentTab.Value,
             pausedCoordinator: pausedCoordinator,
@@ -72,13 +73,14 @@ internal partial class PausedScreen : ComposeScreen
     {
         Row(
             modifier: modifier.OrEmpty()
-                .Align(Alignment.CenterHorizontally),
+                .Align(Alignment.CenterHorizontally)
+                .Margin(top: 16.Px()),
             content: () =>
             {
-                Tab(PausedTab.First, currentTab == PausedTab.First, onClick);
-                Tab(PausedTab.Second, currentTab == PausedTab.Second, onClick);
-                Tab(PausedTab.Third, currentTab == PausedTab.Third, onClick);
-                Tab(PausedTab.Fourth, currentTab == PausedTab.Fourth, onClick);
+                Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
+                Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
+                Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
+                Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
             }
         );
     }
@@ -90,15 +92,25 @@ internal partial class PausedScreen : ComposeScreen
         Action<PausedTab> onClick
     )
     {
-        Text(
-            text: tab.ToString(),
-            color: Color.white,
-            fontSize: 20,
+        DsClickIndication(
             modifier: Modifier
                 .Background(Color.gray)
                 .Padding(horizontal: AnimateFloatAsState(selected ? 120 : 40).Value.Px())
                 .Padding(vertical: 12.Px())
-                .OnClick(() => onClick(tab))
+                .Border(8.Px())
+                .Margin(horizontal: 4.Px())
+                .OnClick(() => onClick(tab)),
+            content: it =>
+            {
+                Text(
+                    text: tab.ToString(),
+                    color: Color.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.Bold,
+                    modifier: Modifier
+                        .Scale(1 - AnimateFloatAsState(it.IsPressed.ToInt()).Value * 0.25f)
+                );
+            }
         );
     }
 }

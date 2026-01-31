@@ -3,7 +3,7 @@ using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
-namespace UnityCompose.Samples.Behaviors.NavigationDemo;
+namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class ResumedScreen
 {
     [Composable]

@@ -15,7 +15,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             Box(
                 modifier: Modifier
                     .FillMaxSize()
-                    .OnGloballyPositioned(it => parentSize.Value = it.SizeWithPaddings),
+                    .OnGloballyPositioned(it => parentSize.Value = it.Size),
                 content: () =>
                 {
                     for (var i = 0; i < 1_00; i++)

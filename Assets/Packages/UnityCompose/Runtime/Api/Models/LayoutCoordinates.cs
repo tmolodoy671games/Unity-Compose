@@ -43,8 +43,8 @@ public readonly record struct LayoutCoordinates(
         // var globalMax = element.parent.LocalToWorld(new Vector2(resolvedStyle.bottom, resolvedStyle.right));
         return new LayoutCoordinates(
             // Size:
-            Width: resolvedStyle.width - resolvedStyle.paddingLeft - resolvedStyle.paddingRight,
-            Height: resolvedStyle.height - resolvedStyle.paddingTop - resolvedStyle.paddingBottom,
+            Width: worldBound.width,
+            Height: worldBound.height,
 
             // Paddings:
             PaddingTop: resolvedStyle.paddingTop,
@@ -90,7 +90,7 @@ public readonly record struct LayoutCoordinates(
     );
 
     public Vector2 Size => new(Width, Height);
-    public Vector2 SizeWithPaddings => Size + Paddings;
+    public Vector2 SizeWithoutPaddings => Size - Paddings;
 
     public Vector2 Margins => new(
         x: MarginLeft + MarginRight,

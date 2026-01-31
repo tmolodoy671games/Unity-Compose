@@ -2,8 +2,8 @@
 
 internal enum PausedTab
 {
-    First,
-    Second,
-    Third,
-    Fourth,
+    Inventory,
+    Map,
+    Journal,
+    System,
 }

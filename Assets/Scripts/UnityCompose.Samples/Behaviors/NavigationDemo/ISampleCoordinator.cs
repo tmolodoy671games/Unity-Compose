@@ -11,11 +11,11 @@ internal interface ISampleCoordinator
 internal class SampleCoordinatorImpl : BaseComposeCoordinator, ISampleCoordinator
 {
     public override IImmutableStableList<ComposeScreen> InitialScreens() =>
-        IImmutableStableList.Create<ComposeScreen>(new ResumedScreen());
+        IImmutableStableList.Create<ComposeScreen>(new Screens.ResumedScreen());
 
     public void ShowPausedScreen()
     {
-        Router.ReplaceScreen(new PausedScreen());
+        Router.ReplaceScreen(new Screens.PausedScreen());
     }
 
     public void ShowResumedScreen()
