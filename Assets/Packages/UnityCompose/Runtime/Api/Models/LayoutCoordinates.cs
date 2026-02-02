@@ -90,7 +90,6 @@ public readonly record struct LayoutCoordinates(
     );
 
     public Vector2 Size => new(Width, Height);
-    public Vector2 SizeWithoutPaddings => Size - Paddings;
 
     public Vector2 Margins => new(
         x: MarginLeft + MarginRight,
@@ -104,15 +103,15 @@ public readonly record struct LayoutCoordinates(
 
     public Vector2 LocalToGlobal(Vector2 localPosition)
     {
-        var globalX = GlobalLeft + (localPosition.x - LocalLeft);
-        var globalY = GlobalTop + (localPosition.y - LocalTop);
+        var globalX = GlobalLeft + localPosition.x;
+        var globalY = GlobalTop + localPosition.y;
         return new Vector2(globalX, globalY);
     }
 
     public Vector2 GlobalToLocal(Vector2 globalPosition)
     {
-        var localX = LocalLeft + (globalPosition.x - GlobalLeft);
-        var localY = LocalTop + (globalPosition.y - GlobalTop);
+        var localX = globalPosition.x - GlobalLeft;
+        var localY = globalPosition.y - GlobalTop;
         return new Vector2(localX, localY);
     }
 }

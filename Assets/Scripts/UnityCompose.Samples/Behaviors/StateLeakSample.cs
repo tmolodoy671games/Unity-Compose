@@ -66,7 +66,6 @@ namespace UnityCompose.Samples.Behaviors
                                             .OnClick(() => secondCount.Value++)
                                             .Name("second-button")
                                     );
-
                                     Text(
                                         text: "Switch",
                                         textAlign: TextAlign.MiddleCenter,

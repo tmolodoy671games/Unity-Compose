@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-[DisallowMultipleComponent, ExecuteAlways]
+[DisallowMultipleComponent, ExecuteAlways, HideMonoScript]
 public abstract partial class ComposeUI : MonoBehaviour
 {
     private void Awake()

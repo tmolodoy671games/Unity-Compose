@@ -43,7 +43,7 @@ internal static class RestartScopeSlotsExtensions
 {
     public static ComposeRestartScope? GetRestartScope(this Slots slots, int dataIndex)
     {
-        return slots.Get<ComposeRestartScope>(dataIndex + RestartGroup.RestartScopeOffset);
+        return slots.GetAsOptional<ComposeRestartScope>(dataIndex + RestartGroup.RestartScopeOffset).GetOrDefault(null!);
     }
 
     public static void SetRestartScope(this Slots slots, int dataIndex, ComposeRestartScope? restartScope)

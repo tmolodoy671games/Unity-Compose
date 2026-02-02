@@ -38,9 +38,10 @@ internal readonly struct Slots
     public T? Get<T>(int index)
     {
         var item = _slots[index];
-        if (item is T slot)
-            return slot;
-        return default;
+        // if (item is T slot)
+        //     return slot;
+        // return default;
+        return (T) item!;
     }
 
     public Optional<T> GetAsOptional<T>(int index)
@@ -48,15 +49,14 @@ internal readonly struct Slots
         var item = _slots[index];
         if (item == ComposeEmptySlot.Instance)
             return Optional.Empty<T>();
-        if (item is T slot)
-            return slot;
-        return default!;
+        // if (item is T slot)
+        //     return slot;
+        // return default!;
+        return (T) item!;
     }
 
     public Optional<T> GetAsStruct<T>(int index)
     {
-        // // BRUH
-        // return GetAsOptional<T>(index);
         if (index < 0 || index >= Count)
             return Optional.Empty<T>();
         var slot = _slots[index];
@@ -67,8 +67,6 @@ internal readonly struct Slots
 
     public void SetAsStruct<T>(int index, T value)
     {
-        // // BRUH
-        // this[index] = value;
         var slot = _slots[index];
         if (slot is MutableSlotEntry<T> mutableSlotEntry)
             mutableSlotEntry.Value = value;
@@ -83,8 +81,6 @@ internal readonly struct Slots
 
     public void InsertAsStruct<T>(int index, T value)
     {
-        // // BRUH
-        // Insert(index, value);
         _slots.Insert(index, MutableSlotEntry.Get(value));
     }
 
