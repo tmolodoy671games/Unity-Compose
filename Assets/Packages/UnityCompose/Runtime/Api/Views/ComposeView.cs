@@ -14,6 +14,7 @@ public partial class ComposeView : VisualElement
 
     public void SetContent(ComposableContent content)
     {
+        pickingMode = PickingMode.Ignore;
         if (_content == content)
             return;
         _content = content;

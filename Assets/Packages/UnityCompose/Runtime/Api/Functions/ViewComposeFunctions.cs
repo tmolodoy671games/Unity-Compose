@@ -23,7 +23,8 @@ public static partial class ComposeFunctions
         var parent = composer.GetParentVisualElement().NotNull();
         var indexInParent = composer.GetElementIndex();
         var node = composer.GetReusableNode<T>();
-        node.VisualElement ??= new T();
+        node.VisualElement ??= new T { pickingMode = PickingMode.Ignore };
+
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
