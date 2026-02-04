@@ -1,4 +1,5 @@
 ﻿// ReSharper disable CheckNamespace
+// #define LOGGING
 
 using System;
 using System.Collections;
@@ -50,7 +51,7 @@ namespace UnityCompose
                     if (ApplicationUtils.IsPlaying)
                         DontDestroyOnLoad(_instance.gameObject);
                 }
-                
+
                 _instance!.gameObject.hideFlags = HideFlags.HideAndDontSave;
                 return _instance!;
             }
@@ -77,7 +78,12 @@ namespace UnityCompose
             _groupsToRestart.AddRange(_invalidatedGroups);
             _invalidatedGroups.Clear();
             foreach (var group in _groupsToRestart)
+            {
+#if LOGGING
+                group.Writer.LogWarning("Restart");
+#endif
                 group.Restart();
+            }
 
             _groupsToRestart.Clear();
         }

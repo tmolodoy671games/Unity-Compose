@@ -134,8 +134,7 @@ public class Composer
 
     public bool Changed<TState>(TState state)
     {
-        var existingKey = _writer.ReadAndWrite(state);
-        return !existingKey.Equals(state);
+        return _writer.ReadAndWrite(state);
     }
 
     public bool ChangedAsStruct<T>(T state) where T : struct
@@ -188,7 +187,7 @@ public class Composer
         if (restartScope == null)
             return;
         if (state.Add(restartScope) && state.Log)
-            Debug.Log($"{state} Capture {restartScope._groupAnchor}");
+            Debug.Log($"{state} Capture");
     }
 
     public void Clear()
@@ -247,6 +246,9 @@ public class Composer
     internal CompositionLocalMap RequireCompositionLocalMap() => _writer.GetCompositionLocalMap().NotNull();
 
     #endregion
+    
+    public void Log(object? message) => _writer.Log(message);
+    public void LogWarning(object? message) => _writer.LogWarning(message);
 
     public override string ToString()
     {

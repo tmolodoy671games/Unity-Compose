@@ -46,8 +46,9 @@ internal partial class PausedScreen
             var previousTab = !__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab));
             Column(modifier: modifier.OrEmpty().FillMaxSize(), content: !__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally));
-                // Spacer(Modifier.FillMaxSize().OnClick(onTabContentClick));
+                const float tweenDuration = 1.99f;
+                var visibilityProgress = VisibilityProgress(appearAnimationSpec: Tween(tweenDuration), disappearAnimationSpec: Tween(tweenDuration)).Value;
+                TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - visibilityProgress).Px()));
                 Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: !__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab)), coordinator: pausedCoordinator);
             }));
             previousTab.Value = tab;
@@ -65,7 +66,7 @@ internal partial class PausedScreen
     {
         var(__currentTab, __onClick, __modifier) = (currentTab, onClick, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-447550961);
+        __composer.StartRestartGroup(497304658);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__currentTab, __onClick, __modifier)))
         {
@@ -82,7 +83,7 @@ internal partial class PausedScreen
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-447550961, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier));
+        __composer.EndRestartGroup(497304658, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier));
     }
 
     [Composable]
@@ -90,7 +91,7 @@ internal partial class PausedScreen
     {
         var(__tab, __selected, __onClick) = (tab, selected, onClick);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-2090021764);
+        __composer.StartRestartGroup(-1238223639);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__tab, __selected, __onClick)))
         {
@@ -104,6 +105,6 @@ internal partial class PausedScreen
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-2090021764, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick));
+        __composer.EndRestartGroup(-1238223639, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick));
     }
 }

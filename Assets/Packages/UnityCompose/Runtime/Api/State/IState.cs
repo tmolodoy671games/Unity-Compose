@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Sirenix.Utilities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityEngine;
 
@@ -8,11 +10,11 @@ namespace UnityCompose;
 public interface IState<out T>
 {
     T Value { get; }
+    T GetValue();
 }
 
-public interface IMutableState
+public interface IMutableState : IDisposable
 {
-    void ClearScopes();
 }
 
 public interface IMutableState<T> : IState<T>, IMutableState
@@ -23,12 +25,10 @@ public interface IMutableState<T> : IState<T>, IMutableState
 public abstract class BaseMutableStateImpl : IMutableState
 {
     private readonly HashSet<ComposeRestartScope> _scopes = new();
-    private readonly bool _isCompositionLocal;
     public readonly bool Log;
 
-    protected BaseMutableStateImpl(bool isCompositionLocal = false, bool log = false)
+    protected BaseMutableStateImpl(bool log = false)
     {
-        _isCompositionLocal = isCompositionLocal;
         Log = log;
     }
 
@@ -58,12 +58,18 @@ public abstract class BaseMutableStateImpl : IMutableState
         _scopes.Remove(restartScope);
     }
 
-    public void ClearScopes() => _scopes.Clear();
+    public void Dispose()
+    {
+        foreach (var scope in _scopes)
+            scope.Remove(this);
+
+        _scopes.Clear();
+    }
 }
 
 internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
 {
-    public MutableStateImpl(T value, bool isCompositionLocal = false, bool log = false) : base(isCompositionLocal, log)
+    public MutableStateImpl(T value, bool log = false) : base(log)
     {
         _value = value;
     }
@@ -84,6 +90,8 @@ internal class MutableStateImpl<T> : BaseMutableStateImpl, IMutableState<T>
             Notify();
         }
     }
+
+    public T GetValue() => _value;
 
     public override string ToString()
     {

@@ -16,13 +16,15 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     private readonly HashSet<BaseMutableStateImpl> _states = new();
     private SlotTableWriter _writer = null!;
-    public AnchorId _groupAnchor;
+    private AnchorId _groupAnchor;
     private CompositionLocalMap? _compositionLocalMap;
     private VisualElement? _visualElement;
     private bool _isRequestedToRestart;
     private bool _isDisposed;
 
     private Action? _restartCallback;
+
+    public SlotTableWriter Writer => _writer;
 
     public static ComposeRestartScope Get(
         AnchorId groupAnchor,
@@ -48,8 +50,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
     {
         _restartCallback = restartCallback;
     }
-    
+
     public void Add(BaseMutableStateImpl state) => _states.Add(state);
+    public void Remove(BaseMutableStateImpl state) => _states.Remove(state);
 
     public void RequestRestart()
     {
@@ -61,8 +64,9 @@ internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 
     public void Restart()
     {
-        _writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement);
-        _restartCallback?.Invoke();
+        _writer.RequestCurrentComposer();
+        if (_writer.ResetTo(_groupAnchor, _compositionLocalMap, _visualElement))
+            _restartCallback?.Invoke();
         _writer.ReleaseCurrentComposer();
         _isRequestedToRestart = false;
     }

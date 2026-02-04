@@ -94,7 +94,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1339697915);
+        __composer.StartRestartGroup(345745330);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -105,6 +105,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1339697915, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(345745330, __isRestarted)?.UpdateScope(() => __Content());
     }
 }

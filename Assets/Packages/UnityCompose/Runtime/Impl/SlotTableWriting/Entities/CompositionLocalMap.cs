@@ -64,7 +64,7 @@ internal class CompositionLocalMap : IDisposable
             return;
         _isDisposed = true;
         foreach (var customValue in _customValues.Values)
-            customValue.State.ClearScopes();
+            customValue.State.Dispose();
         _customValues.Clear();
         _pool.Return(this);
     }

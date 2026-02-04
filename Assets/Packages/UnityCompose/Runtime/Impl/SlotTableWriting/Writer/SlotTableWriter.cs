@@ -66,7 +66,7 @@ internal class SlotTableWriter
         if (IsThereAlreadyAGroup())
         {
             var existingGroup = _groups[_currentGroupIndex];
-            
+
             // _enteredRestartGroups.Push(
             //     new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
             // );
@@ -79,12 +79,12 @@ internal class SlotTableWriter
             var currentSlotIndex = _currentSlotIndex;
             if (TryEnterGroup(existingGroup, ComposeGroupType.Restart, key))
             {
-                _enteredRestartGroups.Push(new  ComposeGroupEntry(currentGroupIndex, currentSlotIndex));
+                _enteredRestartGroups.Push(new ComposeGroupEntry(currentGroupIndex, currentSlotIndex));
                 _currentSlotIndex += RestartGroup.MetadataSize;
                 return;
             }
         }
-
+        
         var newGroup = new ComposeGroup(
             Key: key,
             Type: ComposeGroupType.Restart,
@@ -438,17 +438,18 @@ internal class SlotTableWriter
         return _slots.GetAsStruct<T>(_currentSlotIndex);
     }
 
-    public Optional<T> ReadAndWrite<T>(T value)
+    public bool ReadAndWrite<T>(T value)
     {
         if (!IsThereAlreadyASlot())
         {
             _slots.Insert(_currentSlotIndex, value);
             _currentSlotIndex++;
-            return Optional.Empty<T>();
+            return true;
         }
 
-        var result = _slots.GetAsOptional<T>(_currentSlotIndex);
-        _slots[_currentSlotIndex] = value;
+        var result = !_slots.GetAsOptional<T>(_currentSlotIndex).Equals(value);
+        if (result)
+            _slots[_currentSlotIndex] = value;
         _currentSlotIndex++;
         return result;
     }
@@ -666,8 +667,9 @@ internal class SlotTableWriter
         VisualElement? element
     )
     {
+        // Log($"ResetTo({groupIndex})");
 #if LOGGING
-        Log($"ResetTo({groupIndex})");
+        LogWarning($"ResetTo({groupIndex})");
 #endif
         var group = _groups[groupIndex];
 #if ASSERTIONS
@@ -696,25 +698,24 @@ internal class SlotTableWriter
         _enteredElements.Clear();
     }
 
-    public void ResetTo(
+    public bool ResetTo(
         AnchorId groupAnchor,
         CompositionLocalMap? compositionLocalMap,
         VisualElement? element
     )
     {
         if (!groupAnchor.IsValid)
-            return;
+            return false;
         var anchor = _groupsAnchors[groupAnchor];
         if (!anchor.IsValid)
-            return;
-        _composer.SetAsCurrentComposer();
+            return false;
         ResetTo(LogicalGroupIndex(anchor.Location), compositionLocalMap, element);
+        return true;
     }
 
-    public void ReleaseCurrentComposer()
-    {
-        _composer.ResetAsCurrentComposer();
-    }
+    public void RequestCurrentComposer() => _composer.SetAsCurrentComposer();
+
+    public void ReleaseCurrentComposer() => _composer.ResetAsCurrentComposer();
 
     #endregion
 
@@ -1106,13 +1107,13 @@ internal class SlotTableWriter
     private int AbsoluteSlotIndex(AnchorId anchorId) => _slotsAnchors[anchorId].Location;
     private int LogicalSlotIndex(AnchorId anchorId) => _slots.AbsoluteToLogicalIndex(_slotsAnchors[anchorId].Location);
 
-    private void Log(object? message)
+    public void Log(object? message)
     {
         var formattedMessage = message + "\n\n" + ToString();
         Debug.Log(formattedMessage);
     }
 
-    private void LogWarning(object? message)
+    public void LogWarning(object? message)
     {
         var formattedMessage = message + "\n\n" + ToString();
         Debug.LogWarning(formattedMessage);

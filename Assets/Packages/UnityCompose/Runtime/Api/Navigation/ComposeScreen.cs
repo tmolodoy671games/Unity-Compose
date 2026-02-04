@@ -14,7 +14,7 @@ public abstract partial class ComposeScreen
         );
     }
 
-    public virtual string ScreenKey => GetType().FullName!;
+    public virtual string ScreenKey => GetType().Name!;
     public virtual int Priority => 0;
     public virtual ScreenTransitions? Transitions => null;
 

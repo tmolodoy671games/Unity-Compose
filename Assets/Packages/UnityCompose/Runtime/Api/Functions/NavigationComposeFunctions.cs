@@ -91,12 +91,10 @@ public static partial class ComposeFunctions
                 .OrderBy(static it => it.Priority)
                 .ToImmutableStableList()
         );
-        
         var resolvedTransition = Remember((transition, appearingScreens, disappearingScreens), () =>
             ResolveTransition(transition, appearingScreens, disappearingScreens)
         );
-        // var resolvedTransition = ResolveTransition(transition, appearingScreens, disappearingScreens);
-        
+
         var progress = AnimateFloatAsState(
             targetValue: isSwitched.Value ? 1 : 0f,
             animationSpec: Tween(
