@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityEngine;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Wrappers;

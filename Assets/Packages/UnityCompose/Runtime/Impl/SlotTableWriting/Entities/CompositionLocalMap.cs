@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
@@ -12,7 +13,7 @@ internal class CompositionLocalMap : IDisposable
         bool IsInherited
     );
 
-    private static readonly NewObjectPool<CompositionLocalMap> _pool = new(() => new CompositionLocalMap());
+    private static readonly ObjectPool<CompositionLocalMap> _pool = new(() => new CompositionLocalMap());
 
     private readonly Dictionary<ICompositionLocal, ProvidedValue> _customValues = new();
     private bool _isDisposed;

@@ -661,13 +661,12 @@ internal class SlotTableWriter
         _currentElementIndex = 0;
     }
 
-    private void ResetTo(
+    private bool ResetTo(
         int groupIndex,
         CompositionLocalMap? compositionLocalMap,
         VisualElement? element
     )
     {
-        // Log($"ResetTo({groupIndex})");
 #if LOGGING
         LogWarning($"ResetTo({groupIndex})");
 #endif
@@ -680,6 +679,8 @@ internal class SlotTableWriter
         if (!group.DataAnchorId.IsValid)
             throw new InvalidOperationException($"Group {groupIndex} has invalid DataAnchorId!");
 #endif
+        if (!group.DataAnchorId.IsValid)
+            return false;
         _invalidationRoot = groupIndex;
         _currentGroupIndex = groupIndex;
         _currentSlotIndex = LogicalSlotIndex(group.DataAnchorId);
@@ -696,6 +697,7 @@ internal class SlotTableWriter
 
         _pendingOffsets.Clear();
         _enteredElements.Clear();
+        return true;
     }
 
     public bool ResetTo(
@@ -709,8 +711,7 @@ internal class SlotTableWriter
         var anchor = _groupsAnchors[groupAnchor];
         if (!anchor.IsValid)
             return false;
-        ResetTo(LogicalGroupIndex(anchor.Location), compositionLocalMap, element);
-        return true;
+        return ResetTo(LogicalGroupIndex(anchor.Location), compositionLocalMap, element);
     }
 
     public void RequestCurrentComposer() => _composer.SetAsCurrentComposer();

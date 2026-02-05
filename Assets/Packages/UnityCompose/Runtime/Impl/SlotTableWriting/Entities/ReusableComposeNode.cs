@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
@@ -21,7 +22,7 @@ internal abstract class ReusableComposeNode
 
 internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T : VisualElement
 {
-    private static readonly NewObjectPool<ReusableComposeNode<T>> _pool = new(
+    private static readonly ObjectPool<ReusableComposeNode<T>> _pool = new(
         factory: () => new ReusableComposeNode<T>()
     );
 

@@ -12,7 +12,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 
 internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
 {
-    private static readonly NewObjectPool<ComposeRestartScope> _pool = new(() => new());
+    private static readonly ObjectPool<ComposeRestartScope> _pool = new(() => new());
 
     private readonly HashSet<BaseMutableStateImpl> _states = new();
     private SlotTableWriter _writer = null!;

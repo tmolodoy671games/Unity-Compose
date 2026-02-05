@@ -1,7 +1,7 @@
 using System;
-using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
+using SharpExtensions;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Models;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
 internal static class MutableSlotEntry
 {
@@ -13,7 +13,7 @@ internal static class MutableSlotEntry
 
 internal class MutableSlotEntry<T> : IDisposable
 {
-    private static readonly NewObjectPool<MutableSlotEntry<T>> _pool = new(
+    private static readonly ObjectPool<MutableSlotEntry<T>> _pool = new(
         factory: static () => new MutableSlotEntry<T>()
     );
 
