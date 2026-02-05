@@ -34,6 +34,11 @@ internal class MutableStateDictionaryImpl<TKey, TValue> : BaseMutableStateImpl,
         _dictionary = entries.ToMutableStableDictionary();
     }
 
+    IStableDictionary<TKey, TValue>.Enumerator IStableDictionary<TKey, TValue>.GetEnumerator()
+    {
+        return _dictionary.GetEnumerator();
+    }
+
     public int Count
     {
         get

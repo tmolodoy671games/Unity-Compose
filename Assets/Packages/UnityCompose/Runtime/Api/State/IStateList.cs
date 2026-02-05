@@ -182,6 +182,11 @@ internal class MutableStateListImpl<T> : BaseMutableStateImpl, IMutableStateList
         return _mutableList.IndexOf(item);
     }
 
+    IStableList<T>.Enumerator IStableList<T>.GetEnumerator()
+    {
+        return _mutableList.GetEnumerator();
+    }
+
     public void Insert(int index, T item)
     {
         _mutableList.Insert(index, item);

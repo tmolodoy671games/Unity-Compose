@@ -164,6 +164,8 @@ internal class MutableStateSetImpl<T> : BaseMutableStateImpl, IMutableStateSet<T
         return _set.Contains(item);
     }
 
+    IStableSet<T>.Enumerator IStableSet<T>.GetEnumerator() => _set.GetEnumerator();
+
     public override string ToString()
     {
         Capture();
