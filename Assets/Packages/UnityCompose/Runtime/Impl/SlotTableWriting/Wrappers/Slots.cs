@@ -27,7 +27,7 @@ internal readonly struct Slots
         get => _slots[index];
         set
         {
-            if (_slots[index] is IDisposable disposable)
+            if (_slots[index] is IComposeDisposable disposable)
                 disposable.Dispose();
             _slots[index] = value;
         }

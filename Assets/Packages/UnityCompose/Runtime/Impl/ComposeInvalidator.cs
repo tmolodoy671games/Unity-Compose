@@ -16,7 +16,7 @@ namespace UnityCompose
     [DisallowMultipleComponent, ExecuteAlways]
     internal class ComposeInvalidator : MonoBehaviour
     {
-        private class CoroutineDisposableImpl : IDisposable
+        private class CoroutineDisposableImpl : IComposeDisposable
         {
             private readonly Coroutine? _coroutine;
 
@@ -32,7 +32,7 @@ namespace UnityCompose
             }
         }
 
-        private class EmptyDisposableImpl : IDisposable
+        private class EmptyDisposableImpl : IComposeDisposable
         {
             public void Dispose()
             {
@@ -88,7 +88,7 @@ namespace UnityCompose
             _groupsToRestart.Clear();
         }
 
-        internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
+        internal static IComposeDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
         {
             return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
         }

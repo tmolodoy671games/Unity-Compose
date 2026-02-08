@@ -8,15 +8,16 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    private class ComposeCoroutineScopeImpl : IComposeCoroutineScope, IDisposable
+    private class ComposeCoroutineScopeImpl : IComposeCoroutineScope, IComposeDisposable
     {
-        private readonly IMutableStableList<IDisposable> _disposables = IMutableStableList.Create<IDisposable>();
+        private readonly IMutableStableList<IComposeDisposable> _disposables =
+            IMutableStableList.Create<IComposeDisposable>();
 
         public void StartCoroutine(IEnumerator coroutine)
         {
             _disposables.Add(ComposeInvalidator.StartCoroutineAsDisposable(coroutine));
         }
-        
+
         public void Dispose()
         {
             foreach (var disposable in _disposables)

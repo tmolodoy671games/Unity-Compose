@@ -17,18 +17,18 @@ public static partial class ComposeFunctions
         {
         }
 
-        public IDisposable OnDispose(Action onDispose)
+        public IDisposableEffectResult OnDispose(Action onDispose)
         {
-            return new CallbackDisposableImpl(onDispose);
+            return new DisposableEffectResultImpl(onDispose);
         }
     }
 
-    private class CallbackDisposableImpl : IDisposable
+    private class DisposableEffectResultImpl : IDisposableEffectResult
     {
         private bool _isDisposed;
         private readonly Action _onDispose;
 
-        public CallbackDisposableImpl(Action onDispose)
+        public DisposableEffectResultImpl(Action onDispose)
         {
             _onDispose = onDispose;
         }
@@ -99,7 +99,7 @@ public static partial class ComposeFunctions
     [Composable]
     public static void DisposableEffect<TKey>(
         TKey key,
-        Func<IDisposableEffectScope, IDisposable> effect
+        Func<IDisposableEffectScope, IDisposableEffectResult> effect
     )
     {
         var _ = Remember(

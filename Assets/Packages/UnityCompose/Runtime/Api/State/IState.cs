@@ -13,7 +13,7 @@ public interface IState<out T>
     T GetValue();
 }
 
-public interface IMutableState : IDisposable
+public interface IMutableState : IComposeDisposable
 {
 }
 

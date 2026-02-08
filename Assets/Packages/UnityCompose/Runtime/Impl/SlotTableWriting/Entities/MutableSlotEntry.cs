@@ -11,7 +11,7 @@ internal static class MutableSlotEntry
     }
 }
 
-internal class MutableSlotEntry<T> : IDisposable
+internal class MutableSlotEntry<T> : IComposeDisposable
 {
     private static readonly ObjectPool<MutableSlotEntry<T>> _pool = new(
         factory: static () => new MutableSlotEntry<T>()

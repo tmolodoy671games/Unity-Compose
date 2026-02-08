@@ -19,7 +19,7 @@ internal static class ReusableGroupSlotsExtensions
         var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
         if (existingNode is not ReusableComposeNode<T> reusableNode)
         {
-            if (existingNode is IDisposable disposable)
+            if (existingNode is IComposeDisposable disposable)
                 disposable.Dispose();
             reusableNode = ReusableComposeNode.Get<T>();
             slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;
@@ -38,7 +38,7 @@ internal static class ReusableGroupSlotsExtensions
         var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
         if (existingNode is not ReusableComposeNode<T> reusableNode)
         {
-            if (existingNode is IDisposable disposable)
+            if (existingNode is IComposeDisposable disposable)
                 disposable.Dispose();
             reusableNode = ReusableComposeNode.Get<T>();
             slots[index + ReusableGroup.ReusableNodeOffset] = reusableNode;

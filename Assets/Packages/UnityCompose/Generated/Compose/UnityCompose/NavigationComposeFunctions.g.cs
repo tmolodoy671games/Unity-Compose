@@ -5,7 +5,6 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -19,7 +18,7 @@ public static partial class ComposeFunctions
     {
         var(__coordinator, __transition, __modifier) = (coordinator, transition, modifier);
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(-1435617519);
+        __composer.StartRestartGroup(-112916579);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__coordinator, __transition, __modifier)))
         {
@@ -28,7 +27,7 @@ public static partial class ComposeFunctions
             var coordinatorEntry = LocalCoordinator.Current;
             var parentCoordinator = coordinatorEntry.Coordinator;
             IComposeNavigator navigator = !__composer.ChangedAsStruct((parentCoordinator, backStack)) ? __composer.RememberedValue<UnityCompose.ComposeNavigatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeNavigatorImpl>(new ComposeNavigatorImpl(backStack, parentCoordinator));
-            DisposableEffect(key: coordinator, effect: !__composer.ChangedAsStruct((coordinator, navigator)) ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
+            DisposableEffect(key: coordinator, effect: !__composer.ChangedAsStruct((coordinator, navigator)) ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>(it =>
             {
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());
@@ -84,7 +83,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1435617519, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
+        __composer.EndRestartGroup(-112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier));
     }
 }
 
@@ -94,7 +93,7 @@ internal partial class NavigationScopeImpl
     private void __Content()
     {
         var __composer = CurrentComposer;
-        __composer.StartRestartGroup(345745330);
+        __composer.StartRestartGroup(661528408);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
         {
@@ -105,6 +104,6 @@ internal partial class NavigationScopeImpl
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(345745330, __isRestarted)?.UpdateScope(() => __Content());
+        __composer.EndRestartGroup(661528408, __isRestarted)?.UpdateScope(() => __Content());
     }
 }

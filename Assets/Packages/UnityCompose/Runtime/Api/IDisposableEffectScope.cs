@@ -5,5 +5,14 @@ namespace UnityCompose;
 
 public interface IDisposableEffectScope
 {
-    IDisposable OnDispose(Action onDispose);
+    IDisposableEffectResult OnDispose(Action onDispose);
+}
+
+public interface IComposeDisposable
+{
+    void Dispose();
+}
+
+public interface IDisposableEffectResult : IComposeDisposable
+{
 }

@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
-internal class ComposeRestartScope : IScopeUpdateScope, IDisposable
+internal class ComposeRestartScope : IScopeUpdateScope, IComposeDisposable
 {
     private static readonly ObjectPool<ComposeRestartScope> _pool = new(() => new());
 

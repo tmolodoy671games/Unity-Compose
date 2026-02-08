@@ -635,7 +635,7 @@ internal class SlotTableWriter
         _groups.Clear();
         for (var i = 0; i < _slots.Count; i++)
         {
-            if (_slots[i] is IDisposable disposable)
+            if (_slots[i] is IComposeDisposable disposable)
                 disposable.Dispose();
         }
 
@@ -1091,7 +1091,7 @@ internal class SlotTableWriter
         for (var i = startIndex; i < targetIndex; i++)
         {
             var slot = _slots[i];
-            if (slot is IDisposable disposable)
+            if (slot is IComposeDisposable disposable)
                 disposable.Dispose();
         }
     }

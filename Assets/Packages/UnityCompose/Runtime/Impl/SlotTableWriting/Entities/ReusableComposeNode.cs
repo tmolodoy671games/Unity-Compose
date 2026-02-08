@@ -20,7 +20,7 @@ internal abstract class ReusableComposeNode
     }
 }
 
-internal class ReusableComposeNode<T> : ReusableComposeNode, IDisposable where T : VisualElement
+internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable where T : VisualElement
 {
     private static readonly ObjectPool<ReusableComposeNode<T>> _pool = new(
         factory: () => new ReusableComposeNode<T>()

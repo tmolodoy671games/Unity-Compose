@@ -24,7 +24,7 @@ namespace UnityCompose.Samples.Behaviors
                     __composer.StartReplaceGroup(699811654);
                     if (isEffectRunning.Value)
                     {
-                        DisposableEffect(string.Empty, !__composer.Changed() ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, System.IDisposable>>(it =>
+                        DisposableEffect(string.Empty, !__composer.Changed() ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>(it =>
                         {
                             Debug.Log("DisposableEffect()");
                             return it.OnDispose(() => Debug.Log("OnDispose()"));

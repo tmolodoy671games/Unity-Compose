@@ -4,7 +4,6 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace

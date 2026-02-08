@@ -15,7 +15,7 @@ public interface ISingleAnimationPlayer
     void Stop();
 }
 
-internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer, IDisposable
+internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer, IComposeDisposable
 {
     private readonly AnimationSpec _animationSpec;
     private bool _isRunning;

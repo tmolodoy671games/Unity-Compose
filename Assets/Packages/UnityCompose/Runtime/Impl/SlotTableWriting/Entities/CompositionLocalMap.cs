@@ -6,7 +6,7 @@ using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 
-internal class CompositionLocalMap : IDisposable
+internal class CompositionLocalMap : IComposeDisposable
 {
     private readonly record struct ProvidedValue(
         IMutableState State,
