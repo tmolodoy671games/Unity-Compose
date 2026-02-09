@@ -42,7 +42,7 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
 
     public static ReusableComposeNode<T> Get()
     {
-        var instance = _pool.Get();
+        var instance = ComposeConstants.Pooling ? _pool.Get() : new ReusableComposeNode<T>();
         instance._isDisposed = false;
         return instance;
     }

@@ -33,7 +33,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IComposeDisposable
         VisualElement? element
     )
     {
-        var instance = _pool.Get();
+        var instance = ComposeConstants.Pooling ? _pool.Get() : new ComposeRestartScope();
         instance._groupAnchor = groupAnchor;
         instance._isDisposed = false;
         instance._writer = writer;

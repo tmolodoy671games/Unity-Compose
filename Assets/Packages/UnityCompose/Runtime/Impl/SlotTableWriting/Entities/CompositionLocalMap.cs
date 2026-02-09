@@ -20,7 +20,7 @@ internal class CompositionLocalMap : IComposeDisposable
 
     public static CompositionLocalMap Get()
     {
-        var result = _pool.Get();
+        var result = ComposeConstants.Pooling ? _pool.Get() : new CompositionLocalMap();
         result._isDisposed = false;
         return result;
     }

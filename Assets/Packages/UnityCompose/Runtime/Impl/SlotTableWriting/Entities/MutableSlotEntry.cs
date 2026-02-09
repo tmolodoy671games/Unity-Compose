@@ -19,7 +19,7 @@ internal class MutableSlotEntry<T> : IComposeDisposable
 
     public static MutableSlotEntry<T> Get(T initialValue)
     {
-        var result = _pool.Get();
+        var result = ComposeConstants.Pooling ? _pool.Get() : new MutableSlotEntry<T>();
         result._isDisposed = false;
         result.Value = initialValue;
         return result;
