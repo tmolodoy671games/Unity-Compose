@@ -77,49 +77,6 @@ internal class GapBufferList<T> : IList<T>
         Count++;
     }
 
-    public void Move(int sourceIndex, int targetIndex, int count)
-    {
-        if (sourceIndex == targetIndex || count == 0)
-            return;
-        MoveGapAt(Count);
-        var buffer = new T[count];
-
-        // Copy to buffer:
-        Array.Copy(
-            sourceArray: _array,
-            sourceIndex: sourceIndex,
-            destinationArray: buffer,
-            destinationIndex: 0,
-            length: count
-        );
-        NotifyElementsShift(sourceIndex, count, LockOffset);
-
-        // Remove space:
-        Array.Copy(
-            sourceArray: _array,
-            destinationArray: _array,
-            sourceIndex: sourceIndex + count,
-            destinationIndex: sourceIndex,
-            length: Count - (sourceIndex + count)
-        );
-        NotifyElementsShift(sourceIndex + count, Count - (sourceIndex + count), -count);
-
-        // Allocate space:
-        Array.Copy(
-            sourceArray: _array,
-            destinationArray: _array,
-            sourceIndex: targetIndex,
-            destinationIndex: targetIndex + count,
-            length: Count - (targetIndex + count)
-        );
-        NotifyElementsShift(targetIndex, Count - (targetIndex + count), count);
-
-        // Set elements:
-        for (var i = 0; i < count; i++)
-            _array[targetIndex + i] = buffer[i];
-        NotifyElementsShift(sourceIndex + LockOffset, count, targetIndex - sourceIndex - LockOffset);
-    }
-
     public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
     {
         if (sourceIndex == targetIndex || sourceCount == 0 && targetCount == 0)

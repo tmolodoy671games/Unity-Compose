@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using StableCollections;
 using UnityCompose;
 using UnityEngine;
@@ -10,20 +11,10 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
     [DisallowMultipleComponent]
     internal class GapBufferTest : MonoBehaviour
     {
+        [Button]
         private void Test()
         {
             GapBufferListTests.RunAll();
-            
-            
-            // var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
-            //
-            // Debug.Log(list);
-            // list.Swap(1, 2, 4, 2);
-            // Debug.Log(list);
-            // list.Swap(1, 2, 4, 2);
-            // Debug.Log(list);
-            // list.Swap(1, 2, 4, 2);
-            // Debug.Log(list);
         }
     }
 }
@@ -45,11 +36,8 @@ public static class GapBufferListTests
         Test_InsertRemovePatterns();
         Test_BoundaryConditions();
         Test_RandomizedAgainstList();
-        Test_Move();
-        // Test_Move_Ranges();
         Test_Swap();
         Test_Swap_DifferentSizes();
-        // Test_RandomizedMoveSwapAgainstList();
         Test_RandomizedSwapAgainstList();
         Debug.Log("Tests Completed");
     }
@@ -221,7 +209,7 @@ public static class GapBufferListTests
 
     private static void Test_RandomizedAgainstList()
     {
-        var rnd = new System.Random(12345);
+        var rnd = new System.Random();
 
         var gb = new GapBufferList<int>();
         var refList = new List<int>();
@@ -281,28 +269,6 @@ public static class GapBufferListTests
         }
     }
 
-    private static void Test_Move()
-    {
-        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
-
-        list.Move(1, 4, 1);
-        AssertSequence(list, IImmutableStableList.Create(0, 2, 3, 4, 1, 5), "Test_Move");
-
-        list.Move(4, 1, 1);
-        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 5), "Test_Move");
-    }
-
-    private static void Test_Move_Ranges()
-    {
-        var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5, 6 };
-
-        list.Move(1, 5, 2);
-        AssertSequence(list, IImmutableStableList.Create(0, 3, 4, 5, 1, 2, 6), "Test_Move_Ranges");
-
-        list.Move(4, 1, 2);
-        AssertSequence(list, IImmutableStableList.Create(0, 1, 2, 3, 4, 5, 6), "Test_Move_Ranges");
-    }
-
     private static void Test_Swap()
     {
         var list = new GapBufferList<int> { 0, 1, 2, 3, 4, 5 };
@@ -318,84 +284,10 @@ public static class GapBufferListTests
         list.Swap(1, 3, 5, 1);
         AssertSequence(list, IImmutableStableList.Create(0, 5, 4, 1, 2, 3, 6), "Test_Swap_DifferentSizes");
     }
-
-    private static void Test_RandomizedMoveSwapAgainstList()
-    {
-        var rnd = new System.Random(54321);
-
-        var gb = new GapBufferList<int>();
-        var refList = new List<int>();
-
-        for (var i = 0; i < 20; i++)
-        {
-            gb.Add(i);
-            refList.Add(i);
-        }
-        
-        Debug.Log($"Initial: {gb}");
-        for (var i = 0; i < 200; i++)
-        {
-            if (refList.Count < 2)
-                break;
-
-            var op = rnd.Next(2);
-
-            switch (op)
-            {
-                case 0:
-                {
-                    // var count = rnd.Next(1, Math.Min(4, refList.Count));
-                    // var src = rnd.Next(refList.Count - count + 1);
-                    // var dst = rnd.Next(refList.Count - count + 1);
-                    //
-                    // gb.Move(src, dst, count);
-                    //
-                    // var tmp = refList.GetRange(src, count);
-                    // refList.RemoveRange(src, count);
-                    // refList.InsertRange(dst, tmp);
-                    break;
-                }
-                case 1:
-                {
-                    var countA = rnd.Next(1, Math.Min(4, refList.Count));
-                    var countB = rnd.Next(1, Math.Min(4, refList.Count));
-
-                    var a = rnd.Next(refList.Count - countA + 1);
-                    var b = rnd.Next(refList.Count - countB + 1);
-
-                    if (a == b) break;
-
-                    gb.Swap(a, countA, b, countB);
-
-                    var min = Math.Min(a, b);
-                    var max = Math.Max(a, b);
-
-                    var firstCount = min == a ? countA : countB;
-                    var secondCount = min == a ? countB : countA;
-
-                    var first = refList.GetRange(min, firstCount);
-                    var second = refList.GetRange(max, secondCount);
-
-                    refList.RemoveRange(max, secondCount);
-                    refList.RemoveRange(min, firstCount);
-
-                    refList.InsertRange(min, second);
-                    refList.InsertRange(max - firstCount + secondCount, first);
-                    Debug.Log($"Swap({a}, {countA}, {b}, {countB}): {gb}");
-                    break;
-                }
-            }
-
-            Assert(
-                gb.ToImmutableStableList().Equals(refList.ToImmutableStableList()),
-                $"\nExpected: {refList.ToImmutableStableList()}\nActual:   {gb.ToImmutableStableList()}"
-            );
-        }
-    }
     
     private static void Test_RandomizedSwapAgainstList()
     {
-        var rnd = new System.Random(22222);
+        var rnd = new System.Random();
 
         var gb = new GapBufferList<int>();
         var refList = new List<int>();

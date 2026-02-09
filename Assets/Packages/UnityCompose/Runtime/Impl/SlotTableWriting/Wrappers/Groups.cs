@@ -26,16 +26,9 @@ internal readonly struct Groups
     public int GapStart => _groups.GapStart;
     public int GapLength => _groups.GapLength;
 
-    public void MoveGapAt(int index) => _groups.MoveGapAt(index);
-
     public void Insert(int index, ComposeGroup group) => _groups.Insert(index, group);
 
     public void RemoveRange(int index, int count) => _groups.RemoveRange(index, count);
-
-    public void Move(int startIndex, int targetIndex, int count)
-    {
-        _groups.Move(startIndex, targetIndex, count);
-    }
 
     public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
     {
