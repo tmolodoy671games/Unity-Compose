@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
@@ -126,8 +127,25 @@ internal readonly struct Slots
     {
         if (value == null)
             return "Null";
+        if (value.GetType().GetFriendlyName().StartsWith("MutableSlotEntry<ValueTuple<"))
+            return "Tuple";
         if (value is Delegate)
-            return $"Lambda";
+            return value.GetType().GetFriendlyName();
         return value.ToString();
+    }
+}
+
+internal static class TypeExtensions
+{
+    public static string GetFriendlyName(this Type type)
+    {
+        if (!type.IsGenericType)
+            return type.Name;
+
+        var genericName = type.Name[..type.Name.IndexOf('`')];
+        var args = type.GetGenericArguments()
+            .Select(GetFriendlyName);
+
+        return $"{genericName}<{string.Join(", ", args)}>";
     }
 }

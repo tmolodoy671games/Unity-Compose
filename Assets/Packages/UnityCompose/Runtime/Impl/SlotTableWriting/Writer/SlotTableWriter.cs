@@ -363,6 +363,8 @@ internal class SlotTableWriter
             targetIndex: _currentSlotIndex,
             targetCount: currentGroup.SlotsSize
         );
+        if (ComposeConstants.Logging)
+            Log("After Swap");
 
         return true;
     }
@@ -402,6 +404,7 @@ internal class SlotTableWriter
         var result = !_slots.GetAsOptional<T>(_currentSlotIndex).Equals(value);
         if (result)
             _slots[_currentSlotIndex] = value;
+
         _currentSlotIndex++;
         return result;
     }
@@ -863,9 +866,9 @@ internal class SlotTableWriter
             _groups.ToString(_currentParentIndex, _currentGroupIndex, _groupsAnchors, _slotsAnchors, _slots)
         );
 
-        // builder.AppendLine("Slots:");
-        // builder.AppendLine(_slots.ToString(_currentSlotIndex));
-        //
+        builder.AppendLine("Slots:");
+        builder.AppendLine(_slots.ToString(_currentSlotIndex));
+
         // builder.AppendLine("Groups Anchors:");
         // builder.AppendLine(_groupsAnchors.ToString());
         // builder.AppendLine("Slots Anchors:");

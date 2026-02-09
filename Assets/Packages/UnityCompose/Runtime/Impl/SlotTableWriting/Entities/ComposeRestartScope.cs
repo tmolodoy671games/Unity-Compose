@@ -71,8 +71,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IComposeDisposable
         _isRequestedToRestart = false;
     }
 
-    public override string ToString() =>
-        $"RestartScope({_groupAnchor}, {_restartCallback != null}, {_compositionLocalMap})";
+    public override string ToString() => "ComposeRestartScope";
 
     public void Dispose()
     {

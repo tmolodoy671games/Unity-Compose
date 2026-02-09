@@ -190,7 +190,7 @@ internal class GapBufferList<T> : IList<T>
         }
 
         // Unlock ranges:
-        NotifyElementsUnlock(firstIndex, firstCount, secondIndex - firstIndex);
+        NotifyElementsUnlock(firstIndex, firstCount, secondIndex - firstIndex + secondCount - firstCount);
         NotifyElementsUnlock(secondIndex, secondCount, firstIndex - secondIndex);
     }
 

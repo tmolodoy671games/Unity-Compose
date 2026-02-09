@@ -1,4 +1,5 @@
 using System;
+using Sirenix.Utilities;
 using UnityEngine.SocialPlatforms;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -60,6 +61,7 @@ namespace UnityCompose.Samples.Behaviors
                                     })
                             );
 
+                            var immutableItems = items.ToImmutableList();
                             Column(
                                 horizontalAlignment: Alignment.CenterHorizontally,
                                 modifier: Modifier
@@ -67,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .FillMaxWidth(),
                                 content: () =>
                                 {
-                                    foreach (var item in items)
+                                    foreach (var item in immutableItems)
                                     {
                                         Key(
                                             key: item,
@@ -112,6 +114,8 @@ namespace UnityCompose.Samples.Behaviors
             Action onRemoveClick
         )
         {
+            if (state == 2)
+                LaunchedEffect("state", static () => {});
             Row(
                 verticalAlignment: Alignment.CenterVertically,
                 modifier: Modifier

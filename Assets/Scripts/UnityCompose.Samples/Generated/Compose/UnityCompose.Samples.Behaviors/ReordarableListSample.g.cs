@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Sirenix.Utilities;
 using UnityEngine.SocialPlatforms;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -13,7 +14,7 @@ namespace UnityCompose.Samples.Behaviors
         private static void __Layout()
         {
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(-1657218070);
+            __composer.StartRestartGroup(-2080562580);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
             {
@@ -33,10 +34,11 @@ namespace UnityCompose.Samples.Behaviors
                                 }
                             }
                         })));
-                        Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: !__composer.Changed(items) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        var immutableItems = items.ToImmutableList();
+                        Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: !__composer.ChangedAsStruct((items, immutableItems)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                         {
-                            __composer.StartReplaceGroup(-1727535959);
-                            foreach (var item in items)
+                            __composer.StartReplaceGroup(331738692);
+                            foreach (var item in immutableItems)
                             {
                                 Key(key: item, content: !__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                                 {
@@ -63,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                                 }));
                             }
 
-                            __composer.EndReplaceGroup(-1727535959);
+                            __composer.EndReplaceGroup(331738692);
                         }));
                     }));
                 }));
@@ -73,7 +75,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1657218070, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(-2080562580, __isRestarted)?.UpdateScope(() => __Layout());
         }
 
         [Composable]
@@ -81,10 +83,16 @@ namespace UnityCompose.Samples.Behaviors
         {
             var(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick) = (state, onMoveUpClick, onMoveDownClick, onRemoveClick);
             var __composer = CurrentComposer;
-            __composer.StartRestartGroup(1890718061);
+            __composer.StartRestartGroup(2014500465);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecuteAsStruct((__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick)))
             {
+                __composer.StartReplaceGroup(-2007911671);
+                if (state == 2)
+                    LaunchedEffect("state", static () =>
+                    {
+                    });
+                __composer.EndReplaceGroup(-2007911671);
                 Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Px()).Border(radius: 12.Px()).Margin(vertical: 4.Px()), content: !__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     Text(text: $"Item no. {state}", color: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Margin(left: 32.Px()));
@@ -104,7 +112,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1890718061, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick));
+            __composer.EndRestartGroup(2014500465, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick));
         }
     }
 }

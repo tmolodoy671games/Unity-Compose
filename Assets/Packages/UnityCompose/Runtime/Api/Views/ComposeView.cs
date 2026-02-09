@@ -2,12 +2,12 @@ using System.Diagnostics.CodeAnalysis;
 using UnityCompose;
 using UnityEngine.UIElements;
 
-[SuppressMessage("ReSharper", "CheckNamespace")]
+[SuppressMessage("ReSharper", "CheckNamespace"), UxmlElement]
 public partial class ComposeView : VisualElement
 {
-    public new class UxmlFactory : UxmlFactory<ComposeView, UxmlTraits>
-    {
-    }
+    // public new class UxmlFactory : UxmlFactory<ComposeView, UxmlTraits>
+    // {
+    // }
 
     private readonly Composer _composer = new();
     private ComposableContent? _content;
