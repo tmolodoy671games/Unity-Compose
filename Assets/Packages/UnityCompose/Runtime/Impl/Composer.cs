@@ -40,9 +40,9 @@ public class Composer
 
     public bool ShouldExecute() => ShouldExecute(SingletonState.Instance);
 
-    public void StartRestartGroup(int key)
+    public bool StartRestartGroup(int key)
     {
-        _writer.StartRestartGroup(key);
+       return _writer.StartRestartGroup(key);
     }
 
     public bool ShouldExecute<T>(T state)

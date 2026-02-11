@@ -8,16 +8,14 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    [Composable]
-    private static void __CompositionLocalProvider<T1>(CompositionLocalProvides<T1> provides1, ComposableContent content)
+    private static void __CompositionLocalProvider<T1>(CompositionLocalProvides<T1> provides1, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __content) = (provides1, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-636805308);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_1);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -32,16 +30,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(-636805308, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, ComposableContent content)
+    private static void __CompositionLocalProvider<T1>(CompositionLocalProvides<T1> provides1, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __content) = (provides1, provides2, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-2075615182);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_2);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -57,16 +58,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(-2075615182, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __content) = (provides1, provides2, provides3, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(150642065);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_3);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -83,16 +87,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(150642065, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __content) = (provides1, provides2, provides3, provides4, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(850864666);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_4);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -110,16 +117,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(850864666, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __content) = (provides1, provides2, provides3, provides4, provides5, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1390334920);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_5);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -138,16 +148,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(-1390334920, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(732686622);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_6);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -167,16 +180,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(732686622, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, provides6, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(398130733);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_7);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -197,16 +213,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(398130733, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, provides6, provides7, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-56820169);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_8);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -228,16 +247,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(-56820169, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-2060835784);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_9);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -260,16 +282,19 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(-2060835784, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content));
     }
 
-    [Composable]
-    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, CompositionLocalProvides<T10> provides10, ComposableContent content)
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, content, CurrentComposer);
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, CompositionLocalProvides<T10> provides10, ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content) = (provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, provides10, content);
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1885066283);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecuteAsStruct((__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content)))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartLocalGroup(123_10);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
@@ -291,5 +316,10 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(-1885066283, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content));
+    }
+
+    private static void __CompositionLocalProvider<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(CompositionLocalProvides<T1> provides1, CompositionLocalProvides<T2> provides2, CompositionLocalProvides<T3> provides3, CompositionLocalProvides<T4> provides4, CompositionLocalProvides<T5> provides5, CompositionLocalProvides<T6> provides6, CompositionLocalProvides<T7> provides7, CompositionLocalProvides<T8> provides8, CompositionLocalProvides<T9> provides9, CompositionLocalProvides<T10> provides10, ComposableContent content)
+    {
+        __CompositionLocalProvider(provides1, provides2, provides3, provides4, provides5, provides6, provides7, provides8, provides9, provides10, content, CurrentComposer);
     }
 }

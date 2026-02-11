@@ -9,10 +9,8 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
 {
     internal partial class ComposeBuildUpPerformanceTest
     {
-        [Composable]
-        private void __Content()
+        private void __Content(global::UnityCompose.Composer __composer = null !)
         {
-            var __composer = CurrentComposer;
             __composer.StartRestartGroup(-378830448);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
@@ -24,6 +22,11 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
             }
 
             __composer.EndRestartGroup(-378830448, __isRestarted)?.UpdateScope(() => __Content());
+        }
+
+        private void __Content()
+        {
+            __Content(CurrentComposer);
         }
     }
 }

@@ -10,10 +10,8 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class MinimalSample
     {
-        [Composable]
-        private void __Content()
+        private void __Content(global::UnityCompose.Composer __composer = null !)
         {
-            var __composer = CurrentComposer;
             __composer.StartRestartGroup(1724393487);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
@@ -28,10 +26,13 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(1724393487, __isRestarted)?.UpdateScope(() => __Content());
         }
 
-        [Composable]
-        private void __Preview()
+        private void __Content()
         {
-            var __composer = CurrentComposer;
+            __Content(CurrentComposer);
+        }
+
+        private void __Preview(global::UnityCompose.Composer __composer = null !)
+        {
             __composer.StartRestartGroup(306248645);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
@@ -46,10 +47,13 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(306248645, __isRestarted)?.UpdateScope(() => __Preview());
         }
 
-        [Composable]
-        private static void __Layout()
+        private void __Preview()
         {
-            var __composer = CurrentComposer;
+            __Preview(CurrentComposer);
+        }
+
+        private static void __Layout(global::UnityCompose.Composer __composer = null !)
+        {
             __composer.StartRestartGroup(1598254630);
             var __isRestarted = __composer.IsRestarted();
             if (__isRestarted || __composer.ShouldExecute())
@@ -61,6 +65,11 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(1598254630, __isRestarted)?.UpdateScope(() => __Layout());
+        }
+
+        private static void __Layout()
+        {
+            __Layout(CurrentComposer);
         }
     }
 }

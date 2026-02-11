@@ -11,10 +11,8 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public abstract partial class ComposeUI
 {
-    [Composable]
-    private void __Preview()
+    private void __Preview(global::UnityCompose.Composer __composer = null !)
     {
-        var __composer = CurrentComposer;
         __composer.StartRestartGroup(-1401336462);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute())
@@ -26,5 +24,10 @@ public abstract partial class ComposeUI
         }
 
         __composer.EndRestartGroup(-1401336462, __isRestarted)?.UpdateScope(() => __Preview());
+    }
+
+    private void __Preview()
+    {
+        __Preview(CurrentComposer);
     }
 }

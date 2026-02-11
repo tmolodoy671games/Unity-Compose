@@ -55,7 +55,7 @@ internal class SlotTableWriter
 
     #region Restart Group
 
-    public void StartRestartGroup(int key)
+    public bool StartRestartGroup(int key)
     {
         if (ComposeConstants.Logging)
             Log($"StartRestartGroup({key})");
@@ -68,7 +68,7 @@ internal class SlotTableWriter
             {
                 _enteredRestartGroups.Push(new ComposeGroupEntry(currentGroupIndex, currentSlotIndex));
                 _currentSlotIndex += RestartGroup.MetadataSize;
-                return;
+                return false;
             }
         }
 
@@ -91,6 +91,7 @@ internal class SlotTableWriter
         );
         EnterGroup(newGroup);
         _currentSlotIndex += RestartGroup.MetadataSize;
+        return true;
     }
 
     public bool IsInInvalidationRoot()

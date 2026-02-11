@@ -7,16 +7,14 @@ using static UnityCompose.ComposeFunctions;
 
 public partial class ComposeView
 {
-    [Composable]
-    private void __ContentImpl(ComposableContent content)
+    private void __ContentImpl(ComposableContent content, global::UnityCompose.Composer __composer = null !)
     {
         var __content = (content);
-        var __composer = CurrentComposer;
-        __composer.StartRestartGroup(544836949);
+        __composer.StartRestartGroup(-24171452);
         var __isRestarted = __composer.IsRestarted();
         if (__isRestarted || __composer.ShouldExecute(__content))
         {
-            var composer = CurrentComposer;
+            var composer = __composer;
             composer.StartReusableGroup(0);
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
@@ -28,6 +26,11 @@ public partial class ComposeView
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(544836949, __isRestarted)?.UpdateScope(() => __ContentImpl(__content));
+        __composer.EndRestartGroup(-24171452, __isRestarted)?.UpdateScope(() => __ContentImpl(__content));
+    }
+
+    private void __ContentImpl(ComposableContent content)
+    {
+        __ContentImpl(content, CurrentComposer);
     }
 }

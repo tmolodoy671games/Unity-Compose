@@ -10,10 +10,13 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    [Composable]
+    private static IComposeCoroutineScope __RememberCoroutineScope(global::UnityCompose.Composer __composer = null !)
+    {
+        return (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl()));
+    }
+
     private static IComposeCoroutineScope __RememberCoroutineScope()
     {
-        var __composer = CurrentComposer;
-        return !__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl());
+        return __RememberCoroutineScope(CurrentComposer);
     }
 }
