@@ -11,115 +11,144 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class OnGloballyPositioned2Sample
     {
-        private void __Content(global::UnityCompose.Composer __composer = null !)
+        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-2015973743);
+            var __isCreated = __composer.StartRestartGroup(2015973743);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-2015973743, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(2015973743, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         private void __Content()
         {
-            __Content(CurrentComposer);
+            __Content(CurrentComposer, 0b_10);
         }
 
-        private void __Preview(global::UnityCompose.Composer __composer = null !)
+        protected void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-816713456);
+            var __isCreated = __composer.StartRestartGroup(816713456);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-816713456, __isRestarted)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(816713456, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private void __Preview()
         {
-            __Preview(CurrentComposer);
+            __Preview(CurrentComposer, 0b_10);
         }
 
-        private static void __Layout(global::UnityCompose.Composer __composer = null !)
+        private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(1317664372);
+            var __isCreated = __composer.StartRestartGroup(1317664372);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
                 var layoutCoordinates = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<SharpExtensions.Optional<UnityCompose.LayoutCoordinates>>>(MutableStateOf(Optional.Empty<LayoutCoordinates>())));
-                Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().OnGloballyPositioned((!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layoutCoordinates.Value = it))), content: (!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().OnGloballyPositioned((!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => layoutCoordinates.Value = it))), content: (!__composer.Changed(layoutCoordinates) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var positions = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableStateDictionary<int, UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableStateDictionary<int, UnityEngine.Vector2>>(MutableStateDictionaryOf<int, Vector2>()));
-                    Row((!__composer.Changed(positions) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    __Row((!__composer.Changed(positions) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
                         var selectionIndex = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<int>>(MutableStateOf(0)));
-                        Tab(selected: selectionIndex.Value == 0, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 0))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[0] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "First"))));
-                        Tab(selected: selectionIndex.Value == 1, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 1))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[1] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "Second"))));
-                        Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 2))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[2] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "Third"))));
-                        Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 3))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[3] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Text(text: "Fourth"))));
-                    })));
+                        __Tab(selected: selectionIndex.Value == 0, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 0))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[0] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => __Text(text: "First", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0);
+                        __Tab(selected: selectionIndex.Value == 1, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 1))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[1] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => __Text(text: "Second", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0);
+                        __Tab(selected: selectionIndex.Value == 2, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 2))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[2] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => __Text(text: "Third", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0);
+                        __Tab(selected: selectionIndex.Value == 3, modifier: Modifier.OnClick((!__composer.Changed(selectionIndex) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => selectionIndex.Value = 3))).OnGloballyPositioned((!__composer.Changed(positions) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => positions[3] = it.GlobalPosition))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => __Text(text: "Fourth", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0);
+                    })), __composer: __composer, __changed: 0b_01_01_01_00);
                     if (!layoutCoordinates.Value.HasValue)
                         return;
                     __composer.StartReplaceGroup(1630269357);
                     foreach (var position in positions.Values)
                     {
                         var coordinates = layoutCoordinates.Value.Value;
-                        Spacer(modifier: Modifier.Background(Color.red).Size(16.Px()).Border(4.Px(), topLeftRadius: 0.Px()).Float().Position(left: coordinates.GlobalToLocal(position).x.Px(), top: coordinates.GlobalToLocal(position).y.Px()));
+                        __Spacer(modifier: Modifier.Background(Color.red).Size(16.Px()).Border(4.Px(), topLeftRadius: 0.Px()).Float().Position(left: coordinates.GlobalToLocal(position).x.Px(), top: coordinates.GlobalToLocal(position).y.Px()), __composer: __composer, __changed: 0);
                     }
 
                     __composer.EndReplaceGroup(1630269357);
-                })));
+                })), __composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1317664372, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1317664372, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
 
         private static void __Layout()
         {
-            __Layout(CurrentComposer);
+            __Layout(CurrentComposer, 0b_10);
         }
 
-        private static void __Tab(bool selected, ComposableContent content, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !)
+        private static void __Tab(bool selected, ComposableContent content, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var(__selected, __content, __modifier) = (selected, content, modifier);
-            __composer.StartRestartGroup(-1999327903);
+            var __isCreated = __composer.StartRestartGroup(1999327903);
+            var __dirty = __changed;
+            var __dirtyRestart = 0;
+            if ((__changed & 0b_11) == 0)
+            {
+                __dirty |= __composer.ChangedAsStruct(selected) ? 0b_10 : 0b_01;
+            }
+            else
+            {
+                __dirtyRestart |= 0b_01;
+            }
+
+            if ((__changed & 0b_11_00) == 0)
+            {
+                __dirty |= __composer.Changed(content) ? 0b_10_00 : 0b_01_00;
+            }
+            else
+            {
+                __dirtyRestart |= 0b_01_00;
+            }
+
+            if ((__changed & 0b_11_00_00) == 0)
+            {
+                __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
+            }
+            else
+            {
+                __dirtyRestart |= 0b_01_00_00;
+            }
+
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecuteAsStruct((__selected, __content, __modifier)))
+            if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
             {
                 var animationSpec = Tween();
-                Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value), content: (!__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: __AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec, __composer: __composer, __changed: 0).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(__AnimateFloatAsState(selected ? 0.8f : 1, __composer: __composer, __changed: 0b_01_00).Value), content: (!__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content);
-                })));
+                    __CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content, __composer: __composer, __changed: ((__dirty & 0b_11_00) << 2));
+                })), __composer: __composer, __changed: 0b_01_00_00);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1999327903, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier));
+            __composer.EndRestartGroup(1999327903, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier, __composer, __dirtyRestart));
         }
 
         private static void __Tab(bool selected, ComposableContent content, IModifier? modifier = null)
         {
-            __Tab(selected, content, modifier, CurrentComposer);
+            __Tab(selected, content, modifier, CurrentComposer, 0b_101010);
         }
     }
 }

@@ -1,9 +1,9 @@
-#define STRUCT_OPTIMIZATIONS
 // ReSharper disable CheckNamespace
 
 using System;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
@@ -38,33 +38,11 @@ public class Composer
 
     public bool IsRestarted() => _writer.IsInInvalidationRoot();
 
-    public bool ShouldExecute() => ShouldExecute(SingletonState.Instance);
+    // public bool ShouldExecute() => ShouldExecute(SingletonState.Instance);
 
     public bool StartRestartGroup(int key)
     {
-       return _writer.StartRestartGroup(key);
-    }
-
-    public bool ShouldExecute<T>(T state)
-    {
-        if (_writer.IsInInvalidationRoot())
-            return true;
-        var existingState = _writer.GetPreviousState<T>();
-        _writer.UpdatePreviousState(state);
-        return !existingState.Equals(state);
-    }
-
-    public bool ShouldExecuteAsStruct<T>(T state) where T : struct
-    {
-#if STRUCT_OPTIMIZATIONS
-        if (_writer.IsInInvalidationRoot())
-            return true;
-        var existingState = _writer.GetPreviousStateAsStruct<T>();
-        _writer.UpdatePreviousStateAsStruct(state);
-        return !existingState.Equals(state);
-#else
-        return ShouldExecute(state);
-#endif
+        return _writer.StartRestartGroup(key);
     }
 
     public void SkipToGroupEnd()
@@ -137,14 +115,14 @@ public class Composer
         return _writer.ReadAndWrite(state);
     }
 
+    public Optional<T> ReadAsStruct<T>() where T : struct => _writer.ReadAsStruct<T>();
+
     public bool ChangedAsStruct<T>(T state) where T : struct
     {
-#if STRUCT_OPTIMIZATIONS
-        var existingKey = _writer.ReadAndWriteAsStruct(state);
-        return !existingKey.Equals(state);
-#else
-        return Changed(state);
-#endif
+        if (ComposeConstants.StructOptimizations)
+            return _writer.ReadAndWriteAsStruct(state);
+        else
+            return Changed(state);
     }
 
     public T RememberedValue<T>()
@@ -156,7 +134,7 @@ public class Composer
 
     public T RememberedValueAsStruct<T>() where T : struct
     {
-        var result = _writer.ReadAsStruct<T>().Value;
+        var result = ComposeConstants.StructOptimizations ? _writer.ReadAsStruct<T>().Value : _writer.Read<T>().Value;
         _writer.IncrementSlotIndex();
         return result;
     }
@@ -171,11 +149,23 @@ public class Composer
 
     public T UpdateRememberedValueAsStruct<T>(T update) where T : struct
     {
-        _writer.WriteAsStruct(update);
+        if (ComposeConstants.StructOptimizations)
+            _writer.WriteAsStruct(update);
+        else
+            _writer.Write(update);
+
         return update;
     }
 
-    public T UpdateRememberedValueAsStruct<T>(Func<T> value) where T : struct => UpdateRememberedValueAsStruct(value());
+    public T UpdateRememberedValueAsStruct<T>(Func<T> update) where T : struct
+    {
+        var value = update();
+        if (ComposeConstants.StructOptimizations)
+            _writer.WriteAsStruct(value);
+        else
+            _writer.Write(value);
+        return value;
+    }
 
     #endregion
 
@@ -246,7 +236,7 @@ public class Composer
     internal CompositionLocalMap RequireCompositionLocalMap() => _writer.GetCompositionLocalMap().NotNull();
 
     #endregion
-    
+
     public void Log(object? message) => _writer.Log(message);
     public void LogWarning(object? message) => _writer.LogWarning(message);
 

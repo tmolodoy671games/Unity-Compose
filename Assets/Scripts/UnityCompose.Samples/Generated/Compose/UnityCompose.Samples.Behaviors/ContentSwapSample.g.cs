@@ -3,6 +3,7 @@
 
 using System;
 using UnityCompose;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -10,129 +11,129 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class ContentSwapSample
     {
-        private void __Content(global::UnityCompose.Composer __composer = null !)
+        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-1629007819);
+            var __isCreated = __composer.StartRestartGroup(1629007819);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-1629007819, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1629007819, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         private void __Content()
         {
-            __Content(CurrentComposer);
+            __Content(CurrentComposer, 0b_10);
         }
 
-        private void __Preview(global::UnityCompose.Composer __composer = null !)
+        protected void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-86711710);
+            var __isCreated = __composer.StartRestartGroup(86711710);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-86711710, __isRestarted)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(86711710, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private void __Preview()
         {
-            __Preview(CurrentComposer);
+            __Preview(CurrentComposer, 0b_10);
         }
 
-        private static void __Layout(global::UnityCompose.Composer __composer = null !)
+        private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(1338862325);
+            var __isCreated = __composer.StartRestartGroup(1338862325);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                     if (isSwitched.Value)
                     {
-                        __composer.StartReplaceGroup(-955378125);
-                        Content2();
-                        __composer.EndReplaceGroup(-955378125);
+                        __composer.StartReplaceGroup(955378125);
+                        __Content2(__composer: __composer, __changed: 0);
+                        __composer.EndReplaceGroup(955378125);
                     }
                     else
                     {
-                        __composer.StartReplaceGroup(-1284654179);
-                        Content1();
-                        __composer.EndReplaceGroup(-1284654179);
+                        __composer.StartReplaceGroup(1284654179);
+                        __Content1(__composer: __composer, __changed: 0);
+                        __composer.EndReplaceGroup(1284654179);
                     }
 
-                    Text(text: "Switch", color: Color.white, fontSize: 62, modifier: Modifier.Padding(horizontal: 20.Px(), vertical: 12.Px()).Border(16.Px()).Background(Color.blue).Margin(top: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value))));
-                })));
+                    __Text(text: "Switch", color: Color.white, fontSize: 62, modifier: Modifier.Padding(horizontal: 20.Px(), vertical: 12.Px()).Border(16.Px()).Background(Color.blue).Margin(top: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                })), __composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1338862325, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1338862325, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
 
         private static void __Layout()
         {
-            __Layout(CurrentComposer);
+            __Layout(CurrentComposer, 0b_10);
         }
 
-        private static void __Content1(global::UnityCompose.Composer __composer = null !)
+        private static void __Content1(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(1026411864);
+            var __isCreated = __composer.StartRestartGroup(1026411864);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Spacer(Modifier.Size(100.Px()).Background(Color.green));
+                __Spacer(Modifier.Size(100.Px()).Background(Color.green), __composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1026411864, __isRestarted)?.UpdateScope(() => __Content1());
+            __composer.EndRestartGroup(1026411864, __isRestarted)?.UpdateScope(() => __Content1(__composer, 0));
         }
 
         private static void __Content1()
         {
-            __Content1(CurrentComposer);
+            __Content1(CurrentComposer, 0b_10);
         }
 
-        private static void __Content2(global::UnityCompose.Composer __composer = null !)
+        private static void __Content2(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(23616230);
+            var __isCreated = __composer.StartRestartGroup(23616230);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Spacer(Modifier.Size(100.Px()).Background(Color.red));
-                })));
+                    __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_01_01_01_00);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(23616230, __isRestarted)?.UpdateScope(() => __Content2());
+            __composer.EndRestartGroup(23616230, __isRestarted)?.UpdateScope(() => __Content2(__composer, 0));
         }
 
         private static void __Content2()
         {
-            __Content2(CurrentComposer);
+            __Content2(CurrentComposer, 0b_10);
         }
     }
 }

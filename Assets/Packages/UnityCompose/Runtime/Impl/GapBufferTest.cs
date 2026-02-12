@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharpExtensions;
 using Sirenix.OdinInspector;
 using StableCollections;
 using UnityCompose;
@@ -14,7 +15,9 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
         [Button]
         private void Test()
         {
-            GapBufferListTests.RunAll();
+            var result = Optional.Empty<Color>().Equals(Optional.Empty<Color>());
+            Debug.Log(result);
+            // GapBufferListTests.RunAll();
         }
     }
 }

@@ -4,69 +4,90 @@
 using StableCollections;
 using System;
 using UnityCompose;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
 {
     internal partial class ComposeUpdatePerformanceTest
     {
-        private void __Content(global::UnityCompose.Composer __composer = null !)
+        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-3566712);
+            var __isCreated = __composer.StartRestartGroup(3566712);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
                 QualitySettings.vSyncCount = 0;
                 Application.targetFrameRate = -1;
                 var parentSize = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(Vector2.zero)));
-                Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned((!__composer.Changed(parentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.Size))), content: (!__composer.Changed(parentSize) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned((!__composer.Changed(parentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.Size))), content: (!__composer.Changed(parentSize) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    __composer.StartReplaceGroup(-1991249029);
+                    __composer.StartReplaceGroup(1991249029);
                     for (var i = 0; i < 1_00; i++)
                     {
                         var currentI = i;
-                        Key(key: currentI, content: (!__composer.ChangedAsStruct((parentSize, currentI)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => Item(currentI, parentSize.Value))));
+                        Key(key: currentI, content: (!__composer.ChangedAsStruct((parentSize, currentI)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => __Item(currentI, parentSize.Value, __composer: __composer, __changed: 0))));
                     }
 
-                    __composer.EndReplaceGroup(-1991249029);
-                })));
+                    __composer.EndReplaceGroup(1991249029);
+                })), __composer: __composer, __changed: 0b_01_00_00);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-3566712, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(3566712, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         private void __Content()
         {
-            __Content(CurrentComposer);
+            __Content(CurrentComposer, 0b_10);
         }
 
-        private static void __Item(int currentI, Vector2 parentSize, global::UnityCompose.Composer __composer = null !)
+        private static void __Item(int currentI, Vector2 parentSize, global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var(__currentI, __parentSize) = (currentI, parentSize);
-            __composer.StartRestartGroup(-760552624);
+            var __isCreated = __composer.StartRestartGroup(760552624);
+            var __dirty = __changed;
+            var __dirtyRestart = 0;
+            if ((__changed & 0b_11) == 0)
+            {
+                __dirty |= __composer.ChangedAsStruct(currentI) ? 0b_10 : 0b_01;
+            }
+            else
+            {
+                __dirtyRestart |= 0b_01;
+            }
+
+            if ((__changed & 0b_11_00) == 0)
+            {
+                __dirty |= __composer.ChangedAsStruct(parentSize) ? 0b_10_00 : 0b_01_00;
+            }
+            else
+            {
+                __dirtyRestart |= 0b_01_00;
+            }
+
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecuteAsStruct((__currentI, __parentSize)))
+            if (__isCreated || __isRestarted || __dirty != 0b_01_01)
             {
                 var position = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(Vector2.zero)));
-                LaunchedEffect(key: parentSize, coroutine: (!__composer.ChangedAsStruct((parentSize, position)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize, it => position.Value = it))));
+                __LaunchedEffect(key: parentSize, coroutine: (!__composer.ChangedAsStruct((parentSize, position)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize, it => position.Value = it))), __composer: __composer, __changed: ((__dirty & 0b_11_00) >> 2));
                 var baseModifier = (!__composer.ChangedAsStruct(currentI) ? __composer.RememberedValue<UnityCompose.IModifier>() : __composer.UpdateRememberedValue<UnityCompose.IModifier>(Modifier.Size(50.Px()).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float()));
-                Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()));
+                __Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()), __composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-760552624, __isRestarted)?.UpdateScope(() => __Item(__currentI, __parentSize));
+            __composer.EndRestartGroup(760552624, __isRestarted)?.UpdateScope(() => __Item(__currentI, __parentSize, __composer, __dirtyRestart));
         }
 
         private static void __Item(int currentI, Vector2 parentSize)
         {
-            __Item(currentI, parentSize, CurrentComposer);
+            __Item(currentI, parentSize, CurrentComposer, 0b_1010);
         }
     }
 }

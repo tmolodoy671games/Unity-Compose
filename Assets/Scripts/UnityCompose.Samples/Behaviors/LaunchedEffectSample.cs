@@ -49,7 +49,7 @@ namespace UnityCompose.Samples.Behaviors
                                 count.Value++;
                             }
                         }
-
+                    
                         LaunchedEffect(
                             key: string.Empty,
                             coroutine: () => EffectCoroutine()
@@ -64,9 +64,9 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40,
                         modifier: Modifier
                             .Name("test-button")
-                            .Background(isHovered.Value ? Color.cyan : Color.blue, Transition())
+                            .Background(AnimateColorAsState(isHovered.Value ? Color.cyan : Color.blue).Value)
                             .Padding(vertical: 20.Px())
-                            .Padding(horizontal: isHovered.Value ? 40.Px() : 20.Px(), transition: Transition())
+                            .Padding(horizontal: AnimateFloatAsState(isHovered.Value ? 40 : 20).Value.Px())
                             .Border(radius: 16.Px())
                             .Margin(top: 32.Px())
                             .OnMouseEnter(() => isHovered.Value = true)

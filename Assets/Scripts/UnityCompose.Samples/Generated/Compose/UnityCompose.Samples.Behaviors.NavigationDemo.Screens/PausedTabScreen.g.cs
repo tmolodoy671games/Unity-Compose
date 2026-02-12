@@ -1,33 +1,45 @@
 #nullable enable
 using System;
 using UnityCompose;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class PausedTabScreen
 {
-    private void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !)
+    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
-        __composer.StartRestartGroup(-352325677);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecute(__modifier))
+        var __isCreated = __composer.StartRestartGroup(352325677);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
         {
-            Box(modifier: modifier.OrEmpty().FillMaxSize().Padding(16.Px()), content: (!__composer.Changed(this) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        var __isRestarted = __composer.IsRestarted();
+        if (__isCreated || __isRestarted || __dirty != 0b_01)
+        {
+            __Box(modifier: modifier.OrEmpty().FillMaxSize().Padding(16.Px()), content: (!__composer.Changed(this) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                Text(text: _tab.ToString(), color: Color.white, fontWeight: FontWeight.Bold, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxSize().Background(_background).Border(16.Px()));
-            })));
+                __Text(text: _tab.ToString(), color: Color.white, fontWeight: FontWeight.Bold, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxSize().Background(_background).Border(16.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+            })), __composer: __composer, __changed: 0b_01_00_00);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier));
+        __composer.EndRestartGroup(352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
     }
 
     private void __Content(IModifier modifier)
     {
-        __Content(modifier, CurrentComposer);
+        __Content(modifier, CurrentComposer, 0b_10);
     }
 }

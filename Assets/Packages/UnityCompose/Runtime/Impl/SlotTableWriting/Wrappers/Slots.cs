@@ -53,7 +53,14 @@ internal readonly struct Slots
         // if (item is T slot)
         //     return slot;
         // return default!;
-        return (T) item!;
+        try
+        {
+            return (T)item!;
+        }
+        catch (InvalidCastException e)
+        {
+            throw new InvalidCastException($"Unable to cast {item} to type {typeof(T).Name}!");
+        }
     }
 
     public Optional<T> GetAsStruct<T>(int index)

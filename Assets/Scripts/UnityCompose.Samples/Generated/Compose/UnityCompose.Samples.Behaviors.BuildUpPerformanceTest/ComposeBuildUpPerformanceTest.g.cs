@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using SharpExtensions;
+using Sirenix.OdinInspector;
 using UnityEngine.UIElements;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
@@ -9,11 +10,11 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
 {
     internal partial class ComposeBuildUpPerformanceTest
     {
-        private void __Content(global::UnityCompose.Composer __composer = null !)
+        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(-378830448);
+            var __isCreated = __composer.StartRestartGroup(1018115190);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
             }
             else
@@ -21,12 +22,12 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(-378830448, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1018115190, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         private void __Content()
         {
-            __Content(CurrentComposer);
+            __Content(CurrentComposer, 0b_10);
         }
     }
 }

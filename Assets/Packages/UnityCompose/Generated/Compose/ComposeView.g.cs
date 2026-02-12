@@ -3,22 +3,34 @@ using System.Diagnostics.CodeAnalysis;
 using UnityCompose;
 using UnityEngine.UIElements;
 using System;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 public partial class ComposeView
 {
-    private void __ContentImpl(ComposableContent content, global::UnityCompose.Composer __composer = null !)
+    private void __ContentImpl(ComposableContent content, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __content = (content);
-        __composer.StartRestartGroup(-24171452);
+        var __isCreated = __composer.StartRestartGroup(24171452);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(content) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecute(__content))
+        if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var composer = __composer;
             composer.StartReusableGroup(0);
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
-            CompositionLocalProvider(LocalVisualElement.Provides(this), content);
+            __CompositionLocalProvider(LocalVisualElement.Provides(this), content, __composer: __composer, __changed: ((__dirty & 0b_11) << 2));
             composer.EndReusableGroup(0);
         }
         else
@@ -26,11 +38,11 @@ public partial class ComposeView
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-24171452, __isRestarted)?.UpdateScope(() => __ContentImpl(__content));
+        __composer.EndRestartGroup(24171452, __isRestarted)?.UpdateScope(() => __ContentImpl(__content, __composer, __dirtyRestart));
     }
 
     private void __ContentImpl(ComposableContent content)
     {
-        __ContentImpl(content, CurrentComposer);
+        __ContentImpl(content, CurrentComposer, 0b_10);
     }
 }

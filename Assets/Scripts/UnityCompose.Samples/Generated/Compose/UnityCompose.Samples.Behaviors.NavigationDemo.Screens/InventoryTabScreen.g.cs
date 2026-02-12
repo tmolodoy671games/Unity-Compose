@@ -1,70 +1,82 @@
 #nullable enable
 using System;
 using UnityCompose;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class InventoryTabScreen
 {
-    private void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !)
+    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
-        __composer.StartRestartGroup(1906860964);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecute(__modifier))
+        var __isCreated = __composer.StartRestartGroup(1906860964);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
         {
-            Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        var __isRestarted = __composer.IsRestarted();
+        if (__isCreated || __isRestarted || __dirty != 0b_01)
+        {
+            __Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    __Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                    })));
-                    Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                    })), __composer: __composer, __changed: 0b_01_01_01_00);
+                    __Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                     {
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                        InventoryItem();
-                    })));
-                })));
-            })));
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0);
+                    })), __composer: __composer, __changed: 0b_01_01_01_00);
+                })), __composer: __composer, __changed: 0b_01_01_00_00);
+            })), __composer: __composer, __changed: 0);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1906860964, __isRestarted)?.UpdateScope(() => __Content(__modifier));
+        __composer.EndRestartGroup(1906860964, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
     }
 
     private void __Content(IModifier modifier)
     {
-        __Content(modifier, CurrentComposer);
+        __Content(modifier, CurrentComposer, 0b_10);
     }
 
-    private static void __InventoryItem(global::UnityCompose.Composer __composer = null !)
+    private static void __InventoryItem(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        __composer.StartRestartGroup(794104995);
+        var __isCreated = __composer.StartRestartGroup(794104995);
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecute())
+        if (__isCreated || __isRestarted || __changed != 0b_00)
         {
-            Spacer(Modifier.Size(100.Px()).Border(16.Px()).Background(Color.grey).Margin(2.Px()));
+            __Spacer(Modifier.Size(100.Px()).Border(16.Px()).Background(Color.grey).Margin(2.Px()), __composer: __composer, __changed: 0);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(794104995, __isRestarted)?.UpdateScope(() => __InventoryItem());
+        __composer.EndRestartGroup(794104995, __isRestarted)?.UpdateScope(() => __InventoryItem(__composer, 0));
     }
 
     private static void __InventoryItem()
     {
-        __InventoryItem(CurrentComposer);
+        __InventoryItem(CurrentComposer, 0b_10);
     }
 }

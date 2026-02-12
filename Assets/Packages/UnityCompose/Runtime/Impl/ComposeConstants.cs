@@ -6,4 +6,5 @@ public static class ComposeConstants
     public static bool Assertions = false;
     public static bool Pooling = true;
     public static bool ParentAnchorsForEveryone = true;
+    public static bool StructOptimizations = true;
 }

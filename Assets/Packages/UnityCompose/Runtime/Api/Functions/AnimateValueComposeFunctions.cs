@@ -97,10 +97,12 @@ public static partial class ComposeFunctions
             property.Value = targetValue;
             return property;
         }
+
         if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
 
         LaunchedEffect(
             key: targetValue,
+            // block: () => property.Value = targetValue
             coroutine: () => UpdatePropertyCoroutine(targetValue)
         );
         return property;
@@ -109,7 +111,7 @@ public static partial class ComposeFunctions
         {
             yield return null;
             var resolvedAnimationSpec = animationSpec.GetOrDefault();
-            var startValue = property.Value;
+            var startValue = property.GetValue();
             if (EqualityUtils.FastEquals(startValue, targetValue)) yield break;
             if (resolvedAnimationSpec.Delay > 0)
                 yield return new WaitForSeconds(resolvedAnimationSpec.Delay);
@@ -140,6 +142,7 @@ public static partial class ComposeFunctions
             property.Value = targetValue;
             return property;
         }
+
         if (EqualityUtils.FastEquals(property.Value, targetValue)) return property;
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
 
@@ -152,7 +155,7 @@ public static partial class ComposeFunctions
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
             yield return null;
-            var startValue = property.Value;
+            var startValue = property.GetValue();
             if (Equals(startValue, newValueFactory())) yield break;
             if (resolvedAnimationSpec.Delay > 0)
                 yield return new WaitForSeconds(resolvedAnimationSpec.Delay);

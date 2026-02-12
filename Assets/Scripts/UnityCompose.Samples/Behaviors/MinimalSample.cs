@@ -1,4 +1,4 @@
-﻿// ReSharper disable ArrangeNamespaceBody
+// ReSharper disable ArrangeNamespaceBody
 
 namespace UnityCompose.Samples.Behaviors
 {

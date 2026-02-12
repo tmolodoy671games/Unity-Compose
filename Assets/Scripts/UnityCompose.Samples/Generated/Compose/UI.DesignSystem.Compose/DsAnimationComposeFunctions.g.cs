@@ -8,8 +8,28 @@ using static UnityCompose.ComposeFunctions;
 namespace UI.DesignSystem.Compose;
 public static partial class DesignSystemComposeFunctions
 {
-    private static ISingleAnimationPlayer __RememberSingleAnimation(Optional<AnimationSpec> animationSpec = default, bool debuggable = false, global::UnityCompose.Composer __composer = null !)
+    public static ISingleAnimationPlayer __RememberSingleAnimation(Optional<AnimationSpec> animationSpec = default, bool debuggable = false, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(debuggable) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
         return (!__composer.Changed() ? __composer.RememberedValue<UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>() : __composer.UpdateRememberedValue<UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>(() =>
         {
             var result = new SingleAnimationPlayerImpl(animationSpec.GetOrDefault(), debuggable);
@@ -19,16 +39,36 @@ public static partial class DesignSystemComposeFunctions
 
     private static ISingleAnimationPlayer __RememberSingleAnimation(Optional<AnimationSpec> animationSpec = default, bool debuggable = false)
     {
-        return __RememberSingleAnimation(animationSpec, debuggable, CurrentComposer);
+        return __RememberSingleAnimation(animationSpec, debuggable, CurrentComposer, 0b_1010);
     }
 
-    private static IState<float> __VisibilityProgress(Optional<AnimationSpec> appearAnimationSpec = default, Optional<AnimationSpec> disappearAnimationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<float> __VisibilityProgress(Optional<AnimationSpec> appearAnimationSpec = default, Optional<AnimationSpec> disappearAnimationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(appearAnimationSpec) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(disappearAnimationSpec) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
         var defaultDuration = 0.5f;
         var resolvedAnimationSpec = appearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
         var resolvedBackwardAnimationSpec = disappearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
         var isVisible = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-        var forwardState = AnimateFloatAsState(isVisible.Value.ToInt(), isVisible.Value ? resolvedAnimationSpec : resolvedBackwardAnimationSpec);
+        var forwardState = __AnimateFloatAsState(isVisible.Value.ToInt(), isVisible.Value ? resolvedAnimationSpec : resolvedBackwardAnimationSpec, __composer: __composer, __changed: 0);
         var state = LocalTransitionState.Current;
         isVisible.Value = state switch
         {
@@ -42,6 +82,6 @@ public static partial class DesignSystemComposeFunctions
 
     private static IState<float> __VisibilityProgress(Optional<AnimationSpec> appearAnimationSpec = default, Optional<AnimationSpec> disappearAnimationSpec = default)
     {
-        return __VisibilityProgress(appearAnimationSpec, disappearAnimationSpec, CurrentComposer);
+        return __VisibilityProgress(appearAnimationSpec, disappearAnimationSpec, CurrentComposer, 0b_1010);
     }
 }

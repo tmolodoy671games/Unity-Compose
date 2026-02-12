@@ -8,50 +8,108 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class PausedScreen
 {
-    private void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !)
+    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
-        __composer.StartRestartGroup(1131697469);
+        var __isCreated = __composer.StartRestartGroup(1131697469);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecute(__modifier))
+        if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
             var pausedCoordinator = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>(new PausedCoordinatorImpl()));
             var currentTab = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(MutableStateOf(PausedTab.Inventory)));
-            Layout(tab: currentTab.Value, pausedCoordinator: pausedCoordinator, onClick: (!__composer.ChangedAsStruct((pausedCoordinator, currentTab)) ? __composer.RememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(it =>
+            __Layout(tab: currentTab.Value, pausedCoordinator: pausedCoordinator, onClick: (!__composer.ChangedAsStruct((pausedCoordinator, currentTab)) ? __composer.RememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(it =>
             {
                 currentTab.Value = it;
                 pausedCoordinator.ShowTab(it);
-            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier);
+            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier, __composer: __composer, __changed: ((__dirty & 0b_11) << 8));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1131697469, __isRestarted)?.UpdateScope(() => __Content(__modifier));
+        __composer.EndRestartGroup(1131697469, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
     }
 
     private void __Content(IModifier modifier)
     {
-        __Content(modifier, CurrentComposer);
+        __Content(modifier, CurrentComposer, 0b_10);
     }
 
-    private static void __Layout(PausedTab tab, IPausedCoordinator pausedCoordinator, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !)
+    private static void __Layout(PausedTab tab, IPausedCoordinator pausedCoordinator, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__tab, __pausedCoordinator, __onClick, __onTabContentClick, __modifier) = (tab, pausedCoordinator, onClick, onTabContentClick, modifier);
-        __composer.StartRestartGroup(-177925555);
+        var __isCreated = __composer.StartRestartGroup(177925555);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(pausedCoordinator) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(onClick) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        if ((__changed & 0b_11_00_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(onTabContentClick) ? 0b_10_00_00_00 : 0b_01_00_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00_00;
+        }
+
+        if ((__changed & 0b_11_00_00_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00_00_00;
+        }
+
         var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__tab, __pausedCoordinator, __onClick, __onTabContentClick, __modifier)))
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
             var previousTab = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab)));
-            Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
                 const float tweenDuration = 1.99f;
-                var visibilityProgress = VisibilityProgress(appearAnimationSpec: Tween(tweenDuration), disappearAnimationSpec: Tween(tweenDuration)).Value;
-                TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - visibilityProgress).Px()));
-                Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator);
-            })));
+                var visibilityProgress = __VisibilityProgress(appearAnimationSpec: Tween(tweenDuration), disappearAnimationSpec: Tween(tweenDuration), __composer: __composer, __changed: 0).Value;
+                __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - visibilityProgress).Px()), __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00_00) >> 2));
+                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_11_00) >> 2));
+            })), __composer: __composer, __changed: 0b_01_01_00_00);
             previousTab.Value = tab;
         }
         else
@@ -59,64 +117,122 @@ internal partial class PausedScreen
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-177925555, __isRestarted)?.UpdateScope(() => __Layout(__tab, __pausedCoordinator, __onClick, __onTabContentClick, __modifier));
+        __composer.EndRestartGroup(177925555, __isRestarted)?.UpdateScope(() => __Layout(__tab, __pausedCoordinator, __onClick, __onTabContentClick, __modifier, __composer, __dirtyRestart));
     }
 
     private static void __Layout(PausedTab tab, IPausedCoordinator pausedCoordinator, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null)
     {
-        __Layout(tab, pausedCoordinator, onClick, onTabContentClick, modifier, CurrentComposer);
+        __Layout(tab, pausedCoordinator, onClick, onTabContentClick, modifier, CurrentComposer, 0b_1010101010);
     }
 
-    private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !)
+    private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__currentTab, __onClick, __modifier) = (currentTab, onClick, modifier);
-        __composer.StartRestartGroup(497304658);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__currentTab, __onClick, __modifier)))
+        var __isCreated = __composer.StartRestartGroup(497304658);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
         {
-            Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.ChangedAsStruct((currentTab, onClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __dirty |= __composer.ChangedAsStruct(currentTab) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(onClick) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        var __isRestarted = __composer.IsRestarted();
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
+        {
+            __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.ChangedAsStruct((currentTab, onClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
-                Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
-                Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
-                Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
-            })));
+                __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
+                __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
+                __Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
+                __Tab(PausedTab.System, currentTab == PausedTab.System, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
+            })), __composer: __composer, __changed: 0b_01_01_00_00);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(497304658, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier));
+        __composer.EndRestartGroup(497304658, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier, __composer, __dirtyRestart));
     }
 
     private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null)
     {
-        __TabsRow(currentTab, onClick, modifier, CurrentComposer);
+        __TabsRow(currentTab, onClick, modifier, CurrentComposer, 0b_101010);
     }
 
-    private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick, global::UnityCompose.Composer __composer = null !)
+    private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__tab, __selected, __onClick) = (tab, selected, onClick);
-        __composer.StartRestartGroup(-1238223639);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isRestarted || __composer.ShouldExecuteAsStruct((__tab, __selected, __onClick)))
+        var __isCreated = __composer.StartRestartGroup(1238223639);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
         {
-            DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: AnimateFloatAsState(selected ? 120 : 40).Value.Px()).Padding(vertical: 12.Px()).Border(8.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.ChangedAsStruct((tab, onClick)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => onClick(tab)))), content: (!__composer.ChangedAsStruct(tab) ? __composer.RememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
+            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(selected) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(onClick) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        var __isRestarted = __composer.IsRestarted();
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
+        {
+            __DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: __AnimateFloatAsState(selected ? 120 : 40, __composer: __composer, __changed: 0b_01_00).Value.Px()).Padding(vertical: 12.Px()).Border(8.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.ChangedAsStruct((tab, onClick)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => onClick(tab)))), content: (!__composer.ChangedAsStruct(tab) ? __composer.RememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
             {
-                Text(text: tab.ToString(), color: Color.white, fontSize: 20, fontWeight: FontWeight.Bold, modifier: Modifier.Scale(1.5f - AnimateFloatAsState(it.IsPressed.ToInt()).Value * 0.25f));
-            })));
+                __Text(text: tab.ToString(), color: Color.white, fontSize: 20, fontWeight: FontWeight.Bold, modifier: Modifier.Scale(1.5f - __AnimateFloatAsState(it.IsPressed.ToInt(), __composer: __composer, __changed: 0b_01_00).Value * 0.25f), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+            })), __composer: __composer, __changed: 0b_01_01_01_00);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(-1238223639, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick));
+        __composer.EndRestartGroup(1238223639, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick, __composer, __dirtyRestart));
     }
 
     private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick)
     {
-        __Tab(tab, selected, onClick, CurrentComposer);
+        __Tab(tab, selected, onClick, CurrentComposer, 0b_101010);
     }
 }

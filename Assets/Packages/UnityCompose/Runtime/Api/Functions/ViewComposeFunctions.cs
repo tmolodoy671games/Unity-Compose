@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
 using UnityEngine;
@@ -109,6 +111,21 @@ public static partial class ComposeFunctions
         ReusableComposeView<Spacer>(
             modifier: modifier
         );
+    }
+
+    public static string FormatAsChanged(this int value)
+    {
+        const int batchSize = 2;
+        var valueStr = Convert.ToString(value, 2);
+        if (valueStr.Length % 2 != 0)
+            valueStr = "0" + valueStr;
+        var result = new List<string>();
+        for (var i = 0; i < valueStr.Length; i += batchSize)
+        {
+            result.Add(valueStr.Substring(i, Math.Min(valueStr.Length - i, batchSize)));
+        }
+
+        return "0b_" + string.Join("_", result);
     }
 
     [Composable]

@@ -157,10 +157,10 @@ internal static class ComposeGroupExtensions
         builder.Append("(");
         builder.Append($"Key: {group.Key}");
         // builder.Append($", ParentIndex: {group.SafeParentIndex(groupsAnchors, groups)}");
-        builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
+        // builder.Append($", Index: {group.Index(groupsAnchors, groups)}");
         // builder.Append($", Size: {group.Size}");
         builder.Append($", DataIndex: {group.SafeSlotIndex(slotsAnchors, slots)}");
-        // builder.Append($", SlotsSize: {group.SlotsSize}");
+        builder.Append($", SlotsSize: {group.SlotsSize}");
         // builder.Append($", ElementIndex: {group.ElementIndex}");
         // builder.Append($", ElementsCount: {group.ElementsCount}");
         builder.Append(")");

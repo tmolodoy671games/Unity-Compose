@@ -3,6 +3,7 @@
 
 using System;
 using UnityCompose;
+using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -10,53 +11,53 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class MinimalSample
     {
-        private void __Content(global::UnityCompose.Composer __composer = null !)
+        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(1724393487);
+            var __isCreated = __composer.StartRestartGroup(1724393487);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1724393487, __isRestarted)?.UpdateScope(() => __Content());
+            __composer.EndRestartGroup(1724393487, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         private void __Content()
         {
-            __Content(CurrentComposer);
+            __Content(CurrentComposer, 0b_10);
         }
 
-        private void __Preview(global::UnityCompose.Composer __composer = null !)
+        protected void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(306248645);
+            var __isCreated = __composer.StartRestartGroup(306248645);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                Layout();
+                __Layout(__composer: __composer, __changed: 0);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(306248645, __isRestarted)?.UpdateScope(() => __Preview());
+            __composer.EndRestartGroup(306248645, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private void __Preview()
         {
-            __Preview(CurrentComposer);
+            __Preview(CurrentComposer, 0b_10);
         }
 
-        private static void __Layout(global::UnityCompose.Composer __composer = null !)
+        private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            __composer.StartRestartGroup(1598254630);
+            var __isCreated = __composer.StartRestartGroup(1598254630);
             var __isRestarted = __composer.IsRestarted();
-            if (__isRestarted || __composer.ShouldExecute())
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
             }
             else
@@ -64,12 +65,12 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1598254630, __isRestarted)?.UpdateScope(() => __Layout());
+            __composer.EndRestartGroup(1598254630, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
 
         private static void __Layout()
         {
-            __Layout(CurrentComposer);
+            __Layout(CurrentComposer, 0b_10);
         }
     }
 }

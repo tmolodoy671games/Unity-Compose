@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if UNITY_EDITOR
+using System.IO;
 using StableCollections;
 using UnityEditor;
 
@@ -16,3 +17,4 @@ internal static class ClearGeneratedCodeMenu
             generatedFile.Delete();
     }
 }
+#endif

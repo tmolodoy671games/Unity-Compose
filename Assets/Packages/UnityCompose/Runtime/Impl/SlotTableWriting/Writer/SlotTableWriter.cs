@@ -84,7 +84,7 @@ internal class SlotTableWriter
             ElementsCount: 0
         );
         _groups.Insert(_currentGroupIndex, newGroup);
-        _slots.InsertPreviousState(_currentSlotIndex);
+        // _slots.InsertPreviousState(_currentSlotIndex);
         _slots.InsertRestartScope(_currentSlotIndex);
         _enteredRestartGroups.Push(
             new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex)
@@ -99,36 +99,16 @@ internal class SlotTableWriter
         return _invalidationRoot == _currentParentIndex;
     }
 
-    public Optional<T> GetPreviousState<T>()
-    {
-        return _slots.GetPreviousState<T>(_currentParentSlotIndex);
-    }
-
-    public Optional<T> GetPreviousStateAsStruct<T>() where T : struct
-    {
-        return _slots.GetPreviousStateAsStruct<T>(_currentParentSlotIndex);
-    }
-
-    public void UpdatePreviousState<T>(T state)
-    {
-        _slots.SetPreviousState(_currentParentSlotIndex, state);
-    }
-
-    public void UpdatePreviousStateAsStruct<T>(T state) where T : struct
-    {
-        _slots.SetPreviousStateAsStruct(_currentParentSlotIndex, state);
-    }
-
     // TODO Sync descendant indices.
     public void SkipToGroupEnd()
     {
-#if LOGGING
-        Log("SkipToGroupEnd()");
-#endif
+        if (ComposeConstants.Logging)
+            Log($"SkipToGroupEnd(slots: {CurrentParent().SlotsSize - RestartGroup.MetadataSize})");
         var parent = CurrentParent();
 
         _currentGroupIndex += parent.Size - 1;
-        _currentSlotIndex += parent.SlotsSize - RestartGroup.MetadataSize;
+        var offset = _currentSlotIndex - _enteredRestartGroups.Peek().SlotIndex;
+        _currentSlotIndex += parent.SlotsSize - offset;
         _currentElementIndex += parent.ElementsCount;
     }
 
@@ -395,6 +375,8 @@ internal class SlotTableWriter
 
     public bool ReadAndWrite<T>(T value)
     {
+        if (ComposeConstants.Logging)
+            Log($"ReadAndWrite<T>()");
         if (!IsThereAlreadyASlot())
         {
             _slots.Insert(_currentSlotIndex, value);
@@ -410,16 +392,18 @@ internal class SlotTableWriter
         return result;
     }
 
-    public Optional<T> ReadAndWriteAsStruct<T>(T value) where T : struct
+    public bool ReadAndWriteAsStruct<T>(T value) where T : struct
     {
+        if (ComposeConstants.Logging)
+            Log($"ReadAndWriteAsStruct<T>()");
         if (!IsThereAlreadyASlot())
         {
             _slots.InsertAsStruct(_currentSlotIndex, value);
             _currentSlotIndex++;
-            return Optional.Empty<T>();
+            return true;
         }
 
-        var result = _slots.GetAsStruct<T>(_currentSlotIndex);
+        var result = !_slots.GetAsStruct<T>(_currentSlotIndex).Equals(value);
         _slots.SetAsStruct(_currentSlotIndex, value);
         _currentSlotIndex++;
         return result;

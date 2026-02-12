@@ -1,4 +1,4 @@
-﻿namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
+namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 
 internal partial class InventoryTabScreen : ComposeScreen
 {

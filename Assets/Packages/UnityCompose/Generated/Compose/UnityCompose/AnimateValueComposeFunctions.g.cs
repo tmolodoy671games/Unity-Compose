@@ -11,82 +11,230 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    private static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return AnimateValueAsState(targetValue: targetValue, interpolator: FloatInterpolator, animationSpec: animationSpec);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        return __AnimateValueAsState(targetValue: targetValue, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
     }
 
     private static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateFloatAsState(targetValue, animationSpec, CurrentComposer);
+        return __AnimateFloatAsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
     }
 
-    private static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: FloatInterpolator, animationSpec: animationSpec);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(key) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(targetValueFactory) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        return __AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | (__dirty & 0b_11_00) | ((__dirty & 0b_11_00_00) << 2));
     }
 
     private static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateFloatAsState(key, targetValueFactory, animationSpec, CurrentComposer);
+        return __AnimateFloatAsState(key, targetValueFactory, animationSpec, CurrentComposer, 0b_101010);
     }
 
-    private static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return AnimateValueAsState(targetValue: targetValue, interpolator: Vector2Interpolator, animationSpec: animationSpec);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        return __AnimateValueAsState(targetValue: targetValue, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
     }
 
     private static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateVector2AsState(targetValue, animationSpec, CurrentComposer);
+        return __AnimateVector2AsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
     }
 
-    private static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return AnimateValueAsState(targetValue: targetValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        return __AnimateValueAsState(targetValue: targetValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
     }
 
     private static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateColorAsState(targetValue, animationSpec, CurrentComposer);
+        return __AnimateColorAsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
     }
 
-    private static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: Vector2Interpolator, animationSpec: animationSpec);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(key) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(targetValueFactory) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        return __AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | (__dirty & 0b_11_00) | ((__dirty & 0b_11_00_00) << 2));
     }
 
     private static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateVector2AsState(key, targetValueFactory, animationSpec, CurrentComposer);
+        return __AnimateVector2AsState(key, targetValueFactory, animationSpec, CurrentComposer, 0b_101010);
     }
 
-    private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__targetValue, __interpolator, __animationSpec) = (targetValue, interpolator, animationSpec);
-        __composer.StartReplaceGroup(-130532738);
+        __composer.StartReplaceGroup(130532738);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(targetValue) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(interpolator) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
         var property = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
-            __composer.EndReplaceGroup(-130532738);
+            __composer.EndReplaceGroup(130532738);
             return property;
         }
 
         if (EqualityUtils.FastEquals(property.Value, targetValue))
         {
-            __composer.EndReplaceGroup(-130532738);
+            __composer.EndReplaceGroup(130532738);
             return property;
         }
 
-        LaunchedEffect(key: targetValue, coroutine: (!__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))));
-        __composer.EndReplaceGroup(-130532738);
+        __LaunchedEffect(key: targetValue, // block: () => property.Value = targetValue
+        coroutine: (!__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_11));
+        __composer.EndReplaceGroup(130532738);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
             yield return null;
             var resolvedAnimationSpec = animationSpec.GetOrDefault();
-            var startValue = property.Value;
+            var startValue = property.GetValue();
             if (EqualityUtils.FastEquals(startValue, targetValue))
                 yield break;
             if (resolvedAnimationSpec.Delay > 0)
@@ -105,36 +253,74 @@ public static partial class ComposeFunctions
 
     private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateValueAsState(targetValue, interpolator, animationSpec, CurrentComposer);
+        return __AnimateValueAsState(targetValue, interpolator, animationSpec, CurrentComposer, 0b_101010);
     }
 
-    private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !)
+    public static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __targetValueFactory, __interpolator, __animationSpec) = (key, targetValueFactory, interpolator, animationSpec);
-        __composer.StartReplaceGroup(-1673470175);
+        __composer.StartReplaceGroup(391583017);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_11) == 0)
+        {
+            __dirty |= __composer.Changed(key) ? 0b_10 : 0b_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(targetValueFactory) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        if ((__changed & 0b_11_00_00) == 0)
+        {
+            __dirty |= __composer.Changed(interpolator) ? 0b_10_00_00 : 0b_01_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00;
+        }
+
+        if ((__changed & 0b_11_00_00_00) == 0)
+        {
+            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00_00 : 0b_01_00_00_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00_00_00;
+        }
+
         var targetValue = targetValueFactory();
         var property = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
-            __composer.EndReplaceGroup(-1673470175);
+            __composer.EndReplaceGroup(391583017);
             return property;
         }
 
         if (EqualityUtils.FastEquals(property.Value, targetValue))
         {
-            __composer.EndReplaceGroup(-1673470175);
+            __composer.EndReplaceGroup(391583017);
             return property;
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        LaunchedEffect(key: key, coroutine: (!__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))));
-        __composer.EndReplaceGroup(-1673470175);
+        __LaunchedEffect(key: key, coroutine: (!__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_11));
+        __composer.EndReplaceGroup(391583017);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {
             yield return null;
-            var startValue = property.Value;
+            var startValue = property.GetValue();
             if (Equals(startValue, newValueFactory()))
                 yield break;
             if (resolvedAnimationSpec.Delay > 0)
@@ -153,6 +339,6 @@ public static partial class ComposeFunctions
 
     private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
     {
-        return __AnimateValueAsState(key, targetValueFactory, interpolator, animationSpec, CurrentComposer);
+        return __AnimateValueAsState(key, targetValueFactory, interpolator, animationSpec, CurrentComposer, 0b_10101010);
     }
 }

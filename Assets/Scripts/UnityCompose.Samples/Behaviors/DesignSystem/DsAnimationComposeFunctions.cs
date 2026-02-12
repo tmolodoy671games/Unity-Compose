@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SharpExtensions;
 using UI.DesignSystem.Compose.Players;
 using UnityCompose;
