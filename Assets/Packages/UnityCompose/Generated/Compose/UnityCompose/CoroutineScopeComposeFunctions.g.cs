@@ -15,9 +15,4 @@ public static partial class ComposeFunctions
     {
         return (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl()));
     }
-
-    private static IComposeCoroutineScope __RememberCoroutineScope()
-    {
-        return __RememberCoroutineScope(CurrentComposer, 0b_10);
-    }
 }

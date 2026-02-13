@@ -13,8 +13,8 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();
 
-            root.SetContent(static () => {});
-            root.SetContent(() =>
+            root.SetContent(static (_, _) => {});
+            root.SetContent((_, _) =>
             {
                 var rowModifier = Modifier
                     .Margin(vertical: 2.Px());

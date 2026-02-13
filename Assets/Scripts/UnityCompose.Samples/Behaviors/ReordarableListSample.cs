@@ -10,11 +10,13 @@ namespace UnityCompose.Samples.Behaviors
     {
         private static readonly ICompositionLocal<string> LocalTest = CompositionLocalOf("LocalTest", () => "Default");
 
+        [Composable]
         protected override void Content()
         {
             Layout();
         }
 
+        [Composable]
         protected override void Preview()
         {
             Layout();

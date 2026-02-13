@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class MinimalSample
     {
-        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(1724393487);
             var __isRestarted = __composer.IsRestarted();
@@ -27,12 +27,7 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(1724393487, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
-        private void __Content()
-        {
-            __Content(CurrentComposer, 0b_10);
-        }
-
-        protected void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(306248645);
             var __isRestarted = __composer.IsRestarted();
@@ -48,11 +43,6 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(306248645, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
-        private void __Preview()
-        {
-            __Preview(CurrentComposer, 0b_10);
-        }
-
         private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(1598254630);
@@ -66,11 +56,6 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(1598254630, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
-        }
-
-        private static void __Layout()
-        {
-            __Layout(CurrentComposer, 0b_10);
         }
     }
 }

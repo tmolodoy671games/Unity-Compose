@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace UnityCompose;
 
 [DisallowMultipleComponent, ExecuteAlways]
-public abstract class ComposePreview : MonoBehaviour
+public abstract partial class ComposePreview : MonoBehaviour
 {
     [SerializeField] private bool pin;
     
@@ -20,20 +20,20 @@ public abstract class ComposePreview : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-#if UNITY_EDITOR
-
     private void Update()
     {
+#if UNITY_EDITOR
         if (ApplicationUtils.IsPlaying) return;
         var isSelected = pin || Selection.activeGameObject == gameObject;
         var document = GetComponent<UIDocument>();
         if (!document) return;
         var composeView = document.rootVisualElement?.Q<ComposeView>();
-        composeView?.SetContent(isSelected ? Preview : EmptyPreview);
+        composeView?.SetContent(isSelected ? __Preview : __EmptyPreview);
+#endif
     }
 
+    [Composable]
     private static void EmptyPreview()
     {
     }
-#endif
 }

@@ -114,9 +114,4 @@ public static partial class ComposeFunctions
 
         __composer.EndRestartGroup(1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier, __composer, __dirtyRestart));
     }
-
-    private static void __AnimatedContent<T>(T targetState, Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec, ComposableContent<T, IModifier> content, Optional<AnimationSpec> sizeAnimationSpec = default, IModifier? modifier = null)
-    {
-        __AnimatedContent(targetState, transitionSpec, content, sizeAnimationSpec, modifier, CurrentComposer, 0b_1010101010);
-    }
 }

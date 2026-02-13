@@ -12,9 +12,9 @@ public partial class ComposeView : VisualElement
     }
 
     private readonly Composer _composer = new();
-    private ComposableContent? _content;
+    private ComposableContent<Composer, int>? _content;
 
-    public void SetContent(ComposableContent content)
+    public void SetContent(ComposableContent<Composer, int> content)
     {
         pickingMode = PickingMode.Ignore;
         if (_content == content)
@@ -23,12 +23,12 @@ public partial class ComposeView : VisualElement
         userData = null;
         _composer.SetAsCurrentComposer();
         Clear();
-        ContentImpl(content);
+        __ContentImpl(content, _composer, 0b_10);
         _composer.ResetAsCurrentComposer();
     }
 
     [Composable]
-    private void ContentImpl(ComposableContent content)
+    private void ContentImpl(ComposableContent<Composer, int> content)
     {
         var composer = CurrentComposer;
         composer.StartReusableGroup(0);
@@ -36,7 +36,7 @@ public partial class ComposeView : VisualElement
         composer.EnterVisualElement(this);
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
-            content
+            () => content(_composer, 0)
         );
         composer.EndReusableGroup(0);
     }

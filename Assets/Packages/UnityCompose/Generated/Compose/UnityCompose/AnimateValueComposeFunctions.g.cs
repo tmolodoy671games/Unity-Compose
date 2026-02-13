@@ -36,11 +36,6 @@ public static partial class ComposeFunctions
         return __AnimateValueAsState(targetValue: targetValue, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
     }
 
-    private static IState<float> __AnimateFloatAsState(float targetValue, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateFloatAsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
-    }
-
     public static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
@@ -75,11 +70,6 @@ public static partial class ComposeFunctions
         return __AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | (__dirty & 0b_11_00) | ((__dirty & 0b_11_00_00) << 2));
     }
 
-    private static IState<float> __AnimateFloatAsState(object key, Func<float> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateFloatAsState(key, targetValueFactory, animationSpec, CurrentComposer, 0b_101010);
-    }
-
     public static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
@@ -105,11 +95,6 @@ public static partial class ComposeFunctions
         return __AnimateValueAsState(targetValue: targetValue, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
     }
 
-    private static IState<Vector2> __AnimateVector2AsState(Vector2 targetValue, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateVector2AsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
-    }
-
     public static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
@@ -133,11 +118,6 @@ public static partial class ComposeFunctions
         }
 
         return __AnimateValueAsState(targetValue: targetValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00) << 2));
-    }
-
-    private static IState<Color> __AnimateColorAsState(Color targetValue, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateColorAsState(targetValue, animationSpec, CurrentComposer, 0b_1010);
     }
 
     public static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -172,11 +152,6 @@ public static partial class ComposeFunctions
         }
 
         return __AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_11) | (__dirty & 0b_11_00) | ((__dirty & 0b_11_00_00) << 2));
-    }
-
-    private static IState<Vector2> __AnimateVector2AsState(object key, Func<Vector2> targetValueFactory, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateVector2AsState(key, targetValueFactory, animationSpec, CurrentComposer, 0b_101010);
     }
 
     public static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -249,11 +224,6 @@ public static partial class ComposeFunctions
 
             property.Value = newValue;
         }
-    }
-
-    private static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateValueAsState(targetValue, interpolator, animationSpec, CurrentComposer, 0b_101010);
     }
 
     public static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -335,10 +305,5 @@ public static partial class ComposeFunctions
 
             property.Value = newValueFactory();
         }
-    }
-
-    private static IState<T> __AnimateValueAsState<T>(object key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default)
-    {
-        return __AnimateValueAsState(key, targetValueFactory, interpolator, animationSpec, CurrentComposer, 0b_10101010);
     }
 }

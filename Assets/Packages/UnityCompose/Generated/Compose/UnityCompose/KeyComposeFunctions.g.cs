@@ -37,9 +37,4 @@ public static partial class ComposeFunctions
 
         __composer.EndRestartGroup(2008433022, __isRestarted)?.UpdateScope(() => __KeyImpl(__content, __composer, __dirtyRestart));
     }
-
-    private static void __KeyImpl(ComposableContent content)
-    {
-        __KeyImpl(content, CurrentComposer, 0b_10);
-    }
 }

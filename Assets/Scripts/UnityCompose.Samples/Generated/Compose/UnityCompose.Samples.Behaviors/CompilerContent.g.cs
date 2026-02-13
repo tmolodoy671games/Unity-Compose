@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class CompilerContent
     {
-        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(1237389833);
             var __isRestarted = __composer.IsRestarted();
@@ -26,11 +26,6 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(1237389833, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
-        }
-
-        private void __Content()
-        {
-            __Content(CurrentComposer, 0b_10);
         }
 
         private static void __Foo(string text, int misc1 = -1, string? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -76,11 +71,6 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(1926882667, __isRestarted)?.UpdateScope(() => __Foo(__text, __misc1, __modifier, __composer, __dirtyRestart));
-        }
-
-        private static void __Foo(string text, int misc1 = -1, string? modifier = null)
-        {
-            __Foo(text, misc1, modifier, CurrentComposer, 0b_101010);
         }
     }
 }

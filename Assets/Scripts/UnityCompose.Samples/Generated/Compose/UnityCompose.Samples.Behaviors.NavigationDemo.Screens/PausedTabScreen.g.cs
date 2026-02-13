@@ -7,7 +7,7 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class PausedTabScreen
 {
-    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public override void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(352325677);
@@ -36,10 +36,5 @@ internal partial class PausedTabScreen
         }
 
         __composer.EndRestartGroup(352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
-    }
-
-    private void __Content(IModifier modifier)
-    {
-        __Content(modifier, CurrentComposer, 0b_10);
     }
 }

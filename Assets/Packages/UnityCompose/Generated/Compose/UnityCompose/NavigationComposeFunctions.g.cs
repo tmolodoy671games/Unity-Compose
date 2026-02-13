@@ -98,7 +98,7 @@ public static partial class ComposeFunctions
                             _ => throw new ArgumentOutOfRangeException()};
                         var state = TransitionResolvedState.Create(state: screenState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                         var isActive = LocalIsActive.Current;
-                        __CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.ChangedAsStruct((screen, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => screen.Content(contentModifier))), __composer: __composer, __changed: 0);
+                        __CompositionLocalProvider(LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)), LocalIsActive.Provides(new IsActiveEntry(IsActiveSelf: isCurrentScreen && resolvedProgress.AlmostEquals(1f), Parent: isActive)), LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.ChangedAsStruct((screen, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => screen.__Content(contentModifier, __composer: __composer, __changed: 0))), __composer: __composer, __changed: 0);
                     })));
                 }
             })), __composer: __composer, __changed: 0b_01_00 | ((__dirty & 0b_11_00_00) >> 4));
@@ -111,11 +111,6 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(112916579, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier, __composer, __dirtyRestart));
-    }
-
-    private static void __Navigation(IComposeCoordinator coordinator, Optional<ContentTransform> transition = default, IModifier? modifier = null)
-    {
-        __Navigation(coordinator, transition, modifier, CurrentComposer, 0b_101010);
     }
 }
 
@@ -135,10 +130,5 @@ internal partial class NavigationScopeImpl
         }
 
         __composer.EndRestartGroup(661528408, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
-    }
-
-    private void __Content()
-    {
-        __Content(CurrentComposer, 0b_10);
     }
 }

@@ -13,7 +13,7 @@ public abstract partial class ComposeUI : MonoBehaviour
     {
         if (!ApplicationUtils.IsPlaying)
             return;
-        GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(Content);
+        GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(__Content);
     }
 
     [Composable]
@@ -28,7 +28,7 @@ public abstract partial class ComposeUI : MonoBehaviour
     {
         if (ApplicationUtils.IsPlaying)
             return;
-        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(Preview);
+        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Preview);
     }
 
     [Button]

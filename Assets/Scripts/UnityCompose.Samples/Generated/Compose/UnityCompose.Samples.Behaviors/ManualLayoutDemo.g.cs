@@ -44,11 +44,6 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(737530880, __isRestarted)?.UpdateScope(() => __MockLayout(__composer, 0));
         }
 
-        private static void __MockLayout()
-        {
-            __MockLayout(CurrentComposer, 0b_10);
-        }
-
         private static void __MockColumn(ComposableContent content, global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __content = (content);
@@ -77,11 +72,6 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(1407509810, __isRestarted)?.UpdateScope(() => __MockColumn(__content, __composer, __dirtyRestart));
         }
 
-        private static void __MockColumn(ComposableContent content)
-        {
-            __MockColumn(content, CurrentComposer, 0b_10);
-        }
-
         private static void __MockSpacer(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(1566028247);
@@ -98,11 +88,6 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(1566028247, __isRestarted)?.UpdateScope(() => __MockSpacer(__composer, 0));
         }
 
-        private static void __MockSpacer()
-        {
-            __MockSpacer(CurrentComposer, 0b_10);
-        }
-
         private static void __MockNestedSpacer(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(129221247);
@@ -116,11 +101,6 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(129221247, __isRestarted)?.UpdateScope(() => __MockNestedSpacer(__composer, 0));
-        }
-
-        private static void __MockNestedSpacer()
-        {
-            __MockNestedSpacer(CurrentComposer, 0b_10);
         }
 
         private static void __MockPerformanceLayout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -148,11 +128,6 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __composer.EndRestartGroup(1780842197, __isRestarted)?.UpdateScope(() => __MockPerformanceLayout(__composer, 0));
-        }
-
-        private static void __MockPerformanceLayout()
-        {
-            __MockPerformanceLayout(CurrentComposer, 0b_10);
         }
     }
 }

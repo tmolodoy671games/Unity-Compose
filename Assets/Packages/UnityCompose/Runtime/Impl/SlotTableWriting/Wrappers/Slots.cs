@@ -57,7 +57,7 @@ internal readonly struct Slots
         {
             return (T)item!;
         }
-        catch (InvalidCastException e)
+        catch (InvalidCastException)
         {
             throw new InvalidCastException($"Unable to cast {item} to type {typeof(T).Name}!");
         }

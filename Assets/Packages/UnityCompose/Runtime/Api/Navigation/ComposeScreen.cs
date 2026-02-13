@@ -17,7 +17,8 @@ public abstract partial class ComposeScreen
     public virtual string ScreenKey => GetType().Name!;
     public virtual int Priority => 0;
     public virtual ScreenTransitions? Transitions => null;
-
+    
+    [Composable]
     public abstract void Content(IModifier modifier);
 
     public override bool Equals(object? obj)

@@ -67,11 +67,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(1035912844, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec, __composer, __dirtyRestart));
     }
 
-    private static void __AnimatedSize(ComposableContent<IModifier> content, IModifier? modifier = null, Optional<AnimationSpec> animationSpec = default)
-    {
-        __AnimatedSize(content, modifier, animationSpec, CurrentComposer, 0b_101010);
-    }
-
     private static (IModifier ContainerModifier, IModifier ContentModifier) __AnimateSizeModifiers(AnimationSpec animationSpec, object? key = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
@@ -125,10 +120,5 @@ public static partial class ComposeFunctions
 
         __composer.EndReplaceGroup(1909905094);
         return (containerModifier, contentModifier);
-    }
-
-    private static (IModifier ContainerModifier, IModifier ContentModifier) __AnimateSizeModifiers(AnimationSpec animationSpec, object? key = null)
-    {
-        return __AnimateSizeModifiers(animationSpec, key, CurrentComposer, 0b_1010);
     }
 }

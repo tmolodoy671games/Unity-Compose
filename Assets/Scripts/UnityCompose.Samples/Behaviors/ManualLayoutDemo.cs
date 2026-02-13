@@ -16,7 +16,7 @@ namespace UnityCompose.Samples.Behaviors
         {
             if (!Application.isPlaying)
                 return;
-            new ComposeView().SetContent(MockLayout);
+            new ComposeView().SetContent(__MockLayout);
         }
 
         // [Button("Log")]

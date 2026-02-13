@@ -77,12 +77,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(1765969868, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content, __composer, __dirtyRestart));
     }
 
-    private static void __ReusableComposeView<T>(IModifier? modifier = null, Action<T>? initializer = null, ComposableContent? content = null)
-        where T : VisualElement, new()
-    {
-        __ReusableComposeView(modifier, initializer, content, CurrentComposer, 0b_101010);
-    }
-
     public static void __Column(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal? horizontalAlignment = null, Arrangement.Vertical? verticalArrangement = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__content, __modifier, __horizontalAlignment, __verticalArrangement) = (content, modifier, horizontalAlignment, verticalArrangement);
@@ -140,11 +134,6 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(1922237605, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalArrangement, __composer, __dirtyRestart));
-    }
-
-    private static void __Column(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal? horizontalAlignment = null, Arrangement.Vertical? verticalArrangement = null)
-    {
-        __Column(content, modifier, horizontalAlignment, verticalArrangement, CurrentComposer, 0b_10101010);
     }
 
     public static void __Row(ComposableContent content, IModifier? modifier = null, Arrangement.Horizontal? horizontalArrangement = null, Alignment.Vertical? verticalAlignment = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -207,11 +196,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(2110962436, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalArrangement, __verticalAlignment, __composer, __dirtyRestart));
     }
 
-    private static void __Row(ComposableContent content, IModifier? modifier = null, Arrangement.Horizontal? horizontalArrangement = null, Alignment.Vertical? verticalAlignment = null)
-    {
-        __Row(content, modifier, horizontalArrangement, verticalAlignment, CurrentComposer, 0b_10101010);
-    }
-
     public static void __Box(ComposableContent content, IModifier? modifier = null, Alignment? alignment = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__content, __modifier, __alignment) = (content, modifier, alignment);
@@ -264,11 +248,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(734131074, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __alignment, __composer, __dirtyRestart));
     }
 
-    private static void __Box(ComposableContent content, IModifier? modifier = null, Alignment? alignment = null)
-    {
-        __Box(content, modifier, alignment, CurrentComposer, 0b_101010);
-    }
-
     public static void __Spacer(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
@@ -295,11 +274,6 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(1810854548, __isRestarted)?.UpdateScope(() => __Spacer(__modifier, __composer, __dirtyRestart));
-    }
-
-    private static void __Spacer(IModifier modifier)
-    {
-        __Spacer(modifier, CurrentComposer, 0b_10);
     }
 
     public static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -450,11 +424,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(1078710765, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __dirtyRestart));
     }
 
-    private static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null)
-    {
-        __Text(text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier, CurrentComposer, 0b_101010101010101010);
-    }
-
     public static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
@@ -505,10 +474,5 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(972845918, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __dirtyRestart));
-    }
-
-    private static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null)
-    {
-        __Image(image, tint, modifier, CurrentComposer, 0b_101010);
     }
 }

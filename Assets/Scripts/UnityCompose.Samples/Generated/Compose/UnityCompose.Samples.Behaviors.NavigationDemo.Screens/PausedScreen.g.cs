@@ -8,7 +8,7 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class PausedScreen
 {
-    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public override void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(1131697469);
@@ -41,11 +41,6 @@ internal partial class PausedScreen
         }
 
         __composer.EndRestartGroup(1131697469, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
-    }
-
-    private void __Content(IModifier modifier)
-    {
-        __Content(modifier, CurrentComposer, 0b_10);
     }
 
     private static void __Layout(PausedTab tab, IPausedCoordinator pausedCoordinator, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -120,11 +115,6 @@ internal partial class PausedScreen
         __composer.EndRestartGroup(177925555, __isRestarted)?.UpdateScope(() => __Layout(__tab, __pausedCoordinator, __onClick, __onTabContentClick, __modifier, __composer, __dirtyRestart));
     }
 
-    private static void __Layout(PausedTab tab, IPausedCoordinator pausedCoordinator, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null)
-    {
-        __Layout(tab, pausedCoordinator, onClick, onTabContentClick, modifier, CurrentComposer, 0b_1010101010);
-    }
-
     private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__currentTab, __onClick, __modifier) = (currentTab, onClick, modifier);
@@ -177,11 +167,6 @@ internal partial class PausedScreen
         __composer.EndRestartGroup(497304658, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier, __composer, __dirtyRestart));
     }
 
-    private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null)
-    {
-        __TabsRow(currentTab, onClick, modifier, CurrentComposer, 0b_101010);
-    }
-
     private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__tab, __selected, __onClick) = (tab, selected, onClick);
@@ -229,10 +214,5 @@ internal partial class PausedScreen
         }
 
         __composer.EndRestartGroup(1238223639, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick, __composer, __dirtyRestart));
-    }
-
-    private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick)
-    {
-        __Tab(tab, selected, onClick, CurrentComposer, 0b_101010);
     }
 }

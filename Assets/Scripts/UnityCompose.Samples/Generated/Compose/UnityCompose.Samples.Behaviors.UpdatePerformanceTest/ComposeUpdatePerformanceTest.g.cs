@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
 {
     internal partial class ComposeUpdatePerformanceTest
     {
-        protected void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var __isCreated = __composer.StartRestartGroup(3566712);
             var __isRestarted = __composer.IsRestarted();
@@ -38,11 +38,6 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             }
 
             __composer.EndRestartGroup(3566712, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
-        }
-
-        private void __Content()
-        {
-            __Content(CurrentComposer, 0b_10);
         }
 
         private static void __Item(int currentI, Vector2 parentSize, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -83,11 +78,6 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             }
 
             __composer.EndRestartGroup(760552624, __isRestarted)?.UpdateScope(() => __Item(__currentI, __parentSize, __composer, __dirtyRestart));
-        }
-
-        private static void __Item(int currentI, Vector2 parentSize)
-        {
-            __Item(currentI, parentSize, CurrentComposer, 0b_1010);
         }
     }
 }

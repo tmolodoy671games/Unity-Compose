@@ -11,9 +11,41 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class LayoutSample
     {
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(1104042731);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1104042731, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+        }
+
+        protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(625058520);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(625058520, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        }
+
         private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(997071719);
+            var __isCreated = __composer.StartRestartGroup(704483695);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -31,12 +63,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(997071719, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
-        }
-
-        private static void __Layout()
-        {
-            __Layout(CurrentComposer, 0b_10);
+            __composer.EndRestartGroup(704483695, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
     }
 }

@@ -7,7 +7,7 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 internal partial class ResumedScreen
 {
-    public void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public override void __Content(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(733657196);
@@ -37,10 +37,5 @@ internal partial class ResumedScreen
         }
 
         __composer.EndRestartGroup(733657196, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
-    }
-
-    private void __Content(IModifier modifier)
-    {
-        __Content(modifier, CurrentComposer, 0b_10);
     }
 }

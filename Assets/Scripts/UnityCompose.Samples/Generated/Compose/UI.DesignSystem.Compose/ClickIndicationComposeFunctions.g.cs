@@ -134,11 +134,6 @@ public static partial class DesignSystemComposeFunctions
         __composer.EndRestartGroup(1316622409, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
     }
 
-    private static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, bool hovered, Action onHover, Action onLeave, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
-    {
-        __DsClickIndication(content, hovered, onHover, onLeave, rippleColor, hoverColor, animationSpec, modifier, CurrentComposer, 0b_1010101010101010);
-    }
-
     public static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__content, __rippleColor, __hoverColor, __animationSpec, __modifier) = (content, rippleColor, hoverColor, animationSpec, modifier);
@@ -202,10 +197,5 @@ public static partial class DesignSystemComposeFunctions
         }
 
         __composer.EndRestartGroup(459997311, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
-    }
-
-    private static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null)
-    {
-        __DsClickIndication(content, rippleColor, hoverColor, animationSpec, modifier, CurrentComposer, 0b_1010101010);
     }
 }

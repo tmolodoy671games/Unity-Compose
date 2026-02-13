@@ -11,9 +11,41 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class ReordarableListSample
     {
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(260152039);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(260152039, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+        }
+
+        protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(1592429396);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1592429396, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        }
+
         private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(2080562580);
+            var __isCreated = __composer.StartRestartGroup(35404226);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -36,7 +68,7 @@ namespace UnityCompose.Samples.Behaviors
                         var immutableItems = items.ToImmutableList();
                         __Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: (!__composer.ChangedAsStruct((items, immutableItems)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                         {
-                            __composer.StartReplaceGroup(331738692);
+                            __composer.StartReplaceGroup(214651979);
                             foreach (var item in immutableItems)
                             {
                                 Key(key: item, content: (!__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
@@ -64,7 +96,7 @@ namespace UnityCompose.Samples.Behaviors
                                 })));
                             }
 
-                            __composer.EndReplaceGroup(331738692);
+                            __composer.EndReplaceGroup(214651979);
                         })), __composer: __composer, __changed: 0b_01_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00_00);
                 })), __composer: __composer, __changed: 0);
@@ -74,18 +106,13 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2080562580, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
-        }
-
-        private static void __Layout()
-        {
-            __Layout(CurrentComposer, 0b_10);
+            __composer.EndRestartGroup(35404226, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
 
         private static void __Item(int state, Action onMoveUpClick, Action onMoveDownClick, Action onRemoveClick, global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick) = (state, onMoveUpClick, onMoveDownClick, onRemoveClick);
-            var __isCreated = __composer.StartRestartGroup(2014500465);
+            var __isCreated = __composer.StartRestartGroup(1268661115);
             var __dirty = __changed;
             var __dirtyRestart = 0;
             if ((__changed & 0b_11) == 0)
@@ -127,12 +154,12 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
             {
-                __composer.StartReplaceGroup(2007911671);
+                __composer.StartReplaceGroup(496051479);
                 if (state == 2)
                     __LaunchedEffect("state", static () =>
                     {
                     }, __composer: __composer, __changed: 0b_01);
-                __composer.EndReplaceGroup(2007911671);
+                __composer.EndReplaceGroup(496051479);
                 __Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Px()).Border(radius: 12.Px()).Margin(vertical: 4.Px()), content: (!__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     __Text(text: $"Item no. {state}", color: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Margin(left: 32.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
@@ -152,12 +179,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2014500465, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick, __composer, __dirtyRestart));
-        }
-
-        private static void __Item(int state, Action onMoveUpClick, Action onMoveDownClick, Action onRemoveClick)
-        {
-            __Item(state, onMoveUpClick, onMoveDownClick, onRemoveClick, CurrentComposer, 0b_10101010);
+            __composer.EndRestartGroup(1268661115, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick, __composer, __dirtyRestart));
         }
     }
 }

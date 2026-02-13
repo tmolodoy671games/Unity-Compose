@@ -48,11 +48,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(344620497, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __coroutine, __composer, __dirtyRestart));
     }
 
-    private static void __LaunchedEffect<TKey>(TKey key, Func<IEnumerator> coroutine)
-    {
-        __LaunchedEffect(key, coroutine, CurrentComposer, 0b_1010);
-    }
-
     public static void __LaunchedEffect<TKey>(TKey key, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __block) = (key, block);
@@ -92,11 +87,6 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(716928859, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __block, __composer, __dirtyRestart));
-    }
-
-    private static void __LaunchedEffect<TKey>(TKey key, Action block)
-    {
-        __LaunchedEffect(key, block, CurrentComposer, 0b_1010);
     }
 
     public static void __LaunchedEffect<TKey>(TKey key, TimeSpan delay, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -145,11 +135,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(1549277972, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
     }
 
-    private static void __LaunchedEffect<TKey>(TKey key, TimeSpan delay, Action block)
-    {
-        __LaunchedEffect(key, delay, block, CurrentComposer, 0b_101010);
-    }
-
     public static void __LaunchedEffect<TKey>(TKey key, float delay, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __delay, __block) = (key, delay, block);
@@ -196,11 +181,6 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(1767914563, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
     }
 
-    private static void __LaunchedEffect<TKey>(TKey key, float delay, Action block)
-    {
-        __LaunchedEffect(key, delay, block, CurrentComposer, 0b_101010);
-    }
-
     public static void __DisposableEffect<TKey>(TKey key, Func<IDisposableEffectScope, IDisposableEffectResult> effect, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __effect) = (key, effect);
@@ -236,10 +216,5 @@ public static partial class ComposeFunctions
         }
 
         __composer.EndRestartGroup(1073799068, __isRestarted)?.UpdateScope(() => __DisposableEffect(__key, __effect, __composer, __dirtyRestart));
-    }
-
-    private static void __DisposableEffect<TKey>(TKey key, Func<IDisposableEffectScope, IDisposableEffectResult> effect)
-    {
-        __DisposableEffect(key, effect, CurrentComposer, 0b_1010);
     }
 }

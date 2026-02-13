@@ -4,11 +4,13 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class LayoutSample : ComposeUI
     {
+        [Composable]
         protected override void Content()
         {
             Layout();
         }
 
+        [Composable]
         protected override void Preview()
         {
             Layout();

@@ -37,11 +37,6 @@ public static partial class DesignSystemComposeFunctions
         }));
     }
 
-    private static ISingleAnimationPlayer __RememberSingleAnimation(Optional<AnimationSpec> animationSpec = default, bool debuggable = false)
-    {
-        return __RememberSingleAnimation(animationSpec, debuggable, CurrentComposer, 0b_1010);
-    }
-
     public static IState<float> __VisibilityProgress(Optional<AnimationSpec> appearAnimationSpec = default, Optional<AnimationSpec> disappearAnimationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
@@ -78,10 +73,5 @@ public static partial class DesignSystemComposeFunctions
             _ => throw new ArgumentOutOfRangeException()};
         ;
         return forwardState;
-    }
-
-    private static IState<float> __VisibilityProgress(Optional<AnimationSpec> appearAnimationSpec = default, Optional<AnimationSpec> disappearAnimationSpec = default)
-    {
-        return __VisibilityProgress(appearAnimationSpec, disappearAnimationSpec, CurrentComposer, 0b_1010);
     }
 }

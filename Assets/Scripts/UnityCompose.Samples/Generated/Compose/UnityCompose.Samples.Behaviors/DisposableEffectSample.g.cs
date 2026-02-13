@@ -11,16 +11,48 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class DisposableEffectSample
     {
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(1063984080);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1063984080, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+        }
+
+        protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(1131199242);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Layout(__composer: __composer, __changed: 0);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1131199242, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        }
+
         private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(790205923);
+            var __isCreated = __composer.StartRestartGroup(2069458287);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
                 __Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.Name("launched-effect-disposal").FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
                     var isEffectRunning = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                    __composer.StartReplaceGroup(699811654);
+                    __composer.StartReplaceGroup(940161317);
                     if (isEffectRunning.Value)
                     {
                         __DisposableEffect(string.Empty, (!__composer.Changed() ? __composer.RememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<System.Func<UnityCompose.IDisposableEffectScope, UnityCompose.IDisposableEffectResult>>(it =>
@@ -30,7 +62,7 @@ namespace UnityCompose.Samples.Behaviors
                         })), __composer: __composer, __changed: 0);
                     }
 
-                    __composer.EndReplaceGroup(699811654);
+                    __composer.EndReplaceGroup(940161317);
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
                     var isHovered = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                     __Text(text: $"DisposableEffect is {onOrOff}", color: Color.white, fontSize: 40, modifier: Modifier.Name("test-button").Background(isHovered.Value ? Color.cyan : Color.blue, Transition()).Padding(vertical: 20.Px()).Padding(horizontal: isHovered.Value ? 40.Px() : 20.Px(), transition: Transition()).Border(radius: 16.Px()).Margin(top: 32.Px()).OnMouseEnter((!__composer.Changed(isHovered) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isHovered.Value = true))).OnMouseLeave((!__composer.Changed(isHovered) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isHovered.Value = false))).OnClick((!__composer.Changed(isEffectRunning) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isEffectRunning.Value = !isEffectRunning.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
@@ -41,12 +73,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(790205923, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
-        }
-
-        private static void __Layout()
-        {
-            __Layout(CurrentComposer, 0b_10);
+            __composer.EndRestartGroup(2069458287, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
     }
 }
