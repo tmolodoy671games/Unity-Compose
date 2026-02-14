@@ -87,22 +87,22 @@ namespace UnityCompose.Samples.Behaviors
             var __isCreated = __composer.StartRestartGroup(1999327903);
             var __dirty = __changed;
             var __dirtyRestart = 0;
-            if ((__changed & 0b_11) == 0)
+            if ((__changed & 0b_00_00_11) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(selected) ? 0b_10 : 0b_01;
+                __dirty |= __composer.ChangedAsStruct(selected) ? 0b_00_00_10 : 0b_00_00_01;
             }
             else
             {
-                __dirtyRestart |= 0b_01;
+                __dirtyRestart |= 0b_00_00_01;
             }
 
-            if ((__changed & 0b_11_00) == 0)
+            if ((__changed & 0b_00_11_00) == 0)
             {
-                __dirty |= __composer.Changed(content) ? 0b_10_00 : 0b_01_00;
+                __dirty |= __composer.Changed(content) ? 0b_00_10_00 : 0b_00_01_00;
             }
             else
             {
-                __dirtyRestart |= 0b_01_00;
+                __dirtyRestart |= 0b_00_01_00;
             }
 
             if ((__changed & 0b_11_00_00) == 0)
@@ -120,7 +120,7 @@ namespace UnityCompose.Samples.Behaviors
                 var animationSpec = Tween();
                 __Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Px(), horizontal: __AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec, __composer: __composer, __changed: 0).Value.Px()).Margin(horizontal: 2.Px()).Border(16.Px(), topLeftRadius: 0.Px()).Scale(__AnimateFloatAsState(selected ? 0.8f : 1, __composer: __composer, __changed: 0b_01_00).Value), content: (!__composer.Changed(content) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {
-                    __CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content, __composer: __composer, __changed: ((__dirty & 0b_11_00) << 2));
+                    __CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32)), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) << 2));
                 })), __composer: __composer, __changed: 0b_01_00_00);
             }
             else

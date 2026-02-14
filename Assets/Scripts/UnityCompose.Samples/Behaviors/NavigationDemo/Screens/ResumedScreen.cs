@@ -18,7 +18,7 @@ internal partial class ResumedScreen : ComposeScreen
                     modifier: Modifier
                         .Size(100.Px())
                         .Background(Color.blue)
-                        .Scale(1 + 2 * LocalTransitionProgress.Current)
+                        // .Scale(1 + 2 * LocalTransitionProgress.Current)
                 );
             }
         );

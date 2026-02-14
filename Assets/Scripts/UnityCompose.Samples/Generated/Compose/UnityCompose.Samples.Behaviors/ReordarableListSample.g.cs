@@ -115,31 +115,31 @@ namespace UnityCompose.Samples.Behaviors
             var __isCreated = __composer.StartRestartGroup(1268661115);
             var __dirty = __changed;
             var __dirtyRestart = 0;
-            if ((__changed & 0b_11) == 0)
+            if ((__changed & 0b_00_00_00_11) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(state) ? 0b_10 : 0b_01;
+                __dirty |= __composer.ChangedAsStruct(state) ? 0b_00_00_00_10 : 0b_00_00_00_01;
             }
             else
             {
-                __dirtyRestart |= 0b_01;
+                __dirtyRestart |= 0b_00_00_00_01;
             }
 
-            if ((__changed & 0b_11_00) == 0)
+            if ((__changed & 0b_00_00_11_00) == 0)
             {
-                __dirty |= __composer.Changed(onMoveUpClick) ? 0b_10_00 : 0b_01_00;
+                __dirty |= __composer.Changed(onMoveUpClick) ? 0b_00_00_10_00 : 0b_00_00_01_00;
             }
             else
             {
-                __dirtyRestart |= 0b_01_00;
+                __dirtyRestart |= 0b_00_00_01_00;
             }
 
-            if ((__changed & 0b_11_00_00) == 0)
+            if ((__changed & 0b_00_11_00_00) == 0)
             {
-                __dirty |= __composer.Changed(onMoveDownClick) ? 0b_10_00_00 : 0b_01_00_00;
+                __dirty |= __composer.Changed(onMoveDownClick) ? 0b_00_10_00_00 : 0b_00_01_00_00;
             }
             else
             {
-                __dirtyRestart |= 0b_01_00_00;
+                __dirtyRestart |= 0b_00_01_00_00;
             }
 
             if ((__changed & 0b_11_00_00_00) == 0)
@@ -158,7 +158,7 @@ namespace UnityCompose.Samples.Behaviors
                 if (state == 2)
                     __LaunchedEffect("state", static () =>
                     {
-                    }, __composer: __composer, __changed: 0b_01);
+                    }, __composer: __composer, __changed: 0b_00_01);
                 __composer.EndReplaceGroup(496051479);
                 __Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Px()).Border(radius: 12.Px()).Margin(vertical: 4.Px()), content: (!__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
                 {

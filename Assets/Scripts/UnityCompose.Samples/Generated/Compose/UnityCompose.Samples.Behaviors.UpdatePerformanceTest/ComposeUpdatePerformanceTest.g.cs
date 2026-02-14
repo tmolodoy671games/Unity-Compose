@@ -46,13 +46,13 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             var __isCreated = __composer.StartRestartGroup(760552624);
             var __dirty = __changed;
             var __dirtyRestart = 0;
-            if ((__changed & 0b_11) == 0)
+            if ((__changed & 0b_00_11) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(currentI) ? 0b_10 : 0b_01;
+                __dirty |= __composer.ChangedAsStruct(currentI) ? 0b_00_10 : 0b_00_01;
             }
             else
             {
-                __dirtyRestart |= 0b_01;
+                __dirtyRestart |= 0b_00_01;
             }
 
             if ((__changed & 0b_11_00) == 0)

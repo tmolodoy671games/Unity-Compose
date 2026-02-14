@@ -19,22 +19,22 @@ public static partial class ComposeFunctions
         var __isCreated = __composer.StartRestartGroup(112916579);
         var __dirty = __changed;
         var __dirtyRestart = 0;
-        if ((__changed & 0b_11) == 0)
+        if ((__changed & 0b_00_00_11) == 0)
         {
-            __dirty |= __composer.Changed(coordinator) ? 0b_10 : 0b_01;
+            __dirty |= __composer.Changed(coordinator) ? 0b_00_00_10 : 0b_00_00_01;
         }
         else
         {
-            __dirtyRestart |= 0b_01;
+            __dirtyRestart |= 0b_00_00_01;
         }
 
-        if ((__changed & 0b_11_00) == 0)
+        if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(transition) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.ChangedAsStruct(transition) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00;
+            __dirtyRestart |= 0b_00_01_00;
         }
 
         if ((__changed & 0b_11_00_00) == 0)
@@ -58,7 +58,7 @@ public static partial class ComposeFunctions
             {
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());
-            })), __composer: __composer, __changed: (__dirty & 0b_11));
+            })), __composer: __composer, __changed: (__dirty & 0b_00_11));
             var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
             var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, ImmutableStableListOf<ComposeScreen>());
             var previousBackStack = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<StableCollections.IImmutableStableList<UnityCompose.ComposeScreen>>>(MutableStablePropertyOf(initialScreens.OrEmpty().ToImmutableStableList())));

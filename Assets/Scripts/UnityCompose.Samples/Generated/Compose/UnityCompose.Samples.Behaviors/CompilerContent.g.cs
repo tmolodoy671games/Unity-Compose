@@ -34,22 +34,22 @@ namespace UnityCompose.Samples.Behaviors
             var __isCreated = __composer.StartRestartGroup(1926882667);
             var __dirty = __changed;
             var __dirtyRestart = 0;
-            if ((__changed & 0b_11) == 0)
+            if ((__changed & 0b_00_00_11) == 0)
             {
-                __dirty |= __composer.Changed(text) ? 0b_10 : 0b_01;
+                __dirty |= __composer.Changed(text) ? 0b_00_00_10 : 0b_00_00_01;
             }
             else
             {
-                __dirtyRestart |= 0b_01;
+                __dirtyRestart |= 0b_00_00_01;
             }
 
-            if ((__changed & 0b_11_00) == 0)
+            if ((__changed & 0b_00_11_00) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(misc1) ? 0b_10_00 : 0b_01_00;
+                __dirty |= __composer.ChangedAsStruct(misc1) ? 0b_00_10_00 : 0b_00_01_00;
             }
             else
             {
-                __dirtyRestart |= 0b_01_00;
+                __dirtyRestart |= 0b_00_01_00;
             }
 
             if ((__changed & 0b_11_00_00) == 0)

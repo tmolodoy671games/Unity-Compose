@@ -17,40 +17,40 @@ public static partial class ComposeFunctions
         var __isCreated = __composer.StartRestartGroup(1366895982);
         var __dirty = __changed;
         var __dirtyRestart = 0;
-        if ((__changed & 0b_11) == 0)
+        if ((__changed & 0b_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.Changed(targetState) ? 0b_10 : 0b_01;
+            __dirty |= __composer.Changed(targetState) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
         }
         else
         {
-            __dirtyRestart |= 0b_01;
+            __dirtyRestart |= 0b_00_00_00_00_01;
         }
 
-        if ((__changed & 0b_11_00) == 0)
+        if ((__changed & 0b_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.Changed(transitionSpec) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(transitionSpec) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00;
+            __dirtyRestart |= 0b_00_00_00_01_00;
         }
 
-        if ((__changed & 0b_11_00_00) == 0)
+        if ((__changed & 0b_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.Changed(content) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(content) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00_00;
+            __dirtyRestart |= 0b_00_00_01_00_00;
         }
 
-        if ((__changed & 0b_11_00_00_00) == 0)
+        if ((__changed & 0b_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(sizeAnimationSpec) ? 0b_10_00_00_00 : 0b_01_00_00_00;
+            __dirty |= __composer.ChangedAsStruct(sizeAnimationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00_00_00;
+            __dirtyRestart |= 0b_00_01_00_00_00;
         }
 
         if ((__changed & 0b_11_00_00_00_00) == 0)
@@ -66,20 +66,20 @@ public static partial class ComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
             var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-            __LaunchedEffect(targetState, (!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_11));
+            __LaunchedEffect(targetState, (!__composer.Changed(isSwitched) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_00_11));
             var previousValue = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
             var targetValue = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
             __LaunchedEffect(targetState, (!__composer.ChangedAsStruct((targetState, previousValue, targetValue)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
             {
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
-            })), __composer: __composer, __changed: (__dirty & 0b_11));
+            })), __composer: __composer, __changed: (__dirty & 0b_00_11));
             var resolvedTransition = (!__composer.Changed(targetState!) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = __AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration), __composer: __composer, __changed: 0).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var resolvedTimeElapsed = resolvedProgress * transitionDuration;
-            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? __composer.WithReplaceGroup(1138676624, () => __AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState, __composer: __composer, __changed: ((__dirty & 0b_11) << 2))) : __composer.WithReplaceGroup(1488763163, () => (Modifier, Modifier));
+            var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? __composer.WithReplaceGroup(1138676624, () => __AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState, __composer: __composer, __changed: ((__dirty & 0b_00_11) << 2))) : __composer.WithReplaceGroup(1488763163, () => (Modifier, Modifier));
             __ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: (!__composer.ChangedAsStruct((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
             {
                 var parent = __composer.GetParentVisualElement().NotNull();

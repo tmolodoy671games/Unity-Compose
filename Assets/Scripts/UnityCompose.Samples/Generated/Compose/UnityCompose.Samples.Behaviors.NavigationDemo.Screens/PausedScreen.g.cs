@@ -33,7 +33,7 @@ internal partial class PausedScreen
             {
                 currentTab.Value = it;
                 pausedCoordinator.ShowTab(it);
-            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier, __composer: __composer, __changed: ((__dirty & 0b_11) << 8));
+            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier, __composer: __composer, __changed: ((__dirty & 0b_00_00_00_00_11) << 8));
         }
         else
         {
@@ -49,40 +49,40 @@ internal partial class PausedScreen
         var __isCreated = __composer.StartRestartGroup(177925555);
         var __dirty = __changed;
         var __dirtyRestart = 0;
-        if ((__changed & 0b_11) == 0)
+        if ((__changed & 0b_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_10 : 0b_01;
+            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
         }
         else
         {
-            __dirtyRestart |= 0b_01;
+            __dirtyRestart |= 0b_00_00_00_00_01;
         }
 
-        if ((__changed & 0b_11_00) == 0)
+        if ((__changed & 0b_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.Changed(pausedCoordinator) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(pausedCoordinator) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00;
+            __dirtyRestart |= 0b_00_00_00_01_00;
         }
 
-        if ((__changed & 0b_11_00_00) == 0)
+        if ((__changed & 0b_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.Changed(onClick) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(onClick) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00_00;
+            __dirtyRestart |= 0b_00_00_01_00_00;
         }
 
-        if ((__changed & 0b_11_00_00_00) == 0)
+        if ((__changed & 0b_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.Changed(onTabContentClick) ? 0b_10_00_00_00 : 0b_01_00_00_00;
+            __dirty |= __composer.Changed(onTabContentClick) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00_00_00;
+            __dirtyRestart |= 0b_00_01_00_00_00;
         }
 
         if ((__changed & 0b_11_00_00_00_00) == 0)
@@ -101,9 +101,12 @@ internal partial class PausedScreen
             __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
                 const float tweenDuration = 1.99f;
-                var visibilityProgress = __VisibilityProgress(appearAnimationSpec: Tween(tweenDuration), disappearAnimationSpec: Tween(tweenDuration), __composer: __composer, __changed: 0).Value;
-                __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - visibilityProgress).Px()), __composer: __composer, __changed: (__dirty & 0b_11) | ((__dirty & 0b_11_00_00) >> 2));
-                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_11_00) >> 2));
+                // var visibilityProgress = VisibilityProgress(
+                //     appearAnimationSpec: Tween(tweenDuration),
+                //     disappearAnimationSpec: Tween(tweenDuration)
+                // ).Value;
+                __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - 1).Px()), __composer: __composer, __changed: (__dirty & 0b_00_00_11) | ((__dirty & 0b_11_00_00) >> 2));
+                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2));
             })), __composer: __composer, __changed: 0b_01_01_00_00);
             previousTab.Value = tab;
         }
@@ -121,22 +124,22 @@ internal partial class PausedScreen
         var __isCreated = __composer.StartRestartGroup(497304658);
         var __dirty = __changed;
         var __dirtyRestart = 0;
-        if ((__changed & 0b_11) == 0)
+        if ((__changed & 0b_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(currentTab) ? 0b_10 : 0b_01;
+            __dirty |= __composer.ChangedAsStruct(currentTab) ? 0b_00_00_10 : 0b_00_00_01;
         }
         else
         {
-            __dirtyRestart |= 0b_01;
+            __dirtyRestart |= 0b_00_00_01;
         }
 
-        if ((__changed & 0b_11_00) == 0)
+        if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.Changed(onClick) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(onClick) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00;
+            __dirtyRestart |= 0b_00_01_00;
         }
 
         if ((__changed & 0b_11_00_00) == 0)
@@ -153,10 +156,10 @@ internal partial class PausedScreen
         {
             __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.ChangedAsStruct((currentTab, onClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
-                __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
-                __Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
-                __Tab(PausedTab.System, currentTab == PausedTab.System, onClick, __composer: __composer, __changed: 0b_01 | ((__dirty & 0b_11_00) << 2));
+                __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
+                __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
+                __Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
+                __Tab(PausedTab.System, currentTab == PausedTab.System, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
             })), __composer: __composer, __changed: 0b_01_01_00_00);
         }
         else
@@ -173,22 +176,22 @@ internal partial class PausedScreen
         var __isCreated = __composer.StartRestartGroup(1238223639);
         var __dirty = __changed;
         var __dirtyRestart = 0;
-        if ((__changed & 0b_11) == 0)
+        if ((__changed & 0b_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_10 : 0b_01;
+            __dirty |= __composer.ChangedAsStruct(tab) ? 0b_00_00_10 : 0b_00_00_01;
         }
         else
         {
-            __dirtyRestart |= 0b_01;
+            __dirtyRestart |= 0b_00_00_01;
         }
 
-        if ((__changed & 0b_11_00) == 0)
+        if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(selected) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.ChangedAsStruct(selected) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
-            __dirtyRestart |= 0b_01_00;
+            __dirtyRestart |= 0b_00_01_00;
         }
 
         if ((__changed & 0b_11_00_00) == 0)

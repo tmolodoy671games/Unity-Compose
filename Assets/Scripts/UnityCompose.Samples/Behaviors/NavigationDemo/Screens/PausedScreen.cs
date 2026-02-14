@@ -41,15 +41,15 @@ internal partial class PausedScreen : ComposeScreen
             content: () =>
             {
                 const float tweenDuration = 1.99f;
-                var visibilityProgress = VisibilityProgress(
-                    appearAnimationSpec: Tween(tweenDuration),
-                    disappearAnimationSpec: Tween(tweenDuration)
-                ).Value;
+                // var visibilityProgress = VisibilityProgress(
+                //     appearAnimationSpec: Tween(tweenDuration),
+                //     disappearAnimationSpec: Tween(tweenDuration)
+                // ).Value;
                 TabsRow(
                     currentTab: tab,
                     onClick: onClick,
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
-                        .Offset(y: -100 * (1- visibilityProgress).Px())
+                        .Offset(y: -100 * (1- 1).Px())
                 );
                 Navigation(
                     modifier: Modifier.FillMaxSize()
