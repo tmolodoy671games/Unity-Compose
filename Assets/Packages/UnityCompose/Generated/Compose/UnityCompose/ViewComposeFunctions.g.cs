@@ -65,7 +65,9 @@ public static partial class ComposeFunctions
             composer.EnterVisualElement(visualElement);
             node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
             __composer.StartReplaceGroup(708751226);
+            __composer.StartReplaceGroup(708751226);
             content?.Invoke();
+            __composer.EndReplaceGroup(708751226);
             __composer.EndReplaceGroup(708751226);
             composer.EndReusableGroup(123);
         }

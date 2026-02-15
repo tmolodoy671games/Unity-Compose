@@ -40,7 +40,9 @@ public static partial class ComposeFunctions
             composer.StartLocalGroup(123_1);
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
+            __composer.StartReplaceGroup(2087134422);
             content();
+            __composer.EndReplaceGroup(2087134422);
             composer.EndLocalGroup(123_1);
         }
         else
@@ -92,7 +94,9 @@ public static partial class ComposeFunctions
             var map = composer.RequireCompositionLocalMap();
             map.Set(provides1);
             map.Set(provides2);
+            __composer.StartReplaceGroup(1805106646);
             content();
+            __composer.EndReplaceGroup(1805106646);
             composer.EndLocalGroup(123_2);
         }
         else
@@ -154,7 +158,9 @@ public static partial class ComposeFunctions
             map.Set(provides1);
             map.Set(provides2);
             map.Set(provides3);
+            __composer.StartReplaceGroup(1730004743);
             content();
+            __composer.EndReplaceGroup(1730004743);
             composer.EndLocalGroup(123_3);
         }
         else
@@ -226,7 +232,9 @@ public static partial class ComposeFunctions
             map.Set(provides2);
             map.Set(provides3);
             map.Set(provides4);
+            __composer.StartReplaceGroup(2015657451);
             content();
+            __composer.EndReplaceGroup(2015657451);
             composer.EndLocalGroup(123_4);
         }
         else
@@ -308,7 +316,9 @@ public static partial class ComposeFunctions
             map.Set(provides3);
             map.Set(provides4);
             map.Set(provides5);
+            __composer.StartReplaceGroup(770323757);
             content();
+            __composer.EndReplaceGroup(770323757);
             composer.EndLocalGroup(123_5);
         }
         else
@@ -400,7 +410,9 @@ public static partial class ComposeFunctions
             map.Set(provides4);
             map.Set(provides5);
             map.Set(provides6);
+            __composer.StartReplaceGroup(1292491345);
             content();
+            __composer.EndReplaceGroup(1292491345);
             composer.EndLocalGroup(123_6);
         }
         else
@@ -502,7 +514,9 @@ public static partial class ComposeFunctions
             map.Set(provides5);
             map.Set(provides6);
             map.Set(provides7);
+            __composer.StartReplaceGroup(1413997839);
             content();
+            __composer.EndReplaceGroup(1413997839);
             composer.EndLocalGroup(123_7);
         }
         else
@@ -614,7 +628,9 @@ public static partial class ComposeFunctions
             map.Set(provides6);
             map.Set(provides7);
             map.Set(provides8);
+            __composer.StartReplaceGroup(623892538);
             content();
+            __composer.EndReplaceGroup(623892538);
             composer.EndLocalGroup(123_8);
         }
         else
@@ -736,7 +752,9 @@ public static partial class ComposeFunctions
             map.Set(provides7);
             map.Set(provides8);
             map.Set(provides9);
+            __composer.StartReplaceGroup(469841377);
             content();
+            __composer.EndReplaceGroup(469841377);
             composer.EndLocalGroup(123_9);
         }
         else
@@ -868,7 +886,9 @@ public static partial class ComposeFunctions
             map.Set(provides8);
             map.Set(provides9);
             map.Set(provides10);
+            __composer.StartReplaceGroup(325177385);
             content();
+            __composer.EndReplaceGroup(325177385);
             composer.EndLocalGroup(123_10);
         }
         else

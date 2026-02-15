@@ -33,7 +33,9 @@ public partial class ComposeView
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
             var isActiveInstance = (!__composer.ChangedAsStruct(onScreenManager.Contents.IsEmpty()) ? __composer.RememberedValue<global::UnityCompose.IsActiveEntry>() : __composer.UpdateRememberedValue<global::UnityCompose.IsActiveEntry>(new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)));
+            __composer.StartReplaceGroup(670603868);
             __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), (!__composer.ChangedAsStruct((content, composer)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0);
+            __composer.EndReplaceGroup(670603868);
             __composer.StartReplaceGroup(1348373615);
             foreach (var overlayContent in onScreenManager.Contents)
             {

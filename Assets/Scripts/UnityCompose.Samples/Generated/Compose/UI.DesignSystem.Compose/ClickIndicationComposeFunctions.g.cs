@@ -100,7 +100,9 @@ public static partial class DesignSystemComposeFunctions
                 isPressed.Value = false;
             }))).OnMouseDown((!__composer.Changed(isPressed) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = true))).OnMouseUp((!__composer.Changed(isPressed) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = false))), content: (!__composer.ChangedAsStruct((content, hovered, animationSpec, resolvedHoverColor, resolvedPressColor, layout, isPressed)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
+                __composer.StartReplaceGroup(1296287483);
                 content(new DsClickIndicationScope(hovered, isPressed.Value is { HasValue: true, Value: true }));
+                __composer.EndReplaceGroup(1296287483);
                 // Hover Indication:
                 __Spacer(modifier: Modifier.Float().FillMaxSize().Position(top: 0.Px(), left: 0.Px()).Background(__AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0), __composer: __composer, __changed: 0b_01_00).Value), __composer: __composer, __changed: 0);
                 var pressAnimation = __RememberSingleAnimation(animationSpec, __composer: __composer, __changed: 0b_01_00 | ((__dirty & 0b_11_00_00_00_00_00_00) >> 12));

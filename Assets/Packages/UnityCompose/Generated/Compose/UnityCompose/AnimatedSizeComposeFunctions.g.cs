@@ -56,7 +56,9 @@ public static partial class ComposeFunctions
                 it.style.justifyContent = Justify.Center;
             })), content: (!__composer.ChangedAsStruct((content, contentModifier)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
+                __composer.StartReplaceGroup(251165826);
                 content(contentModifier);
+                __composer.EndReplaceGroup(251165826);
             })), __composer: __composer, __changed: 0);
         }
         else

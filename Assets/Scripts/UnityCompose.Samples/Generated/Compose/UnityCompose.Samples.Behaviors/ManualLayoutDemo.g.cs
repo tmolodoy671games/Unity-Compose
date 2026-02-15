@@ -62,7 +62,9 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01)
             {
+                __composer.StartReplaceGroup(1090536677);
                 content();
+                __composer.EndReplaceGroup(1090536677);
             }
             else
             {

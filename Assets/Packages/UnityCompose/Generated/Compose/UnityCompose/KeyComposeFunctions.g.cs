@@ -28,7 +28,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
-            content();
+            __composer.WithReplaceGroup(1363605592, () => content());
         }
         else
         {
