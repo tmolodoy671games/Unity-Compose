@@ -1,3 +1,5 @@
+using System;
+
 namespace UnityCompose.Samples.Behaviors.NavigationDemo.Screens;
 
 internal partial class ResumedScreen : ComposeScreen
@@ -14,13 +16,48 @@ internal partial class ResumedScreen : ComposeScreen
                 .OnClick(() => coordinator.ShowPausedScreen()),
             content: () =>
             {
+                var showMenu = Remember(() => MutableStateOf(false));
+                DropdownMenu(
+                    expanded: showMenu.Value,
+                    onDismissRequest: () => showMenu.Value = false
+                );
                 Spacer(
                     modifier: Modifier
-                        .Size(100.Px())
+                        .Size(300.Px())
                         .Background(Color.blue)
-                        // .Scale(1 + 2 * LocalTransitionProgress.Current)
+                        .OnClick(() => showMenu.Value = true)
+                        .Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current))
                 );
             }
         );
+    }
+
+    [Composable]
+    private static void DropdownMenu(
+        bool expanded,
+        Action onDismissRequest
+    )
+    {
+        if (expanded)
+        {
+            ModalMenu(() =>
+            {
+                Box(
+                    alignment: Alignment.Center,
+                    modifier: Modifier
+                        .FillMaxSize()
+                        .Background(Color.black.With(a: 0.9f)),
+                    content: () =>
+                    {
+                        Spacer(
+                            Modifier
+                                .Size(100.Px())
+                                .Background(Color.yellow)
+                                .OnClick(onDismissRequest)
+                        );
+                    }
+                );
+            });
+        }
     }
 }

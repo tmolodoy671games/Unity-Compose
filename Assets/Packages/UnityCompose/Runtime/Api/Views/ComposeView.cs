@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using StableCollections;
 using UnityCompose;
 using UnityEngine.UIElements;
 
@@ -30,14 +31,31 @@ public partial class ComposeView : VisualElement
     [Composable]
     private void ContentImpl(ComposableContent<Composer, int> content)
     {
+        var onScreenManager = Remember(() => new ModalMenuManager());
         var composer = CurrentComposer;
         composer.StartReusableGroup(0);
         composer.SetVisualElement(this);
         composer.EnterVisualElement(this);
+        var isActiveInstance = Remember(onScreenManager.Contents.IsEmpty(),
+            () => new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)
+        );
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
-            () => content(_composer, 0)
+            LocalIsActive.Provides(isActiveInstance),
+            LocalOnScreenMenuManager.Provides(onScreenManager),
+            () => content(composer, 0)
         );
+        foreach (var overlayContent in onScreenManager.Contents)
+        {
+            Box(
+                modifier: Modifier
+                    .OnClick(() => { })
+                    .FillMaxSize()
+                    .Float(),
+                content: overlayContent
+            );
+        }
+
         composer.EndReusableGroup(0);
     }
 

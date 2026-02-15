@@ -100,7 +100,7 @@ internal partial class PausedScreen
             var previousTab = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab)));
             __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
             {
-                const float tweenDuration = 1.99f;
+                // const float tweenDuration = 1.99f;
                 // var visibilityProgress = VisibilityProgress(
                 //     appearAnimationSpec: Tween(tweenDuration),
                 //     disappearAnimationSpec: Tween(tweenDuration)

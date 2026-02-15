@@ -40,7 +40,7 @@ internal partial class PausedScreen : ComposeScreen
                 .FillMaxSize(),
             content: () =>
             {
-                const float tweenDuration = 1.99f;
+                // const float tweenDuration = 1.99f;
                 // var visibilityProgress = VisibilityProgress(
                 //     appearAnimationSpec: Tween(tweenDuration),
                 //     disappearAnimationSpec: Tween(tweenDuration)
