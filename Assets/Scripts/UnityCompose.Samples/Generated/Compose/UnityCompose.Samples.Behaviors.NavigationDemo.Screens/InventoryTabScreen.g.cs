@@ -25,18 +25,18 @@ internal partial class InventoryTabScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
-            __Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                __Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                __Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __InventoryItem(__composer: __composer, __changed: 0);
                         __InventoryItem(__composer: __composer, __changed: 0);
                         __InventoryItem(__composer: __composer, __changed: 0);
                         __InventoryItem(__composer: __composer, __changed: 0);
                     })), __composer: __composer, __changed: 0b_01_01_01_00);
-                    __Row((!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __InventoryItem(__composer: __composer, __changed: 0);
                         __InventoryItem(__composer: __composer, __changed: 0);

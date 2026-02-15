@@ -187,7 +187,7 @@ public static partial class ComposeFunctions
             __dirtyRestart |= 0b_01_00_00;
         }
 
-        var property = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
+        var property = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
@@ -202,7 +202,7 @@ public static partial class ComposeFunctions
         }
 
         __LaunchedEffect(key: targetValue, // block: () => property.Value = targetValue
-        coroutine: (!__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        coroutine: (!__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(130532738);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
@@ -269,7 +269,7 @@ public static partial class ComposeFunctions
         }
 
         var targetValue = targetValueFactory();
-        var property = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
+        var property = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<T>>(MutableStateOf(targetValue)));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
@@ -284,7 +284,7 @@ public static partial class ComposeFunctions
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        __LaunchedEffect(key: key, coroutine: (!__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<System.Func<System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<System.Func<System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        __LaunchedEffect(key: key, coroutine: (!__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(391583017);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)

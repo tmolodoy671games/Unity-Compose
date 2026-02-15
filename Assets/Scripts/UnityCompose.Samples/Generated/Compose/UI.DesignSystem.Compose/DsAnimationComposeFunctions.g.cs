@@ -30,7 +30,7 @@ public static partial class DesignSystemComposeFunctions
             __dirtyRestart |= 0b_01_00;
         }
 
-        return (!__composer.Changed() ? __composer.RememberedValue<UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>() : __composer.UpdateRememberedValue<UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>(() =>
+        return (!__composer.Changed() ? __composer.RememberedValue<global::UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>() : __composer.UpdateRememberedValue<global::UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>(() =>
         {
             var result = new SingleAnimationPlayerImpl(animationSpec.GetOrDefault(), debuggable);
             return result;
@@ -62,7 +62,7 @@ public static partial class DesignSystemComposeFunctions
         var defaultDuration = 0.5f;
         var resolvedAnimationSpec = appearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
         var resolvedBackwardAnimationSpec = disappearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
-        var isVisible = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
+        var isVisible = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
         var forwardState = __AnimateFloatAsState(isVisible.Value.ToInt(), isVisible.Value ? resolvedAnimationSpec : resolvedBackwardAnimationSpec, __composer: __composer, __changed: 0);
         var state = LocalTransitionState.Current;
         isVisible.Value = state switch

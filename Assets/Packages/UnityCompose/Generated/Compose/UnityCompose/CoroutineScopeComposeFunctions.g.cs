@@ -13,6 +13,6 @@ public static partial class ComposeFunctions
 {
     public static IComposeCoroutineScope __RememberCoroutineScope(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        return (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl()));
+        return (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposeFunctions.ComposeCoroutineScopeImpl>(new ComposeCoroutineScopeImpl()));
     }
 }

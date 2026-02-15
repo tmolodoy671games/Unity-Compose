@@ -26,11 +26,11 @@ internal partial class ResumedScreen
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
-            __Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick((!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowPausedScreen()))), content: (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick((!__composer.Changed(coordinator) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => coordinator.ShowPausedScreen()))), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                var showMenu = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed(showMenu) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0);
-                __Spacer(modifier: Modifier.Size(300.Px()).Background(Color.blue).OnClick((!__composer.Changed(showMenu) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current)), __composer: __composer, __changed: 0);
+                var showMenu = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
+                __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0);
+                __Spacer(modifier: Modifier.Size(300.Px()).Background(Color.blue).OnClick((!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current)), __composer: __composer, __changed: 0);
             })), __composer: __composer, __changed: 0);
         }
         else
@@ -71,9 +71,9 @@ internal partial class ResumedScreen
             __composer.StartReplaceGroup(1587820450);
             if (expanded)
             {
-                ModalMenu((!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                ModalMenu((!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().Background(Color.black.With(a: 0.9f)), content: (!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+                    __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().Background(Color.black.With(a: 0.9f)), content: (!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __Spacer(Modifier.Size(100.Px()).Background(Color.yellow).OnClick(onDismissRequest), __composer: __composer, __changed: 0);
                     })), __composer: __composer, __changed: 0);

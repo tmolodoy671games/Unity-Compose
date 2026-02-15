@@ -122,7 +122,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
-            __ReusableComposeView<Column>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((horizontalAlignment, verticalArrangement)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>?>(it =>
+            __ReusableComposeView<Column>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((horizontalAlignment, verticalArrangement)) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Column>>(it =>
             {
                 it.style.alignItems = (horizontalAlignment ?? Alignment.Left).ToAlign();
                 it.style.justifyContent = (verticalArrangement ?? Arrangement.Top).ToJustify();
@@ -181,7 +181,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
-            __ReusableComposeView<Row>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((horizontalArrangement, verticalAlignment)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>?>(it =>
+            __ReusableComposeView<Row>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((horizontalArrangement, verticalAlignment)) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Row>>(it =>
             {
                 it.style.flexDirection = FlexDirection.Row;
                 it.style.alignItems = (verticalAlignment ?? Alignment.Top).ToAlign();
@@ -232,7 +232,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __ReusableComposeView<Box>(modifier: modifier, initializer: (!__composer.Changed(alignment) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>?>(it =>
+            __ReusableComposeView<Box>(modifier: modifier, initializer: (!__composer.Changed(alignment) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Box>>(it =>
             {
                 var resolvedAlignment = alignment ?? Alignment.TopLeft;
                 var(align, justify) = (resolvedAlignment.ToAlign(), resolvedAlignment.ToJustify());
@@ -368,7 +368,7 @@ public static partial class ComposeFunctions
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
-            __ReusableComposeView<Text>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)) ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>?>(it =>
+            __ReusableComposeView<Text>(modifier: modifier, initializer: (!__composer.ChangedAsStruct((text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, localContentColor, localTextStyle)) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>(it =>
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
@@ -460,7 +460,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __ReusableComposeView<Image>(initializer: (!__composer.ChangedAsStruct((image, tint)) ? __composer.RememberedValue<System.Action<UnityEngine.UIElements.Image>?>() : __composer.UpdateRememberedValue<System.Action<UnityEngine.UIElements.Image>?>(it =>
+            __ReusableComposeView<Image>(initializer: (!__composer.ChangedAsStruct((image, tint)) ? __composer.RememberedValue<global::System.Action<global::UnityEngine.UIElements.Image>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityEngine.UIElements.Image>>(it =>
             {
                 it.sprite = image.Sprite;
                 it.vectorImage = image.VectorImage;

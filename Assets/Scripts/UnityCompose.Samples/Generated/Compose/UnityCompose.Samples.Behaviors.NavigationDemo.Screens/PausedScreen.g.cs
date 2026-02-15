@@ -27,13 +27,13 @@ internal partial class PausedScreen
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
-            var pausedCoordinator = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>() : __composer.UpdateRememberedValue<UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>(new PausedCoordinatorImpl()));
-            var currentTab = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(MutableStateOf(PausedTab.Inventory)));
-            __Layout(tab: currentTab.Value, pausedCoordinator: pausedCoordinator, onClick: (!__composer.ChangedAsStruct((pausedCoordinator, currentTab)) ? __composer.RememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(it =>
+            var pausedCoordinator = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedCoordinatorImpl>(new PausedCoordinatorImpl()));
+            var currentTab = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(MutableStateOf(PausedTab.Inventory)));
+            __Layout(tab: currentTab.Value, pausedCoordinator: pausedCoordinator, onClick: (!__composer.ChangedAsStruct((pausedCoordinator, currentTab)) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(it =>
             {
                 currentTab.Value = it;
                 pausedCoordinator.ShowTab(it);
-            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier, __composer: __composer, __changed: ((__dirty & 0b_00_00_00_00_11) << 8));
+            })), onTabContentClick: (!__composer.Changed(coordinator) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => coordinator.ShowResumedScreen())), modifier: modifier, __composer: __composer, __changed: ((__dirty & 0b_00_00_00_00_11) << 8));
         }
         else
         {
@@ -97,8 +97,8 @@ internal partial class PausedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
-            var previousTab = (!__composer.Changed() ? __composer.RememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<StableCollections.IMutableStableProperty<UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab)));
-            __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            var previousTab = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab)));
+            __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.ChangedAsStruct((tab, pausedCoordinator, onClick, onTabContentClick, previousTab)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 // const float tweenDuration = 1.99f;
                 // var visibilityProgress = VisibilityProgress(
@@ -106,7 +106,7 @@ internal partial class PausedScreen
                 //     disappearAnimationSpec: Tween(tweenDuration)
                 // ).Value;
                 __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - 1).Px()), __composer: __composer, __changed: (__dirty & 0b_00_00_11) | ((__dirty & 0b_11_00_00) >> 2));
-                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2));
+                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2));
             })), __composer: __composer, __changed: 0b_01_01_00_00);
             previousTab.Value = tab;
         }
@@ -154,7 +154,7 @@ internal partial class PausedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.ChangedAsStruct((currentTab, onClick)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() =>
+            __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.ChangedAsStruct((currentTab, onClick)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
                 __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
@@ -206,7 +206,7 @@ internal partial class PausedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: __AnimateFloatAsState(selected ? 120 : 40, __composer: __composer, __changed: 0b_01_00).Value.Px()).Padding(vertical: 12.Px()).Border(8.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.ChangedAsStruct((tab, onClick)) ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() => onClick(tab)))), content: (!__composer.ChangedAsStruct(tab) ? __composer.RememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent<UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
+            __DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: __AnimateFloatAsState(selected ? 120 : 40, __composer: __composer, __changed: 0b_01_00).Value.Px()).Padding(vertical: 12.Px()).Border(8.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.ChangedAsStruct((tab, onClick)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => onClick(tab)))), content: (!__composer.ChangedAsStruct(tab) ? __composer.RememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
             {
                 __Text(text: tab.ToString(), color: Color.white, fontSize: 20, fontWeight: FontWeight.Bold, modifier: Modifier.Scale(1.5f - __AnimateFloatAsState(it.IsPressed.ToInt(), __composer: __composer, __changed: 0b_01_00).Value * 0.25f), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
             })), __composer: __composer, __changed: 0b_01_01_01_00);

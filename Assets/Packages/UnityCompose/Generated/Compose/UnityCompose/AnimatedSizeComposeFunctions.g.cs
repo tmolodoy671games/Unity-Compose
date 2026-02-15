@@ -50,11 +50,11 @@ public static partial class ComposeFunctions
         {
             var resolvedAnimationSpec = animationSpec.HasValue ? animationSpec : AnimationSpec.Default;
             var(containerModifier, contentModifier) = __AnimateSizeModifiers(resolvedAnimationSpec.GetOrDefault(), __composer: __composer, __changed: 0b_01_00);
-            __ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerModifier), initializer: (!__composer.Changed() ? __composer.RememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>?>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>?>(it =>
+            __ReusableComposeView<AnimatedSize>(modifier: modifier.OrEmpty().Then(containerModifier), initializer: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.AnimatedSize>>(it =>
             {
                 it.style.alignItems = Align.Center;
                 it.style.justifyContent = Justify.Center;
-            })), content: (!__composer.ChangedAsStruct((content, contentModifier)) ? __composer.RememberedValue<UnityCompose.ComposableContent?>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent?>(() =>
+            })), content: (!__composer.ChangedAsStruct((content, contentModifier)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 content(contentModifier);
             })), __composer: __composer, __changed: 0);
@@ -89,17 +89,17 @@ public static partial class ComposeFunctions
             __dirtyRestart |= 0b_01_00;
         }
 
-        var containerPaddings = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
-        var contentSize = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<UnityCompose.IMutableState<UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
+        var containerPaddings = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
+        var contentSize = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
         var contentModifier = Modifier;
-        var containerModifier = Modifier.Clip().OnLocallyPositioned((!__composer.Changed(containerPaddings) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it =>
+        var containerModifier = Modifier.Clip().OnLocallyPositioned((!__composer.Changed(containerPaddings) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         })));
         __composer.StartReplaceGroup(1909905094);
         if (!IsInPreview)
         {
-            contentModifier = contentModifier.OnLocallyPositioned((!__composer.Changed(contentSize) ? __composer.RememberedValue<System.Action<UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<System.Action<UnityCompose.LayoutCoordinates>>(it =>
+            contentModifier = contentModifier.OnLocallyPositioned((!__composer.Changed(contentSize) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
             {
                 var resolvedSize = it.Size;
                 resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
@@ -110,7 +110,7 @@ public static partial class ComposeFunctions
             __composer.StartReplaceGroup(2106743383);
             if (isSizeValid)
             {
-                var animatedSize = key != null ? __composer.WithReplaceGroup(1104282356, () => __AnimateVector2AsState(key: key, targetValueFactory: (!__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<System.Func<UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<System.Func<UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value)), animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_00_00_11) << 4)).Value) : __composer.WithReplaceGroup(1065411164, () => __AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11) << 2)).Value);
+                var animatedSize = key != null ? __composer.WithReplaceGroup(1104282356, () => __AnimateVector2AsState(key: key, targetValueFactory: (!__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<global::System.Func<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value)), animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_00_00_11) << 4)).Value) : __composer.WithReplaceGroup(1065411164, () => __AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11) << 2)).Value);
                 containerModifier = containerModifier.Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
                 contentModifier = contentModifier.Float();
             }

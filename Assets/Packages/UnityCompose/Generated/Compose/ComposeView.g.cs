@@ -27,17 +27,17 @@ public partial class ComposeView
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
-            var onScreenManager = (!__composer.Changed() ? __composer.RememberedValue<UnityCompose.ModalMenuManager>() : __composer.UpdateRememberedValue<UnityCompose.ModalMenuManager>(new ModalMenuManager()));
+            var onScreenManager = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ModalMenuManager>() : __composer.UpdateRememberedValue<global::UnityCompose.ModalMenuManager>(new ModalMenuManager()));
             var composer = __composer;
             composer.StartReusableGroup(0);
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
-            var isActiveInstance = (!__composer.ChangedAsStruct(onScreenManager.Contents.IsEmpty()) ? __composer.RememberedValue<UnityCompose.IsActiveEntry>() : __composer.UpdateRememberedValue<UnityCompose.IsActiveEntry>(new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)));
-            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), (!__composer.ChangedAsStruct((content, composer)) ? __composer.RememberedValue<UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0);
+            var isActiveInstance = (!__composer.ChangedAsStruct(onScreenManager.Contents.IsEmpty()) ? __composer.RememberedValue<global::UnityCompose.IsActiveEntry>() : __composer.UpdateRememberedValue<global::UnityCompose.IsActiveEntry>(new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)));
+            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), (!__composer.ChangedAsStruct((content, composer)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0);
             __composer.StartReplaceGroup(1348373615);
             foreach (var overlayContent in onScreenManager.Contents)
             {
-                __Box(modifier: Modifier.OnClick((!__composer.Changed() ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                __Box(modifier: Modifier.OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                 {
                 }))).FillMaxSize().Float(), content: overlayContent, __composer: __composer, __changed: 0b_01_00_00);
             }

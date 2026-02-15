@@ -110,7 +110,7 @@ namespace UnityCompose.Samples.Behaviors
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
                 var state = new object ();
-                var time = TimeUtils.Measure((!__composer.Changed() ? __composer.RememberedValue<System.Action>() : __composer.UpdateRememberedValue<System.Action>(() =>
+                var time = TimeUtils.Measure((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                 {
                     __composer.StartReplaceGroup(2080460313);
                     for (var i = 0; i < 1_000_000; i++)
