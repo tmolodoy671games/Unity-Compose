@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -54,7 +54,7 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
                 {
                     __Box(modifier: Modifier.FillMaxSize(), content: (!__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Navigation(coordinator: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>(new SampleCoordinatorImpl())), transition: (!__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(FadeIn().TogetherWith(FadeOut()).With(animationSpec))), modifier: Modifier.FillMaxSize(), __composer: __composer, __changed: 0);
+                        __Navigation(coordinator: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>(new SampleCoordinatorImpl())), transition: (!__composer.ChangedAsStruct(animationSpec) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(FadeIn().TogetherWith(FadeOut()).With(animationSpec))), modifier: Modifier.FillMaxSize(), __composer: __composer, __changed: 0b_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_01_00_00);
             }

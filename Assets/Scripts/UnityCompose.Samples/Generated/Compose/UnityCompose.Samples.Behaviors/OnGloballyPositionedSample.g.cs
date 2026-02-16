@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -57,23 +57,23 @@ namespace UnityCompose.Samples.Behaviors
                     __Box(modifier: Modifier.FillMaxSize(), content: (!__composer.ChangedAsStruct((isSwitched, layout)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         var transitionSpec = Tween();
-                        __Box(alignment: Alignment.Center, modifier: Modifier.Size(40.Px()).Background(Color.blue).Offset(x: __AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec, __composer: __composer, __changed: 0).Value.Px()), content: (!__composer.Changed(layout) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                        __Box(alignment: Alignment.Center, modifier: Modifier.Size(40.Px()).Background(Color.blue).Offset(x: __AnimateFloatAsState(targetValue: 500 * isSwitched.Value.ToInt(), animationSpec: transitionSpec, __composer: __composer, __changed: 0b_00_00).Value.Px()), content: (!__composer.Changed(layout) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
                             __Box((!__composer.Changed(layout) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                             {
                                 __Box((!__composer.Changed(layout) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                                 {
-                                    __Spacer(Modifier.Background(Color.green).Size(20.Px()).OnGloballyPositioned((!__composer.Changed(layout) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter))), __composer: __composer, __changed: 0);
+                                    __Spacer(Modifier.Background(Color.green).Size(20.Px()).OnGloballyPositioned((!__composer.Changed(layout) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => layout.Value = it.GlobalCenter))), __composer: __composer, __changed: 0b_00);
                                 })), __composer: __composer, __changed: 0b_01_01_00);
                             })), __composer: __composer, __changed: 0b_01_01_00);
-                        })), __composer: __composer, __changed: 0);
+                        })), __composer: __composer, __changed: 0b_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                     __Text(modifier: Modifier.Background(Color.blue).Padding(32.Px()).Border(32.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), color: Color.white, text: "Switch", __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
                     __composer.StartReplaceGroup(835651239);
                     if (layout.Value.HasValue && parentCoordinates.Value.HasValue)
                     {
                         var parentCoordinatesValue = parentCoordinates.Value.Value;
-                        __Spacer(modifier: Modifier.Size(10.Px()).Background(Color.red).Float().Position(left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x.Px(), top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y.Px()), __composer: __composer, __changed: 0);
+                        __Spacer(modifier: Modifier.Size(10.Px()).Background(Color.red).Float().Position(left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x.Px(), top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y.Px()), __composer: __composer, __changed: 0b_00);
                     }
 
                     __composer.EndReplaceGroup(835651239);

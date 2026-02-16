@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -55,18 +55,18 @@ namespace UnityCompose.Samples.Behaviors
                     if (isSwitched.Value)
                     {
                         __composer.StartReplaceGroup(955378125);
-                        __Content2(__composer: __composer, __changed: 0);
+                        __Content2(__composer: __composer, __changed: 0b_00);
                         __composer.EndReplaceGroup(955378125);
                     }
                     else
                     {
                         __composer.StartReplaceGroup(1284654179);
-                        __Content1(__composer: __composer, __changed: 0);
+                        __Content1(__composer: __composer, __changed: 0b_00);
                         __composer.EndReplaceGroup(1284654179);
                     }
 
                     __Text(text: "Switch", color: Color.white, fontSize: 62, modifier: Modifier.Padding(horizontal: 20.Px(), vertical: 12.Px()).Border(16.Px()).Background(Color.blue).Margin(top: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
-                })), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_00_00_00_00);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Spacer(Modifier.Size(100.Px()).Background(Color.green), __composer: __composer, __changed: 0);
+                __Spacer(Modifier.Size(100.Px()).Background(Color.green), __composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -100,7 +100,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0);
+                    __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0b_00);
                 })), __composer: __composer, __changed: 0b_01_01_01_00);
             }
             else

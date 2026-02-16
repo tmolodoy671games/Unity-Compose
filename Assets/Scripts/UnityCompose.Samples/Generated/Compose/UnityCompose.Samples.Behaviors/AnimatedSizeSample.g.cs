@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -60,10 +60,10 @@ namespace UnityCompose.Samples.Behaviors
                         __AnimatedSize(modifier: Modifier.Name("animated-size").Background(isSwitched.Value ? Color.green : Color.red, Transition(AnimationDuration)).Padding(all: 16.Px()), animationSpec: animationSpec, content: (!__composer.Changed(text) ? __composer.RememberedValue<global::UnityCompose.ComposableContent<global::UnityCompose.IModifier>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<global::UnityCompose.IModifier>>(modifier =>
                         {
                             __Text(text: text, color: Color.white, fontSize: 64, textAlign: TextAlign.MiddleCenter, modifier: modifier.Name("animated-label-child"), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
-                        })), __composer: __composer, __changed: 0);
+                        })), __composer: __composer, __changed: 0b_00_00_00);
                         __Text(text: "Switch", color: Color.white, fontSize: 64, modifier: Modifier.Name("switch-button").Padding(all: 32.Px()).Background(Color.blue).Margin(top: 16.Px()).Border(radius: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
                     })), __composer: __composer, __changed: 0b_01_00_00_00);
-                })), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
             {

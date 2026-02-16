@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                     for (var i = 0; i < 1_00; i++)
                     {
                         var currentI = i;
-                        Key(key: currentI, content: (!__composer.ChangedAsStruct((parentSize, currentI)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Item(currentI, parentSize.Value, __composer: __composer, __changed: 0))));
+                        Key(key: currentI, content: (!__composer.ChangedAsStruct((parentSize, currentI)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Item(currentI, parentSize.Value, __composer: __composer, __changed: 0b_00_00))));
                     }
 
                     __composer.EndReplaceGroup(1991249029);
@@ -70,7 +70,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 var position = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(Vector2.zero)));
                 __LaunchedEffect(key: parentSize, coroutine: (!__composer.ChangedAsStruct((parentSize, position)) ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize, it => position.Value = it))), __composer: __composer, __changed: ((__dirty & 0b_11_00) >> 2));
                 var baseModifier = (!__composer.ChangedAsStruct(currentI) ? __composer.RememberedValue<global::UnityCompose.IModifier>() : __composer.UpdateRememberedValue<global::UnityCompose.IModifier>(Modifier.Size(50.Px()).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float()));
-                __Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()), __composer: __composer, __changed: 0);
+                __Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()), __composer: __composer, __changed: 0b_00);
             }
             else
             {

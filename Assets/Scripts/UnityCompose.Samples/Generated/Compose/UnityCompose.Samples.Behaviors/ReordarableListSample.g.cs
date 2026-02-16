@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -89,17 +89,14 @@ namespace UnityCompose.Samples.Behaviors
                                         var newIndex = oldIndex + 1;
                                         items.RemoveAt(oldIndex);
                                         items.Insert(newIndex, item);
-                                    })), onRemoveClick: (!__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
-                                    {
-                                        items.Remove(item);
-                                    })), __composer: __composer, __changed: 0);
+                                    })), onRemoveClick: (!__composer.ChangedAsStruct((items, item)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => items.Remove(item))), __composer: __composer, __changed: 0b_00_00_00_00);
                                 })));
                             }
 
                             __composer.EndReplaceGroup(214651979);
                         })), __composer: __composer, __changed: 0b_01_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00_00);
-                })), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
             {
@@ -163,7 +160,7 @@ namespace UnityCompose.Samples.Behaviors
                 __Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Px()).Border(radius: 12.Px()).Margin(vertical: 4.Px()), content: (!__composer.ChangedAsStruct((state, onMoveUpClick, onMoveDownClick, onRemoveClick)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __Text(text: $"Item no. {state}", color: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Margin(left: 32.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
-                    __Spacer(Modifier.Weight(1), __composer: __composer, __changed: 0);
+                    __Spacer(Modifier.Weight(1), __composer: __composer, __changed: 0b_00);
                     var counter = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<int>>(MutableStateOf(0)));
                     __Text(text: counter.Value.ToString(), color: Color.white, fontSize: 40, modifier: Modifier.Background(Color.green).Padding(horizontal: 16.Px()).Border(12.Px()).OnClick((!__composer.Changed(counter) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => counter.Value++))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
                     __Column(content: (!__composer.ChangedAsStruct((onMoveUpClick, onMoveDownClick)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>

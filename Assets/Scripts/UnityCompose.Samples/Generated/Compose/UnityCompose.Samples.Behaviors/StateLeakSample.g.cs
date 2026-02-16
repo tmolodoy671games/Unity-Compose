@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -68,8 +68,8 @@ namespace UnityCompose.Samples.Behaviors
                             __Text(text: $"Clicked {secondCount.Value} times", textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.green).Padding(all: 20.Px()).Border(radius: 16.Px()).Margin(top: 16.Px()).OnClick((!__composer.Changed(secondCount) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => secondCount.Value++))).Name("second-button"), __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_00);
                             __Text(text: "Switch", textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxWidth().Background(Color.blue).Padding(all: 20.Px()).Border(radius: 16.Px()).Margin(top: 16.Px()).OnClick((!__composer.Changed(showFirst) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showFirst.Value = !showFirst.Value))).Name("switch-button"), __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01);
                         })), __composer: __composer, __changed: 0b_01_01_00_00);
-                    })), __composer: __composer, __changed: 0);
-                })), __composer: __composer, __changed: 0);
+                    })), __composer: __composer, __changed: 0b_00_00_00);
+                })), __composer: __composer, __changed: 0b_00_00);
             }
             else
             {

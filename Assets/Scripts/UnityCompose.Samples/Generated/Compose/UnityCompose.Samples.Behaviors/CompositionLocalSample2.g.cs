@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -61,12 +61,12 @@ namespace UnityCompose.Samples.Behaviors
                             {
                                 __Text(LocalDebugString.Current, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00);
                                 __Text(LocalDebugString.Current, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00);
-                            })), __composer: __composer, __changed: 0);
+                            })), __composer: __composer, __changed: 0b_00_00);
                             __Text(LocalDebugString.Current, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00);
-                        })), __composer: __composer, __changed: 0);
+                        })), __composer: __composer, __changed: 0b_00_00);
                         __Text(LocalDebugString.Current, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00);
-                    })), __composer: __composer, __changed: 0);
-                })), __composer: __composer, __changed: 0);
+                    })), __composer: __composer, __changed: 0b_00_00_00_00);
+                })), __composer: __composer, __changed: 0b_00_00);
             }
             else
             {

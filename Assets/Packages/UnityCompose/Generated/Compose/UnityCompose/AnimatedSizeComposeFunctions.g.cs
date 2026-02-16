@@ -56,10 +56,10 @@ public static partial class ComposeFunctions
                 it.style.justifyContent = Justify.Center;
             })), content: (!__composer.ChangedAsStruct((content, contentModifier)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                __composer.StartReplaceGroup(251165826);
+                __composer.StartReplaceGroup(1881756995);
                 content(contentModifier);
-                __composer.EndReplaceGroup(251165826);
-            })), __composer: __composer, __changed: 0);
+                __composer.EndReplaceGroup(1881756995);
+            })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
         {
@@ -98,7 +98,7 @@ public static partial class ComposeFunctions
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         })));
-        __composer.StartReplaceGroup(1909905094);
+        __composer.StartReplaceGroup(1605805438);
         if (!IsInPreview)
         {
             contentModifier = contentModifier.OnLocallyPositioned((!__composer.Changed(contentSize) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
@@ -109,18 +109,30 @@ public static partial class ComposeFunctions
                 contentSize.Value = resolvedSize.Approximate();
             })));
             var isSizeValid = contentSize.Value is { x: > 0, y: > 0 } && containerPaddings.Value is { x: >= 0, y: >= 0 };
-            __composer.StartReplaceGroup(2106743383);
+            __composer.StartReplaceGroup(1049337380);
             if (isSizeValid)
             {
-                var animatedSize = key != null ? __composer.WithReplaceGroup(1104282356, () => __AnimateVector2AsState(key: key, targetValueFactory: (!__composer.ChangedAsStruct((containerPaddings, contentSize)) ? __composer.RememberedValue<global::System.Func<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value)), animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_00_00_11) << 4)).Value) : __composer.WithReplaceGroup(1065411164, () => __AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: animationSpec, __composer: __composer, __changed: ((__dirty & 0b_00_11) << 2)).Value);
-                containerModifier = containerModifier.Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
-                contentModifier = contentModifier.Float();
+                var a = true ? __composer.WithReplaceGroup(454710194, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01)) : __composer.WithReplaceGroup(1415167036, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01));
+            // var animatedSize = key != null
+            //     ? AnimateVector2AsState(
+            //         key: key,
+            //         targetValueFactory: () => contentSize.Value + containerPaddings.Value,
+            //         animationSpec: animationSpec
+            //     ).Value
+            //     : AnimateVector2AsState(
+            //         targetValue: contentSize.Value + containerPaddings.Value,
+            //         animationSpec: animationSpec
+            //     ).Value;
+            // containerModifier = containerModifier
+            //     .Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
+            // contentModifier = contentModifier
+            //     .Float();
             }
 
-            __composer.EndReplaceGroup(2106743383);
+            __composer.EndReplaceGroup(1049337380);
         }
 
-        __composer.EndReplaceGroup(1909905094);
+        __composer.EndReplaceGroup(1605805438);
         return (containerModifier, contentModifier);
     }
 }

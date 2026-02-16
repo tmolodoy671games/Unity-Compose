@@ -95,7 +95,7 @@ namespace UnityCompose.Samples.Behaviors
                                                         items.RemoveAt(oldIndex);
                                                         items.Insert(newIndex, item);
                                                     },
-                                                    onRemoveClick: () => { items.Remove(item); }
+                                                    onRemoveClick: () => items.Remove(item)
                                                 );
                                             }
                                         );
@@ -117,7 +117,7 @@ namespace UnityCompose.Samples.Behaviors
         )
         {
             if (state == 2)
-                LaunchedEffect("state", static () => {});
+                LaunchedEffect("state", static () => { });
             Row(
                 verticalAlignment: Alignment.CenterVertically,
                 modifier: Modifier

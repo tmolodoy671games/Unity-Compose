@@ -18,5 +18,8 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
-    private static void KeyImpl(ComposableContent content) => content();
+    private static void KeyImpl(ComposableContent content)
+    {
+        content();
+    }
 }

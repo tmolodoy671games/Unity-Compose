@@ -29,9 +29,9 @@ internal partial class ResumedScreen
             __Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick((!__composer.Changed(coordinator) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => coordinator.ShowPausedScreen()))), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 var showMenu = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0);
-                __Spacer(modifier: Modifier.Size(300.Px()).Background(Color.blue).OnClick((!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current)), __composer: __composer, __changed: 0);
-            })), __composer: __composer, __changed: 0);
+                __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0b_00_00);
+                __Spacer(modifier: Modifier.Size(300.Px()).Background(Color.blue).OnClick((!__composer.Changed(showMenu) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current)), __composer: __composer, __changed: 0b_00);
+            })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
         {
@@ -75,8 +75,8 @@ internal partial class ResumedScreen
                 {
                     __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().Background(Color.black.With(a: 0.9f)), content: (!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Spacer(Modifier.Size(100.Px()).Background(Color.yellow).OnClick(onDismissRequest), __composer: __composer, __changed: 0);
-                    })), __composer: __composer, __changed: 0);
+                        __Spacer(Modifier.Size(100.Px()).Background(Color.yellow).OnClick(onDismissRequest), __composer: __composer, __changed: 0b_00);
+                    })), __composer: __composer, __changed: 0b_00_00_00);
                 })));
             }
 

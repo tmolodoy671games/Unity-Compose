@@ -21,19 +21,19 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     // MockColumn(() =>
                     // {
-                    __MockSpacer(__composer: __composer, __changed: 0);
-                    __MockSpacer(__composer: __composer, __changed: 0);
-                    __MockSpacer(__composer: __composer, __changed: 0);
-                    __MockSpacer(__composer: __composer, __changed: 0);
-                    __MockSpacer(__composer: __composer, __changed: 0);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
                 // });
                 }
 
                 __composer.EndReplaceGroup(30031941);
-                __MockSpacer(__composer: __composer, __changed: 0);
+                __MockSpacer(__composer: __composer, __changed: 0b_00);
                 __composer.StartReplaceGroup(2117597776);
                 for (var i = 0; i < AddState.Value; i++)
-                    __MockSpacer(__composer: __composer, __changed: 0);
+                    __MockSpacer(__composer: __composer, __changed: 0b_00);
                 __composer.EndReplaceGroup(2117597776);
             }
             else
@@ -80,7 +80,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __MockNestedSpacer(__composer: __composer, __changed: 0);
+                __MockNestedSpacer(__composer: __composer, __changed: 0b_00);
             }
             else
             {

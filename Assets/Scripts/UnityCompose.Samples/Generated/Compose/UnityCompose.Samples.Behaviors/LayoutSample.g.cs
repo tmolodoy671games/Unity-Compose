@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -53,10 +53,10 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     __Box(modifier: Modifier.Background(Color.red).Size(400.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(top: 5.Px()), __composer: __composer, __changed: 0);
-                        __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(bottom: 5.Px()), __composer: __composer, __changed: 0);
+                        __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(top: 5.Px()), __composer: __composer, __changed: 0b_00);
+                        __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(bottom: 5.Px()), __composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
-                })), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
             {

@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Layout(__composer: __composer, __changed: 0);
+                __Layout(__composer: __composer, __changed: 0b_00);
             }
             else
             {
@@ -52,9 +52,9 @@ namespace UnityCompose.Samples.Behaviors
                 __Box(alignment: Alignment.Center, modifier: Modifier.Name("composition-local-sample").FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                    __CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __SampleReader(__composer: __composer, __changed: 0))), __composer: __composer, __changed: 0);
+                    __CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __SampleReader(__composer: __composer, __changed: 0b_00))), __composer: __composer, __changed: 0b_00_00);
                     __Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32.Px()).Border(radius: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))).Margin(top: 80.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
-                })), __composer: __composer, __changed: 0);
+                })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
             {
@@ -111,7 +111,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     __Box((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100.Px()), __composer: __composer, __changed: 0);
+                        __Spacer(modifier: Modifier.Background(LocalIsSwitched.Current ? Color.green : Color.red, transition: Transition()).Padding(all: 100.Px()), __composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_01_00);
                 })), __composer: __composer, __changed: 0b_01_01_00);
             }

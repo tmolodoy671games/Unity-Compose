@@ -31,20 +31,20 @@ internal partial class InventoryTabScreen
                 {
                     __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_01_01_00);
                     __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
-                        __InventoryItem(__composer: __composer, __changed: 0);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
+                        __InventoryItem(__composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_01_01_00);
                 })), __composer: __composer, __changed: 0b_01_01_00_00);
-            })), __composer: __composer, __changed: 0);
+            })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
         {
@@ -60,7 +60,7 @@ internal partial class InventoryTabScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __changed != 0b_00)
         {
-            __Spacer(Modifier.Size(100.Px()).Border(16.Px()).Background(Color.grey).Margin(2.Px()), __composer: __composer, __changed: 0);
+            __Spacer(Modifier.Size(100.Px()).Border(16.Px()).Background(Color.grey).Margin(2.Px()), __composer: __composer, __changed: 0b_00);
         }
         else
         {
