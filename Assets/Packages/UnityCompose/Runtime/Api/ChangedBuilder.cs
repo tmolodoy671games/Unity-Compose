@@ -27,15 +27,6 @@ public struct ChangedBuilder
         return this;
     }
     
-    public ChangedBuilder ChangedAsStruct<T>(T value) where T : struct
-    {
-        if (!_changed)
-            _changed = _composer.ChangedAsStruct(value);
-        else
-            _composer.WriteAsStruct(value);
-        return this;
-    }
-    
     public ChangedBuilder ChangedAsFlag(bool changed)
     {
         if (!_changed)

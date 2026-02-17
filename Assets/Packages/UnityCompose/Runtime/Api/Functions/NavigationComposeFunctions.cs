@@ -55,6 +55,7 @@ public static partial class ComposeFunctions
             key: coordinator,
             effect: it =>
             {
+                Debug.Log("DisposableEffect()");
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());
             }
@@ -62,7 +63,6 @@ public static partial class ComposeFunctions
 
         var isSwitched = Remember(() => MutableStateOf(false));
         var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, ImmutableStableListOf<ComposeScreen>());
-        LaunchedEffect(currentBackStack, () => Debug.Log(currentBackStack.ToString()));
         var previousBackStack = Remember(() =>
             MutableStablePropertyOf(initialScreens.OrEmpty().ToImmutableStableList())
         );

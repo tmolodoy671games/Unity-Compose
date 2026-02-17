@@ -364,7 +364,7 @@ internal class SlotTableWriter
         return _slots.GetAsOptional<T>(_currentSlotIndex);
     }
 
-    public Optional<T> ReadAsStruct<T>() where T : struct
+    public Optional<T> ReadAsStruct<T>()
     {
         if (ComposeConstants.Logging)
             Log($"ReadAsStruct<T>()");
@@ -392,7 +392,7 @@ internal class SlotTableWriter
         return result;
     }
 
-    public bool ReadAndWriteAsStruct<T>(T value) where T : struct
+    public bool ReadAndWriteAsStruct<T>(T value)
     {
         if (ComposeConstants.Logging)
             Log($"ReadAndWriteAsStruct<T>()");
@@ -424,7 +424,7 @@ internal class SlotTableWriter
         _currentSlotIndex++;
     }
 
-    public void WriteAsStruct<T>(T value) where T : struct
+    public void WriteAsStruct<T>(T value)
     {
         if (ComposeConstants.Logging)
             Log($"WriteAsStruct<T>()");

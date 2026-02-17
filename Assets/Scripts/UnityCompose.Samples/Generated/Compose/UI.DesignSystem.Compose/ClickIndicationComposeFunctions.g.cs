@@ -26,7 +26,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(hovered) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(hovered) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
         }
         else
         {
@@ -53,7 +53,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(rippleColor) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(rippleColor) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
         }
         else
         {
@@ -62,7 +62,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(hoverColor) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(hoverColor) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
         }
         else
         {
@@ -71,7 +71,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
         }
         else
         {
@@ -94,11 +94,11 @@ public static partial class DesignSystemComposeFunctions
             var resolvedPressColor = rippleColor.GetOrDefault(Color.black.With(a: 0.75f));
             var layout = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<global::UnityCompose.LayoutCoordinates>>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<global::UnityCompose.LayoutCoordinates>>>(MutableStateOf(Optional.Empty<LayoutCoordinates>())));
             var isPressed = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>(MutableStateOf(Optional.Empty<bool>())));
-            __Box(modifier: modifier.OrEmpty().Clip().OnGloballyPositioned((!__composer.Changed(layout) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => layout.Value = it))).OnMouseEnter((!__composer.Changed(onHover) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => onHover()))).OnMouseLeave((!__composer.ChangedAsStruct((onLeave, isPressed)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+            __Box(modifier: modifier.OrEmpty().Clip().OnGloballyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<global::UnityCompose.LayoutCoordinates>>>(layout!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => layout.Value = it))).OnMouseEnter((!__composer.Changed<global::System.Action>(onHover!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => onHover()))).OnMouseLeave((!__composer.BuildChanged().Changed<global::System.Action>(onLeave!).Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>(isPressed!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
             {
                 onLeave();
                 isPressed.Value = false;
-            }))).OnMouseDown((!__composer.Changed(isPressed) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = true))).OnMouseUp((!__composer.Changed(isPressed) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = false))), content: (!__composer.ChangedAsStruct((content, hovered, animationSpec, resolvedHoverColor, resolvedPressColor, layout, isPressed)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            }))).OnMouseDown((!__composer.Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>(isPressed!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = true))).OnMouseUp((!__composer.Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>(isPressed!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isPressed.Value = false))), content: (!__composer.BuildChanged().Changed<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>(content!).Changed<bool>(hovered!).Changed<global::SharpExtensions.Optional<global::UnityCompose.AnimationSpec>>(animationSpec!).Changed<global::UnityEngine.Color>(resolvedHoverColor!).Changed<global::UnityEngine.Color>(resolvedPressColor!).Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<global::UnityCompose.LayoutCoordinates>>>(layout!).Changed<global::UnityCompose.IMutableState<global::SharpExtensions.Optional<bool>>>(isPressed!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __composer.StartReplaceGroup(1296287483);
                 content(new DsClickIndicationScope(hovered, isPressed.Value is { HasValue: true, Value: true }));
@@ -112,7 +112,7 @@ public static partial class DesignSystemComposeFunctions
                 var layoutValue = layout.Value.Value;
                 var pressedValue = isPressed.Value.Value;
                 var pressPosition = layoutValue.Size / 2;
-                __LaunchedEffect(pressedValue, (!__composer.ChangedAsStruct((pressAnimation, releaseAnimation, pressedValue)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                __LaunchedEffect(pressedValue, (!__composer.BuildChanged().Changed<global::UI.DesignSystem.Compose.Players.ISingleAnimationPlayer>(pressAnimation!).Changed<global::UI.DesignSystem.Compose.Players.ISingleAnimationPlayer>(releaseAnimation!).Changed<bool>(pressedValue!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                 {
                     if (pressedValue)
                     {
@@ -123,7 +123,7 @@ public static partial class DesignSystemComposeFunctions
                         releaseAnimation.Start();
                 })), __composer: __composer, __changed: 0b_00_00);
                 var pressProgress = pressAnimation.Progress;
-                var maxSize = (!__composer.ChangedAsStruct<global::UnityEngine.Vector2>(layoutValue.Size) ? __composer.RememberedValueAsStruct<float>() : __composer.UpdateRememberedValueAsStruct<float>(layoutValue.Size.magnitude));
+                var maxSize = (!__composer.Changed<global::UnityEngine.Vector2>(layoutValue.Size!) ? __composer.RememberedValue<float>() : __composer.UpdateRememberedValue<float>(layoutValue.Size.magnitude));
                 var size = maxSize * pressProgress;
                 __Spacer(Modifier.Size(size.Px()).Border(size.Px() / 2).Background(resolvedPressColor).Alpha(1 - releaseAnimation.Progress).Float().Offset(x: -size.Px() / 2, y: -size.Px() / 2).Position(top: pressPosition.y.Px(), left: pressPosition.x.Px()), __composer: __composer, __changed: 0b_00);
             })), __composer: __composer, __changed: 0b_01_00_00);
@@ -153,7 +153,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(rippleColor) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
+            __dirty |= __composer.Changed(rippleColor) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
         }
         else
         {
@@ -162,7 +162,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(hoverColor) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
+            __dirty |= __composer.Changed(hoverColor) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
         }
         else
         {
@@ -171,7 +171,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
         }
         else
         {
@@ -191,7 +191,7 @@ public static partial class DesignSystemComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
             var isHovered = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-            __DsClickIndication(content: content, hovered: isHovered.Value, onHover: (!__composer.Changed(isHovered) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true)), onLeave: (!__composer.Changed(isHovered) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false)), rippleColor: rippleColor, hoverColor: hoverColor, animationSpec: animationSpec, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_11) | ((__dirty & 0b_00_00_00_00_00_00_11_00) << 6) | ((__dirty & 0b_00_00_00_00_00_11_00_00) << 6) | ((__dirty & 0b_00_00_00_00_11_00_00_00) << 6) | ((__dirty & 0b_00_00_00_11_00_00_00_00) << 6));
+            __DsClickIndication(content: content, hovered: isHovered.Value, onHover: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true)), onLeave: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false)), rippleColor: rippleColor, hoverColor: hoverColor, animationSpec: animationSpec, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_11) | ((__dirty & 0b_00_00_00_00_00_00_11_00) << 6) | ((__dirty & 0b_00_00_00_00_00_11_00_00) << 6) | ((__dirty & 0b_00_00_00_00_11_00_00_00) << 6) | ((__dirty & 0b_00_00_00_11_00_00_00_00) << 6));
         }
         else
         {

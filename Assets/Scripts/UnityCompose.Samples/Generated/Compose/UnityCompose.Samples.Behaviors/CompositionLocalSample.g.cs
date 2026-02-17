@@ -53,7 +53,7 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                     __CompositionLocalProvider(LocalIsSwitched.Provides(isSwitched.Value), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __SampleReader(__composer: __composer, __changed: 0b_00))), __composer: __composer, __changed: 0b_00_00);
-                    __Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32.Px()).Border(radius: 16.Px()).OnClick((!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))).Margin(top: 80.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                    __Text(text: "Switch", color: Color.white, fontSize: 32, modifier: Modifier.Background(Color.blue).Padding(all: 32.Px()).Border(radius: 16.Px()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))).Margin(top: 80.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
                 })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
@@ -72,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
             var __dirtyRestart = 0;
             if ((__changed & 0b_00_11) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(firstValue) ? 0b_00_10 : 0b_00_01;
+                __dirty |= __composer.Changed(firstValue) ? 0b_00_10 : 0b_00_01;
             }
             else
             {
@@ -81,7 +81,7 @@ namespace UnityCompose.Samples.Behaviors
 
             if ((__changed & 0b_11_00) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(secondValue) ? 0b_10_00 : 0b_01_00;
+                __dirty |= __composer.Changed(secondValue) ? 0b_10_00 : 0b_01_00;
             }
             else
             {

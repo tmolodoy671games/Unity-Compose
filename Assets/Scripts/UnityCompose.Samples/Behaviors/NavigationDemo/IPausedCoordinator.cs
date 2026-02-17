@@ -25,7 +25,6 @@ internal class PausedCoordinatorImpl : BaseComposeCoordinator, IPausedCoordinato
             PausedTab.Inventory => new InventoryTabScreen(),
             _ => new PausedTabScreen(tab, ResolveBackgroundColor(tab))
         };
-        Debug.Log("ReplaceScreen()");
         Router.ReplaceScreen(screen);
     }
 

@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(targetValue) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -26,7 +26,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00 : 0b_01_00;
         }
         else
         {
@@ -60,7 +60,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
         }
         else
         {
@@ -76,7 +76,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(targetValue) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -85,7 +85,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00 : 0b_01_00;
         }
         else
         {
@@ -101,7 +101,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(targetValue) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(targetValue) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -110,7 +110,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00 : 0b_01_00;
         }
         else
         {
@@ -144,7 +144,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
         }
         else
         {
@@ -180,7 +180,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
         }
         else
         {
@@ -202,7 +202,7 @@ public static partial class ComposeFunctions
         }
 
         __LaunchedEffect(key: targetValue, // block: () => property.Value = targetValue
-        coroutine: (!__composer.ChangedAsStruct((targetValue, property)) ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        coroutine: (!__composer.BuildChanged().Changed<T>(targetValue!).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(130532738);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
@@ -261,7 +261,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00_00 : 0b_01_00_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00_00 : 0b_01_00_00_00;
         }
         else
         {
@@ -284,7 +284,7 @@ public static partial class ComposeFunctions
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        __LaunchedEffect(key: key, coroutine: (!__composer.ChangedAsStruct((targetValueFactory, property)) ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        __LaunchedEffect(key: key, coroutine: (!__composer.BuildChanged().Changed<global::System.Func<T>>(targetValueFactory!).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(391583017);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
