@@ -36,11 +36,20 @@ public static partial class ComposeFunctions
         });
     }
 
+    public static string FormatFirstArgument(this int dirty)
+    {
+        var result = Convert.ToString(dirty, 2);
+        return result.TakeLast(2).JoinToString("");
+    }
+
+    public static string FormatAs2Bit(this int value) => Convert.ToString(value, 2);
+
     [Composable]
     public static void Navigation(
         IComposeCoordinator coordinator,
         Optional<ContentTransform> transition = default,
-        IModifier? modifier = null
+        IModifier? modifier = null,
+        bool log = false
     )
     {
         var initialScreens = Remember(coordinator.InitialScreens);
@@ -51,11 +60,17 @@ public static partial class ComposeFunctions
             () => new ComposeNavigatorImpl(backStack, parentCoordinator)
         );
 
+        if (log)
+        {
+            // Debug.Log("Navivation::__changed: " + __changed.FormatAs2Bit());
+            // Debug.Log("Navigation: " + __dirty.FormatFirstArgument());
+            TestLaunchedEffect(coordinator, () => Debug.Log("BRUH"));
+        }
+
         DisposableEffect(
             key: coordinator,
             effect: it =>
             {
-                Debug.Log("DisposableEffect()");
                 coordinator.CommandBuffer.SetNavigator(navigator);
                 return it.OnDispose(() => coordinator.CommandBuffer.RemoveNavigator());
             }

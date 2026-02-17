@@ -30,7 +30,7 @@ public static partial class ComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var manager = LocalOnScreenMenuManager.Current;
-            __DisposableEffect(content, (!__composer.BuildChanged().Changed<global::UnityCompose.ComposableContent>(content!).Changed<global::UnityCompose.ModalMenuManager>(manager!).Get() ? __composer.RememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>(it =>
+            __DisposableEffect(content, (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.ModalMenuManager>(manager!).Get() ? __composer.RememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>(it =>
             {
                 manager.AddContent(content);
                 return it.OnDispose(() => manager.RemoveContent(content));

@@ -25,15 +25,22 @@ internal partial class PausedScreen : ComposeScreen
         );
     }
 
+    private static int __dirty = -1337;
+    private static int __changed = -1337;
+    private static int __dirtyRestart = -1337;
+
     [Composable]
     private static void Layout(
-        PausedTab tab,
         IPausedCoordinator pausedCoordinator,
+        PausedTab tab,
         Action<PausedTab> onClick,
         Action onTabContentClick,
         IModifier? modifier = null
     )
     {
+        // Debug.Log($"PausedScreen::Layout:changed: {__changed.FormatAs2Bit()}");
+        // Debug.Log($"PausedScreen::Layout:dirty: {__dirty.FormatAs2Bit()}");
+        // Debug.Log($"PausedScreen::Layout: {(0b_01_00_00_00 | ((__dirty & 0b_00_00_11_00) >> 2)).FormatFirstArgument()}");
         var previousTab = Remember(() => IMutableStableProperty.Create(tab));
         Column(
             modifier: modifier.OrEmpty()
@@ -51,15 +58,20 @@ internal partial class PausedScreen : ComposeScreen
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
                         .Offset(y: -100 * (1- 1).Px())
                 );
+                // Debug.Log($"Navigation Call: {__dirty.FormatAs2Bit()}");
+                // Debug.Log($"PausedScreen::Layout: passing __changed: {((__dirty & 0b_00_00_11_00) >> 2).FormatAs2Bit()}");
+                // Debug.Log($"PausedScreen::Layout: passing __changed: {(0b_01_00_00_00 | ((__dirty & 0b_00_00_11_00) >> 2)).FormatAs2Bit()}");
                 Navigation(
                     modifier: Modifier.FillMaxSize()
                         .OnClick(onTabContentClick),
                     transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
-                    coordinator: pausedCoordinator
+                    coordinator: pausedCoordinator,
+                    log: true
                 );
             }
         );
         previousTab.Value = tab;
+        __dirty = 0b_01_01_01;
     }
 
     private static ContentTransform ResolveTransform(PausedTab previousTab, PausedTab nextTab)

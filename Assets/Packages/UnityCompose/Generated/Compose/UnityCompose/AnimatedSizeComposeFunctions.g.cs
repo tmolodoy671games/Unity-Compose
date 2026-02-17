@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
             {
                 it.style.alignItems = Align.Center;
                 it.style.justifyContent = Justify.Center;
-            })), content: (!__composer.BuildChanged().Changed<global::UnityCompose.ComposableContent<global::UnityCompose.IModifier>>(content!).Changed<global::UnityCompose.IModifier>(contentModifier!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            })), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Changed<global::UnityCompose.IModifier>(contentModifier!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __composer.StartReplaceGroup(1881756995);
                 content(contentModifier);

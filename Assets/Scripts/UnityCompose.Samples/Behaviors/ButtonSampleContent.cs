@@ -27,6 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
+                    Foo(isHovered.Value);
                     Box(
                         modifier: Modifier
                             .Padding(
@@ -53,6 +54,19 @@ namespace UnityCompose.Samples.Behaviors
                     );
                 }
             );
+        }
+
+        [Composable]
+        private static void Foo(bool param)
+        {
+            Bar(param, AnimateFloatAsState(param ? 1 : 0).Value);
+        }
+
+        [Composable]
+        private static void Bar(bool param, float param2)
+        {
+            // Debug.Log(param);
+            LaunchedEffect(param, () => Debug.Log(param));
         }
     }
 }

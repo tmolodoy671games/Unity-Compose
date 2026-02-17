@@ -47,21 +47,33 @@ public static partial class ComposeFunctions
         Func<IEnumerator> coroutine
     )
     {
-        var _ = Remember(
-            key: key,
-            defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine())
-        );
+        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
     }
 
+    private static readonly int __dirty = -1337;
+    private static readonly int __changed = -1337;
     [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         Action block
     )
     {
-        var _ = Remember(
-            key: key,
-            defaultValueFactory: () =>
+        var _ = Remember(key, () =>
+            {
+                block();
+                return string.Empty;
+            }
+        );
+    }
+    
+    [Composable]
+    public static void TestLaunchedEffect<TKey>(
+        TKey key,
+        Action block
+    )
+    {
+        // Debug.Log("TestLaunchedEffect: " + __dirty.FormatFirstArgument());
+        var _ = Remember(key, () =>
             {
                 block();
                 return string.Empty;
@@ -76,10 +88,7 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        var _ = Remember(
-            key: key,
-            defaultValueFactory: () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))
-        );
+        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
     }
 
     [Composable]
@@ -89,10 +98,8 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        var _ = Remember(
-            key: key,
-            defaultValueFactory: () =>
-                ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
+        var _ = Remember(key, () =>
+            ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
         );
     }
 
@@ -102,10 +109,7 @@ public static partial class ComposeFunctions
         Func<IDisposableEffectScope, IDisposableEffectResult> effect
     )
     {
-        var _ = Remember(
-            key: key,
-            defaultValueFactory: () => effect(DisposableEffectScopeImpl.Instance)
-        );
+        var _ = Remember(key, () => effect(DisposableEffectScopeImpl.Instance));
     }
 
     private static IEnumerator RunDelayed(TimeSpan delay, Action action)

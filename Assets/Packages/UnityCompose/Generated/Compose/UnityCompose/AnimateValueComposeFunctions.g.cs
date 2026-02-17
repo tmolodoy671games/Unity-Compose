@@ -202,7 +202,7 @@ public static partial class ComposeFunctions
         }
 
         __LaunchedEffect(key: targetValue, // block: () => property.Value = targetValue
-        coroutine: (!__composer.BuildChanged().Changed<T>(targetValue!).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        coroutine: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(130532738);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
@@ -284,7 +284,7 @@ public static partial class ComposeFunctions
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
-        __LaunchedEffect(key: key, coroutine: (!__composer.BuildChanged().Changed<global::System.Func<T>>(targetValueFactory!).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
+        __LaunchedEffect(key: key, coroutine: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11_00) == 0b_00_00_10_00).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
         __composer.EndReplaceGroup(391583017);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
