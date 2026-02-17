@@ -71,6 +71,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01;
             __composer.EndRestartGroup(1407509810, __isRestarted)?.UpdateScope(() => __MockColumn(__content, __composer, __dirtyRestart));
         }
 

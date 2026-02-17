@@ -48,8 +48,7 @@ public static partial class ComposeFunctions
     public static void Navigation(
         IComposeCoordinator coordinator,
         Optional<ContentTransform> transition = default,
-        IModifier? modifier = null,
-        bool log = false
+        IModifier? modifier = null
     )
     {
         var initialScreens = Remember(coordinator.InitialScreens);
@@ -59,14 +58,7 @@ public static partial class ComposeFunctions
         IComposeNavigator navigator = Remember((parentCoordinator, backStack),
             () => new ComposeNavigatorImpl(backStack, parentCoordinator)
         );
-
-        if (log)
-        {
-            // Debug.Log("Navivation::__changed: " + __changed.FormatAs2Bit());
-            // Debug.Log("Navigation: " + __dirty.FormatFirstArgument());
-            TestLaunchedEffect(coordinator, () => Debug.Log("BRUH"));
-        }
-
+        
         DisposableEffect(
             key: coordinator,
             effect: it =>

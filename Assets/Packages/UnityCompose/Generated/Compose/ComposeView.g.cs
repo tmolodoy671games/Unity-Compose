@@ -52,6 +52,7 @@ public partial class ComposeView
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01;
         __composer.EndRestartGroup(877442121, __isRestarted)?.UpdateScope(() => __ContentImpl(__content, __composer, __dirtyRestart));
     }
 }

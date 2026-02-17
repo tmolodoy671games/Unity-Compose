@@ -95,6 +95,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01;
             __composer.EndRestartGroup(874187044, __isRestarted)?.UpdateScope(() => __Foo(__param, __composer, __dirtyRestart));
         }
 
@@ -132,6 +133,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01;
             __composer.EndRestartGroup(1875170232, __isRestarted)?.UpdateScope(() => __Bar(__param, __param2, __composer, __dirtyRestart));
         }
     }

@@ -128,6 +128,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01_01;
             __composer.EndRestartGroup(1999327903, __isRestarted)?.UpdateScope(() => __Tab(__selected, __content, __modifier, __composer, __dirtyRestart));
         }
     }

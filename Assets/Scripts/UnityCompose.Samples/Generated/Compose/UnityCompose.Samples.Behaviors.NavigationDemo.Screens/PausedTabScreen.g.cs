@@ -35,6 +35,7 @@ internal partial class PausedTabScreen
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01;
         __composer.EndRestartGroup(352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
     }
 }

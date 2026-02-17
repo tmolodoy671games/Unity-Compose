@@ -50,6 +50,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01;
         __composer.EndRestartGroup(636805308, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content, __composer, __dirtyRestart));
     }
 
@@ -104,6 +105,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(2075615182, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content, __composer, __dirtyRestart));
     }
 
@@ -168,6 +170,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01;
         __composer.EndRestartGroup(150642065, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content, __composer, __dirtyRestart));
     }
 
@@ -242,6 +245,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01;
         __composer.EndRestartGroup(850864666, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content, __composer, __dirtyRestart));
     }
 
@@ -326,6 +330,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01;
         __composer.EndRestartGroup(1390334920, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content, __composer, __dirtyRestart));
     }
 
@@ -420,6 +425,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(732686622, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content, __composer, __dirtyRestart));
     }
 
@@ -524,6 +530,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(398130733, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content, __composer, __dirtyRestart));
     }
 
@@ -638,6 +645,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(56820169, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content, __composer, __dirtyRestart));
     }
 
@@ -762,6 +770,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(2060835784, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content, __composer, __dirtyRestart));
     }
 
@@ -896,6 +905,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(1885066283, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content, __composer, __dirtyRestart));
     }
 }

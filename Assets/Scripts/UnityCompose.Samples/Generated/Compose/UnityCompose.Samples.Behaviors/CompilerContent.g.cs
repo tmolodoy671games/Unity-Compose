@@ -70,6 +70,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01_01;
             __composer.EndRestartGroup(1926882667, __isRestarted)?.UpdateScope(() => __Foo(__text, __misc1, __modifier, __composer, __dirtyRestart));
         }
     }

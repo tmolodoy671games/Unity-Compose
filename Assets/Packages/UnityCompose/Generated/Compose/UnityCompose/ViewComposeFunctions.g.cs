@@ -76,6 +76,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(1765969868, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content, __composer, __dirtyRestart));
     }
 
@@ -135,6 +136,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01;
         __composer.EndRestartGroup(1922237605, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalArrangement, __composer, __dirtyRestart));
     }
 
@@ -195,6 +197,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01;
         __composer.EndRestartGroup(2110962436, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalArrangement, __verticalAlignment, __composer, __dirtyRestart));
     }
 
@@ -247,6 +250,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(734131074, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __alignment, __composer, __dirtyRestart));
     }
 
@@ -275,6 +279,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01;
         __composer.EndRestartGroup(1810854548, __isRestarted)?.UpdateScope(() => __Spacer(__modifier, __composer, __dirtyRestart));
     }
 
@@ -423,6 +428,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(1078710765, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __dirtyRestart));
     }
 
@@ -475,6 +481,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(972845918, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __dirtyRestart));
     }
 }

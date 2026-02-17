@@ -176,6 +176,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01_01_01;
             __composer.EndRestartGroup(1268661115, __isRestarted)?.UpdateScope(() => __Item(__state, __onMoveUpClick, __onMoveDownClick, __onRemoveClick, __composer, __dirtyRestart));
         }
     }

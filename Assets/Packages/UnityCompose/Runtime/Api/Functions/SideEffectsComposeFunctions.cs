@@ -49,9 +49,7 @@ public static partial class ComposeFunctions
     {
         var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
     }
-
-    private static readonly int __dirty = -1337;
-    private static readonly int __changed = -1337;
+    
     [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
@@ -72,7 +70,6 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        // Debug.Log("TestLaunchedEffect: " + __dirty.FormatFirstArgument());
         var _ = Remember(key, () =>
             {
                 block();

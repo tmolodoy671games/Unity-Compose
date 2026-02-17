@@ -116,6 +116,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01;
         __composer.EndRestartGroup(1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier, __composer, __dirtyRestart));
     }
 }

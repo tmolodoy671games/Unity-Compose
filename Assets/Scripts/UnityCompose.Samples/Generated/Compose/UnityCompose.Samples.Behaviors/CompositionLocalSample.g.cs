@@ -98,6 +98,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01;
             __composer.EndRestartGroup(2017996857, __isRestarted)?.UpdateScope(() => __OtherSampleReader(__firstValue, __secondValue, __composer, __dirtyRestart));
         }
 

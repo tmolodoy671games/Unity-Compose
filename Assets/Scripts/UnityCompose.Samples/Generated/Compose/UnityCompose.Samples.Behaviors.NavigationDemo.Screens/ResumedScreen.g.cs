@@ -38,6 +38,7 @@ internal partial class ResumedScreen
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01;
         __composer.EndRestartGroup(542308588, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
     }
 
@@ -87,6 +88,7 @@ internal partial class ResumedScreen
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01;
         __composer.EndRestartGroup(228257823, __isRestarted)?.UpdateScope(() => __DropdownMenu(__expanded, __onDismissRequest, __composer, __dirtyRestart));
     }
 }

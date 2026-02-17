@@ -133,6 +133,7 @@ public static partial class DesignSystemComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(1316622409, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
     }
 
@@ -198,6 +199,7 @@ public static partial class DesignSystemComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01;
         __composer.EndRestartGroup(459997311, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
     }
 }
