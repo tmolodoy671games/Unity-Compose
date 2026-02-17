@@ -14,6 +14,7 @@ public static partial class ComposeFunctions
             throw new IllegalStateException("No LocalOnScreenManager provided!")
         );
 
+    [Composable]
     public static void ModalMenu(
         ComposableContent content
     )

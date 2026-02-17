@@ -106,7 +106,7 @@ internal partial class PausedScreen
                 //     disappearAnimationSpec: Tween(tweenDuration)
                 // ).Value;
                 __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - 1).Px()), __composer: __composer, __changed: (__dirty & 0b_00_00_11) | ((__dirty & 0b_11_00_00) >> 2));
-                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2));
+                __Navigation(modifier: Modifier.FillMaxSize().OnClick(onTabContentClick), transition: (!__composer.ChangedAsStruct<(global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab Value, global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab tab)>((previousTab.Value, tab)) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(ResolveTransform(previousTab.Value, tab))), coordinator: pausedCoordinator, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2));
             })), __composer: __composer, __changed: 0b_01_01_00_00);
             previousTab.Value = tab;
         }

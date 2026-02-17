@@ -74,7 +74,7 @@ public static partial class ComposeFunctions
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
             })), __composer: __composer, __changed: (__dirty & 0b_00_11));
-            var resolvedTransition = (!__composer.Changed(targetState!) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
+            var resolvedTransition = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).Get() ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = __AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration), __composer: __composer, __changed: 0b_00_00).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;

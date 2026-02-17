@@ -26,18 +26,6 @@ namespace UnityCompose.Samples.Behaviors
                     .Background(Color.white),
                 content: () =>
                 {
-                    // var count = Remember(() => MutableStateOf(1));
-                    //
-                    // Text(
-                    //     text: count.Value.ToString(),
-                    //     color: Color.white,
-                    //     modifier: Modifier
-                    //         .Background(Color.blue)
-                    //         .Padding(horizontal: AnimateFloatAsState(40 + 2 * count.Value).Value.Px(), vertical:20.Px())
-                    //         .Border(16.Px())
-                    //         .OnClick(() => count.Value++)
-                    // );
-
                     var isHovered = Remember(() => MutableStateOf(false));
                     Box(
                         modifier: Modifier

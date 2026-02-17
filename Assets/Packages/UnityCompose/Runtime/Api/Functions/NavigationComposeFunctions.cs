@@ -4,6 +4,7 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace
@@ -61,6 +62,7 @@ public static partial class ComposeFunctions
 
         var isSwitched = Remember(() => MutableStateOf(false));
         var currentBackStack = backStack.GetOrDefault(backStack.Count - 1, ImmutableStableListOf<ComposeScreen>());
+        LaunchedEffect(currentBackStack, () => Debug.Log(currentBackStack.ToString()));
         var previousBackStack = Remember(() =>
             MutableStablePropertyOf(initialScreens.OrEmpty().ToImmutableStableList())
         );

@@ -71,13 +71,13 @@ internal partial class ResumedScreen
             __composer.StartReplaceGroup(1587820450);
             if (expanded)
             {
-                ModalMenu((!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __ModalMenu((!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().Background(Color.black.With(a: 0.9f)), content: (!__composer.Changed(onDismissRequest) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __Spacer(Modifier.Size(100.Px()).Background(Color.yellow).OnClick(onDismissRequest), __composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_00_00_00);
-                })));
+                })), __composer: __composer, __changed: 0b_00);
             }
 
             __composer.EndReplaceGroup(1587820450);

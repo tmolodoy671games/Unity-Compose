@@ -64,21 +64,20 @@ public static partial class ComposeFunctions
                               containerPaddings.Value is { x: >= 0, y: >= 0 };
             if (isSizeValid)
             {
-                var a = true ? AnimateFloatAsState(1) : AnimateFloatAsState(1);
-                // var animatedSize = key != null
-                //     ? AnimateVector2AsState(
-                //         key: key,
-                //         targetValueFactory: () => contentSize.Value + containerPaddings.Value,
-                //         animationSpec: animationSpec
-                //     ).Value
-                //     : AnimateVector2AsState(
-                //         targetValue: contentSize.Value + containerPaddings.Value,
-                //         animationSpec: animationSpec
-                //     ).Value;
-                // containerModifier = containerModifier
-                //     .Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
-                // contentModifier = contentModifier
-                //     .Float();
+                var animatedSize = key != null
+                    ? AnimateVector2AsState(
+                        key: key,
+                        targetValueFactory: () => contentSize.Value + containerPaddings.Value,
+                        animationSpec: animationSpec
+                    ).Value
+                    : AnimateVector2AsState(
+                        targetValue: contentSize.Value + containerPaddings.Value,
+                        animationSpec: animationSpec
+                    ).Value;
+                containerModifier = containerModifier
+                    .Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
+                contentModifier = contentModifier
+                    .Float();
             }
         }
 

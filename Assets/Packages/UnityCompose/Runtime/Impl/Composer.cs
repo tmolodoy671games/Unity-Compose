@@ -166,6 +166,9 @@ public class Composer
             _writer.Write(value);
         return value;
     }
+    
+    public void Write<T>(T value) => _writer.Write(value);
+    public void WriteAsStruct<T>(T value) where T : struct => _writer.WriteAsStruct(value);
 
     #endregion
 
@@ -237,6 +240,8 @@ public class Composer
 
     #endregion
 
+    public ChangedBuilder BuildChanged() => new(this);
+
     public void Log(object? message) => _writer.Log(message);
     public void LogWarning(object? message) => _writer.LogWarning(message);
 
@@ -248,5 +253,10 @@ public class Composer
     public string SlotsToString()
     {
         return _writer.SlotsToString();
+    }
+
+    private static bool IsStruct<T>()
+    {
+        return ComposeConstants.StructOptimizations && typeof(T).IsValueType;
     }
 }

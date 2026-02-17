@@ -123,7 +123,7 @@ public static partial class DesignSystemComposeFunctions
                         releaseAnimation.Start();
                 })), __composer: __composer, __changed: 0b_00_00);
                 var pressProgress = pressAnimation.Progress;
-                var maxSize = (!__composer.ChangedAsStruct(layoutValue.Size) ? __composer.RememberedValueAsStruct<float>() : __composer.UpdateRememberedValueAsStruct<float>(layoutValue.Size.magnitude));
+                var maxSize = (!__composer.ChangedAsStruct<global::UnityEngine.Vector2>(layoutValue.Size) ? __composer.RememberedValueAsStruct<float>() : __composer.UpdateRememberedValueAsStruct<float>(layoutValue.Size.magnitude));
                 var size = maxSize * pressProgress;
                 __Spacer(Modifier.Size(size.Px()).Border(size.Px() / 2).Background(resolvedPressColor).Alpha(1 - releaseAnimation.Progress).Float().Offset(x: -size.Px() / 2, y: -size.Px() / 2).Position(top: pressPosition.y.Px(), left: pressPosition.x.Px()), __composer: __composer, __changed: 0b_00);
             })), __composer: __composer, __changed: 0b_01_00_00);
