@@ -11,8 +11,14 @@ public static partial class ModifierExtensions
 {
     public static IModifier OnGloballyPositioned(
         this IModifier modifier,
-        Action<LayoutCoordinates> onGloballyPositioned
-    ) => modifier + new OnGloballyPositionedModifierImpl(onGloballyPositioned);
+        Action<LayoutCoordinates> onGloballyPositioned,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnGloballyPositionedModifierImpl(onGloballyPositioned);
+    }
 }
 
 internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>

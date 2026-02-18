@@ -12,28 +12,6 @@ public static partial class ModifierExtensions
 {
     public static IModifier OnClick(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onClick
-    )
-    {
-        if (!enabled)
-            return modifier;
-        return modifier + new OnClickModiferImpl(onClick);
-    }
-
-    public static IModifier OnClick(
-        this IModifier modifier,
-        bool enabled,
-        Action onClick
-    )
-    {
-        if (!enabled)
-            return modifier;
-        return modifier + new OnClickModiferImpl(_ => onClick());
-    }
-    
-    public static IModifier OnClick(
-        this IModifier modifier,
         Action<MouseClickInfo> onClick,
         bool enabled = true
     )
@@ -53,6 +31,72 @@ public static partial class ModifierExtensions
             return modifier;
         return modifier + new OnClickModiferImpl(_ => onClick());
     }
+    
+    public static IModifier OnLmbClick(
+        this IModifier modifier,
+        Action<MouseClickInfo> onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(onClick, 0);
+    }
+
+    public static IModifier OnLmbClick(
+        this IModifier modifier,
+        Action onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(_ => onClick(), 0);
+    }
+    
+    public static IModifier OnRmbClick(
+        this IModifier modifier,
+        Action<MouseClickInfo> onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(onClick, 1);
+    }
+
+    public static IModifier OnRmbClick(
+        this IModifier modifier,
+        Action onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(_ => onClick(), 1);
+    }
+    
+    public static IModifier OnMmbClick(
+        this IModifier modifier,
+        Action<MouseClickInfo> onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(onClick, 2);
+    }
+
+    public static IModifier OnMmbClick(
+        this IModifier modifier,
+        Action onClick,
+        bool enabled = true
+    )
+    {
+        if (!enabled)
+            return modifier;
+        return modifier + new OnClickModiferImpl(_ => onClick(), 2);
+    }
 }
 
 public readonly record struct MouseClickInfo(
@@ -65,15 +109,21 @@ internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
 {
     private readonly Action<ClickEvent> _onClick;
 
-    public OnClickModiferImpl(Action<MouseClickInfo> onClick)
+    public OnClickModiferImpl(Action<MouseClickInfo> onClick, int allowedButton = -1)
     {
-        _onClick = it => onClick(
-            new MouseClickInfo(
-                Button: it.button,
-                Position: it.position,
-                LocalPosition: it.localPosition
-            )
-        );
+        _onClick = it =>
+        {
+            if (allowedButton < 0 || it.button == allowedButton)
+            {
+                onClick(
+                    new MouseClickInfo(
+                        Button: it.button,
+                        Position: it.position,
+                        LocalPosition: it.localPosition
+                    )
+                );
+            }
+        };
     }
 
     public override void Apply(VisualElement element)
