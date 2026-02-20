@@ -39,7 +39,7 @@ public static partial class ComposeFunctions
         });
 
         var resolvedTransition = Remember(
-            targetState!,
+            targetState,
             () => Equals(previousValue.Value, targetState)
                 ? IEnterTransition.Empty().TogetherWith(Hide())
                 : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))

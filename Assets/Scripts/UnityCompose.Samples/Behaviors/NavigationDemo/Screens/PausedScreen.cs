@@ -27,8 +27,8 @@ internal partial class PausedScreen : ComposeScreen
 
     [Composable]
     private static void Layout(
-        PausedTab tab,
         IPausedCoordinator pausedCoordinator,
+        PausedTab tab,
         Action<PausedTab> onClick,
         Action onTabContentClick,
         IModifier? modifier = null
@@ -40,16 +40,11 @@ internal partial class PausedScreen : ComposeScreen
                 .FillMaxSize(),
             content: () =>
             {
-                // const float tweenDuration = 1.99f;
-                // var visibilityProgress = VisibilityProgress(
-                //     appearAnimationSpec: Tween(tweenDuration),
-                //     disappearAnimationSpec: Tween(tweenDuration)
-                // ).Value;
                 TabsRow(
                     currentTab: tab,
                     onClick: onClick,
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
-                        .Offset(y: -100 * (1- 1).Px())
+                        .Offset(y: -100 * (1 - 1).Px())
                 );
                 Navigation(
                     modifier: Modifier.FillMaxSize()

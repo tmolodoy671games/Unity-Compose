@@ -107,36 +107,6 @@ public static partial class ModifierExtensions
 
     public static IModifier OnMmbDown(
         this IModifier modifier,
-        bool enabled,
-        Action<MouseClickInfo> onMouseDown
-    )
-    {
-        if (!enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown(it);
-        });
-    }
-
-    public static IModifier OnMmbDown(
-        this IModifier modifier,
-        bool enabled,
-        Action onMouseDown
-    )
-    {
-        if (!enabled)
-            return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown();
-        });
-    }
-
-    public static IModifier OnMmbDown(
-        this IModifier modifier,
         Action<MouseClickInfo> onMouseDown,
         bool enabled = true
     )

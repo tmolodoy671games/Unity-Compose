@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = -1;
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();
-            for (var i = 0; i < 1_00; i++)
+            for (var i = 0; i < 1_000; i++)
             {
                 var childElement = new VisualElement
                 {

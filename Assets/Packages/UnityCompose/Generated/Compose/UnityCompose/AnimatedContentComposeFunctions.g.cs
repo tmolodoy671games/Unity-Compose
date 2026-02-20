@@ -46,7 +46,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(sizeAnimationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
+            __dirty |= __composer.Changed(sizeAnimationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
         }
         else
         {
@@ -66,21 +66,21 @@ public static partial class ComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
             var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-            __LaunchedEffect(targetState, (!__composer.Changed(isSwitched) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_00_11));
+            __LaunchedEffect(targetState, (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_00_11));
             var previousValue = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
             var targetValue = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
-            __LaunchedEffect(targetState, (!__composer.ChangedAsStruct((targetState, previousValue, targetValue)) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+            __LaunchedEffect(targetState, (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).Changed<global::StableCollections.IMutableStableProperty<T>>(previousValue!).Changed<global::StableCollections.IMutableStableProperty<T>>(targetValue!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
             {
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
             })), __composer: __composer, __changed: (__dirty & 0b_00_11));
-            var resolvedTransition = (!__composer.Changed(targetState!) ? __composer.RememberedValueAsStruct<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValueAsStruct<global::UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
+            var resolvedTransition = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValue<global::UnityCompose.ContentTransform>(Equals(previousValue.Value, targetState) ? IEnterTransition.Empty().TogetherWith(Hide()) : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))));
             var transitionDuration = resolvedTransition.TotalDuration;
             var progress = __AnimateFloatAsState(targetValue: isSwitched.Value ? 1 : 0f, animationSpec: Tween(easing: LinearEasing, duration: transitionDuration), __composer: __composer, __changed: 0b_01_00_00).Value;
             var resolvedProgress = isSwitched.Value ? progress : 1 - progress;
             var resolvedTimeElapsed = resolvedProgress * transitionDuration;
             var(containerModifier, contentModifier) = sizeAnimationSpec.HasValue ? __composer.WithReplaceGroup(1138676624, () => __AnimateSizeModifiers(sizeAnimationSpec.Value, key: targetState, __composer: __composer, __changed: ((__dirty & 0b_00_11) << 2))) : __composer.WithReplaceGroup(1488763163, () => (Modifier, Modifier));
-            __ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: (!__composer.ChangedAsStruct((targetState, content, isSwitched, previousValue, resolvedTransition, resolvedProgress, resolvedTimeElapsed, contentModifier)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            __ReusableComposeView<AnimatedContent>(modifier: modifier.OrEmpty().Then(containerModifier), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_11_00_00) == 0b_00_00_10_00_00).Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!).Changed<global::StableCollections.IMutableStableProperty<T>>(previousValue!).Changed<global::UnityCompose.ContentTransform>(resolvedTransition!).Changed<float>(resolvedProgress!).Changed<float>(resolvedTimeElapsed!).Changed<global::UnityCompose.IModifier>(contentModifier!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 var parent = __composer.GetParentVisualElement().NotNull();
                 var nextModifier = resolvedTransition.Enter.Get(resolvedTimeElapsed, parent).Then(contentModifier);
@@ -94,7 +94,7 @@ public static partial class ComposeFunctions
                 {
                     var state = TransitionResolvedState.Create(state: pair.First.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                     __composer.StartReplaceGroup(1487342838);
-                    __CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(pair.First.Value, pair.First.Modifier))), __composer: __composer, __changed: 0b_00_00_00_00_00_00);
+                    __CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11_00_00) == 0b_00_00_10_00_00).Changed<((T Value, global::UnityCompose.IModifier Modifier, global::UnityCompose.TransitionState ContentState) First, (T Value, global::UnityCompose.IModifier Modifier, global::UnityCompose.TransitionState ContentState) Second)>(pair!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(pair.First.Value, pair.First.Modifier))), __composer: __composer, __changed: 0b_00_00_00_00_00_00);
                     __composer.EndReplaceGroup(1487342838);
                 }
 
@@ -104,7 +104,7 @@ public static partial class ComposeFunctions
                 {
                     var state = TransitionResolvedState.Create(state: pair.Second.ContentState, absoluteProgress: resolvedProgress, duration: resolvedTransition.TotalDuration);
                     __composer.StartReplaceGroup(140472974);
-                    __CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.ChangedAsStruct((content, pair)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(pair.Second.Value, pair.Second.Modifier))), __composer: __composer, __changed: 0b_00_00_00_00_00_00);
+                    __CompositionLocalProvider(LocalTransitionState.Provides(state.State), LocalTransitionProgress.Provides(state.Progress), LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress), LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed), LocalTransitionDuration.Provides(state.Duration), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11_00_00) == 0b_00_00_10_00_00).Changed<((T Value, global::UnityCompose.IModifier Modifier, global::UnityCompose.TransitionState ContentState) First, (T Value, global::UnityCompose.IModifier Modifier, global::UnityCompose.TransitionState ContentState) Second)>(pair!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(pair.Second.Value, pair.Second.Modifier))), __composer: __composer, __changed: 0b_00_00_00_00_00_00);
                     __composer.EndReplaceGroup(140472974);
                 }
 
@@ -116,6 +116,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01;
         __composer.EndRestartGroup(1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier, __composer, __dirtyRestart));
     }
 }

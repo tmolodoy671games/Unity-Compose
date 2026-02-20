@@ -35,6 +35,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01;
         __composer.EndRestartGroup(2008433022, __isRestarted)?.UpdateScope(() => __KeyImpl(__content, __composer, __dirtyRestart));
     }
 }

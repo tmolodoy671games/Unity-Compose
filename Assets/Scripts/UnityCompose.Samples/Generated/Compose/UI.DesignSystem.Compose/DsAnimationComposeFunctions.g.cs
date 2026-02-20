@@ -14,7 +14,7 @@ public static partial class DesignSystemComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -23,7 +23,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(debuggable) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(debuggable) ? 0b_10_00 : 0b_01_00;
         }
         else
         {
@@ -43,7 +43,7 @@ public static partial class DesignSystemComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(appearAnimationSpec) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(appearAnimationSpec) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -52,7 +52,7 @@ public static partial class DesignSystemComposeFunctions
 
         if ((__changed & 0b_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(disappearAnimationSpec) ? 0b_10_00 : 0b_01_00;
+            __dirty |= __composer.Changed(disappearAnimationSpec) ? 0b_10_00 : 0b_01_00;
         }
         else
         {

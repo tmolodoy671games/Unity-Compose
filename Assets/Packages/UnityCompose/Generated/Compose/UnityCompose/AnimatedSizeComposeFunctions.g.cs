@@ -38,7 +38,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
         }
         else
         {
@@ -54,7 +54,7 @@ public static partial class ComposeFunctions
             {
                 it.style.alignItems = Align.Center;
                 it.style.justifyContent = Justify.Center;
-            })), content: (!__composer.ChangedAsStruct((content, contentModifier)) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            })), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Changed<global::UnityCompose.IModifier>(contentModifier!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __composer.StartReplaceGroup(1881756995);
                 content(contentModifier);
@@ -66,6 +66,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(1035912844, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec, __composer, __dirtyRestart));
     }
 
@@ -75,7 +76,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(animationSpec) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(animationSpec) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -94,14 +95,14 @@ public static partial class ComposeFunctions
         var containerPaddings = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
         var contentSize = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
         var contentModifier = Modifier;
-        var containerModifier = Modifier.Clip().OnLocallyPositioned((!__composer.Changed(containerPaddings) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
+        var containerModifier = Modifier.Clip().OnLocallyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(containerPaddings!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         })));
         __composer.StartReplaceGroup(1605805438);
         if (!IsInPreview)
         {
-            contentModifier = contentModifier.OnLocallyPositioned((!__composer.Changed(contentSize) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
+            contentModifier = contentModifier.OnLocallyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(contentSize!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
             {
                 var resolvedSize = it.Size;
                 resolvedSize += Vector2.right * (it.MarginLeft + it.MarginRight);
@@ -112,21 +113,9 @@ public static partial class ComposeFunctions
             __composer.StartReplaceGroup(1049337380);
             if (isSizeValid)
             {
-                var a = true ? __composer.WithReplaceGroup(454710194, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01_01)) : __composer.WithReplaceGroup(1415167036, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01_01));
-            // var animatedSize = key != null
-            //     ? AnimateVector2AsState(
-            //         key: key,
-            //         targetValueFactory: () => contentSize.Value + containerPaddings.Value,
-            //         animationSpec: animationSpec
-            //     ).Value
-            //     : AnimateVector2AsState(
-            //         targetValue: contentSize.Value + containerPaddings.Value,
-            //         animationSpec: animationSpec
-            //     ).Value;
-            // containerModifier = containerModifier
-            //     .Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
-            // contentModifier = contentModifier
-            //     .Float();
+                var animatedSize = key != null ? __composer.WithReplaceGroup(1769952058, () => __AnimateVector2AsState(key: key, targetValueFactory: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(containerPaddings!).Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(contentSize!).Get() ? __composer.RememberedValue<global::System.Func<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityEngine.Vector2>>(() => contentSize.Value + containerPaddings.Value)), animationSpec: animationSpec, __composer: __composer, __changed: 0b_01_00_00_00 | ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_00_00_11) << 4)).Value) : __composer.WithReplaceGroup(1280845612, () => __AnimateVector2AsState(targetValue: contentSize.Value + containerPaddings.Value, animationSpec: animationSpec, __composer: __composer, __changed: 0b_01_00_00 | ((__dirty & 0b_00_11) << 2)).Value);
+                containerModifier = containerModifier.Size(width: animatedSize.x.Px(), height: animatedSize.y.Px());
+                contentModifier = contentModifier.Float();
             }
 
             __composer.EndReplaceGroup(1049337380);

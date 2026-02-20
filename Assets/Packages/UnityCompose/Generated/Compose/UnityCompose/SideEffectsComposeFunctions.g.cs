@@ -38,20 +38,21 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
-            var _ = (!__composer.Changed(key) ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine())));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine())));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01;
         __composer.EndRestartGroup(344620497, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __coroutine, __composer, __dirtyRestart));
     }
 
     public static void __LaunchedEffect<TKey>(TKey key, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __block) = (key, block);
-        var __isCreated = __composer.StartRestartGroup(716928859);
+        var __isCreated = __composer.StartRestartGroup(1894485109);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
@@ -75,7 +76,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
-            var _ = (!__composer.Changed(key) ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
             {
                 block();
                 return string.Empty;
@@ -86,13 +87,56 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(716928859, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __block, __composer, __dirtyRestart));
+        __dirty = 0b_01_01;
+        __composer.EndRestartGroup(1894485109, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __block, __composer, __dirtyRestart));
+    }
+
+    public static void __TestLaunchedEffect<TKey>(TKey key, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    {
+        var(__key, __block) = (key, block);
+        var __isCreated = __composer.StartRestartGroup(996962608);
+        var __dirty = __changed;
+        var __dirtyRestart = 0;
+        if ((__changed & 0b_00_11) == 0)
+        {
+            __dirty |= __composer.Changed(key) ? 0b_00_10 : 0b_00_01;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_00_01;
+        }
+
+        if ((__changed & 0b_11_00) == 0)
+        {
+            __dirty |= __composer.Changed(block) ? 0b_10_00 : 0b_01_00;
+        }
+        else
+        {
+            __dirtyRestart |= 0b_01_00;
+        }
+
+        var __isRestarted = __composer.IsRestarted();
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01)
+        {
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<string>() : __composer.UpdateRememberedValue<string>(() =>
+            {
+                block();
+                return string.Empty;
+            }));
+        }
+        else
+        {
+            __composer.SkipToGroupEnd();
+        }
+
+        __dirty = 0b_01_01;
+        __composer.EndRestartGroup(996962608, __isRestarted)?.UpdateScope(() => __TestLaunchedEffect(__key, __block, __composer, __dirtyRestart));
     }
 
     public static void __LaunchedEffect<TKey>(TKey key, TimeSpan delay, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __delay, __block) = (key, delay, block);
-        var __isCreated = __composer.StartRestartGroup(1549277972);
+        var __isCreated = __composer.StartRestartGroup(171949224);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
@@ -106,7 +150,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(delay) ? 0b_00_10_00 : 0b_00_01_00;
+            __dirty |= __composer.Changed(delay) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
@@ -125,20 +169,21 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            var _ = (!__composer.Changed(key) ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1549277972, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
+        __dirty = 0b_01_01_01;
+        __composer.EndRestartGroup(171949224, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
     }
 
     public static void __LaunchedEffect<TKey>(TKey key, float delay, Action block, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __delay, __block) = (key, delay, block);
-        var __isCreated = __composer.StartRestartGroup(1767914563);
+        var __isCreated = __composer.StartRestartGroup(1924862291);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
@@ -152,7 +197,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(delay) ? 0b_00_10_00 : 0b_00_01_00;
+            __dirty |= __composer.Changed(delay) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
@@ -171,20 +216,21 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            var _ = (!__composer.Changed(key) ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1767914563, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
+        __dirty = 0b_01_01_01;
+        __composer.EndRestartGroup(1924862291, __isRestarted)?.UpdateScope(() => __LaunchedEffect(__key, __delay, __block, __composer, __dirtyRestart));
     }
 
     public static void __DisposableEffect<TKey>(TKey key, Func<IDisposableEffectScope, IDisposableEffectResult> effect, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __effect) = (key, effect);
-        var __isCreated = __composer.StartRestartGroup(1073799068);
+        var __isCreated = __composer.StartRestartGroup(2059008237);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
@@ -208,13 +254,14 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
-            var _ = (!__composer.Changed(key) ? __composer.RememberedValue<global::UnityCompose.IDisposableEffectResult>() : __composer.UpdateRememberedValue<global::UnityCompose.IDisposableEffectResult>(effect(DisposableEffectScopeImpl.Instance)));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IDisposableEffectResult>() : __composer.UpdateRememberedValue<global::UnityCompose.IDisposableEffectResult>(effect(DisposableEffectScopeImpl.Instance)));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1073799068, __isRestarted)?.UpdateScope(() => __DisposableEffect(__key, __effect, __composer, __dirtyRestart));
+        __dirty = 0b_01_01;
+        __composer.EndRestartGroup(2059008237, __isRestarted)?.UpdateScope(() => __DisposableEffect(__key, __effect, __composer, __dirtyRestart));
     }
 }

@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors
 
             if ((__changed & 0b_00_11_00) == 0)
             {
-                __dirty |= __composer.ChangedAsStruct(misc1) ? 0b_00_10_00 : 0b_00_01_00;
+                __dirty |= __composer.Changed(misc1) ? 0b_00_10_00 : 0b_00_01_00;
             }
             else
             {
@@ -70,6 +70,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
+            __dirty = 0b_01_01_01;
             __composer.EndRestartGroup(1926882667, __isRestarted)?.UpdateScope(() => __Foo(__text, __misc1, __modifier, __composer, __dirtyRestart));
         }
     }

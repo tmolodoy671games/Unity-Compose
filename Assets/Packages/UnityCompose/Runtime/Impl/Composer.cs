@@ -112,59 +112,30 @@ public class Composer
 
     public bool Changed<TState>(TState state)
     {
-        return _writer.ReadAndWrite(state);
-    }
-
-    public Optional<T> ReadAsStruct<T>() where T : struct => _writer.ReadAsStruct<T>();
-
-    public bool ChangedAsStruct<T>(T state) where T : struct
-    {
-        if (ComposeConstants.StructOptimizations)
-            return _writer.ReadAndWriteAsStruct(state);
-        else
-            return Changed(state);
+        return IsStruct<TState>() ? _writer.ReadAndWriteAsStruct(state) : _writer.ReadAndWrite(state);
     }
 
     public T RememberedValue<T>()
     {
-        var result = _writer.Read<T>().Value;
-        _writer.IncrementSlotIndex();
-        return result;
-    }
-
-    public T RememberedValueAsStruct<T>() where T : struct
-    {
-        var result = ComposeConstants.StructOptimizations ? _writer.ReadAsStruct<T>().Value : _writer.Read<T>().Value;
+        var result = IsStruct<T>() ? _writer.ReadAsStruct<T>().Value : _writer.Read<T>().Value;
         _writer.IncrementSlotIndex();
         return result;
     }
 
     public T UpdateRememberedValue<T>(T update)
     {
-        _writer.Write(update);
+        Write(update);
         return update;
     }
 
     public T UpdateRememberedValue<T>(Func<T> value) => UpdateRememberedValue(value());
 
-    public T UpdateRememberedValueAsStruct<T>(T update) where T : struct
+    public void Write<T>(T value)
     {
-        if (ComposeConstants.StructOptimizations)
-            _writer.WriteAsStruct(update);
-        else
-            _writer.Write(update);
-
-        return update;
-    }
-
-    public T UpdateRememberedValueAsStruct<T>(Func<T> update) where T : struct
-    {
-        var value = update();
-        if (ComposeConstants.StructOptimizations)
+        if (IsStruct<T>())
             _writer.WriteAsStruct(value);
         else
             _writer.Write(value);
-        return value;
     }
 
     #endregion
@@ -237,6 +208,8 @@ public class Composer
 
     #endregion
 
+    public ChangedBuilder BuildChanged() => new(this);
+
     public void Log(object? message) => _writer.Log(message);
     public void LogWarning(object? message) => _writer.LogWarning(message);
 
@@ -248,5 +221,15 @@ public class Composer
     public string SlotsToString()
     {
         return _writer.SlotsToString();
+    }
+
+    private static bool IsStruct<T>()
+    {
+        return IsValueTypeState<T>.IsValueType;
+    }
+    
+    private static class IsValueTypeState<T>
+    {
+        public static readonly bool IsValueType = ComposeConstants.StructOptimizations && typeof(T).IsValueType;
     }
 }

@@ -17,7 +17,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_10 : 0b_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_10 : 0b_00_01;
         }
         else
         {
@@ -50,6 +50,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01;
         __composer.EndRestartGroup(636805308, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __content, __composer, __dirtyRestart));
     }
 
@@ -61,7 +62,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_10 : 0b_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_10 : 0b_00_00_01;
         }
         else
         {
@@ -70,7 +71,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_10_00 : 0b_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_10_00 : 0b_00_01_00;
         }
         else
         {
@@ -104,6 +105,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01;
         __composer.EndRestartGroup(2075615182, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __content, __composer, __dirtyRestart));
     }
 
@@ -115,7 +117,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_10 : 0b_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_10 : 0b_00_00_00_01;
         }
         else
         {
@@ -124,7 +126,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_10_00 : 0b_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_10_00 : 0b_00_00_01_00;
         }
         else
         {
@@ -133,7 +135,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_10_00_00 : 0b_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_10_00_00 : 0b_00_01_00_00;
         }
         else
         {
@@ -168,6 +170,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01;
         __composer.EndRestartGroup(150642065, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __content, __composer, __dirtyRestart));
     }
 
@@ -179,7 +182,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
         }
         else
         {
@@ -188,7 +191,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
         }
         else
         {
@@ -197,7 +200,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
         }
         else
         {
@@ -206,7 +209,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
         }
         else
         {
@@ -242,6 +245,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01;
         __composer.EndRestartGroup(850864666, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __content, __composer, __dirtyRestart));
     }
 
@@ -253,7 +257,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_10 : 0b_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_10 : 0b_00_00_00_00_00_01;
         }
         else
         {
@@ -262,7 +266,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_10_00 : 0b_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_10_00 : 0b_00_00_00_00_01_00;
         }
         else
         {
@@ -271,7 +275,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_10_00_00 : 0b_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_10_00_00 : 0b_00_00_00_01_00_00;
         }
         else
         {
@@ -280,7 +284,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_10_00_00_00 : 0b_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_10_00_00_00 : 0b_00_00_01_00_00_00;
         }
         else
         {
@@ -289,7 +293,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_10_00_00_00_00 : 0b_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_10_00_00_00_00 : 0b_00_01_00_00_00_00;
         }
         else
         {
@@ -326,6 +330,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01;
         __composer.EndRestartGroup(1390334920, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __content, __composer, __dirtyRestart));
     }
 
@@ -337,7 +342,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_01;
         }
         else
         {
@@ -346,7 +351,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_01_00;
         }
         else
         {
@@ -355,7 +360,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_00_10_00_00 : 0b_00_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_00_10_00_00 : 0b_00_00_00_00_01_00_00;
         }
         else
         {
@@ -364,7 +369,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_00_10_00_00_00 : 0b_00_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_00_10_00_00_00 : 0b_00_00_00_01_00_00_00;
         }
         else
         {
@@ -373,7 +378,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_00_10_00_00_00_00 : 0b_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_00_10_00_00_00_00 : 0b_00_00_01_00_00_00_00;
         }
         else
         {
@@ -382,7 +387,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides6) ? 0b_00_10_00_00_00_00_00 : 0b_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides6) ? 0b_00_10_00_00_00_00_00 : 0b_00_01_00_00_00_00_00;
         }
         else
         {
@@ -420,6 +425,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(732686622, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __content, __composer, __dirtyRestart));
     }
 
@@ -431,7 +437,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
         }
         else
         {
@@ -440,7 +446,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
         }
         else
         {
@@ -449,7 +455,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
         }
         else
         {
@@ -458,7 +464,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
         }
         else
         {
@@ -467,7 +473,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
         }
         else
         {
@@ -476,7 +482,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides6) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides6) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
         }
         else
         {
@@ -485,7 +491,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides7) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides7) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
         }
         else
         {
@@ -524,6 +530,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(398130733, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __content, __composer, __dirtyRestart));
     }
 
@@ -535,7 +542,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
         }
         else
         {
@@ -544,7 +551,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
         }
         else
         {
@@ -553,7 +560,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
         }
         else
         {
@@ -562,7 +569,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
         }
         else
         {
@@ -571,7 +578,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
         }
         else
         {
@@ -580,7 +587,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides6) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides6) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
         }
         else
         {
@@ -589,7 +596,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides7) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides7) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
         }
         else
         {
@@ -598,7 +605,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides8) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides8) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
         }
         else
         {
@@ -638,6 +645,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(56820169, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __content, __composer, __dirtyRestart));
     }
 
@@ -649,7 +657,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_00_01;
         }
         else
         {
@@ -658,7 +666,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_00_01_00;
         }
         else
         {
@@ -667,7 +675,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_00_01_00_00;
         }
         else
         {
@@ -676,7 +684,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_00_01_00_00_00;
         }
         else
         {
@@ -685,7 +693,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_00_01_00_00_00_00;
         }
         else
         {
@@ -694,7 +702,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides6) ? 0b_00_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides6) ? 0b_00_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00_00;
         }
         else
         {
@@ -703,7 +711,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides7) ? 0b_00_00_00_10_00_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides7) ? 0b_00_00_00_10_00_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00_00;
         }
         else
         {
@@ -712,7 +720,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides8) ? 0b_00_00_10_00_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides8) ? 0b_00_00_10_00_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00_00;
         }
         else
         {
@@ -721,7 +729,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides9) ? 0b_00_10_00_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides9) ? 0b_00_10_00_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00_00;
         }
         else
         {
@@ -762,6 +770,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(2060835784, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __content, __composer, __dirtyRestart));
     }
 
@@ -773,7 +782,7 @@ public static partial class ComposeFunctions
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_00_00_00_11) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides1) ? 0b_00_00_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_00_00_01;
+            __dirty |= __composer.Changed(provides1) ? 0b_00_00_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_00_00_01;
         }
         else
         {
@@ -782,7 +791,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_00_00_11_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides2) ? 0b_00_00_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_00_00_01_00;
+            __dirty |= __composer.Changed(provides2) ? 0b_00_00_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_00_00_01_00;
         }
         else
         {
@@ -791,7 +800,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_00_11_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides3) ? 0b_00_00_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_00_00_01_00_00;
+            __dirty |= __composer.Changed(provides3) ? 0b_00_00_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_00_00_01_00_00;
         }
         else
         {
@@ -800,7 +809,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_00_11_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides4) ? 0b_00_00_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_00_00_01_00_00_00;
+            __dirty |= __composer.Changed(provides4) ? 0b_00_00_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_00_00_01_00_00_00;
         }
         else
         {
@@ -809,7 +818,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_00_11_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides5) ? 0b_00_00_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_00_00_01_00_00_00_00;
+            __dirty |= __composer.Changed(provides5) ? 0b_00_00_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_00_00_01_00_00_00_00;
         }
         else
         {
@@ -818,7 +827,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_00_11_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides6) ? 0b_00_00_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_00_00_01_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides6) ? 0b_00_00_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_00_00_01_00_00_00_00_00;
         }
         else
         {
@@ -827,7 +836,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_00_11_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides7) ? 0b_00_00_00_00_10_00_00_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides7) ? 0b_00_00_00_00_10_00_00_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00_00_00;
         }
         else
         {
@@ -836,7 +845,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_00_11_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides8) ? 0b_00_00_00_10_00_00_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides8) ? 0b_00_00_00_10_00_00_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00_00_00;
         }
         else
         {
@@ -845,7 +854,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_00_11_00_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides9) ? 0b_00_00_10_00_00_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides9) ? 0b_00_00_10_00_00_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00_00_00;
         }
         else
         {
@@ -854,7 +863,7 @@ public static partial class ComposeFunctions
 
         if ((__changed & 0b_00_11_00_00_00_00_00_00_00_00_00) == 0)
         {
-            __dirty |= __composer.ChangedAsStruct(provides10) ? 0b_00_10_00_00_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00_00_00;
+            __dirty |= __composer.Changed(provides10) ? 0b_00_10_00_00_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00_00_00;
         }
         else
         {
@@ -896,6 +905,7 @@ public static partial class ComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
+        __dirty = 0b_01_01_01_01_01_01_01_01_01_01_01;
         __composer.EndRestartGroup(1885066283, __isRestarted)?.UpdateScope(() => __CompositionLocalProvider(__provides1, __provides2, __provides3, __provides4, __provides5, __provides6, __provides7, __provides8, __provides9, __provides10, __content, __composer, __dirtyRestart));
     }
 }

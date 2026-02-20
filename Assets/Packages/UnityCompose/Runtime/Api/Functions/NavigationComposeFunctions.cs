@@ -4,6 +4,7 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
+using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace
@@ -35,6 +36,14 @@ public static partial class ComposeFunctions
         });
     }
 
+    public static string FormatFirstArgument(this int dirty)
+    {
+        var result = Convert.ToString(dirty, 2);
+        return result.TakeLast(2).JoinToString("");
+    }
+
+    public static string FormatAs2Bit(this int value) => Convert.ToString(value, 2);
+
     [Composable]
     public static void Navigation(
         IComposeCoordinator coordinator,
@@ -49,7 +58,7 @@ public static partial class ComposeFunctions
         IComposeNavigator navigator = Remember((parentCoordinator, backStack),
             () => new ComposeNavigatorImpl(backStack, parentCoordinator)
         );
-
+        
         DisposableEffect(
             key: coordinator,
             effect: it =>
