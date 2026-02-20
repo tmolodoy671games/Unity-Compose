@@ -112,7 +112,7 @@ public static partial class ComposeFunctions
             __composer.StartReplaceGroup(1049337380);
             if (isSizeValid)
             {
-                var a = true ? __composer.WithReplaceGroup(454710194, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01)) : __composer.WithReplaceGroup(1415167036, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01));
+                var a = true ? __composer.WithReplaceGroup(454710194, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01_01)) : __composer.WithReplaceGroup(1415167036, () => __AnimateFloatAsState(1, __composer: __composer, __changed: 0b_01_01_01));
             // var animatedSize = key != null
             //     ? AnimateVector2AsState(
             //         key: key,
