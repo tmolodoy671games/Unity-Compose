@@ -127,14 +127,14 @@ internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
     public override void Apply(VisualElement element)
     {
         EnsureOnClick();
-        element.pickingMode = PickingMode.Position;
+        element.ComposePickingMode().Increment();
         element.GetComposeCallback<ClickEvent>().Add(_onClick!);
     }
 
     public override void Revert(VisualElement element)
     {
         EnsureOnClick();
-        element.pickingMode = PickingMode.Ignore;
+        element.ComposePickingMode().Decrement();
         element.GetComposeCallback<ClickEvent>().Remove(_onClick!);
     }
 

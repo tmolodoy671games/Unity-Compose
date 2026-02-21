@@ -136,14 +136,14 @@ internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
     public override void Apply(VisualElement element)
     {
         EnsureOnMouseUp();
-        element.pickingMode = PickingMode.Position;
+        element.ComposePickingMode().Increment();
         element.GetComposeCallback<MouseUpEvent>().Add(_onMouseUp!);
     }
 
     public override void Revert(VisualElement element)
     {
         EnsureOnMouseUp();
-        element.pickingMode = PickingMode.Ignore;
+        element.ComposePickingMode().Decrement();
         element.GetComposeCallback<MouseUpEvent>().Remove(_onMouseUp!);
     }
 

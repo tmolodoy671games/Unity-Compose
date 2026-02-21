@@ -42,17 +42,17 @@ namespace UnityCompose.Samples.Behaviors
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .CapturePointer(isCapturingPointer.Value)
-                            .Scale(2)
-                            .OnLmbDown(() =>
-                            {
-                                isPressed.Value = true;
-                                isCapturingPointer.Value = true;
-                            })
-                            .OnLmbUp(() =>
-                            {
-                                isPressed.Value = false;
-                                isCapturingPointer.Value = false;
-                            }),
+                            .Scale(2),
+                            // .OnLmbDown(() =>
+                            // {
+                            //     isPressed.Value = true;
+                            //     isCapturingPointer.Value = true;
+                            // })
+                            // .OnLmbUp(() =>
+                            // {
+                            //     isPressed.Value = false;
+                            //     isCapturingPointer.Value = false;
+                            // }),
                         content: () =>
                         {
                             CompositionLocalProvider(

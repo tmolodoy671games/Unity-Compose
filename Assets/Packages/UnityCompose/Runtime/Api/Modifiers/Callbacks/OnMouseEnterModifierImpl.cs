@@ -57,14 +57,14 @@ internal class OnMouseEnterModifierImpl : BaseModifier<OnMouseEnterModifierImpl>
     public override void Apply(VisualElement element)
     {
         EnsureOnMouseEnter();
-        element.pickingMode = PickingMode.Position;
+        element.ComposePickingMode().Increment();
         element.GetComposeCallback<MouseEnterEvent>().Add(_onMouseEnter!);
     }
 
     public override void Revert(VisualElement element)
     {
         EnsureOnMouseEnter();
-        element.pickingMode = PickingMode.Ignore;
+        element.ComposePickingMode().Decrement();
         element.GetComposeCallback<MouseEnterEvent>().Remove(_onMouseEnter!);
     }
 

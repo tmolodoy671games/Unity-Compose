@@ -51,14 +51,14 @@ internal class OnMouseLeaveModifierImpl : BaseModifier<OnMouseLeaveModifierImpl>
     public override void Apply(VisualElement element)
     {
         EnsureOnMouseDown();
-        element.pickingMode = PickingMode.Position;
+        element.ComposePickingMode().Increment();
         element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave!);
     }
 
     public override void Revert(VisualElement element)
     {
         EnsureOnMouseDown();
-        element.pickingMode = PickingMode.Ignore;
+        element.ComposePickingMode().Decrement();
         element.GetComposeCallback<MouseLeaveEvent>().Remove(_onMouseLeave!);
     }
 

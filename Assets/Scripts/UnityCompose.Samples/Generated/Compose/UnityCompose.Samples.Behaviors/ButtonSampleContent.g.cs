@@ -54,15 +54,17 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                     var isPressed = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                     var isCapturingPointer = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                    __Box(modifier: Modifier.Padding(horizontal: __AnimateFloatAsState(isHovered.Value ? 80 : 40, __composer: __composer, __changed: 0b_01_01_00).Value.Px(), vertical: 16.Px()).Background(__AnimateColorAsState(isPressed.Value ? Color.darkBlue : Color.blue, __composer: __composer, __changed: 0b_01_01_00).Value).Border(radius: 16.Px()).OnMouseEnter((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true))).OnMouseLeave((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false))).CapturePointer(isCapturingPointer.Value).Scale(2).OnLmbDown((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
-                    {
-                        isPressed.Value = true;
-                        isCapturingPointer.Value = true;
-                    }))).OnLmbUp((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
-                    {
-                        isPressed.Value = false;
-                        isCapturingPointer.Value = false;
-                    }))), content: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isPressed!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Box(modifier: Modifier.Padding(horizontal: __AnimateFloatAsState(isHovered.Value ? 80 : 40, __composer: __composer, __changed: 0b_01_01_00).Value.Px(), vertical: 16.Px()).Background(__AnimateColorAsState(isPressed.Value ? Color.darkBlue : Color.blue, __composer: __composer, __changed: 0b_01_01_00).Value).Border(radius: 16.Px()).OnMouseEnter((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true))).OnMouseLeave((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false))).CapturePointer(isCapturingPointer.Value).Scale(2), // .OnLmbDown(() =>
+                    // {
+                    //     isPressed.Value = true;
+                    //     isCapturingPointer.Value = true;
+                    // })
+                    // .OnLmbUp(() =>
+                    // {
+                    //     isPressed.Value = false;
+                    //     isCapturingPointer.Value = false;
+                    // }),
+                    content: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isPressed!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __CompositionLocalProvider(LocalContentColor.Provides(Color.white), content: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isPressed!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
