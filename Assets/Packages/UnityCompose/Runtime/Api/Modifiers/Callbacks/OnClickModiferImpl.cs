@@ -29,9 +29,9 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(_ => onClick());
+        return modifier + new OnClickModiferImpl(onClick);
     }
-    
+
     public static IModifier OnLmbClick(
         this IModifier modifier,
         Action<MouseClickInfo> onClick,
@@ -51,9 +51,9 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(_ => onClick(), 0);
+        return modifier + new OnClickModiferImpl(onClick, 0);
     }
-    
+
     public static IModifier OnRmbClick(
         this IModifier modifier,
         Action<MouseClickInfo> onClick,
@@ -73,9 +73,9 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(_ => onClick(), 1);
+        return modifier + new OnClickModiferImpl(onClick, 1);
     }
-    
+
     public static IModifier OnMmbClick(
         this IModifier modifier,
         Action<MouseClickInfo> onClick,
@@ -95,7 +95,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(_ => onClick(), 2);
+        return modifier + new OnClickModiferImpl(onClick, 2);
     }
 }
 
@@ -107,39 +107,56 @@ public readonly record struct MouseClickInfo(
 
 internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
 {
-    private readonly Action<ClickEvent> _onClick;
+    private readonly Action? _parameterlessLambda;
+    private readonly Action<MouseClickInfo>? _lambda;
+    private readonly int _allowedButton;
+    private Action<ClickEvent>? _onClick;
 
     public OnClickModiferImpl(Action<MouseClickInfo> onClick, int allowedButton = -1)
     {
-        _onClick = it =>
-        {
-            if (allowedButton < 0 || it.button == allowedButton)
-            {
-                onClick(
-                    new MouseClickInfo(
-                        Button: it.button,
-                        Position: it.position,
-                        LocalPosition: it.localPosition
-                    )
-                );
-            }
-        };
+        _lambda = onClick;
+        _allowedButton = allowedButton;
+    }
+
+    public OnClickModiferImpl(Action onClick, int allowedButton = -1)
+    {
+        _parameterlessLambda = onClick;
+        _allowedButton = allowedButton;
     }
 
     public override void Apply(VisualElement element)
     {
+        EnsureOnClick();
         element.pickingMode = PickingMode.Position;
-        element.GetComposeCallback<ClickEvent>().Add(_onClick);
+        element.GetComposeCallback<ClickEvent>().Add(_onClick!);
     }
 
     public override void Revert(VisualElement element)
     {
+        EnsureOnClick();
         element.pickingMode = PickingMode.Ignore;
-        element.GetComposeCallback<ClickEvent>().Remove(_onClick);
+        element.GetComposeCallback<ClickEvent>().Remove(_onClick!);
+    }
+
+    private void EnsureOnClick()
+    {
+        _onClick ??= it =>
+        {
+            if (_allowedButton >= 0 && it.button != _allowedButton)
+                return;
+            _lambda?.Invoke(
+                new MouseClickInfo(
+                    Button: it.button,
+                    Position: it.position,
+                    LocalPosition: it.localPosition
+                )
+            );
+            _parameterlessLambda?.Invoke();
+        };
     }
 
     protected override bool Equals(OnClickModiferImpl other)
     {
-        return _onClick == other._onClick;
+        return _lambda == other._lambda && _parameterlessLambda == other._parameterlessLambda;
     }
 }

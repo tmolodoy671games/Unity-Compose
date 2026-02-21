@@ -28,38 +28,56 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseMoveModifierImpl(_ => onMouseMove());
+        return modifier + new OnMouseMoveModifierImpl(onMouseMove);
     }
 }
 
 internal class OnMouseMoveModifierImpl : BaseModifier<OnMouseMoveModifierImpl>
 {
-    private readonly Action<MouseMoveEvent> _onMouseMove;
+    private readonly Action<MouseMoveInfo>? _callback;
+    private readonly Action? _parameterlessCallback;
+    private Action<MouseMoveEvent>? _onMouseMove;
 
     public OnMouseMoveModifierImpl(Action<MouseMoveInfo> onMouseMove)
     {
-        _onMouseMove = it => onMouseMove(
-            new MouseMoveInfo(
-                Position: it.mousePosition,
-                LocalPosition: it.localMousePosition
-            )
-        );
+        _callback = onMouseMove;
+    }
+    
+    public OnMouseMoveModifierImpl(Action onMouseMove)
+    {
+        _parameterlessCallback = onMouseMove;
     }
 
     public override void Apply(VisualElement element)
     {
+        EnsureOnMouseMove();
         element.pickingMode = PickingMode.Position;
-        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove);
+        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove!);
     }
 
     public override void Revert(VisualElement element)
     {
+        EnsureOnMouseMove();
         element.pickingMode = PickingMode.Ignore;
-        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove);
+        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove!);
     }
 
     protected override bool Equals(OnMouseMoveModifierImpl other)
     {
-        return _onMouseMove == other._onMouseMove;
+        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+    }
+
+    private void EnsureOnMouseMove()
+    {
+        _onMouseMove = it =>
+        {
+            _callback?.Invoke(
+                new MouseMoveInfo(
+                    Position: it.mousePosition,
+                    LocalPosition: it.localMousePosition
+                )
+            );
+            _parameterlessCallback?.Invoke();
+        };
     }
 }

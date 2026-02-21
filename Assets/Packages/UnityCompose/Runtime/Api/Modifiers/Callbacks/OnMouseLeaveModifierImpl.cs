@@ -28,38 +28,56 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseLeaveModifierImpl(_ => onMouseLeave());
+        return modifier + new OnMouseLeaveModifierImpl(onMouseLeave);
     }
 }
 
 internal class OnMouseLeaveModifierImpl : BaseModifier<OnMouseLeaveModifierImpl>
 {
-    private readonly Action<MouseLeaveEvent> _onMouseLeave;
+    private readonly Action<MouseMoveInfo>? _callback;
+    private readonly Action? _parameterlessCallback;
+    private Action<MouseLeaveEvent>? _onMouseLeave;
 
     public OnMouseLeaveModifierImpl(Action<MouseMoveInfo> onMouseEnter)
     {
-        _onMouseLeave = it => onMouseEnter(
-            new MouseMoveInfo(
-                Position: it.mousePosition,
-                LocalPosition: it.localMousePosition
-            )
-        );
+        _callback = onMouseEnter;
+    }
+    
+    public OnMouseLeaveModifierImpl(Action onMouseEnter)
+    {
+        _parameterlessCallback = onMouseEnter;
     }
 
     public override void Apply(VisualElement element)
     {
+        EnsureOnMouseDown();
         element.pickingMode = PickingMode.Position;
-        element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave);
+        element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave!);
     }
 
     public override void Revert(VisualElement element)
     {
+        EnsureOnMouseDown();
         element.pickingMode = PickingMode.Ignore;
-        element.GetComposeCallback<MouseLeaveEvent>().Remove(_onMouseLeave);
+        element.GetComposeCallback<MouseLeaveEvent>().Remove(_onMouseLeave!);
     }
 
     protected override bool Equals(OnMouseLeaveModifierImpl other)
     {
-        return _onMouseLeave == other._onMouseLeave;
+        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+    }
+
+    private void EnsureOnMouseDown()
+    {
+        _onMouseLeave ??= it =>
+        {
+            _callback?.Invoke(
+                new MouseMoveInfo(
+                    Position: it.mousePosition,
+                    LocalPosition: it.localMousePosition
+                )
+            );
+            _parameterlessCallback?.Invoke();
+        };
     }
 }

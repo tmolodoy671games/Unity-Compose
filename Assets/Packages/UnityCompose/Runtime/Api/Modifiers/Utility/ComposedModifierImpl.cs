@@ -30,7 +30,7 @@ internal class ComposedModifierImpl : BaseModifier<ComposedModifierImpl>
     {
     }
 
-    public override IModifier Compose() => _body();
+    public IModifier Compose() => _body();
 
     protected override bool Equals(ComposedModifierImpl other)
     {

@@ -19,7 +19,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(onMouseDown);
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, -1);
     }
 
     public static IModifier OnMouseDown(
@@ -30,7 +30,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(_ => onMouseDown());
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, -1);
     }
 
     #endregion
@@ -45,11 +45,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown(it);
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 0);
     }
 
     public static IModifier OnLmbDown(
@@ -60,11 +56,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseDown();
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 0);
     }
 
     #endregion
@@ -79,11 +71,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown(it);
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 1);
     }
 
     public static IModifier OnRmbDown(
@@ -94,11 +82,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseDown();
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 1);
     }
 
     #endregion
@@ -113,11 +97,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown(it);
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 2);
     }
 
     public static IModifier OnMmbDown(
@@ -128,11 +108,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseDownModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseDown();
-        });
+        return modifier + new OnMouseDownModifierImpl(onMouseDown, 2);
     }
 
     #endregion
@@ -140,36 +116,56 @@ public static partial class ModifierExtensions
 
 internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
 {
-    private readonly Action<MouseDownEvent> _onMouseDown;
+    private readonly Action? _parameterlessCallback;
+    private readonly Action<MouseClickInfo>? _callback;
+    private readonly int _button;
+    private Action<MouseDownEvent>? _onMouseDown;
 
-    public OnMouseDownModifierImpl(Action<MouseClickInfo> onMouseDown)
+    public OnMouseDownModifierImpl(Action<MouseClickInfo> onMouseDown, int button)
+    {
+        _callback = onMouseDown;
+        _button = button;
+    }
+
+    public OnMouseDownModifierImpl(Action onMouseDown, int button)
+    {
+        _parameterlessCallback = onMouseDown;
+        _button = button;
+    }
+
+    public override void Apply(VisualElement element)
+    {
+        EnsureOnMouseDown();
+        element.pickingMode = PickingMode.Position;
+        element.GetComposeCallback<MouseDownEvent>().Add(_onMouseDown!);
+    }
+
+    public override void Revert(VisualElement element)
+    {
+        EnsureOnMouseDown();
+        element.pickingMode = PickingMode.Ignore;
+        element.GetComposeCallback<MouseDownEvent>().Remove(_onMouseDown!);
+    }
+
+    protected override bool Equals(OnMouseDownModifierImpl other)
+    {
+        return _parameterlessCallback == other._parameterlessCallback && _callback == other._callback;
+    }
+
+    private void EnsureOnMouseDown()
     {
         _onMouseDown = it =>
         {
-            onMouseDown(
+            if (_button >= 0 && _button != it.button)
+                return;
+            _callback?.Invoke(
                 new MouseClickInfo(
                     Button: it.button,
                     Position: it.mousePosition,
                     LocalPosition: it.localMousePosition
                 )
             );
+            _parameterlessCallback?.Invoke();
         };
-    }
-
-    public override void Apply(VisualElement element)
-    {
-        element.pickingMode = PickingMode.Position;
-        element.GetComposeCallback<MouseDownEvent>().Add(_onMouseDown);
-    }
-
-    public override void Revert(VisualElement element)
-    {
-        element.pickingMode = PickingMode.Ignore;
-        element.GetComposeCallback<MouseDownEvent>().Remove(_onMouseDown);
-    }
-
-    protected override bool Equals(OnMouseDownModifierImpl other)
-    {
-        return _onMouseDown == other._onMouseDown;
     }
 }

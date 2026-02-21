@@ -17,20 +17,15 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
     private readonly List<Action<T>> _callbacks = new(1);
 
     public readonly EventCallback<T> Callback;
-    private T? _lastEvent;
 
     public ComposeCallback()
     {
         Callback = it =>
         {
-            InvokedAtFrame = Time.frameCount;
-            _lastEvent = it;
             foreach (var callback in _callbacks)
                 callback(it);
         };
     }
-
-    public int InvokedAtFrame { get; private set; }
 
     public void Add(Action<T> callback)
     {
@@ -47,13 +42,6 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
     public override void Clear()
     {
         _callbacks.Clear();
-    }
-
-    public void ReInvoke()
-    {
-        if (_lastEvent == null)
-            return;
-        Callback(_lastEvent);
     }
 }
 

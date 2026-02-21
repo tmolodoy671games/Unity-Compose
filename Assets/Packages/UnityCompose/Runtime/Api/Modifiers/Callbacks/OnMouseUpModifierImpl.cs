@@ -19,7 +19,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(onMouseUp);
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, -1);
     }
 
     public static IModifier OnMouseUp(
@@ -30,7 +30,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(_ => onMouseUp());
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, -1);
     }
 
     #endregion
@@ -45,11 +45,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseUp(it);
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 0);
     }
 
     public static IModifier OnLmbUp(
@@ -60,11 +56,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 0)
-                onMouseUp();
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 0);
     }
 
     #endregion
@@ -79,11 +71,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseUp(it);
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 1);
     }
 
     public static IModifier OnRmbUp(
@@ -94,11 +82,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 1)
-                onMouseUp();
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 1);
     }
 
     #endregion
@@ -113,11 +97,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseUp(it);
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 2);
     }
 
     public static IModifier OnMmbUp(
@@ -128,11 +108,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnMouseUpModifierImpl(it =>
-        {
-            if (it.Button == 2)
-                onMouseUp();
-        });
+        return modifier + new OnMouseUpModifierImpl(onMouseUp, 2);
     }
 
     #endregion
@@ -140,33 +116,56 @@ public static partial class ModifierExtensions
 
 internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
 {
-    private readonly Action<MouseUpEvent> _onMouseUp;
+    private readonly Action<MouseClickInfo>? _callback;
+    private readonly Action? _parameterlessCallback;
+    private readonly int _button;
+    private Action<MouseUpEvent>? _onMouseUp;
 
-    public OnMouseUpModifierImpl(Action<MouseClickInfo> onMouseUp)
+    public OnMouseUpModifierImpl(Action<MouseClickInfo> onMouseUp, int button)
     {
-        _onMouseUp = it => onMouseUp(
-            new MouseClickInfo(
-                Button: it.button,
-                Position: it.mousePosition,
-                LocalPosition: it.localMousePosition
-            )
-        );
+        _callback = onMouseUp;
+        _button = button;
+    }
+    
+    public OnMouseUpModifierImpl(Action onMouseUp, int button)
+    {
+        _parameterlessCallback = onMouseUp;
+        _button = button;
     }
 
     public override void Apply(VisualElement element)
     {
+        EnsureOnMouseUp();
         element.pickingMode = PickingMode.Position;
-        element.GetComposeCallback<MouseUpEvent>().Add(_onMouseUp);
+        element.GetComposeCallback<MouseUpEvent>().Add(_onMouseUp!);
     }
 
     public override void Revert(VisualElement element)
     {
+        EnsureOnMouseUp();
         element.pickingMode = PickingMode.Ignore;
-        element.GetComposeCallback<MouseUpEvent>().Remove(_onMouseUp);
+        element.GetComposeCallback<MouseUpEvent>().Remove(_onMouseUp!);
     }
 
     protected override bool Equals(OnMouseUpModifierImpl other)
     {
-        return _onMouseUp == other._onMouseUp;
+        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+    }
+
+    private void EnsureOnMouseUp()
+    {
+        _onMouseUp ??= it =>
+        {
+            if (_button >= 0 && it.button != _button)
+                return;
+            _callback?.Invoke(
+                new MouseClickInfo(
+                    Button: it.button,
+                    Position: it.mousePosition,
+                    LocalPosition: it.localMousePosition
+                )
+            );
+            _parameterlessCallback?.Invoke();
+        };
     }
 }

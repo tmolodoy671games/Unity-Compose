@@ -13,9 +13,6 @@ public partial interface IModifier
 
     void Revert(VisualElement element);
     void Flatten(IMutableStableCollection<IModifier> modifiers);
-
-    [Composable, Compiled]
-    IModifier Compose() => this;
     
     public static IModifier operator +(IModifier left, IModifier right)
     {
@@ -33,8 +30,6 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     {
         modifiers.Add(this);
     }
-
-    public virtual IModifier Compose() => this;
 
     protected abstract bool Equals(T other);
 
@@ -123,15 +118,6 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
     {
         _first.Revert(element);
         _second.Revert(element);
-    }
-
-    public override IModifier Compose()
-    {
-        var firstComposed = _first.Compose();
-        var secondComposed = _second.Compose();
-        if (!ReferenceEquals(firstComposed, _first) || !ReferenceEquals(secondComposed, _second))
-            return firstComposed.Then(secondComposed);
-        return this;
     }
 
     protected override bool Equals(CompositeModifierImpl other)

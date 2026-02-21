@@ -20,25 +20,33 @@ public static partial class ModifierExtensions
 
 internal class OnLocallyPositionedModifierImpl : BaseModifier<OnLocallyPositionedModifierImpl>
 {
-    private readonly Action<GeometryChangedEvent> _onGeometryChanged;
+    private readonly Action<LayoutCoordinates> _callback;
+    private Action<GeometryChangedEvent>? _onGeometryChanged;
 
     public OnLocallyPositionedModifierImpl(Action<LayoutCoordinates> onLocallyPositioned)
     {
-        _onGeometryChanged = it => onLocallyPositioned(LayoutCoordinates.Create(it.VisualElement()));
+        _callback = onLocallyPositioned;
     }
 
     public override void Apply(VisualElement element)
     {
-        element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged);
+        EnsureOnGeometryChanged();
+        element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged!);
     }
 
     public override void Revert(VisualElement element)
     {
-        element.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged);
+        EnsureOnGeometryChanged();
+        element.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged!);
     }
 
     protected override bool Equals(OnLocallyPositionedModifierImpl other)
     {
-        return _onGeometryChanged == other._onGeometryChanged;
+        return _callback == other._callback;
+    }
+
+    private void EnsureOnGeometryChanged()
+    {
+        _onGeometryChanged ??= it => _callback(LayoutCoordinates.Create(it.VisualElement()));
     }
 }
