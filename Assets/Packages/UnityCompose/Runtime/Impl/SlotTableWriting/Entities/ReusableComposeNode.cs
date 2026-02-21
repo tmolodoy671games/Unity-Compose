@@ -78,6 +78,14 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
                 eachModifier.Revert(VisualElement);
             }
 
+            for (var i = 0; i < _newModifiers.Count; i++)
+            {
+                var eachModifier = _newModifiers[i];
+                if (_lastModifiers.Contains(eachModifier))
+                    continue;
+                eachModifier.Apply(VisualElement);
+            }
+
             _lastModifiers.Clear();
             if (_newModifiers.IsNotEmpty())
             {
@@ -87,7 +95,6 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
 
             _newModifiers.Clear();
             _lastModifier = modifier;
-            modifier?.Apply(VisualElement);
         }
 
         if (initializer != null && _lastInitializer != initializer)
