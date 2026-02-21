@@ -27,22 +27,16 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
-                    var isPressed = Remember(() => MutableStateOf(false));
                     Box(
                         modifier: Modifier
                             .Padding(
                                 horizontal: AnimateFloatAsState(isHovered.Value ? 80 : 40).Value.Px(),
                                 vertical: 16.Px()
                             )
-                            .Background(AnimateColorAsState(isPressed.Value ? Color.darkBlue : Color.blue).Value)
+                            .Background(Color.blue)
                             .Border(radius: 16.Px())
                             .OnMouseEnter(() => isHovered.Value = true)
-                            .OnMouseLeave(() => isHovered.Value = false)
-                            .OnLmbDown(() => isPressed.Value = true)
-                            .OnLmbUp(it =>
-                            {
-                                isPressed.Value = false;
-                            }),
+                            .OnMouseLeave(() => isHovered.Value = false),
                         content: () =>
                         {
                             CompositionLocalProvider(

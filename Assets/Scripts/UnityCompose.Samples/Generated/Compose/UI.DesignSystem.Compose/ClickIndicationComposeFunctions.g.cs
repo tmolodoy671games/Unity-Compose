@@ -104,7 +104,7 @@ public static partial class DesignSystemComposeFunctions
                 content(new DsClickIndicationScope(hovered, isPressed.Value is { HasValue: true, Value: true }));
                 __composer.EndReplaceGroup(1296287483);
                 // Hover Indication:
-                __Spacer(modifier: Modifier.Float().FillMaxSize().Position(top: 0.Px(), left: 0.Px()).Background(__AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0), __composer: __composer, __changed: 0b_01_00).Value), __composer: __composer, __changed: 0b_00);
+                __Spacer(modifier: Modifier.Float().FillMaxSize().Position(top: 0.Px(), left: 0.Px()).Background(__AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0), __composer: __composer, __changed: 0b_01_01_00).Value), __composer: __composer, __changed: 0b_00);
                 var pressAnimation = __RememberSingleAnimation(animationSpec, __composer: __composer, __changed: 0b_01_00 | ((__dirty & 0b_11_00_00_00_00_00_00) >> 12));
                 var releaseAnimation = __RememberSingleAnimation(animationSpec, __composer: __composer, __changed: 0b_01_00 | ((__dirty & 0b_11_00_00_00_00_00_00) >> 12));
                 if (!layout.Value.HasValue || !isPressed.Value.HasValue)

@@ -65,8 +65,8 @@ MonoBehaviour:
       - rid: 1290101189263753245
       - rid: 1290101189263753246
       - rid: 1290101189263753247
-      - rid: 3770519424686096384
-      - rid: 3770519424686096385
+      - rid: 1290101437269016576
+      - rid: 1290101437269016577
     m_RuntimeSettings:
       m_List: []
   m_AssetVersion: 10
@@ -380,12 +380,12 @@ MonoBehaviour:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
         m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
         m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
-    - rid: 3770519424686096384
+    - rid: 1290101437269016576
       type: {class: URPTerrainShaderSetting, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_Version: 0
         m_IncludeTerrainShaders: 1
-    - rid: 3770519424686096385
+    - rid: 1290101437269016577
       type: {class: UniversalRenderPipelineRuntimeTerrainShaders, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_Version: 0
