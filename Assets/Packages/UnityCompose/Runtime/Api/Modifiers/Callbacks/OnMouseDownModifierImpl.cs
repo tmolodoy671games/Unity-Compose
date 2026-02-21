@@ -144,13 +144,16 @@ internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
 
     public OnMouseDownModifierImpl(Action<MouseClickInfo> onMouseDown)
     {
-        _onMouseDown = it => onMouseDown(
-            new MouseClickInfo(
-                Button: it.button,
-                Position: it.mousePosition,
-                LocalPosition: it.localMousePosition
-            )
-        );
+        _onMouseDown = it =>
+        {
+            onMouseDown(
+                new MouseClickInfo(
+                    Button: it.button,
+                    Position: it.mousePosition,
+                    LocalPosition: it.localMousePosition
+                )
+            );
+        };
     }
 
     public override void Apply(VisualElement element)

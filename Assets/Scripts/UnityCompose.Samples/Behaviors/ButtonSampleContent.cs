@@ -27,17 +27,22 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
-                    Foo(isHovered.Value);
+                    var isPressed = Remember(() => MutableStateOf(false));
                     Box(
                         modifier: Modifier
                             .Padding(
                                 horizontal: AnimateFloatAsState(isHovered.Value ? 80 : 40).Value.Px(),
                                 vertical: 16.Px()
                             )
-                            .Background(Color.blue)
+                            .Background(AnimateColorAsState(isPressed.Value ? Color.darkBlue : Color.blue).Value)
                             .Border(radius: 16.Px())
                             .OnMouseEnter(() => isHovered.Value = true)
-                            .OnMouseLeave(() => isHovered.Value = false),
+                            .OnMouseLeave(() => isHovered.Value = false)
+                            .OnLmbDown(() => isPressed.Value = true)
+                            .OnLmbUp(it =>
+                            {
+                                isPressed.Value = false;
+                            }),
                         content: () =>
                         {
                             CompositionLocalProvider(
@@ -54,19 +59,6 @@ namespace UnityCompose.Samples.Behaviors
                     );
                 }
             );
-        }
-
-        [Composable]
-        private static void Foo(bool param)
-        {
-            Bar(param, AnimateFloatAsState(param ? 1 : 0).Value);
-        }
-
-        [Composable]
-        private static void Bar(bool param, float param2)
-        {
-            // Debug.Log(param);
-            LaunchedEffect(param, () => Debug.Log(param));
         }
     }
 }
