@@ -62,7 +62,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(onClick, 1);
+        return modifier + new OnMouseUpModifierImpl(onClick, 1);
     }
 
     public static IModifier OnRmbClick(
@@ -73,7 +73,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(onClick, 1);
+        return modifier + new OnMouseUpModifierImpl(onClick, 1);
     }
 
     public static IModifier OnMmbClick(
@@ -84,7 +84,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(onClick, 2);
+        return modifier + new OnMouseUpModifierImpl(onClick, 2);
     }
 
     public static IModifier OnMmbClick(
@@ -95,7 +95,7 @@ public static partial class ModifierExtensions
     {
         if (!enabled)
             return modifier;
-        return modifier + new OnClickModiferImpl(onClick, 2);
+        return modifier + new OnMouseUpModifierImpl(onClick, 2);
     }
 }
 

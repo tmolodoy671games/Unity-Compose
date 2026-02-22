@@ -62,7 +62,7 @@ namespace UnityCompose.Samples.Behaviors
                         it.painter2D.BeginPath();
                         it.painter2D.Arc(size / 2, 50, 0, 360);
                         it.painter2D.Fill();
-                    }))).Clip().Scale(2).OnLmbDown((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                    }))).Clip().Scale(2).OnLmbClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("LMB")))).OnRmbClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("RMB")))).OnMmbClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("MMB")))).OnLmbDown((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                     {
                         isPressed.Value = true;
                         isCapturingPointer.Value = true;

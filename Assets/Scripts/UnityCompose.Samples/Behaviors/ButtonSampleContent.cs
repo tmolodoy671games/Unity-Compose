@@ -56,6 +56,9 @@ namespace UnityCompose.Samples.Behaviors
                             })
                             .Clip()
                             .Scale(2)
+                            .OnLmbClick(() => Debug.Log("LMB"))
+                            .OnRmbClick(() => Debug.Log("RMB"))
+                            .OnMmbClick(() => Debug.Log("MMB"))
                             .OnLmbDown(() =>
                             {
                                 isPressed.Value = true;
