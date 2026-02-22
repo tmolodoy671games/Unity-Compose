@@ -9,7 +9,7 @@ namespace UnityCompose.Samples.Behaviors
     {
         [Composable]
         protected override void Content()
-        {
+        { 
             Layout();
         }
 

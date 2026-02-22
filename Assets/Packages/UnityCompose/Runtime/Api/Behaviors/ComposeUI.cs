@@ -1,3 +1,5 @@
+using System;
+using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
@@ -9,11 +11,14 @@ namespace UnityCompose;
 [DisallowMultipleComponent, ExecuteAlways, HideMonoScript]
 public abstract partial class ComposeUI : MonoBehaviour
 {
+    private UIDocument? _document;
+    
     private void Awake()
     {
         if (!ApplicationUtils.IsPlaying)
             return;
-        GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>().SetContent(__Content);
+        _document ??= GetUiDocument();
+        _document.rootVisualElement.Q<ComposeView>().SetContent(__Content);
     }
 
     [Composable]
@@ -26,9 +31,14 @@ public abstract partial class ComposeUI : MonoBehaviour
 
     private void OnEnable()
     {
+        _document ??= GetUiDocument();
         if (ApplicationUtils.IsPlaying)
+        {
+            _document?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Content);
             return;
-        GetComponent<UIDocument>()?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Preview);
+        }
+
+        _document?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Preview);
     }
 
     [Button]
@@ -42,4 +52,6 @@ public abstract partial class ComposeUI : MonoBehaviour
     {
         Debug.Log(CurrentComposer.SlotsToString());
     }
+
+    private UIDocument GetUiDocument() => GetComponent<UIDocument>().NotNull();
 }

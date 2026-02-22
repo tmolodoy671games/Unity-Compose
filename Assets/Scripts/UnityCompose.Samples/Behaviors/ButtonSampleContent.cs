@@ -31,6 +31,10 @@ namespace UnityCompose.Samples.Behaviors
                     var isHovered = Remember(() => MutableStateOf(false));
                     var isPressed = Remember(() => MutableStateOf(false));
                     var isCapturingPointer = Remember(() => MutableStateOf(false));
+                    var circleColor = AnimateColorAsState(
+                        isPressed.Value ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f),
+                        Tween(1)
+                    ).Value;
                     Box(
                         modifier: Modifier
                             .Padding(
@@ -42,17 +46,26 @@ namespace UnityCompose.Samples.Behaviors
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .CapturePointer(isCapturingPointer.Value)
-                            .Scale(2),
-                            // .OnLmbDown(() =>
-                            // {
-                            //     isPressed.Value = true;
-                            //     isCapturingPointer.Value = true;
-                            // })
-                            // .OnLmbUp(() =>
-                            // {
-                            //     isPressed.Value = false;
-                            //     isCapturingPointer.Value = false;
-                            // }),
+                            .DrawAfter(it =>
+                            {
+                                var size = it.visualElement.layout.size;
+                                it.painter2D.fillColor = circleColor;
+                                it.painter2D.BeginPath();
+                                it.painter2D.Arc(size / 2, 50, 0, 360);
+                                it.painter2D.Fill();
+                            })
+                            .Clip()
+                            .Scale(2)
+                            .OnLmbDown(() =>
+                            {
+                                isPressed.Value = true;
+                                isCapturingPointer.Value = true;
+                            })
+                            .OnLmbUp(() =>
+                            {
+                                isPressed.Value = false;
+                                isCapturingPointer.Value = false;
+                            }),
                         content: () =>
                         {
                             CompositionLocalProvider(
