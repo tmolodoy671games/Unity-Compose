@@ -47,19 +47,20 @@ internal class OnMouseMoveModifierImpl : BaseModifier<OnMouseMoveModifierImpl>
     {
         _parameterlessCallback = onMouseMove;
     }
+    
+    private object? Key => _callback as object ?? _parameterlessCallback;
 
     public override void Apply(VisualElement element)
     {
-        EnsureOnMouseMove();
+        _onMouseMove ??= CreateOnMouseMove();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove!);
+        element.GetComposeCallback<MouseMoveEvent>().Add(Key, _onMouseMove);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnMouseMove();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseMoveEvent>().Add(_onMouseMove!);
+        element.GetComposeCallback<MouseMoveEvent>().Remove(Key);
     }
 
     protected override bool Equals(OnMouseMoveModifierImpl other)
@@ -67,9 +68,9 @@ internal class OnMouseMoveModifierImpl : BaseModifier<OnMouseMoveModifierImpl>
         return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
     }
 
-    private void EnsureOnMouseMove()
+    private Action<MouseMoveEvent> CreateOnMouseMove()
     {
-        _onMouseMove = it =>
+        return it =>
         {
             _callback?.Invoke(
                 new MouseMoveInfo(

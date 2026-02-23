@@ -47,29 +47,30 @@ internal class OnMouseLeaveModifierImpl : BaseModifier<OnMouseLeaveModifierImpl>
     {
         _parameterlessCallback = onMouseEnter;
     }
+    
+    private object? Key => _callback as object ?? _parameterlessCallback;
 
     public override void Apply(VisualElement element)
     {
-        EnsureOnMouseDown();
+        _onMouseLeave ??= CreateOnMouseLeave();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseLeaveEvent>().Add(_onMouseLeave!);
+        element.GetComposeCallback<MouseLeaveEvent>().Add(Key, _onMouseLeave);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnMouseDown();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseLeaveEvent>().Remove(_onMouseLeave!);
+        element.GetComposeCallback<MouseLeaveEvent>().Remove(Key);
     }
 
     protected override bool Equals(OnMouseLeaveModifierImpl other)
     {
-        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+        return Key == other.Key;
     }
 
-    private void EnsureOnMouseDown()
+    private Action<MouseLeaveEvent> CreateOnMouseLeave()
     {
-        _onMouseLeave ??= it =>
+        return it =>
         {
             _callback?.Invoke(
                 new MouseMoveInfo(

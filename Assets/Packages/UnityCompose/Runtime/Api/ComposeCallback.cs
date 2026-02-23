@@ -14,7 +14,12 @@ public abstract class ComposeCallback
 
 public class ComposeCallback<T> : ComposeCallback where T : EventBase
 {
-    private readonly List<Action<T>> _callbacks = new(1);
+    private readonly record struct CallbackEntry(
+        object? Key,
+        Action<T> Callback
+    );
+    
+    private readonly List<CallbackEntry> _callbacks = new(1);
 
     public readonly EventCallback<T> Callback;
 
@@ -23,68 +28,43 @@ public class ComposeCallback<T> : ComposeCallback where T : EventBase
         Callback = it =>
         {
             foreach (var callback in _callbacks)
-                callback(it);
+                callback.Callback(it);
         };
-    }
-
-    public void Add(Action<T> callback)
-    {
-        if (_callbacks.Contains(callback))
-            return;
-        _callbacks.Add(callback);
-    }
-
-    public void Remove(Action<T> callback)
-    {
-        _callbacks.Remove(callback);
-    }
-
-    public override void Clear()
-    {
-        _callbacks.Clear();
-    }
-}
-
-public class ComposeCallback<TKey, T> : ComposeCallback where T : EventBase
-{
-    private readonly Dictionary<TKey, Action<T>> _callbacks = new(1);
-
-    public readonly EventCallback<T> Callback;
-    private T? _lastEvent;
-
-    public ComposeCallback()
-    {
-        Callback = it =>
-        {
-            InvokedAtFrame = Time.frameCount;
-            _lastEvent = it;
-            foreach (var callback in _callbacks)
-                callback.Value(it);
-        };
-    }
-
-    public int InvokedAtFrame { get; private set; }
-
-    public void Add(TKey key, Action<T> callback)
-    {
-        _callbacks[key] = callback;
-    }
-
-    public void Remove(TKey key)
-    {
-        _callbacks.Remove(key);
     }
     
+    public int Count => _callbacks.Count;
+
+    public void Add(Action<T> callback) => Add(callback, callback);
+
+    public void Add(object? key, Action<T> callback)
+    {
+        if (IndexOf(key) >= 0)
+            return;
+        _callbacks.Add(new CallbackEntry(key, callback));
+    }
+
+    public void Remove(object? key)
+    {
+        var index = IndexOf(key);
+        if (index < 0)
+            return;
+        _callbacks.RemoveAt(index);
+    }
+
     public override void Clear()
     {
         _callbacks.Clear();
     }
 
-    public void ReInvoke()
+    private int IndexOf(object? key)
     {
-        if (_lastEvent == null)
-            return;
-        Callback(_lastEvent);
+        for (var i = 0; i < _callbacks.Count; i++)
+        {
+            if (Equals(_callbacks[i].Key, key))
+                return i;
+        }
+
+        return -1;
     }
 }
 

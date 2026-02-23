@@ -24,7 +24,6 @@ public static partial class ModifierExtensions
 internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositionedModifierImpl>
 {
     private record Key(
-        string Name,
         object? Value
     );
 
@@ -34,7 +33,7 @@ internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositio
     public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
     {
         _onGloballyPositioned = onGloballyPositioned;
-        _key = new Key("__OnGloballyPositioned", onGloballyPositioned);
+        _key = new Key(onGloballyPositioned);
     }
 
     public override void Apply(VisualElement element)

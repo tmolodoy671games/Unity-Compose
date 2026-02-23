@@ -133,18 +133,19 @@ internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
         _button = button;
     }
 
+    private object? Key => _callback as object ?? _parameterlessCallback;
+
     public override void Apply(VisualElement element)
     {
-        EnsureOnMouseUp();
+        _onMouseUp ??= CreateOnMouseUp();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseUpEvent>().Add(_onMouseUp!);
+        element.GetComposeCallback<MouseUpEvent>().Add(Key, _onMouseUp);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnMouseUp();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseUpEvent>().Remove(_onMouseUp!);
+        element.GetComposeCallback<MouseUpEvent>().Remove(Key);
     }
 
     protected override bool Equals(OnMouseUpModifierImpl other)
@@ -152,9 +153,9 @@ internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
         return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
     }
 
-    private void EnsureOnMouseUp()
+    private Action<MouseUpEvent> CreateOnMouseUp()
     {
-        _onMouseUp ??= it =>
+        return it =>
         {
             if (_button >= 0 && it.button != _button)
                 return;

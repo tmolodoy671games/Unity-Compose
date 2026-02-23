@@ -30,14 +30,13 @@ internal class OnLocallyPositionedModifierImpl : BaseModifier<OnLocallyPositione
 
     public override void Apply(VisualElement element)
     {
-        EnsureOnGeometryChanged();
-        element.GetComposeCallback<GeometryChangedEvent>().Add(_onGeometryChanged!);
+        _onGeometryChanged ??= CreateOnGeometryChanged();
+        element.GetComposeCallback<GeometryChangedEvent>().Add(Key, _onGeometryChanged);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnGeometryChanged();
-        element.GetComposeCallback<GeometryChangedEvent>().Remove(_onGeometryChanged!);
+        element.GetComposeCallback<GeometryChangedEvent>().Remove(Key);
     }
 
     protected override bool Equals(OnLocallyPositionedModifierImpl other)
@@ -45,8 +44,10 @@ internal class OnLocallyPositionedModifierImpl : BaseModifier<OnLocallyPositione
         return _callback == other._callback;
     }
 
-    private void EnsureOnGeometryChanged()
+    private object Key => _callback;
+
+    private Action<GeometryChangedEvent> CreateOnGeometryChanged()
     {
-        _onGeometryChanged ??= it => _callback(LayoutCoordinates.Create(it.VisualElement()));
+        return it => _callback(LayoutCoordinates.Create(it.VisualElement()));
     }
 }

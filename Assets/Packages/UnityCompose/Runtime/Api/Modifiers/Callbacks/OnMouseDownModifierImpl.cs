@@ -135,26 +135,27 @@ internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        EnsureOnMouseDown();
+        _onMouseDown ??= CreateOnMouseDown();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseDownEvent>().Add(_onMouseDown!);
+        element.GetComposeCallback<MouseDownEvent>().Add(Key, _onMouseDown);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnMouseDown();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseDownEvent>().Remove(_onMouseDown!);
+        element.GetComposeCallback<MouseDownEvent>().Remove(Key!);
     }
 
     protected override bool Equals(OnMouseDownModifierImpl other)
     {
-        return _parameterlessCallback == other._parameterlessCallback && _callback == other._callback;
+        return Key == other.Key;
     }
+    
+    private object? Key => _callback as object ?? _parameterlessCallback;
 
-    private void EnsureOnMouseDown()
+    private Action<MouseDownEvent> CreateOnMouseDown()
     {
-        _onMouseDown = it =>
+        return it =>
         {
             if (_button >= 0 && _button != it.button)
                 return;

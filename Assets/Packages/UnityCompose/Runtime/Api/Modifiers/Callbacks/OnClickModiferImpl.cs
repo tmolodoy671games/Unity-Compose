@@ -128,14 +128,14 @@ internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
     {
         EnsureOnClick();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<ClickEvent>().Add(_onClick!);
+        element.GetComposeCallback<ClickEvent>().Add(Key, _onClick!);
     }
 
     public override void Revert(VisualElement element)
     {
         EnsureOnClick();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<ClickEvent>().Remove(_onClick!);
+        element.GetComposeCallback<ClickEvent>().Remove(Key);
     }
 
     private void EnsureOnClick()
@@ -155,8 +155,10 @@ internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
         };
     }
 
+    private object? Key => _lambda as object ?? _parameterlessLambda;
+
     protected override bool Equals(OnClickModiferImpl other)
     {
-        return _lambda == other._lambda && _parameterlessLambda == other._parameterlessLambda;
+        return Key == other.Key && _allowedButton == other._allowedButton;
     }
 }
