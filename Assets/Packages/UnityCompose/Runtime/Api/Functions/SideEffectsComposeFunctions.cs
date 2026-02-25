@@ -47,7 +47,7 @@ public static partial class ComposeFunctions
         Func<IEnumerator> coroutine
     )
     {
-        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsDisposable(coroutine()));
+        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsComposeDisposable(coroutine()));
     }
     
     [Composable]
@@ -85,7 +85,7 @@ public static partial class ComposeFunctions
         Action block
     )
     {
-        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block)));
+        var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsComposeDisposable(RunDelayed(delay, block)));
     }
 
     [Composable]
@@ -96,7 +96,7 @@ public static partial class ComposeFunctions
     )
     {
         var _ = Remember(key, () =>
-            ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
+            ComposeInvalidator.StartCoroutineAsComposeDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))
         );
     }
 

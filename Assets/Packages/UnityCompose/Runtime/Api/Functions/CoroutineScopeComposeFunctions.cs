@@ -10,12 +10,14 @@ public static partial class ComposeFunctions
 {
     private class ComposeCoroutineScopeImpl : IComposeCoroutineScope, IComposeDisposable
     {
-        private readonly IMutableStableList<IComposeDisposable> _disposables =
-            IMutableStableList.Create<IComposeDisposable>();
+        private readonly IMutableStableList<IDisposable> _disposables =
+            IMutableStableList.Create<IDisposable>();
 
-        public void StartCoroutine(IEnumerator coroutine)
+        public IDisposable StartCoroutine(IEnumerator coroutine)
         {
-            _disposables.Add(ComposeInvalidator.StartCoroutineAsDisposable(coroutine));
+            var disposable = ComposeInvalidator.StartCoroutineAsDisposable(coroutine);
+            _disposables.Add(disposable);
+            return disposable;
         }
 
         public void Dispose()
@@ -34,5 +36,5 @@ public static partial class ComposeFunctions
 
 public interface IComposeCoroutineScope
 {
-    void StartCoroutine(IEnumerator coroutine);
+    IDisposable StartCoroutine(IEnumerator coroutine);
 }

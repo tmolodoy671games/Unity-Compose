@@ -16,11 +16,11 @@ namespace UnityCompose
     [DisallowMultipleComponent, ExecuteAlways]
     internal class ComposeInvalidator : MonoBehaviour
     {
-        private class CoroutineDisposableImpl : IComposeDisposable
+        private class CoroutineComposeDisposableImpl : IComposeDisposable
         {
             private readonly Coroutine? _coroutine;
 
-            public CoroutineDisposableImpl(Coroutine coroutine)
+            public CoroutineComposeDisposableImpl(Coroutine coroutine)
             {
                 _coroutine = coroutine;
             }
@@ -32,10 +32,19 @@ namespace UnityCompose
             }
         }
 
-        private class EmptyDisposableImpl : IComposeDisposable
+        private class ComposeDisposableImpl : IDisposable
         {
+            private readonly Coroutine? _coroutine;
+
+            public ComposeDisposableImpl(Coroutine coroutine)
+            {
+                _coroutine = coroutine;
+            }
+
             public void Dispose()
             {
+                if (_coroutine != null)
+                    Instance.StopCoroutine(_coroutine);
             }
         }
 
@@ -88,9 +97,14 @@ namespace UnityCompose
             _groupsToRestart.Clear();
         }
 
-        internal static IComposeDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
+        internal static IComposeDisposable StartCoroutineAsComposeDisposable(IEnumerator coroutine)
         {
-            return new CoroutineDisposableImpl(Instance.StartCoroutine(coroutine));
+            return new CoroutineComposeDisposableImpl(Instance.StartCoroutine(coroutine));
+        }
+        
+        internal static IDisposable StartCoroutineAsDisposable(IEnumerator coroutine)
+        {
+            return new ComposeDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
         internal static void RequestInvalidate(ComposeRestartScope scope)

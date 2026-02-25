@@ -38,7 +38,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
-            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(coroutine())));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsComposeDisposable(coroutine())));
         }
         else
         {
@@ -169,7 +169,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(delay, block))));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsComposeDisposable(RunDelayed(delay, block))));
         }
         else
         {
@@ -216,7 +216,7 @@ public static partial class ComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))));
+            var _ = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IComposeDisposable>() : __composer.UpdateRememberedValue<global::UnityCompose.IComposeDisposable>(ComposeInvalidator.StartCoroutineAsComposeDisposable(RunDelayed(TimeSpan.FromSeconds(delay), block))));
         }
         else
         {
