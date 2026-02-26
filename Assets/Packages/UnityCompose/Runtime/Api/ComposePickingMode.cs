@@ -16,16 +16,16 @@ public class ComposePickingMode
 
     public void Increment()
     {
-        if (_count == 0)
-            _element.pickingMode = PickingMode.Position;
+        // if (_count == 0)
+        //     _element.pickingMode = PickingMode.Position;
         _count++;
     }
 
     public void Decrement()
     {
         _count--;
-        if (_count == 0)
-            _element.pickingMode = PickingMode.Ignore;
+        // if (_count == 0)
+        //     _element.pickingMode = PickingMode.Ignore;
     }
 }
 

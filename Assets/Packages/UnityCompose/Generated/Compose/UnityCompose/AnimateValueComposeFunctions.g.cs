@@ -311,7 +311,7 @@ public static partial class ComposeFunctions
                 yield break;
             if (resolvedAnimationSpec.Delay > 0)
                 yield return new WaitForSeconds(resolvedAnimationSpec.Delay);
-            var elapsed = 0f;
+            var elapsed = resolvedAnimationSpec.Delay;
             while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
@@ -401,7 +401,7 @@ public static partial class ComposeFunctions
                 yield break;
             if (resolvedAnimationSpec.Delay > 0)
                 yield return new WaitForSeconds(resolvedAnimationSpec.Delay);
-            var elapsed = 0f;
+            var elapsed = resolvedAnimationSpec.Delay;
             while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;

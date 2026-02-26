@@ -57,10 +57,7 @@ public static partial class ComposeFunctions
             var parent = composer.GetParentVisualElement().NotNull();
             var indexInParent = composer.GetElementIndex();
             var node = composer.GetReusableNode<T>();
-            node.VisualElement ??= new T
-            {
-                pickingMode = PickingMode.Ignore
-            };
+            node.VisualElement ??= new T();
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
             node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
@@ -286,7 +283,7 @@ public static partial class ComposeFunctions
     public static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
-        var __isCreated = __composer.StartRestartGroup(1078710765);
+        var __isCreated = __composer.StartRestartGroup(579625941);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
@@ -429,13 +426,13 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(1078710765, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(579625941, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __dirtyRestart));
     }
 
-    public static void __Image(ComposeImage image, Color? tint = null, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static void __Image(ComposeImage image, Optional<Color> tint = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
-        var __isCreated = __composer.StartRestartGroup(972845918);
+        var __isCreated = __composer.StartRestartGroup(1428143876);
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
@@ -473,7 +470,7 @@ public static partial class ComposeFunctions
                 it.sprite = image.Sprite;
                 it.vectorImage = image.VectorImage;
                 it.image = image.Texture;
-                it.tintColor = tint ?? Color.white;
+                it.tintColor = tint.GetOrDefault(Color.white);
             })), modifier: modifier, __composer: __composer, __changed: 0b_01_00_00 | ((__dirty & 0b_11_00_00) >> 4));
         }
         else
@@ -482,6 +479,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(972845918, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1428143876, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __dirtyRestart));
     }
 }

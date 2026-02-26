@@ -24,25 +24,24 @@ public partial class ComposeFunctions
 
 public readonly record struct AnimationSpec
 {
-    private readonly float _duration;
-    private readonly float _delay;
+    public readonly float Duration;
+    public readonly float Delay;
     private readonly IEasing _easing;
 
     internal AnimationSpec(float duration, float delay, IEasing easing) : this()
     {
-        _duration = duration;
-        _delay = delay;
+        Duration = duration;
+        Delay = delay;
         _easing = easing;
     }
 
     public float GetProgress(float timeElapsed)
     {
-        var progress = Mathf.Clamp01((timeElapsed - _delay) / _duration);
+        var progress = Mathf.Clamp01((timeElapsed - Delay) / Duration);
         return _easing.Transform(progress);
     }
 
-    public float Delay => _delay;
-    public float TotalDuration => _delay + _duration;
+    public float TotalDuration => Delay + Duration;
 
     public AnimationSpec With(
         float duration = -1,
@@ -51,15 +50,15 @@ public readonly record struct AnimationSpec
     )
     {
         return new AnimationSpec(
-            duration: duration >= 0 ? duration : _duration,
-            delay: delay >= 0 ? delay : _delay,
+            duration: duration >= 0 ? duration : Duration,
+            delay: delay >= 0 ? delay : Delay,
             easing: easing ?? _easing
         );
     }
 
     public override string ToString()
     {
-        return $"AnimationSpec(Delay: {_delay}, Duration: {_duration}, Easing: {_easing})";
+        return $"AnimationSpec(Delay: {Delay}, Duration: {Duration}, Easing: {_easing})";
     }
 
     public static AnimationSpec Default = Tween(
