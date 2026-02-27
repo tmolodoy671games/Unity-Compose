@@ -29,7 +29,7 @@ namespace UnityCompose.Samples.Behaviors
 
         protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1125058844);
+            var __isCreated = __composer.StartRestartGroup(1172909443);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -40,12 +40,12 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1125058844, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+            __composer.EndRestartGroup(1172909443, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private static void __Layout(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(166723089);
+            var __isCreated = __composer.StartRestartGroup(1125058844);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -84,7 +84,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(166723089, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
+            __composer.EndRestartGroup(1125058844, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
     }
 
@@ -98,18 +98,13 @@ namespace UnityCompose.Samples.Behaviors
         public int __Foo(int a, int b, global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
             var(__a, __b) = (a, b);
-            __composer.StartReplaceGroup(2079481417);
+            __composer.StartReplaceGroup(50560639);
             var __dirty = __changed;
-            var __dirtyRestart = 0;
             if ((__changed & 0b_00_11) == 0)
                 __dirty |= __composer.Changed(a) ? 0b_00_10 : 0b_00_01;
-            else
-                __dirtyRestart |= 0b_00_01;
             if ((__changed & 0b_11_00) == 0)
                 __dirty |= __composer.Changed(b) ? 0b_10_00 : 0b_01_00;
-            else
-                __dirtyRestart |= 0b_01_00;
-            __composer.EndReplaceGroup(2079481417);
+            __composer.EndReplaceGroup(50560639);
             return 1;
         }
     }

@@ -7,16 +7,10 @@ namespace UnityCompose.Samples.Behaviors
     internal partial class ButtonSampleContent : ComposeUI
     {
         [Composable]
-        protected override void Content()
-        {
-            Layout();
-        }
+        protected override void Content() => Layout();
 
         [Composable]
-        protected override void Preview()
-        {
-            Layout();
-        }
+        protected override void Preview() => Layout();
 
         [Composable]
         private static void Layout()

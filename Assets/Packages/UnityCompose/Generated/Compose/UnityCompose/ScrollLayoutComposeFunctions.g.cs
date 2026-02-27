@@ -14,11 +14,8 @@ public static partial class ComposeFunctions
     public static ScrollState __RememberScrollState(float initialValue = 0, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(initialValue) ? 0b_10 : 0b_01;
-        else
-            __dirtyRestart |= 0b_01;
         return (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ScrollState>() : __composer.UpdateRememberedValue<global::UnityCompose.ScrollState>(new ScrollState(initialValue)));
     }
 
