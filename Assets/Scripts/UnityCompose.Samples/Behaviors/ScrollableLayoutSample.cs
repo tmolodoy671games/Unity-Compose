@@ -27,6 +27,12 @@ namespace UnityCompose.Samples.Behaviors
                             RowSample();
                         }
                     );
+                    Spacer(
+                        Modifier
+                            .Float()
+                            .Size(100.Percent())
+                            .IgnoreInput()
+                    );
                 }
             );
         }

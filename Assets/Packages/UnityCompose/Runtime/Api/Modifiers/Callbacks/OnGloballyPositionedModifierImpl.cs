@@ -40,13 +40,15 @@ internal class OnGloballyPositionedModifierImpl : BaseModifier<OnGloballyPositio
     {
         if (element.UserData().ContainsKey(_key)) return;
         var previousCoordinates = Optional.Empty<LayoutCoordinates>();
-        var onGloballyPositionedCallback = element.schedule.Execute(() =>
+        var callback = () =>
         {
             var newCoordinates = LayoutCoordinates.Create(element);
             if (previousCoordinates.Equals(newCoordinates)) return;
             previousCoordinates = newCoordinates;
             _onGloballyPositioned(newCoordinates);
-        }).Every(0);
+        };
+        var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
+        callback();
         element.UserData()[_key] = onGloballyPositionedCallback;
     }
 

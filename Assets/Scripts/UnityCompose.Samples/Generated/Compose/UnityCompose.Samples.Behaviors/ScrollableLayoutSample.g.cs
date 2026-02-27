@@ -57,6 +57,7 @@ namespace UnityCompose.Samples.Behaviors
                         __Spacer(Modifier.Height(100.Px()), __composer: __composer, __changed: 0b_00);
                         __RowSample(__composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_00_01_00);
+                    __Spacer(Modifier.Float().Size(100.Percent()).IgnoreInput(), __composer: __composer, __changed: 0b_00);
                 })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
@@ -69,7 +70,7 @@ namespace UnityCompose.Samples.Behaviors
 
         private static void __ColumnSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(428290567);
+            var __isCreated = __composer.StartRestartGroup(717473453);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -82,13 +83,13 @@ namespace UnityCompose.Samples.Behaviors
                         {
                             __Column(modifier: Modifier.Background(Color.white), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                             {
-                                __composer.StartReplaceGroup(459080036);
+                                __composer.StartReplaceGroup(1700970714);
                                 for (var i = 0; i < 20; i++)
                                 {
                                     __Text(text: i.ToString(), color: Color.white, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Px()).Margin(vertical: 4.Px()).OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("Glick")))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
                                 }
 
-                                __composer.EndReplaceGroup(459080036);
+                                __composer.EndReplaceGroup(1700970714);
                             })), __composer: __composer, __changed: 0b_01_01_00_00);
                         })), __composer: __composer, __changed: 0b_01_01_00_00);
                         __Box(modifier: Modifier.Height(100.Percent()).Float().Position(right: 0.Px()), content: (!__composer.Changed<global::UnityCompose.ScrollState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
@@ -104,12 +105,12 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(428290567, __isRestarted)?.UpdateScope(() => __ColumnSample(__composer, 0));
+            __composer.EndRestartGroup(717473453, __isRestarted)?.UpdateScope(() => __ColumnSample(__composer, 0));
         }
 
         private static void __RowSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(137708408);
+            var __isCreated = __composer.StartRestartGroup(468642304);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -120,13 +121,13 @@ namespace UnityCompose.Samples.Behaviors
                     {
                         __Row(modifier: Modifier.Background(Color.white), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
-                            __composer.StartReplaceGroup(1544319563);
+                            __composer.StartReplaceGroup(2011896446);
                             for (var i = 0; i < 20; i++)
                             {
                                 __Text(text: i.ToString(), color: Color.white, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("Glick")))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
                             }
 
-                            __composer.EndReplaceGroup(1544319563);
+                            __composer.EndReplaceGroup(2011896446);
                         })), __composer: __composer, __changed: 0b_01_01_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                     const float width = 32;
@@ -143,7 +144,7 @@ namespace UnityCompose.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(137708408, __isRestarted)?.UpdateScope(() => __RowSample(__composer, 0));
+            __composer.EndRestartGroup(468642304, __isRestarted)?.UpdateScope(() => __RowSample(__composer, 0));
         }
     }
 }
