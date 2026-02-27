@@ -18,23 +18,13 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(coroutine) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
@@ -56,23 +46,13 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(block) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
@@ -98,23 +78,13 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(block) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
@@ -140,32 +110,17 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(delay) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(block) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -187,32 +142,17 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(delay) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(block) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -234,23 +174,13 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(effect) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {

@@ -90,4 +90,19 @@ namespace UnityCompose.Samples.Behaviors
             );
         }
     }
+    
+    partial interface IInterface
+    {
+        [Composable]
+        int Foo(int a, int b);
+    }
+    
+    partial class MyClass : IInterface
+    {
+        [Composable]
+        public int Foo(int a, int b)
+        {
+            return 1;
+        }
+    }
 }

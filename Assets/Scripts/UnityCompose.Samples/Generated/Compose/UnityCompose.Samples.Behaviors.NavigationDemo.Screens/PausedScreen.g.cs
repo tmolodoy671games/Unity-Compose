@@ -15,14 +15,9 @@ internal partial class PausedScreen
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
-        {
             __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_01;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
@@ -51,50 +46,25 @@ internal partial class PausedScreen
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(pausedCoordinator) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(tab) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(onClick) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00_00;
-        }
-
         if ((__changed & 0b_00_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(onTabContentClick) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
@@ -122,32 +92,17 @@ internal partial class PausedScreen
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(currentTab) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(onClick) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -175,32 +130,17 @@ internal partial class PausedScreen
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(tab) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(selected) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(onClick) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {

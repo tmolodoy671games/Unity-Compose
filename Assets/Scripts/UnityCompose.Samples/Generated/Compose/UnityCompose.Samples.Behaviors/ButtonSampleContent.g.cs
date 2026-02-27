@@ -87,4 +87,30 @@ namespace UnityCompose.Samples.Behaviors
             __composer.EndRestartGroup(166723089, __isRestarted)?.UpdateScope(() => __Layout(__composer, 0));
         }
     }
+
+    partial interface IInterface
+    {
+        int __Foo(int a, int b, global::UnityCompose.Composer __composer = null !, int __changed = -1);
+    }
+
+    partial class MyClass
+    {
+        public int __Foo(int a, int b, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var(__a, __b) = (a, b);
+            __composer.StartReplaceGroup(2079481417);
+            var __dirty = __changed;
+            var __dirtyRestart = 0;
+            if ((__changed & 0b_00_11) == 0)
+                __dirty |= __composer.Changed(a) ? 0b_00_10 : 0b_00_01;
+            else
+                __dirtyRestart |= 0b_00_01;
+            if ((__changed & 0b_11_00) == 0)
+                __dirty |= __composer.Changed(b) ? 0b_10_00 : 0b_01_00;
+            else
+                __dirtyRestart |= 0b_01_00;
+            __composer.EndReplaceGroup(2079481417);
+            return 1;
+        }
+    }
 }

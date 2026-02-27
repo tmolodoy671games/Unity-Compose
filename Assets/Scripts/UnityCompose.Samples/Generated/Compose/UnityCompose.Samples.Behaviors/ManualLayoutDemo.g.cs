@@ -51,14 +51,9 @@ namespace UnityCompose.Samples.Behaviors
             var __dirty = __changed;
             var __dirtyRestart = 0;
             if ((__changed & 0b_11) == 0)
-            {
                 __dirty |= __composer.Changed(content) ? 0b_10 : 0b_01;
-            }
             else
-            {
                 __dirtyRestart |= 0b_01;
-            }
-
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01)
             {

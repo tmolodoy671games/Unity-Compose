@@ -16,32 +16,17 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(targetValue) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         return __AnimateValueAsState(targetValue: targetValue, initialValue: initialValue, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_11) | ((__dirty & 0b_00_00_11_00) << 2) | ((__dirty & 0b_00_11_00_00) << 2));
     }
 
@@ -50,41 +35,21 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(targetValueFactory) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00;
-        }
-
         return __AnimateValueAsState(key: key, initialValue: initialValue, targetValueFactory: targetValueFactory, interpolator: FloatInterpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_11) | (__dirty & 0b_00_00_00_11_00) | ((__dirty & 0b_00_00_11_00_00) << 2) | ((__dirty & 0b_00_11_00_00_00) << 2));
     }
 
@@ -93,32 +58,17 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(targetValue) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         return __AnimateValueAsState(targetValue: targetValue, initialValue: initialValue, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_11) | ((__dirty & 0b_00_00_11_00) << 2) | ((__dirty & 0b_00_11_00_00) << 2));
     }
 
@@ -127,41 +77,21 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(targetValueFactory) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00;
-        }
-
         return __AnimateValueAsState(key: key, initialValue: initialValue, targetValueFactory: targetValueFactory, interpolator: Vector2Interpolator, animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_11) | (__dirty & 0b_00_00_00_11_00) | ((__dirty & 0b_00_00_11_00_00) << 2) | ((__dirty & 0b_00_11_00_00_00) << 2));
     }
 
@@ -170,32 +100,17 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(targetValue) ? 0b_00_00_10 : 0b_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01;
-        }
-
         if ((__changed & 0b_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00 : 0b_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00;
-        }
-
         if ((__changed & 0b_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00 : 0b_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00;
-        }
-
         return __AnimateValueAsState(targetValue: targetValue, initialValue: initialValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_11) | ((__dirty & 0b_00_00_11_00) << 2) | ((__dirty & 0b_00_11_00_00) << 2));
     }
 
@@ -204,41 +119,21 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(targetValueFactory) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00;
-        }
-
         return __AnimateValueAsState(key: key, targetValueFactory: targetValueFactory, initialValue: initialValue, interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress), animationSpec: animationSpec, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_11) | (__dirty & 0b_00_00_00_11_00) | ((__dirty & 0b_00_00_11_00_00) << 2) | ((__dirty & 0b_00_11_00_00_00) << 2));
     }
 
@@ -249,41 +144,21 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(targetValue) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(interpolator) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00;
-        }
-
         var property = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<T>>(MutableStateOf(initialValue.GetOrDefault(targetValue))));
         if (!ApplicationUtils.IsPlaying)
         {
@@ -330,50 +205,25 @@ public static partial class ComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
-        {
             __dirty |= __composer.Changed(key) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_00_01;
-        }
-
         if ((__changed & 0b_00_00_00_11_00) == 0)
-        {
             __dirty |= __composer.Changed(targetValueFactory) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_00_01_00;
-        }
-
         if ((__changed & 0b_00_00_11_00_00) == 0)
-        {
             __dirty |= __composer.Changed(interpolator) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_00_01_00_00;
-        }
-
         if ((__changed & 0b_00_11_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01_00_00_00;
-        }
-
         if ((__changed & 0b_11_00_00_00_00) == 0)
-        {
             __dirty |= __composer.Changed(initialValue) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00_00_00_00;
-        }
-
         var targetValue = targetValueFactory();
         var property = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<T>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<T>>(MutableStateOf(initialValue.GetOrDefault(targetValue))));
         if (!ApplicationUtils.IsPlaying)

@@ -13,23 +13,13 @@ public static partial class DesignSystemComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(debuggable) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         return (!__composer.Changed() ? __composer.RememberedValue<global::UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>() : __composer.UpdateRememberedValue<global::UI.DesignSystem.Compose.Players.SingleAnimationPlayerImpl>(() =>
         {
             var result = new SingleAnimationPlayerImpl(animationSpec.GetOrDefault(), debuggable);
@@ -42,23 +32,13 @@ public static partial class DesignSystemComposeFunctions
         var __dirty = __changed;
         var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
-        {
             __dirty |= __composer.Changed(appearAnimationSpec) ? 0b_00_10 : 0b_00_01;
-        }
         else
-        {
             __dirtyRestart |= 0b_00_01;
-        }
-
         if ((__changed & 0b_11_00) == 0)
-        {
             __dirty |= __composer.Changed(disappearAnimationSpec) ? 0b_10_00 : 0b_01_00;
-        }
         else
-        {
             __dirtyRestart |= 0b_01_00;
-        }
-
         var defaultDuration = 0.5f;
         var resolvedAnimationSpec = appearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
         var resolvedBackwardAnimationSpec = disappearAnimationSpec.GetOrDefault(Tween(duration: defaultDuration));
