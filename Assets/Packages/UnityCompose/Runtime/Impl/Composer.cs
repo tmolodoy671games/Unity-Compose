@@ -209,6 +209,14 @@ public class Composer
     #endregion
 
     public ChangedBuilder BuildChanged() => new(this);
+    
+    public int UpdateChangedFlags(int changed)
+    {
+        const int changedMask = 0b_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10;
+        const int unchangedMask = 0b_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01;
+        var result = changed & unchangedMask | ((changed & changedMask) >> 1);
+        return result;
+    }
 
     public void Log(object? message) => _writer.Log(message);
     public void LogWarning(object? message) => _writer.LogWarning(message);

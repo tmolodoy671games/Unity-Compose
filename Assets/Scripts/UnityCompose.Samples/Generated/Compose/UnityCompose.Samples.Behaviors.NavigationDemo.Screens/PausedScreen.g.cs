@@ -13,11 +13,8 @@ internal partial class PausedScreen
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(1131697469);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
-        else
-            __dirtyRestart |= 0b_01;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
@@ -36,7 +33,7 @@ internal partial class PausedScreen
         }
 
         __dirty = 0b_01;
-        __composer.EndRestartGroup(1131697469, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1131697469, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static void __Layout(IPausedCoordinator pausedCoordinator, PausedTab tab, Action<PausedTab> onClick, Action onTabContentClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -44,27 +41,16 @@ internal partial class PausedScreen
         var(__pausedCoordinator, __tab, __onClick, __onTabContentClick, __modifier) = (pausedCoordinator, tab, onClick, onTabContentClick, modifier);
         var __isCreated = __composer.StartRestartGroup(177925555);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(pausedCoordinator) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_01;
         if ((__changed & 0b_00_00_00_11_00) == 0)
             __dirty |= __composer.Changed(tab) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_01_00;
         if ((__changed & 0b_00_00_11_00_00) == 0)
             __dirty |= __composer.Changed(onClick) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00_00;
         if ((__changed & 0b_00_11_00_00_00) == 0)
             __dirty |= __composer.Changed(onTabContentClick) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00_00;
         if ((__changed & 0b_11_00_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
@@ -82,7 +68,7 @@ internal partial class PausedScreen
         }
 
         __dirty = 0b_01_01_01_01_01;
-        __composer.EndRestartGroup(177925555, __isRestarted)?.UpdateScope(() => __Layout(__pausedCoordinator, __tab, __onClick, __onTabContentClick, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(177925555, __isRestarted)?.UpdateScope(() => __Layout(__pausedCoordinator, __tab, __onClick, __onTabContentClick, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static void __TabsRow(PausedTab currentTab, Action<PausedTab> onClick, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -90,19 +76,12 @@ internal partial class PausedScreen
         var(__currentTab, __onClick, __modifier) = (currentTab, onClick, modifier);
         var __isCreated = __composer.StartRestartGroup(447550961);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(currentTab) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(onClick) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -120,7 +99,7 @@ internal partial class PausedScreen
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(447550961, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(447550961, __isRestarted)?.UpdateScope(() => __TabsRow(__currentTab, __onClick, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static void __Tab(PausedTab tab, bool selected, Action<PausedTab> onClick, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -128,19 +107,12 @@ internal partial class PausedScreen
         var(__tab, __selected, __onClick) = (tab, selected, onClick);
         var __isCreated = __composer.StartRestartGroup(2090021764);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(tab) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(selected) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(onClick) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -155,6 +127,6 @@ internal partial class PausedScreen
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(2090021764, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(2090021764, __isRestarted)?.UpdateScope(() => __Tab(__tab, __selected, __onClick, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

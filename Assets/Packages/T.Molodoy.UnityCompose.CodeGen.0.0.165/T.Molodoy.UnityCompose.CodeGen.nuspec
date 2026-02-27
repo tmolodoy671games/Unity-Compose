@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>T.Molodoy.UnityCompose.CodeGen</id>
-    <version>0.0.163</version>
+    <version>0.0.165</version>
     <authors>T. Molodoy</authors>
     <license type="expression">MIT</license>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
     <readme>README.md</readme>
     <description>Code generator for Unity Compose.</description>
-    <repository type="git" url="https://github.com/tmolodoy671games/Unity-Compose-CodeGen" commit="53411f793d44ebbe3c65d3d210eef3003b0d833d" />
+    <repository type="git" url="https://github.com/tmolodoy671games/Unity-Compose-CodeGen" commit="eb2251314601b2a01429f48f4be351c09d45f2ad" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Microsoft.CodeAnalysis.CSharp" version="4.14.0" exclude="Build,Analyzers" />

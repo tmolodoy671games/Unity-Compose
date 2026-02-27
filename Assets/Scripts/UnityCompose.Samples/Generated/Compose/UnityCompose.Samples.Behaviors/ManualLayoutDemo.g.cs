@@ -49,11 +49,8 @@ namespace UnityCompose.Samples.Behaviors
             var __content = (content);
             var __isCreated = __composer.StartRestartGroup(1407509810);
             var __dirty = __changed;
-            var __dirtyRestart = 0;
             if ((__changed & 0b_11) == 0)
                 __dirty |= __composer.Changed(content) ? 0b_10 : 0b_01;
-            else
-                __dirtyRestart |= 0b_01;
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01)
             {
@@ -67,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __dirty = 0b_01;
-            __composer.EndRestartGroup(1407509810, __isRestarted)?.UpdateScope(() => __MockColumn(__content, __composer, __dirtyRestart));
+            __composer.EndRestartGroup(1407509810, __isRestarted)?.UpdateScope(() => __MockColumn(__content, __composer, __composer.UpdateChangedFlags(__changed)));
         }
 
         private static void __MockSpacer(global::UnityCompose.Composer __composer = null !, int __changed = -1)

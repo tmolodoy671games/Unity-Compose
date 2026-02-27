@@ -12,11 +12,8 @@ internal partial class PausedTabScreen
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(352325677);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
-        else
-            __dirtyRestart |= 0b_01;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
@@ -31,6 +28,6 @@ internal partial class PausedTabScreen
         }
 
         __dirty = 0b_01;
-        __composer.EndRestartGroup(352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(352325677, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

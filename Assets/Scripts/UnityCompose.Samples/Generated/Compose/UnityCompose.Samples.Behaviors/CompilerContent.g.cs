@@ -33,19 +33,12 @@ namespace UnityCompose.Samples.Behaviors
             var(__text, __misc1, __modifier) = (text, misc1, modifier);
             var __isCreated = __composer.StartRestartGroup(1926882667);
             var __dirty = __changed;
-            var __dirtyRestart = 0;
             if ((__changed & 0b_00_00_11) == 0)
                 __dirty |= __composer.Changed(text) ? 0b_00_00_10 : 0b_00_00_01;
-            else
-                __dirtyRestart |= 0b_00_00_01;
             if ((__changed & 0b_00_11_00) == 0)
                 __dirty |= __composer.Changed(misc1) ? 0b_00_10_00 : 0b_00_01_00;
-            else
-                __dirtyRestart |= 0b_00_01_00;
             if ((__changed & 0b_11_00_00) == 0)
                 __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
-            else
-                __dirtyRestart |= 0b_01_00_00;
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
             {
@@ -56,7 +49,7 @@ namespace UnityCompose.Samples.Behaviors
             }
 
             __dirty = 0b_01_01_01;
-            __composer.EndRestartGroup(1926882667, __isRestarted)?.UpdateScope(() => __Foo(__text, __misc1, __modifier, __composer, __dirtyRestart));
+            __composer.EndRestartGroup(1926882667, __isRestarted)?.UpdateScope(() => __Foo(__text, __misc1, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
         }
     }
 }

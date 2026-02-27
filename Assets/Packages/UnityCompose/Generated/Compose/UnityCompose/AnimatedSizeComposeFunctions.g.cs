@@ -17,19 +17,12 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __animationSpec) = (content, modifier, animationSpec);
         var __isCreated = __composer.StartRestartGroup(1035912844);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(animationSpec) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -52,7 +45,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(1035912844, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1035912844, __isRestarted)?.UpdateScope(() => __AnimatedSize(__content, __modifier, __animationSpec, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static (IModifier ContainerModifier, IModifier ContentModifier) __AnimateSizeModifiers(AnimationSpec animationSpec, object? key = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)

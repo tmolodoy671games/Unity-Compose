@@ -45,15 +45,10 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             var(__currentI, __parentSize) = (currentI, parentSize);
             var __isCreated = __composer.StartRestartGroup(760552624);
             var __dirty = __changed;
-            var __dirtyRestart = 0;
             if ((__changed & 0b_00_11) == 0)
                 __dirty |= __composer.Changed(currentI) ? 0b_00_10 : 0b_00_01;
-            else
-                __dirtyRestart |= 0b_00_01;
             if ((__changed & 0b_11_00) == 0)
                 __dirty |= __composer.Changed(parentSize) ? 0b_10_00 : 0b_01_00;
-            else
-                __dirtyRestart |= 0b_01_00;
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __dirty != 0b_01_01)
             {
@@ -68,7 +63,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             }
 
             __dirty = 0b_01_01;
-            __composer.EndRestartGroup(760552624, __isRestarted)?.UpdateScope(() => __Item(__currentI, __parentSize, __composer, __dirtyRestart));
+            __composer.EndRestartGroup(760552624, __isRestarted)?.UpdateScope(() => __Item(__currentI, __parentSize, __composer, __composer.UpdateChangedFlags(__changed)));
         }
     }
 }

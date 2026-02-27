@@ -16,27 +16,16 @@ public static partial class ComposeFunctions
         var(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier) = (targetState, transitionSpec, content, sizeAnimationSpec, modifier);
         var __isCreated = __composer.StartRestartGroup(1366895982);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(targetState) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_01;
         if ((__changed & 0b_00_00_00_11_00) == 0)
             __dirty |= __composer.Changed(transitionSpec) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_01_00;
         if ((__changed & 0b_00_00_11_00_00) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00_00;
         if ((__changed & 0b_00_11_00_00_00) == 0)
             __dirty |= __composer.Changed(sizeAnimationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00_00;
         if ((__changed & 0b_11_00_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
@@ -92,6 +81,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01;
-        __composer.EndRestartGroup(1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1366895982, __isRestarted)?.UpdateScope(() => __AnimatedContent(__targetState, __transitionSpec, __content, __sizeAnimationSpec, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

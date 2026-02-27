@@ -24,23 +24,14 @@ public static partial class ComposeFunctions
         var(__state, __content, __scrollStrength, __modifier) = (state, content, scrollStrength, modifier);
         var __isCreated = __composer.StartRestartGroup(1253564660);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(state) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_01;
         if ((__changed & 0b_00_00_11_00) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00;
         if ((__changed & 0b_00_11_00_00) == 0)
             __dirty |= __composer.Changed(scrollStrength) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00;
         if ((__changed & 0b_11_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
@@ -73,7 +64,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01;
-        __composer.EndRestartGroup(1253564660, __isRestarted)?.UpdateScope(() => __ScrollableColumn(__state, __content, __scrollStrength, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1253564660, __isRestarted)?.UpdateScope(() => __ScrollableColumn(__state, __content, __scrollStrength, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __ScrollableRow(ScrollState state, ComposableContent content, float scrollStrength = 1f, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -81,23 +72,14 @@ public static partial class ComposeFunctions
         var(__state, __content, __scrollStrength, __modifier) = (state, content, scrollStrength, modifier);
         var __isCreated = __composer.StartRestartGroup(152078748);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(state) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_01;
         if ((__changed & 0b_00_00_11_00) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00;
         if ((__changed & 0b_00_11_00_00) == 0)
             __dirty |= __composer.Changed(scrollStrength) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00;
         if ((__changed & 0b_11_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
@@ -122,6 +104,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01;
-        __composer.EndRestartGroup(152078748, __isRestarted)?.UpdateScope(() => __ScrollableRow(__state, __content, __scrollStrength, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(152078748, __isRestarted)?.UpdateScope(() => __ScrollableRow(__state, __content, __scrollStrength, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

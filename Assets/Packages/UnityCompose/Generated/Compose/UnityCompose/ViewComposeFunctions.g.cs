@@ -21,19 +21,12 @@ public static partial class ComposeFunctions
         var(__modifier, __initializer, __content) = (modifier, initializer, content);
         var __isCreated = __composer.StartRestartGroup(1765969868);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(initializer) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(content) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -59,7 +52,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(1765969868, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1765969868, __isRestarted)?.UpdateScope(() => __ReusableComposeView(__modifier, __initializer, __content, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Column(ComposableContent content, IModifier? modifier = null, Alignment.Horizontal? horizontalAlignment = null, Arrangement.Vertical? verticalArrangement = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -67,23 +60,14 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __horizontalAlignment, __verticalArrangement) = (content, modifier, horizontalAlignment, verticalArrangement);
         var __isCreated = __composer.StartRestartGroup(1922237605);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_01;
         if ((__changed & 0b_00_00_11_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00;
         if ((__changed & 0b_00_11_00_00) == 0)
             __dirty |= __composer.Changed(horizontalAlignment) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00;
         if ((__changed & 0b_11_00_00_00) == 0)
             __dirty |= __composer.Changed(verticalArrangement) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
@@ -99,7 +83,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01;
-        __composer.EndRestartGroup(1922237605, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalArrangement, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1922237605, __isRestarted)?.UpdateScope(() => __Column(__content, __modifier, __horizontalAlignment, __verticalArrangement, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Row(ComposableContent content, IModifier? modifier = null, Arrangement.Horizontal? horizontalArrangement = null, Alignment.Vertical? verticalAlignment = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -107,23 +91,14 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __horizontalArrangement, __verticalAlignment) = (content, modifier, horizontalArrangement, verticalAlignment);
         var __isCreated = __composer.StartRestartGroup(2110962436);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_00_10 : 0b_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_01;
         if ((__changed & 0b_00_00_11_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_00_00_10_00 : 0b_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00;
         if ((__changed & 0b_00_11_00_00) == 0)
             __dirty |= __composer.Changed(horizontalArrangement) ? 0b_00_10_00_00 : 0b_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00;
         if ((__changed & 0b_11_00_00_00) == 0)
             __dirty |= __composer.Changed(verticalAlignment) ? 0b_10_00_00_00 : 0b_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
@@ -140,7 +115,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01;
-        __composer.EndRestartGroup(2110962436, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalArrangement, __verticalAlignment, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(2110962436, __isRestarted)?.UpdateScope(() => __Row(__content, __modifier, __horizontalArrangement, __verticalAlignment, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Box(ComposableContent content, IModifier? modifier = null, Alignment? alignment = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -148,19 +123,12 @@ public static partial class ComposeFunctions
         var(__content, __modifier, __alignment) = (content, modifier, alignment);
         var __isCreated = __composer.StartRestartGroup(734131074);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(alignment) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -178,7 +146,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(734131074, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __alignment, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(734131074, __isRestarted)?.UpdateScope(() => __Box(__content, __modifier, __alignment, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Spacer(IModifier modifier, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -186,11 +154,8 @@ public static partial class ComposeFunctions
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(1810854548);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
-        else
-            __dirtyRestart |= 0b_01;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
@@ -202,7 +167,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01;
-        __composer.EndRestartGroup(1810854548, __isRestarted)?.UpdateScope(() => __Spacer(__modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1810854548, __isRestarted)?.UpdateScope(() => __Spacer(__modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -210,43 +175,24 @@ public static partial class ComposeFunctions
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         var __isCreated = __composer.StartRestartGroup(579625941);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(text) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_00_00_00_01;
         if ((__changed & 0b_00_00_00_00_00_00_00_11_00) == 0)
             __dirty |= __composer.Changed(color) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_00_00_01_00;
         if ((__changed & 0b_00_00_00_00_00_00_11_00_00) == 0)
             __dirty |= __composer.Changed(fontSize) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_00_01_00_00;
         if ((__changed & 0b_00_00_00_00_00_11_00_00_00) == 0)
             __dirty |= __composer.Changed(style) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_01_00_00_00;
         if ((__changed & 0b_00_00_00_00_11_00_00_00_00) == 0)
             __dirty |= __composer.Changed(fontStyle) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_01_00_00_00_00;
         if ((__changed & 0b_00_00_00_11_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(fontWeight) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_01_00_00_00_00_00;
         if ((__changed & 0b_00_00_11_00_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(softWrap) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00_00_00_00_00_00;
         if ((__changed & 0b_00_11_00_00_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(textAlign) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00_00_00_00_00_00;
         if ((__changed & 0b_11_00_00_00_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00_00_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01_01)
         {
@@ -306,7 +252,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(579625941, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(579625941, __isRestarted)?.UpdateScope(() => __Text(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __Image(ComposeImage image, Optional<Color> tint = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -314,19 +260,12 @@ public static partial class ComposeFunctions
         var(__image, __tint, __modifier) = (image, tint, modifier);
         var __isCreated = __composer.StartRestartGroup(1428143876);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(image) ? 0b_00_00_10 : 0b_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_01;
         if ((__changed & 0b_00_11_00) == 0)
             __dirty |= __composer.Changed(tint) ? 0b_00_10_00 : 0b_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_01_00;
         if ((__changed & 0b_11_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00 : 0b_01_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
@@ -344,6 +283,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(1428143876, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1428143876, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

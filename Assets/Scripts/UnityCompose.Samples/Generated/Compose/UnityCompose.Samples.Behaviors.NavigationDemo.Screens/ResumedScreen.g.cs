@@ -12,11 +12,8 @@ internal partial class ResumedScreen
         var __modifier = (modifier);
         var __isCreated = __composer.StartRestartGroup(542308588);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10 : 0b_01;
-        else
-            __dirtyRestart |= 0b_01;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
@@ -34,7 +31,7 @@ internal partial class ResumedScreen
         }
 
         __dirty = 0b_01;
-        __composer.EndRestartGroup(542308588, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(542308588, __isRestarted)?.UpdateScope(() => __Content(__modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static void __DropdownMenu(bool expanded, Action onDismissRequest, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -42,15 +39,10 @@ internal partial class ResumedScreen
         var(__expanded, __onDismissRequest) = (expanded, onDismissRequest);
         var __isCreated = __composer.StartRestartGroup(228257823);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_11) == 0)
             __dirty |= __composer.Changed(expanded) ? 0b_00_10 : 0b_00_01;
-        else
-            __dirtyRestart |= 0b_00_01;
         if ((__changed & 0b_11_00) == 0)
             __dirty |= __composer.Changed(onDismissRequest) ? 0b_10_00 : 0b_01_00;
-        else
-            __dirtyRestart |= 0b_01_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
@@ -74,6 +66,6 @@ internal partial class ResumedScreen
         }
 
         __dirty = 0b_01_01;
-        __composer.EndRestartGroup(228257823, __isRestarted)?.UpdateScope(() => __DropdownMenu(__expanded, __onDismissRequest, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(228257823, __isRestarted)?.UpdateScope(() => __DropdownMenu(__expanded, __onDismissRequest, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

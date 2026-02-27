@@ -14,39 +14,22 @@ public static partial class DesignSystemComposeFunctions
         var(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier) = (content, hovered, onHover, onLeave, rippleColor, hoverColor, animationSpec, modifier);
         var __isCreated = __composer.StartRestartGroup(1316622409);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_00_00_01;
         if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
             __dirty |= __composer.Changed(hovered) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_00_01_00;
         if ((__changed & 0b_00_00_00_00_00_11_00_00) == 0)
             __dirty |= __composer.Changed(onHover) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_00_01_00_00;
         if ((__changed & 0b_00_00_00_00_11_00_00_00) == 0)
             __dirty |= __composer.Changed(onLeave) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_01_00_00_00;
         if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
             __dirty |= __composer.Changed(rippleColor) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_01_00_00_00_00;
         if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(hoverColor) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00_00_00_00_00;
         if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00_00_00_00_00;
         if ((__changed & 0b_11_00_00_00_00_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01)
         {
@@ -94,7 +77,7 @@ public static partial class DesignSystemComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(1316622409, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(1316622409, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __hovered, __onHover, __onLeave, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     public static void __DsClickIndication(ComposableContent<DsClickIndicationScope> content, Optional<Color> rippleColor = default, Optional<Color> hoverColor = default, Optional<AnimationSpec> animationSpec = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
@@ -102,27 +85,16 @@ public static partial class DesignSystemComposeFunctions
         var(__content, __rippleColor, __hoverColor, __animationSpec, __modifier) = (content, rippleColor, hoverColor, animationSpec, modifier);
         var __isCreated = __composer.StartRestartGroup(459997311);
         var __dirty = __changed;
-        var __dirtyRestart = 0;
         if ((__changed & 0b_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
-        else
-            __dirtyRestart |= 0b_00_00_00_00_01;
         if ((__changed & 0b_00_00_00_11_00) == 0)
             __dirty |= __composer.Changed(rippleColor) ? 0b_00_00_00_10_00 : 0b_00_00_00_01_00;
-        else
-            __dirtyRestart |= 0b_00_00_00_01_00;
         if ((__changed & 0b_00_00_11_00_00) == 0)
             __dirty |= __composer.Changed(hoverColor) ? 0b_00_00_10_00_00 : 0b_00_00_01_00_00;
-        else
-            __dirtyRestart |= 0b_00_00_01_00_00;
         if ((__changed & 0b_00_11_00_00_00) == 0)
             __dirty |= __composer.Changed(animationSpec) ? 0b_00_10_00_00_00 : 0b_00_01_00_00_00;
-        else
-            __dirtyRestart |= 0b_00_01_00_00_00;
         if ((__changed & 0b_11_00_00_00_00) == 0)
             __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00 : 0b_01_00_00_00_00;
-        else
-            __dirtyRestart |= 0b_01_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
@@ -135,6 +107,6 @@ public static partial class DesignSystemComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01;
-        __composer.EndRestartGroup(459997311, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __dirtyRestart));
+        __composer.EndRestartGroup(459997311, __isRestarted)?.UpdateScope(() => __DsClickIndication(__content, __rippleColor, __hoverColor, __animationSpec, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }
