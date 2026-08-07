@@ -25,13 +25,16 @@ public static partial class ComposeFunctions
         var parent = composer.GetParentVisualElement().NotNull();
         var indexInParent = composer.GetElementIndex();
         var node = composer.GetReusableNode<T>();
-        node.VisualElement ??= new T();
+        node.VisualElement ??= new T
+        {
+            pickingMode = PickingMode.Ignore
+        };
 
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
-        // if (modifier != null)
-        //     modifier = modifier.Compose();
+        if (modifier is { IsComposable: true })
+            modifier = modifier.Compose();
         node.Update(
             parent: parent,
             indexInParent: indexInParent,

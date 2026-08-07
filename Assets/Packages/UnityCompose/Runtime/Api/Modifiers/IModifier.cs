@@ -10,10 +10,11 @@ namespace UnityCompose;
 public partial interface IModifier
 {
     void Apply(VisualElement element);
-
     void Revert(VisualElement element);
     void Flatten(IMutableStableCollection<IModifier> modifiers);
-    
+    bool IsComposable => false;
+    IModifier Compose() => this;
+
     public static IModifier operator +(IModifier left, IModifier right)
     {
         return left.Then(right);
@@ -25,13 +26,16 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     public abstract void Apply(VisualElement element);
 
     public abstract void Revert(VisualElement element);
-    
+
     public virtual void Flatten(IMutableStableCollection<IModifier> modifiers)
     {
         modifiers.Add(this);
     }
 
     protected abstract bool Equals(T other);
+    
+    public virtual bool IsComposable => false;
+    public virtual IModifier Compose() => this;
 
     public override bool Equals(object? obj)
     {
@@ -100,6 +104,7 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         _second = second;
         _depth = (first is CompositeModifierImpl firstComposite ? firstComposite._depth : 1) +
                  (second is CompositeModifierImpl secondComposite ? secondComposite._depth : 1);
+        Composable = _first.IsComposable || _second.IsComposable;
     }
 
     public override void Apply(VisualElement element)
@@ -112,6 +117,17 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
     {
         _first.Flatten(modifiers);
         _second.Flatten(modifiers);
+    }
+
+    public bool Composable { get; }
+
+    public IModifier Compose()
+    {
+        var firstComposed = _first.Compose();
+        var secondComposed = _second.Compose();
+        if (firstComposed != _first || _second != secondComposed)
+            return new CompositeModifierImpl(firstComposed, secondComposed);
+        return this;
     }
 
     public override void Revert(VisualElement element)
