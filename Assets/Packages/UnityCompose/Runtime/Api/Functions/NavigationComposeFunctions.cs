@@ -73,7 +73,7 @@ public static partial class ComposeFunctions
         var previousBackStack = Remember(() =>
             MutableStablePropertyOf(initialScreens.OrEmpty().ToImmutableStableList())
         );
-        LaunchedEffect(currentBackStack, () =>
+        SideEffect(currentBackStack, () =>
         {
             if (!Equals(currentBackStack, previousBackStack.Value))
                 isSwitched.Value = !isSwitched.Value;

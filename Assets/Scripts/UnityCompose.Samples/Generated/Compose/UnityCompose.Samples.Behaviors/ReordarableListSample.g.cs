@@ -124,7 +124,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __composer.StartReplaceGroup(496051479);
                 if (state == 2)
-                    __LaunchedEffect("state", static () =>
+                    __SideEffect("state", static () =>
                     {
                     }, __composer: __composer, __changed: 0b_00_01);
                 __composer.EndReplaceGroup(496051479);

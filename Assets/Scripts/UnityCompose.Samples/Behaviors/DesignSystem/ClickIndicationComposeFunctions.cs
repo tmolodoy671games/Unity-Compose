@@ -62,7 +62,7 @@ public static partial class DesignSystemComposeFunctions
                 var layoutValue = layout.Value.Value;
                 var pressedValue = isPressed.Value.Value;
                 var pressPosition = layoutValue.Size / 2;
-                LaunchedEffect(pressedValue, () =>
+                SideEffect(pressedValue, () =>
                 {
                     if (pressedValue)
                     {

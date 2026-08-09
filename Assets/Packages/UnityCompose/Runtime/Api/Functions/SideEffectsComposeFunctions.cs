@@ -42,40 +42,26 @@ public static partial class ComposeFunctions
     }
 
     [Composable]
+    public static void SideEffect<TKey>(
+        TKey key,
+        Action block
+    )
+    {
+        var _ = Remember(key, () =>
+            {
+                block();
+                return string.Empty;
+            }
+        );
+    }
+
+    [Composable]
     public static void LaunchedEffect<TKey>(
         TKey key,
         Func<IEnumerator> coroutine
     )
     {
         var _ = Remember(key, () => ComposeInvalidator.StartCoroutineAsComposeDisposable(coroutine()));
-    }
-    
-    [Composable]
-    public static void LaunchedEffect<TKey>(
-        TKey key,
-        Action block
-    )
-    {
-        var _ = Remember(key, () =>
-            {
-                block();
-                return string.Empty;
-            }
-        );
-    }
-    
-    [Composable]
-    public static void TestLaunchedEffect<TKey>(
-        TKey key,
-        Action block
-    )
-    {
-        var _ = Remember(key, () =>
-            {
-                block();
-                return string.Empty;
-            }
-        );
     }
 
     [Composable]

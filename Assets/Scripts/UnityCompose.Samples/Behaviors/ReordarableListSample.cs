@@ -117,7 +117,7 @@ namespace UnityCompose.Samples.Behaviors
         )
         {
             if (state == 2)
-                LaunchedEffect("state", static () => { });
+                SideEffect("state", static () => { });
             Row(
                 verticalAlignment: Alignment.CenterVertically,
                 modifier: Modifier

@@ -30,10 +30,10 @@ public static partial class ComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01)
         {
             var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-            __LaunchedEffect(targetState, (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_00_11));
+            __SideEffect(targetState, (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value)), __composer: __composer, __changed: (__dirty & 0b_00_11));
             var previousValue = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
             var targetValue = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<T>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<T>>(IMutableStableProperty.Create(targetState)));
-            __LaunchedEffect(targetState, (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).Changed<global::StableCollections.IMutableStableProperty<T>>(previousValue!).Changed<global::StableCollections.IMutableStableProperty<T>>(targetValue!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+            __SideEffect(targetState, (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).Changed<global::StableCollections.IMutableStableProperty<T>>(previousValue!).Changed<global::StableCollections.IMutableStableProperty<T>>(targetValue!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
             {
                 previousValue.Value = targetValue.Value;
                 targetValue.Value = targetState;
