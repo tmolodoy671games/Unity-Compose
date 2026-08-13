@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.Utilities;
+using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public interface IState<out T>
     T GetValue();
 }
 
-public interface IMutableState : IComposeDisposable
+public interface IMutableState
 {
 }
 
@@ -24,7 +25,8 @@ public interface IMutableState<T> : IState<T>, IMutableState
 
 public abstract class BaseMutableStateImpl : IMutableState
 {
-    private readonly HashSet<ComposeRestartScope> _scopes = new();
+    private readonly IMutableStableSet<ComposeRestartScope> _scopes = MutableStableSetOf<ComposeRestartScope>();
+
     public readonly bool Log;
 
     protected BaseMutableStateImpl(bool log = false)
@@ -56,14 +58,6 @@ public abstract class BaseMutableStateImpl : IMutableState
     internal void Remove(ComposeRestartScope restartScope)
     {
         _scopes.Remove(restartScope);
-    }
-
-    public void Dispose()
-    {
-        foreach (var scope in _scopes)
-            scope.Remove(this);
-
-        _scopes.Clear();
     }
 }
 

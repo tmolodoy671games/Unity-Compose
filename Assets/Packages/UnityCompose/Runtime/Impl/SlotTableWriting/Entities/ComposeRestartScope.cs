@@ -24,7 +24,7 @@ internal class ComposeRestartScope : IScopeUpdateScope, IComposeDisposable
 
     private Action? _restartCallback;
 
-    public SlotTableWriter Writer => _writer;
+    public bool IsDisposed => _isDisposed;
 
     public static ComposeRestartScope Get(
         AnchorId groupAnchor,
