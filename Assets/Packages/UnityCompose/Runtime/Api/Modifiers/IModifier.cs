@@ -121,7 +121,7 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
 
     public bool Composable { get; }
 
-    public IModifier Compose()
+    public override IModifier Compose()
     {
         var firstComposed = _first.Compose();
         var secondComposed = _second.Compose();
