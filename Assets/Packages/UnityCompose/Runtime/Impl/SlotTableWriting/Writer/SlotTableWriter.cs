@@ -669,7 +669,7 @@ internal class SlotTableWriter
             var oldOffset = _pendingOffsets.Pop();
             _pendingOffsets.Push(
                 new ComposeGroupOffset(
-                    GroupOffset: oldOffset.SlotOffset - group.Size,
+                    GroupOffset: oldOffset.GroupOffset - group.Size,
                     SlotOffset: oldOffset.SlotOffset - group.SlotsSize
                 )
             );
