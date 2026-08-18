@@ -53,14 +53,14 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         private static void Content2()
         {
-            Row(() =>
-            {
+            // Row(() =>
+            // {
                 Spacer(
                     Modifier
                         .Size(100.Px())
                         .Background(Color.red)
                 );
-            });
+            // });
         }
     }
 }

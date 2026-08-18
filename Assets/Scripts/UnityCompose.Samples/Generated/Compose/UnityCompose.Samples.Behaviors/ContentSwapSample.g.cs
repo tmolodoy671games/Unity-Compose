@@ -98,10 +98,7 @@ namespace UnityCompose.Samples.Behaviors
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
-                {
-                    __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0b_00);
-                })), __composer: __composer, __changed: 0b_01_01_01_00);
+                __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0b_00);
             }
             else
             {
