@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 
 using System;
+using System.IO;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl;
@@ -221,14 +222,24 @@ public class Composer
     public void Log(object? message) => _writer.Log(message);
     public void LogWarning(object? message) => _writer.LogWarning(message);
 
-    public override string ToString()
+    public string Format()
     {
-        return _writer.ToString();
+        return _writer.Format();
+    }
+
+    public void WriteToFile(TextWriter writer)
+    {
+        _writer.WriteToFile(writer);
     }
 
     public string SlotsToString()
     {
         return _writer.SlotsToString();
+    }
+    
+    public void WriteSlotsToFile(TextWriter writer)
+    {
+        _writer.WriteSlotsToFile(writer);
     }
 
     private static bool IsStruct<T>()

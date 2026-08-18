@@ -1,0 +1,53 @@
+[0] ComposeRestartScope
+[1] UnityCompose.SingletonState
+[2] UnityCompose.ModalMenuManager
+[3] ReusableComposeNode(ComposeView)
+[4] True
+[5] IsActiveEntry { IsActiveSelf = True, Parent =  }
+[6] UnityCompose.Composer
+[7] ComposableContent
+[8] EMPTY
+[9] ICompositionLocal<VisualElement> Provides ComposeView
+[10] ICompositionLocal<IsActiveEntry> Provides IsActiveEntry { IsActiveSelf = True, Parent =  }
+[11] ICompositionLocal<ModalMenuManager> Provides UnityCompose.ModalMenuManager
+[12] ComposableContent
+[13] CompositionLocalMap[[ICompositionLocal<VisualElement>, ProvidedValue { State = MutableState(ComposeView), IsInherited = False }], [ICompositionLocal<IsActiveEntry>, ProvidedValue { State = MutableState(IsActiveEntry { IsActiveSelf = True, Parent =  }), IsInherited = False }], [ICompositionLocal<ModalMenuManager>, ProvidedValue { State = MutableState(UnityCompose.ModalMenuManager), IsInherited = False }]]
+[14] EMPTY
+[15] EMPTY
+[16] UnityCompose.SingletonState
+[17] ComposableContent
+[18] EMPTY
+[19] ComposableContent
+[20] UnityCompose.FillMaxSizeModifierImpl
+[21] UnityCompose.Alignment
+[22] UnityCompose.SingletonState
+[23] Action<Box>
+[24] EMPTY
+[25] Action<Box>
+[26] ReusableComposeNode(Box)
+[27] UnityCompose.SingletonState
+[28] ComposableContent
+[29] EMPTY
+[30] ComposableContent
+[31] UnityCompose.BackgroundColorModifierImpl
+UnityCompose.SizeModifierImpl
+[32] UnityCompose.SingletonState
+[33] Action<Box>
+[34] EMPTY
+[35] Action<Box>
+[36] ReusableComposeNode(Box)
+[37] EMPTY
+[38] UnityCompose.SizeModifierImpl
+Float
+UnityCompose.BackgroundColorModifierImpl
+UnityCompose.PositionModifierImpl
+[39] EMPTY
+[40] ReusableComposeNode(Spacer)
+[41] EMPTY
+[42] UnityCompose.SizeModifierImpl
+Float
+UnityCompose.BackgroundColorModifierImpl
+UnityCompose.PositionModifierImpl
+[43] EMPTY
+[44] ReusableComposeNode(Spacer)
+< CURRENT_SLOT_INDEX

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using SharpExtensions;
 using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
@@ -12,7 +13,7 @@ namespace UnityCompose;
 public abstract partial class ComposeUI : MonoBehaviour
 {
     private UIDocument? _document;
-    
+
     private void Awake()
     {
         if (!ApplicationUtils.IsPlaying)
@@ -44,13 +45,27 @@ public abstract partial class ComposeUI : MonoBehaviour
     [Button]
     protected void PrintTreeStructure()
     {
-        Debug.Log(CurrentComposer);
+        Debug.Log(CurrentComposer.Format());
     }
 
     [Button]
     protected void PrintSlots()
     {
         Debug.Log(CurrentComposer.SlotsToString());
+    }
+
+    [Button]
+    protected void PrintTreeStructureToFile()
+    {
+        using TextWriter writer = new StreamWriter("output.txt");
+        CurrentComposer.WriteToFile(writer);
+    }
+
+    [Button]
+    private void PrintSlotsToFile()
+    {
+        using TextWriter writer = new StreamWriter("output.txt");
+        CurrentComposer.WriteSlotsToFile(writer);
     }
 
     private UIDocument GetUiDocument() => GetComponent<UIDocument>().NotNull();

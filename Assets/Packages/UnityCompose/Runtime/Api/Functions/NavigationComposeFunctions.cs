@@ -36,20 +36,6 @@ public static partial class ComposeFunctions
         });
     }
 
-    [Composable]
-    public static void ProvideCoordinator<T>(
-        T coordinator,
-        ComposableContent content
-    ) where T : IComposeCoordinator
-    {
-        var parentEntry = LocalCoordinator.Current;
-        var newEntry = Remember((coordinator, parentEntry), () => new CoordinatorEntry(coordinator, parentEntry));
-        CompositionLocalProvider(
-            LocalCoordinator.Provides(newEntry),
-            content
-        );
-    }
-
     public static string FormatFirstArgument(this int dirty)
     {
         var result = Convert.ToString(dirty, 2);

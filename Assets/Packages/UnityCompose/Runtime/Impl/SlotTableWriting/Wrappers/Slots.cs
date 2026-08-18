@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SharpExtensions;
@@ -42,7 +43,7 @@ internal readonly struct Slots
         // if (item is T slot)
         //     return slot;
         // return default;
-        return (T) item!;
+        return (T)item!;
     }
 
     public Optional<T> GetAsOptional<T>(int index)
@@ -93,7 +94,7 @@ internal readonly struct Slots
     }
 
     public void Clear() => _slots.Clear();
-    
+
     public void Swap(int sourceIndex, int sourceCount, int targetIndex, int targetCount)
     {
         _slots.Swap(sourceIndex, sourceCount, targetIndex, targetCount);
@@ -101,16 +102,16 @@ internal readonly struct Slots
 
     public int LogicalToAbsoluteIndex(int index) => _slots.LogicalToAbsoluteIndex(index);
     public int AbsoluteToLogicalIndex(int index) => _slots.AbsoluteToLogicalIndex(index);
-    
+
     public void AddItemsShiftObserver(Action<ItemsShiftEvent> onItemsShift) =>
         _slots.AddItemsShiftObserver(onItemsShift);
 
-    public override string ToString()
+    public string Format()
     {
-        return ToString(-100);
+        return Format(-100);
     }
 
-    public string ToString(int currentAnchorIndex)
+    public string Format(int currentAnchorIndex)
     {
         var builder = new StringBuilder();
         if (currentAnchorIndex == -1)
@@ -128,6 +129,23 @@ internal readonly struct Slots
             builder.AppendLine("< CURRENT_SLOT_INDEX");
 
         return builder.ToString();
+    }
+
+    public void WriteToFile(int currentAnchorIndex, TextWriter writer)
+    {
+        if (currentAnchorIndex == -1)
+            writer.WriteLine("< CURRENT_SLOT_INDEX");
+        for (var i = 0; i < _slots.Count; i++)
+        {
+            writer.Write($"[{i}] ");
+            writer.Write(Format(_slots[i]));
+            if (i == currentAnchorIndex)
+                writer.Write(" < CURRENT_SLOT_INDEX");
+            writer.WriteLine();
+        }
+
+        if (currentAnchorIndex == _slots.Count)
+            writer.WriteLine("< CURRENT_SLOT_INDEX");
     }
 
     private static string Format(object? value)

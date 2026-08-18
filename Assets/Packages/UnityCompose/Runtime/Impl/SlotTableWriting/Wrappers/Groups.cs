@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
@@ -82,6 +83,46 @@ internal readonly struct Groups
         if (currentGroupIndex == _groups.Count)
             builder.AppendLine("< CURRENT_GROUP_INDEX");
         return builder.ToString();
+    }
+
+    public void WriteToFile(
+        int currentParentIndex,
+        int currentGroupIndex,
+        Anchors groupsAnchors,
+        Anchors slotsAnchors,
+        Slots slots,
+        TextWriter writer
+    )
+    {
+        if (currentParentIndex == -1)
+            writer.WriteLine("< CURRENT_PARENT_INDEX");
+        for (var i = 0; i < _groups.Count; i++)
+        {
+            var group = _groups[i];
+            writer.Write($"[{i}]\t");
+            var ancestorsCount = group.AncestorsCount(groupsAnchors, this);
+            writer.Write("-".Multiply(ancestorsCount));
+            writer.Write(group.ToString(groupsAnchors, slotsAnchors, slots, this));
+            var isSelfIndexInvalid = group.AnchorId.IsValid &&
+                                     (!groupsAnchors.ContainsIndex(group.AnchorId) ||
+                                      group.SafeIndex(groupsAnchors, this) != i);
+            if (isSelfIndexInvalid)
+                writer.Write(" [SELF ANCHOR IS INVALID]");
+            var isDataIndexInvalid = group.DataAnchorId.IsValid &&
+                                     !slotsAnchors.ContainsIndex(group.DataAnchorId);
+            if (isDataIndexInvalid)
+                writer.Write(" [DATA ANCHOR IS INVALID]");
+            if (ancestorsCount < 0)
+                writer.Write(" [ANCESTORS STRUCTURE IS INVALID]");
+            if (currentParentIndex == i)
+                writer.Write(" < CURRENT_PARENT_INDEX");
+            if (currentGroupIndex == i)
+                writer.Write(" < CURRENT_GROUP_INDEX");
+            writer.WriteLine();
+        }
+
+        if (currentGroupIndex == _groups.Count)
+            writer.WriteLine("< CURRENT_GROUP_INDEX");
     }
 }
 

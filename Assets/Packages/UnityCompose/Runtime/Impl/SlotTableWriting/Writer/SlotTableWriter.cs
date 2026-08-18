@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
@@ -842,7 +843,7 @@ internal class SlotTableWriter
         }
     }
 
-    public override string ToString()
+    public string Format()
     {
         var builder = new StringBuilder();
         builder.AppendLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
@@ -852,7 +853,7 @@ internal class SlotTableWriter
         );
 
         builder.AppendLine("Slots:");
-        builder.AppendLine(_slots.ToString(_currentSlotIndex));
+        builder.AppendLine(_slots.Format(_currentSlotIndex));
 
         // builder.AppendLine("Groups Anchors:");
         // builder.AppendLine(_groupsAnchors.ToString());
@@ -864,7 +865,12 @@ internal class SlotTableWriter
 
     public string SlotsToString()
     {
-        return _slots.ToString(_currentSlotIndex);
+        return _slots.Format(_currentSlotIndex);
+    }
+    
+    public void WriteSlotsToFile(TextWriter writer)
+    {
+        _slots.WriteToFile(_currentSlotIndex, writer);
     }
 
     #region Group Anchors
@@ -1028,6 +1034,16 @@ internal class SlotTableWriter
     }
 
     #endregion
+
+    public void WriteToFile(TextWriter writer)
+    {
+        writer.WriteLine($"CURRENT_ELEMENT_INDEX: {_currentElementIndex}");
+        writer.WriteLine("Groups:");
+        _groups.WriteToFile(_currentParentIndex, _currentGroupIndex, _groupsAnchors, _slotsAnchors, _slots, writer);
+
+        writer.WriteLine("Slots:");
+        _slots.WriteToFile(_currentSlotIndex, writer);
+    }
 }
 
 internal readonly record struct ComposeGroupEntry(

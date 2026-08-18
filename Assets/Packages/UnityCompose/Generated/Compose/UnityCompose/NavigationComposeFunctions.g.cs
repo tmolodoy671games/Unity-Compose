@@ -14,36 +14,10 @@ using static UnityCompose.ComposeFunctions;
 namespace UnityCompose;
 public static partial class ComposeFunctions
 {
-    public static void __ProvideCoordinator<T>(T coordinator, ComposableContent content, global::UnityCompose.Composer __composer = null !, int __changed = -1)
-        where T : IComposeCoordinator
-    {
-        var(__coordinator, __content) = (coordinator, content);
-        var __isCreated = __composer.StartRestartGroup(1435617519);
-        var __dirty = __changed;
-        if ((__changed & 0b_00_11) == 0)
-            __dirty |= __composer.Changed(coordinator) ? 0b_00_10 : 0b_00_01;
-        if ((__changed & 0b_11_00) == 0)
-            __dirty |= __composer.Changed(content) ? 0b_10_00 : 0b_01_00;
-        var __isRestarted = __composer.IsRestarted();
-        if (__isCreated || __isRestarted || __dirty != 0b_01_01)
-        {
-            var parentEntry = LocalCoordinator.Current;
-            var newEntry = (!__composer.Changed<(T coordinator, global::UnityCompose.ComposeFunctions.CoordinatorEntry parentEntry)>((coordinator, parentEntry)!) ? __composer.RememberedValue<global::UnityCompose.ComposeFunctions.CoordinatorEntry>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposeFunctions.CoordinatorEntry>(new CoordinatorEntry(coordinator, parentEntry)));
-            __CompositionLocalProvider(LocalCoordinator.Provides(newEntry), content, __composer: __composer, __changed: (__dirty & 0b_11_00));
-        }
-        else
-        {
-            __composer.SkipToGroupEnd();
-        }
-
-        __dirty = 0b_01_01;
-        __composer.EndRestartGroup(1435617519, __isRestarted)?.UpdateScope(() => __ProvideCoordinator(__coordinator, __content, __composer, __composer.UpdateChangedFlags(__changed)));
-    }
-
     public static void __Navigation(IComposeCoordinator coordinator, Optional<ContentTransform> transition = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__coordinator, __transition, __modifier) = (coordinator, transition, modifier);
-        var __isCreated = __composer.StartRestartGroup(408714319);
+        var __isCreated = __composer.StartRestartGroup(446380728);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(coordinator) ? 0b_00_00_10 : 0b_00_00_01;
@@ -116,7 +90,7 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(408714319, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(446380728, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }
 
@@ -124,19 +98,19 @@ internal partial class NavigationScopeImpl
 {
     public void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var __isCreated = __composer.StartRestartGroup(334646181);
+        var __isCreated = __composer.StartRestartGroup(2032637029);
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __changed != 0b_00)
         {
-            __composer.StartReplaceGroup(367338041);
+            __composer.StartReplaceGroup(1643317211);
             _content();
-            __composer.EndReplaceGroup(367338041);
+            __composer.EndReplaceGroup(1643317211);
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(334646181, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+        __composer.EndRestartGroup(2032637029, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
     }
 }
