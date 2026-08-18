@@ -41,8 +41,6 @@ public static partial class ComposeFunctions
             };
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
-            if (modifier is { IsComposable: true })
-                modifier = modifier.Compose();
             node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
             __composer.StartReplaceGroup(99615638);
             __composer.StartReplaceGroup(99615638);
