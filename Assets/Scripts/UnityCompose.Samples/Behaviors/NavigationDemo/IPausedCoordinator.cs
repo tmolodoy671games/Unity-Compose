@@ -23,7 +23,6 @@ internal class PausedCoordinatorImpl : BaseComposeCoordinator, IPausedCoordinato
         ComposeScreen screen = tab switch
         {
             PausedTab.Inventory => new InventoryTabScreen(),
-            PausedTab.System => new SystemFlowScreen(),
             _ => new PausedTabScreen(tab, ResolveBackgroundColor(tab))
         };
         Router.ReplaceScreen(screen);
