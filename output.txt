@@ -1,34 +1,3 @@
-CURRENT_ELEMENT_INDEX: 1
-Groups:
-< CURRENT_PARENT_INDEX
-[0]	Restart(Key: 877442121, Size: 26, DataIndex: 0, SlotsSize: 46)
-[1]	-Reusable(Key: 0, Size: 25, DataIndex: 3, SlotsSize: 43)		ComposeView
-[2]	--Replace(Key: 670603868, Size: 23, DataIndex: -1, SlotsSize: 40)
-[3]	---Restart(Key: 150642065, Size: 22, DataIndex: -1, SlotsSize: 38)
-[4]	----Local(Key: 1233, Size: 21, DataIndex: -1, SlotsSize: 33)
-[5]	-----Replace(Key: 1730004743, Size: 20, DataIndex: -1, SlotsSize: 32)
-[6]	------Restart(Key: 1629007819, Size: 19, DataIndex: -1, SlotsSize: 32)
-[7]	-------Restart(Key: 1338862325, Size: 18, DataIndex: -1, SlotsSize: 31)
-[8]	--------Restart(Key: 1732890657, Size: 17, DataIndex: -1, SlotsSize: 28)
-[9]	---------Restart(Key: 1765969868, Size: 16, DataIndex: 25, SlotsSize: 21)
-[10]	----------Reusable(Key: 123, Size: 15, DataIndex: 27, SlotsSize: 19)		Column
-[11]	-----------Replace(Key: 99615638, Size: 14, DataIndex: -1, SlotsSize: 18)
-[12]	------------Replace(Key: 99615638, Size: 13, DataIndex: -1, SlotsSize: 18)
-[13]	-------------Replace(Key: 1284654179, Size: 7, DataIndex: -1, SlotsSize: 5)
-[14]	--------------Restart(Key: 1026411864, Size: 6, DataIndex: -1, SlotsSize: 5)
-[15]	---------------Restart(Key: 791007815, Size: 5, DataIndex: -1, SlotsSize: 4)
-[16]	----------------Restart(Key: 1765969868, Size: 4, DataIndex: -1, SlotsSize: 2)
-[17]	-----------------Reusable(Key: 123, Size: 3, DataIndex: 34, SlotsSize: 1)		Spacer
-[18]	------------------Replace(Key: 99615638, Size: 2, DataIndex: -1, SlotsSize: 0)
-[19]	-------------------Replace(Key: 99615638, Size: 1, DataIndex: -1, SlotsSize: 0)
-[20]	-------------Restart(Key: 1163987134, Size: 5, DataIndex: -1, SlotsSize: 9)
-[21]	--------------Restart(Key: 1765969868, Size: 4, DataIndex: -1, SlotsSize: 3)
-[22]	---------------Reusable(Key: 123, Size: 3, DataIndex: 45, SlotsSize: 1)		Text
-[23]	----------------Replace(Key: 99615638, Size: 2, DataIndex: -1, SlotsSize: 0)
-[24]	-----------------Replace(Key: 99615638, Size: 1, DataIndex: -1, SlotsSize: 0)
-[25]	--Replace(Key: 1348373615, Size: 1, DataIndex: -1, SlotsSize: 0)
-< CURRENT_GROUP_INDEX
-Slots:
 [0] ComposeRestartScope
 [1] UnityCompose.SingletonState
 [2] UnityCompose.ModalMenuManager
@@ -50,34 +19,35 @@ Slots:
 [18] EMPTY
 [19] ComposableContent
 [20] UnityCompose.FillMaxSizeModifierImpl
-[21] UnityCompose.Alignment+Horizontal
-[22] UnityCompose.Arrangement+Vertical
-[23] UnityCompose.SingletonState
-[24] Action<Column>
-[25] ComposeRestartScope
-[26] Action<Column>
-[27] ReusableComposeNode(Column)
-[28] UnityCompose.SingletonState
-[29] MutableState(False)
-[30] EMPTY
-[31] EMPTY
-[32] UnityCompose.SizeModifierImpl
-UnityCompose.BackgroundColorModifierImpl
-[33] EMPTY
-[34] ReusableComposeNode(Spacer)
-[35] MutableState(False)
-[36] Action
+[21] UnityCompose.Alignment
+[22] UnityCompose.SingletonState
+[23] Action<Box>
+[24] EMPTY
+[25] Action<Box>
+[26] ReusableComposeNode(Box)
+[27] UnityCompose.SingletonState
+[28] ComposableContent
+[29] EMPTY
+[30] ComposableContent
+[31] UnityCompose.BackgroundColorModifierImpl
+UnityCompose.SizeModifierImpl
+[32] UnityCompose.SingletonState
+[33] Action<Box>
+[34] EMPTY
+[35] Action<Box>
+[36] ReusableComposeNode(Box)
 [37] EMPTY
-[38] RGBA(1.000, 1.000, 1.000, 1.000)
-[39] UnityCompose.PaddingModifierImpl
-UnityCompose.BorderModifierImpl
+[38] UnityCompose.SizeModifierImpl
+Float
 UnityCompose.BackgroundColorModifierImpl
-UnityCompose.MarginModifierImpl
-UnityCompose.OnClickModiferImpl
-[40] Optional.Empty<Color>
-[41] Optional.Empty<TextStyle>
-[42] Action<Text>
+UnityCompose.PositionModifierImpl
+[39] EMPTY
+[40] ReusableComposeNode(Spacer)
+[41] EMPTY
+[42] UnityCompose.SizeModifierImpl
+Float
+UnityCompose.BackgroundColorModifierImpl
+UnityCompose.PositionModifierImpl
 [43] EMPTY
-[44] Action<Text>
-[45] ReusableComposeNode(Text)
+[44] ReusableComposeNode(Spacer)
 < CURRENT_SLOT_INDEX

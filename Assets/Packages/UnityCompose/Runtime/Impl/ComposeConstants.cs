@@ -2,9 +2,9 @@
 
 public static class ComposeConstants
 {
-    public static readonly bool Logging = false;
-    public static readonly bool Assertions = false;
-    public static readonly bool Pooling = true;
-    public static readonly bool ParentAnchorsForEveryone = true;
-    public static readonly bool StructOptimizations = true;
+    public static bool Logging = false;
+    public static bool Assertions = false;
+    public static bool Pooling = true;
+    public static bool ParentAnchorsForEveryone = true;
+    public static bool StructOptimizations = true;
 }

@@ -660,15 +660,10 @@ internal class SlotTableWriter
 
         if (ComposeConstants.Logging)
             LogWarning($"Remove existing group at {_currentGroupIndex}");
-        ShiftAncestorsGroupSizes(-group.Size, includeParent: true);
-        ShiftAncestorsSlotSizes(-group.SlotsSize, includeParent: true);
-        ShiftAncestorsElementsCounts(-group.ElementsCount, includeParent: true);
-        
         CleanupGroups(_currentGroupIndex, group.Size);
         _groups.RemoveRange(_currentGroupIndex, group.Size);
         CleanupSlots(_currentSlotIndex, group.SlotsSize);
         _slots.RemoveRange(_currentSlotIndex, group.SlotsSize);
-        // Debug.Log($"After Shift at {_currentGroupIndex}: \n\n" + Format());
 
         // if (_pendingOffsets.IsNotEmpty())
         // {
@@ -831,16 +826,9 @@ internal class SlotTableWriter
 
         // if (_enteredParents.Count == 1)
         // {
-        // if (parentGroupSizeOffset != 0)
-        // {
-        //     Debug.Log($"Shift parents by {parentGroupSizeOffset}: {oldSize} vs {newSize} from {_currentParentIndex}" + "\n\n" + Format());
-        // }
-
-        ShiftAncestorsGroupSizes(parentGroupSizeOffset);
-        ShiftAncestorsSlotSizes(parentSlotsSizeOffset);
-        ShiftAncestorsElementsCounts(elementsCountOffset);
-        // if (parentGroupSizeOffset != 0)
-        //     Debug.Log("After Shift:\n\n" + Format());
+            ShiftAncestorsGroupSizes(parentGroupSizeOffset);
+            ShiftAncestorsSlotSizes(parentSlotsSizeOffset);
+            ShiftAncestorsElementsCounts(elementsCountOffset);
         // }
 
         _enteredParents.Pop();
@@ -884,7 +872,7 @@ internal class SlotTableWriter
     {
         return _slots.Format(_currentSlotIndex);
     }
-
+    
     public void WriteSlotsToFile(TextWriter writer)
     {
         _slots.WriteToFile(_currentSlotIndex, writer);
@@ -931,7 +919,7 @@ internal class SlotTableWriter
     #endregion
 
 
-    private void ShiftAncestorsGroupSizes(int offset, bool includeParent = false)
+    private void ShiftAncestorsGroupSizes(int offset)
     {
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
@@ -939,7 +927,7 @@ internal class SlotTableWriter
         while (ancestorIndex >= 0 && i < 100)
         {
             var ancestor = _groups[ancestorIndex];
-            if (i++ > 0 || includeParent)
+            if (i++ > 0)
             {
                 ancestor = ancestor with { Size = ancestor.Size + offset };
                 _groups[ancestorIndex] = ancestor;
@@ -951,7 +939,7 @@ internal class SlotTableWriter
         }
     }
 
-    private void ShiftAncestorsSlotSizes(int offset, bool includeParent = false)
+    private void ShiftAncestorsSlotSizes(int offset)
     {
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
@@ -959,7 +947,7 @@ internal class SlotTableWriter
         while (ancestorIndex >= 0 && i < 100)
         {
             var ancestor = _groups[ancestorIndex];
-            if (i++ > 0 || includeParent)
+            if (i++ > 0)
             {
                 ancestor = ancestor with { SlotsSize = ancestor.SlotsSize + offset };
                 _groups[ancestorIndex] = ancestor;
@@ -971,7 +959,7 @@ internal class SlotTableWriter
         }
     }
 
-    private void ShiftAncestorsElementsCounts(int offset, bool includeParent = false)
+    private void ShiftAncestorsElementsCounts(int offset)
     {
         if (offset == 0) return;
         var ancestorIndex = _currentParentIndex;
@@ -982,7 +970,7 @@ internal class SlotTableWriter
             if (ancestor.Type == ComposeGroupType.Reusable)
                 return;
 
-            if (i++ > 0 || includeParent)
+            if (i++ > 0)
             {
                 ancestor = ancestor with { ElementsCount = ancestor.ElementsCount + offset };
                 _groups[ancestorIndex] = ancestor;
@@ -1000,7 +988,7 @@ internal class SlotTableWriter
             return;
         var targetIndex = Math.Min(startIndex + count, _groups.Count);
         if (startIndex + count > _groups.Count)
-            Debug.LogError($"Out of range group clean ups: {startIndex} + {count} vs {_groups.Count}");
+            Debug.LogError("Out of range clean ups");
         for (var i = startIndex; i < targetIndex; i++)
         {
             var group = _groups[i];
@@ -1017,7 +1005,7 @@ internal class SlotTableWriter
             return;
         var targetIndex = Math.Min(startIndex + count, _slots.Count);
         if (startIndex + count > _slots.Count)
-            Debug.LogError($"Out of range slots clean ups: {startIndex} + {count} vs {_slots.Count}");
+            Debug.LogError("Out of range clean ups");
         for (var i = startIndex; i < targetIndex; i++)
         {
             var slot = _slots[i];
@@ -1040,13 +1028,13 @@ internal class SlotTableWriter
 
     public void Log(object? message)
     {
-        var formattedMessage = message + "\n\n" + Format();
+        var formattedMessage = message + "\n\n" + ToString();
         Debug.Log(formattedMessage);
     }
 
     public void LogWarning(object? message)
     {
-        var formattedMessage = message + "\n\n" + Format();
+        var formattedMessage = message + "\n\n" + ToString();
         Debug.LogWarning(formattedMessage);
     }
 
