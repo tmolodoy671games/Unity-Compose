@@ -25,7 +25,7 @@ internal class SlotTableWriter
     private readonly Stack<int> _enteredElementIndices = new();
     private readonly Stack<ComposeGroupEntry> _enteredRestartGroups = new();
     private readonly Stack<ComposeGroupEntry> _enteredLocalGroups = new();
-    // private readonly Stack<ComposeGroupOffset> _pendingOffsets = new();
+    private readonly Stack<ComposeGroupOffset> _pendingOffsets = new();
 
     private readonly Stack<VisualElement> _enteredElements = new();
     private VisualElement? _rootVisualElement;
@@ -310,8 +310,7 @@ internal class SlotTableWriter
     {
         var parent = CurrentParent();
         var startIndex = _currentParentIndex + 1;
-        var resolvedParentSize = parent.Size;
-        // var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
+        var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
         var endIndex = _currentParentIndex + resolvedParentSize;
         for (var i = startIndex; i < endIndex;)
         {
@@ -573,7 +572,7 @@ internal class SlotTableWriter
         _enteredElementIndices.Clear();
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
-        // _pendingOffsets.Clear();
+        _pendingOffsets.Clear();
 
         _enteredElements.Clear();
         _rootVisualElement = null;
@@ -622,7 +621,7 @@ internal class SlotTableWriter
         _enteredRestartGroups.Clear();
         _enteredLocalGroups.Clear();
 
-        // _pendingOffsets.Clear();
+        _pendingOffsets.Clear();
         _enteredElements.Clear();
         return true;
     }
@@ -665,16 +664,16 @@ internal class SlotTableWriter
         CleanupSlots(_currentSlotIndex, group.SlotsSize);
         _slots.RemoveRange(_currentSlotIndex, group.SlotsSize);
 
-        // if (_pendingOffsets.IsNotEmpty())
-        // {
-        //     var oldOffset = _pendingOffsets.Pop();
-        //     _pendingOffsets.Push(
-        //         new ComposeGroupOffset(
-        //             GroupOffset: oldOffset.GroupOffset - group.Size,
-        //             SlotOffset: oldOffset.SlotOffset - group.SlotsSize
-        //         )
-        //     );
-        // }
+        if (_pendingOffsets.IsNotEmpty())
+        {
+            var oldOffset = _pendingOffsets.Pop();
+            _pendingOffsets.Push(
+                new ComposeGroupOffset(
+                    GroupOffset: oldOffset.GroupOffset - group.Size,
+                    SlotOffset: oldOffset.SlotOffset - group.SlotsSize
+                )
+            );
+        }
 
         return false;
     }
@@ -706,8 +705,7 @@ internal class SlotTableWriter
         if (_currentParentIndex < 0)
             return _currentGroupIndex < _groups.Count;
         var parent = CurrentParent();
-        var resolvedParentSize = parent.Size;
-        // var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
+        var resolvedParentSize = parent.Size + _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).GroupOffset;
         if (resolvedParentSize == 0)
             return false;
         return _currentGroupIndex < _currentParentIndex + resolvedParentSize;
@@ -720,9 +718,8 @@ internal class SlotTableWriter
         if (_currentParentIndex < 0)
             return _currentSlotIndex < _slots.Count;
         var parent = CurrentParent();
-        var resolvedParentSlotSize = parent.SlotsSize;
-        // var resolvedParentSlotSize = parent.SlotsSize +
-        //                              _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
+        var resolvedParentSlotSize = parent.SlotsSize +
+                                     _pendingOffsets.PeekOrDefault(new ComposeGroupOffset(0, 0)).SlotOffset;
         if (resolvedParentSlotSize == 0)
             return false;
         return _currentSlotIndex < _currentParentSlotIndex + resolvedParentSlotSize;
@@ -733,7 +730,7 @@ internal class SlotTableWriter
         SyncElementIndex(group, canReinsert: true);
         _currentParentIndex = _currentGroupIndex;
         _enteredParents.Push(new ComposeGroupEntry(_currentGroupIndex, _currentSlotIndex));
-        // _pendingOffsets.Push(new ComposeGroupOffset(0, 0));
+        _pendingOffsets.Push(new ComposeGroupOffset(0, 0));
         _currentParentSlotIndex = _currentSlotIndex;
         _currentGroupIndex++;
     }
@@ -775,11 +772,9 @@ internal class SlotTableWriter
 
     private void ExitGroup(ComposeGroup currentParent)
     {
-        // var offsets = _pendingOffsets.Peek();
-        // var oldSize = currentParent.Size + offsets.GroupOffset;
-        // var oldSlotsSize = currentParent.SlotsSize + offsets.SlotOffset;
-        var oldSize = currentParent.Size;
-        var oldSlotsSize = currentParent.SlotsSize;
+        var offsets = _pendingOffsets.Peek();
+        var oldSize = currentParent.Size + offsets.GroupOffset;
+        var oldSlotsSize = currentParent.SlotsSize + offsets.SlotOffset;
 
         var newSize = _currentGroupIndex - _currentParentIndex;
         var newSlotsSize = _currentSlotIndex - _currentParentSlotIndex;
@@ -824,28 +819,28 @@ internal class SlotTableWriter
             _slots.RemoveRange(_currentSlotIndex, slotsToRemove);
         }
 
-        // if (_enteredParents.Count == 1)
-        // {
+        if (_enteredParents.Count == 1)
+        {
             ShiftAncestorsGroupSizes(parentGroupSizeOffset);
             ShiftAncestorsSlotSizes(parentSlotsSizeOffset);
             ShiftAncestorsElementsCounts(elementsCountOffset);
-        // }
+        }
 
         _enteredParents.Pop();
         var newParent = _enteredParents.PeekOrDefault(new ComposeGroupEntry(-1, -1));
         _currentParentIndex = newParent.GroupIndex;
         _currentParentSlotIndex = newParent.SlotIndex;
-        // _pendingOffsets.Pop();
-        // if (_pendingOffsets.IsNotEmpty())
-        // {
-        //     var oldOffsets = _pendingOffsets.Pop();
-        //     _pendingOffsets.Push(
-        //         new ComposeGroupOffset(
-        //             oldOffsets.GroupOffset + parentGroupSizeOffset,
-        //             oldOffsets.SlotOffset + parentSlotsSizeOffset
-        //         )
-        //     );
-        // }
+        _pendingOffsets.Pop();
+        if (_pendingOffsets.IsNotEmpty())
+        {
+            var oldOffsets = _pendingOffsets.Pop();
+            _pendingOffsets.Push(
+                new ComposeGroupOffset(
+                    oldOffsets.GroupOffset + parentGroupSizeOffset,
+                    oldOffsets.SlotOffset + parentSlotsSizeOffset
+                )
+            );
+        }
     }
 
     public string Format()
@@ -1056,7 +1051,7 @@ internal readonly record struct ComposeGroupEntry(
     int SlotIndex
 );
 
-// internal readonly record struct ComposeGroupOffset(
-//     int GroupOffset,
-//     int SlotOffset
-// );
+internal readonly record struct ComposeGroupOffset(
+    int GroupOffset,
+    int SlotOffset
+);
