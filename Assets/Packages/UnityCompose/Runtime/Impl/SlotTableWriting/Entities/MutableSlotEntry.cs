@@ -13,13 +13,13 @@ internal static class MutableSlotEntry
 
 internal class MutableSlotEntry<T> : IComposeDisposable
 {
-    private static readonly ObjectPool<MutableSlotEntry<T>> _pool = new(
+    private static readonly ObjectPool<MutableSlotEntry<T>> Pool = new(
         factory: static () => new MutableSlotEntry<T>()
     );
 
     public static MutableSlotEntry<T> Get(T initialValue)
     {
-        var result = ComposeConstants.Pooling ? _pool.Get() : new MutableSlotEntry<T>();
+        var result = ComposeConstants.Pooling ? Pool.Get() : new MutableSlotEntry<T>();
         result._isDisposed = false;
         result.Value = initialValue;
         return result;
@@ -42,6 +42,6 @@ internal class MutableSlotEntry<T> : IComposeDisposable
         if (_isDisposed)
             return;
         _isDisposed = true;
-        _pool.Return(this);
+        Pool.Return(this);
     }
 }

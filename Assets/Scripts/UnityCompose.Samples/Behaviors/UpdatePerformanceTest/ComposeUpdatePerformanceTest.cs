@@ -18,7 +18,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                     .OnGloballyPositioned(it => parentSize.Value = it.Size),
                 content: () =>
                 {
-                    for (var i = 0; i < 1_00; i++)
+                    for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
                         Key(

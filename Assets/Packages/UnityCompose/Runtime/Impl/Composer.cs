@@ -8,6 +8,7 @@ using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableModels;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SturdySlotTable;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,11 +18,11 @@ public class Composer
 {
     public static Composer? Current { get; private set; }
 
-    private readonly SlotTableWriter _writer;
+    private readonly SturdySlotTableWriterImpl _writer;
 
     internal Composer()
     {
-        _writer = new SlotTableWriter(this);
+        _writer = new SturdySlotTableWriterImpl();
     }
 
     public void SetAsCurrentComposer()

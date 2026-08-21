@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 __Box(modifier: Modifier.FillMaxSize().OnGloballyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(parentSize!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => parentSize.Value = it.Size))), content: (!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(parentSize!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __composer.StartReplaceGroup(1991249029);
-                    for (var i = 0; i < 1_00; i++)
+                    for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
                         Key(key: currentI, content: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(parentSize!).Changed<int>(currentI!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Item(currentI, parentSize.Value, __composer: __composer, __changed: 0b_00_00))));

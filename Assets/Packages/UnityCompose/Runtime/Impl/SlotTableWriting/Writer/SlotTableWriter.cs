@@ -113,7 +113,7 @@ internal class SlotTableWriter
         _currentElementIndex += parent.ElementsCount;
     }
 
-    public ComposeRestartScope? GetRestartScope()
+    public IComposeRestartScope? GetRestartScope()
     {
         if (_enteredRestartGroups.IsEmpty())
             return null;
@@ -121,7 +121,7 @@ internal class SlotTableWriter
         return scope;
     }
 
-    public ComposeRestartScope? RequireRestartScope()
+    public IComposeRestartScope? RequireRestartScope()
     {
         var restartScope = GetRestartScope();
         if (restartScope != null)
