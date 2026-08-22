@@ -14,7 +14,7 @@ internal static class ReusableGroup
 
 internal static class ReusableGroupSlotsExtensions
 {
-    public static ReusableComposeNode<T> GetReusableNode<T>(this Slots slots, int index) where T : VisualElement
+    public static ReusableComposeNode<T> GetReusableNode<T>(this Slots slots, int index) where T : VisualElement, new()
     {
         var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
         if (existingNode is not ReusableComposeNode<T> reusableNode)
@@ -33,7 +33,7 @@ internal static class ReusableGroupSlotsExtensions
         return existingNode as ReusableComposeNode;
     }
 
-    public static void SetVisualElement<T>(this Slots slots, int index, T visualElement) where T : VisualElement
+    public static void SetVisualElement<T>(this Slots slots, int index, T visualElement) where T : VisualElement, new()
     {
         var existingNode = slots[index + ReusableGroup.ReusableNodeOffset];
         if (existingNode is not ReusableComposeNode<T> reusableNode)

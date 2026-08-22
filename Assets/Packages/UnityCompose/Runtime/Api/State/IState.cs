@@ -25,7 +25,8 @@ public interface IMutableState<T> : IState<T>, IMutableState
 
 public abstract class BaseMutableStateImpl : IMutableState
 {
-    private readonly IMutableStableSet<ComposeRestartScope> _scopes = MutableStableSetOf<ComposeRestartScope>();
+    private readonly IMutableStableSet<IComposeRestartScope> _scopes = MutableStableSetOf<IComposeRestartScope>();
+    private readonly IMutableStableSet<IComposeRestartScope> _scopesToRemove = MutableStableSetOf<IComposeRestartScope>();
 
     public readonly bool Log;
 
@@ -44,10 +45,16 @@ public abstract class BaseMutableStateImpl : IMutableState
         if (Log)
             Debug.Log($"{this}.Notify()");
         foreach (var group in _scopes)
-            group.RequestRestart();
+        {
+            if (group.RequestRestart())
+                _scopes.Add(group);
+        }
+        if (_scopesToRemove.IsNotEmpty())
+            _scopes.RemoveRange(_scopesToRemove);
+        _scopesToRemove.Clear();
     }
 
-    internal bool Add(ComposeRestartScope restartScope)
+    internal bool Add(IComposeRestartScope restartScope)
     {
         var result = _scopes.Add(restartScope);
         if (!result)
@@ -55,7 +62,7 @@ public abstract class BaseMutableStateImpl : IMutableState
         return result;
     }
 
-    internal void Remove(ComposeRestartScope restartScope)
+    internal void Remove(IComposeRestartScope restartScope)
     {
         _scopes.Remove(restartScope);
     }

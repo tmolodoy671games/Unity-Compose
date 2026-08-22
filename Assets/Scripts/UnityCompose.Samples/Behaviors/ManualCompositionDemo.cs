@@ -1,4 +1,7 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
+
+using UnityEngine.UIElements;
+
 namespace UnityCompose.Samples.Behaviors
 {
     [DisallowMultipleComponent]
@@ -10,7 +13,7 @@ namespace UnityCompose.Samples.Behaviors
         // [Button("Start Reusable Group")]
         private void StartReusableGroupButton()
         {
-            CurrentComposer.StartReusableGroup(key);
+            CurrentComposer.StartReusableGroup<VisualElement>(key);
             Log();
         }
 

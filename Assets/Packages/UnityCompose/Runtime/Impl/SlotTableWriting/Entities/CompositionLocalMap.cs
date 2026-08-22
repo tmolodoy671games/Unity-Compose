@@ -13,14 +13,14 @@ internal class CompositionLocalMap : IComposeDisposable
         bool IsInherited
     );
 
-    private static readonly ObjectPool<CompositionLocalMap> _pool = new(() => new CompositionLocalMap());
+    private static readonly ObjectPool<CompositionLocalMap> Pool = new(() => new CompositionLocalMap());
 
     private readonly Dictionary<ICompositionLocal, ProvidedValue> _customValues = new();
     private bool _isDisposed;
 
     public static CompositionLocalMap Get()
     {
-        var result = ComposeConstants.Pooling ? _pool.Get() : new CompositionLocalMap();
+        var result = ComposeConstants.Pooling ? Pool.Get() : new CompositionLocalMap();
         result._isDisposed = false;
         return result;
     }
@@ -39,7 +39,7 @@ internal class CompositionLocalMap : IComposeDisposable
 
     public CompositionLocalMap Copy()
     {
-        var result = _pool.Get();
+        var result = Pool.Get();
         foreach (var pair in _customValues)
             result._customValues[pair.Key] = pair.Value with { IsInherited = true };
         return result;
@@ -65,7 +65,7 @@ internal class CompositionLocalMap : IComposeDisposable
             return;
         _isDisposed = true;
         _customValues.Clear();
-        _pool.Return(this);
+        Pool.Return(this);
     }
 
     public override string ToString()

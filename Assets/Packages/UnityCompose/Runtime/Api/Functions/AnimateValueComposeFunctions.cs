@@ -192,8 +192,11 @@ public static partial class ComposeFunctions
             while (elapsed < resolvedAnimationSpec.TotalDuration)
             {
                 elapsed += Time.deltaTime;
-                property.Value = interpolator(startValue, newValueFactory(),
-                    resolvedAnimationSpec.GetProgress(elapsed));
+                property.Value = interpolator(
+                    startValue,
+                    newValueFactory(),
+                    resolvedAnimationSpec.GetProgress(elapsed)
+                );
                 yield return null;
             }
 

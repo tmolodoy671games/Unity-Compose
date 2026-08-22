@@ -18,10 +18,12 @@ public class Composer
 {
     public static Composer? Current { get; private set; }
 
+    // private readonly SlotTableWriter _writer;
     private readonly SturdySlotTableWriterImpl _writer;
 
     internal Composer()
     {
+        // _writer = new SlotTableWriter(this);
         _writer = new SturdySlotTableWriterImpl();
     }
 
@@ -85,9 +87,9 @@ public class Composer
 
     #region Reusable Group
 
-    public void StartReusableGroup(int key)
+    public void StartReusableGroup<T>(int key) where T : VisualElement, new()
     {
-        _writer.StartReusableGroup(key);
+        _writer.StartReusableGroup<T>(key);
     }
 
     public void EndReusableGroup(int key)
@@ -149,8 +151,7 @@ public class Composer
         var restartScope = _writer.RequireRestartScope();
         if (restartScope == null)
             return;
-        if (state.Add(restartScope) && state.Log)
-            Debug.Log($"{state} Capture");
+        state.Add(restartScope);
     }
 
     public void Clear()
@@ -177,7 +178,7 @@ public class Composer
         return _writer.GetCurrentElementIndex();
     }
 
-    public void SetVisualElement(VisualElement visualElement)
+    public void SetVisualElement(ComposeView visualElement)
     {
         _writer.WriteVisualElement(visualElement);
     }
@@ -211,7 +212,7 @@ public class Composer
     #endregion
 
     public ChangedBuilder BuildChanged() => new(this);
-    
+
     public int UpdateChangedFlags(int changed)
     {
         const int changedMask = 0b_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10;
@@ -220,34 +221,36 @@ public class Composer
         return result;
     }
 
-    public void Log(object? message) => _writer.Log(message);
-    public void LogWarning(object? message) => _writer.LogWarning(message);
+    // public void Log(object? message) => _writer.Log(message);
+    // public void LogWarning(object? message) => _writer.LogWarning(message);
 
     public string Format()
     {
         return _writer.Format();
+        // return _writer.Format();
     }
 
     public void WriteToFile(TextWriter writer)
     {
-        _writer.WriteToFile(writer);
+        // _writer.WriteToFile(writer);
     }
 
     public string SlotsToString()
     {
-        return _writer.SlotsToString();
+        return "";
+        // return _writer.SlotsToString();
     }
-    
+
     public void WriteSlotsToFile(TextWriter writer)
     {
-        _writer.WriteSlotsToFile(writer);
+        // _writer.WriteSlotsToFile(writer);
     }
 
     private static bool IsStruct<T>()
     {
         return IsValueTypeState<T>.IsValueType;
     }
-    
+
     private static class IsValueTypeState<T>
     {
         public static readonly bool IsValueType = ComposeConstants.StructOptimizations && typeof(T).IsValueType;

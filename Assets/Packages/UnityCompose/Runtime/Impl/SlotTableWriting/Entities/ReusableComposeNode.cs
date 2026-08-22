@@ -14,19 +14,23 @@ internal abstract class ReusableComposeNode
 
     public abstract VisualElement? GetVisualElement();
 
-    public static ReusableComposeNode<T> Get<T>() where T : VisualElement
+    public static ReusableComposeNode<T> Get<T>() where T : VisualElement, new()
     {
         return ReusableComposeNode<T>.Get();
     }
 }
 
-internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable where T : VisualElement
+internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable where T : VisualElement, new()
 {
-    private static readonly ObjectPool<ReusableComposeNode<T>> _pool = new(
+    private static readonly ObjectPool<ReusableComposeNode<T>> Pool = new(
         factory: () => new ReusableComposeNode<T>()
     );
 
-    public T? VisualElement;
+    public T VisualElement { get; set; } = new T
+    {
+        pickingMode = PickingMode.Ignore
+    };
+
     private int _indexInParent = -1;
     private IModifier? _lastModifier;
     private Action<T>? _lastInitializer;
@@ -38,11 +42,11 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
     private readonly IMutableStableList<IModifier> _newModifiers =
         IMutableStableList.Create<IModifier>();
 
-    public override VisualElement? GetVisualElement() => VisualElement;
+    public override VisualElement GetVisualElement() => VisualElement;
 
     public static ReusableComposeNode<T> Get()
     {
-        var instance = ComposeConstants.Pooling ? _pool.Get() : new ReusableComposeNode<T>();
+        var instance = ComposeConstants.Pooling ? Pool.Get() : new ReusableComposeNode<T>();
         instance._isDisposed = false;
         return instance;
     }
@@ -58,8 +62,10 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
         Action<T>? initializer
     )
     {
-        if (VisualElement == null)
-            return;
+        // if (VisualElement == null)
+        //     return;
+        if (ComposeConstants.Logging && VisualElement.GetType() == typeof(VisualElement))
+            Debug.Log(indexInParent);
         if (_indexInParent != indexInParent)
         {
             parent.FastReinsert(indexInParent, VisualElement);
@@ -105,20 +111,16 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
             return;
         _isDisposed = true;
         var visualElement = VisualElement;
-        if (visualElement != null)
-        {
-            var parent = visualElement.parent;
-            parent?.FastRemove(_indexInParent, visualElement);
-        }
+        var parent = visualElement.parent;
+        parent?.FastRemove(_indexInParent, visualElement);
 
-        VisualElement = null;
         _indexInParent = -1;
         _lastModifier = null;
         _lastInitializer = null;
         _lastModifiers.Clear();
         _newModifiers.Clear();
 
-        _pool.Return(this);
+        Pool.Return(this);
     }
 
     public override void ReInsert(int index)
@@ -126,8 +128,6 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
         if (_indexInParent == index)
             return;
         _indexInParent = index;
-        if (VisualElement == null)
-            return;
         var parent = VisualElement.parent;
         if (parent == null)
             return;

@@ -38,26 +38,26 @@ internal partial class ResumedScreen : ComposeScreen
         Action onDismissRequest
     )
     {
-        if (expanded)
-        {
-            ModalMenu(() =>
-            {
-                Box(
-                    alignment: Alignment.Center,
-                    modifier: Modifier
-                        .FillMaxSize()
-                        .Background(Color.black.With(a: 0.9f)),
-                    content: () =>
-                    {
-                        Spacer(
-                            Modifier
-                                .Size(100.Px())
-                                .Background(Color.yellow)
-                                .OnClick(onDismissRequest)
-                        );
-                    }
-                );
-            });
-        }
+        // if (expanded)
+        // {
+        //     ModalMenu(() =>
+        //     {
+        //         Box(
+        //             alignment: Alignment.Center,
+        //             modifier: Modifier
+        //                 .FillMaxSize()
+        //                 .Background(Color.black.With(a: 0.9f)),
+        //             content: () =>
+        //             {
+        //                 Spacer(
+        //                     Modifier
+        //                         .Size(100.Px())
+        //                         .Background(Color.yellow)
+        //                         .OnClick(onDismissRequest)
+        //                 );
+        //             }
+        //         );
+        //     });
+        // }
     }
 }

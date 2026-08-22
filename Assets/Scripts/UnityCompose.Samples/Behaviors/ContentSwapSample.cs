@@ -20,7 +20,7 @@ namespace UnityCompose.Samples.Behaviors
                 content: () =>
                 {
                     var isSwitched = Remember(() => MutableStateOf(false));
-                    if (isSwitched.Value)
+                    if (!isSwitched.Value)
                         Content2();
                     else
                         Content1();
@@ -55,6 +55,11 @@ namespace UnityCompose.Samples.Behaviors
         {
             Row(() =>
             {
+                Spacer(
+                    Modifier
+                        .Size(100.Px())
+                        .Background(Color.red)
+                );
                 Spacer(
                     Modifier
                         .Size(100.Px())

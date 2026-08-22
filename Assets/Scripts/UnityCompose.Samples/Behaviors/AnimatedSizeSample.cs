@@ -40,8 +40,14 @@ namespace UnityCompose.Samples.Behaviors
                             AnimatedSize(
                                 modifier: Modifier
                                     .Name("animated-size")
-                                    .Background(isSwitched.Value ? Color.green : Color.red, Transition(AnimationDuration))
-                                    .Padding(all: 16.Px()),
+                                    .Background(
+                                        isSwitched.Value ? Color.green : Color.red,
+                                        Transition(AnimationDuration)
+                                    )
+                                    .Padding(all: 16.Px())
+                                    .Border(
+                                        AnimateFloatAsState(isSwitched.Value ? 8 : 32, animationSpec).Value.Px()
+                                    ),
                                 animationSpec: animationSpec,
                                 content: modifier =>
                                 {

@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors
                 __Column(horizontalAlignment: Alignment.CenterHorizontally, verticalArrangement: Arrangement.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                    if (isSwitched.Value)
+                    if (!isSwitched.Value)
                     {
                         __composer.StartReplaceGroup(955378125);
                         __Content2(__composer: __composer, __changed: 0b_00);
@@ -100,6 +100,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
+                    __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0b_00);
                     __Spacer(Modifier.Size(100.Px()).Background(Color.red), __composer: __composer, __changed: 0b_00);
                 })), __composer: __composer, __changed: 0b_01_01_01_00);
             }

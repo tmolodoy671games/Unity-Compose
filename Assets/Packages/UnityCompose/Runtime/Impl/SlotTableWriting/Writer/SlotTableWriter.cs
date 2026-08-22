@@ -211,7 +211,7 @@ internal class SlotTableWriter
 
     #region Reusable Group
 
-    public void StartReusableGroup(int key)
+    public void StartReusableGroup<T>(int key)
     {
         if (ComposeConstants.Logging)
             Log($"StartReusableGroup({key})");
@@ -452,7 +452,7 @@ internal class SlotTableWriter
 
     #region VisualElement
 
-    public ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement
+    public ReusableComposeNode<T> GetReusableNode<T>() where T : VisualElement, new()
     {
         return _slots.GetReusableNode<T>(_currentParentSlotIndex);
     }

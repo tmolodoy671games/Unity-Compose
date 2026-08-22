@@ -124,6 +124,12 @@ internal class MutableStateListImpl<T> : BaseMutableStateImpl, IMutableStateList
         return result;
     }
 
+    public void RemoveRange(int index, int count)
+    {
+        _mutableList.RemoveRange(index, count);
+        Notify();
+    }
+
     public void Reverse()
     {
         if (_mutableList.IsEmpty())

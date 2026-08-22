@@ -8,8 +8,6 @@ namespace UnityCompose.Samples.Behaviors
 {
     internal partial class ReordarableListSample : ComposeUI
     {
-        private static readonly ICompositionLocal<string> LocalTest = CompositionLocalOf("LocalTest", () => "Default");
-
         [Composable]
         protected override void Content()
         {
@@ -29,7 +27,7 @@ namespace UnityCompose.Samples.Behaviors
                 alignment: Alignment.Center,
                 modifier: Modifier,
                 content: () =>
-                {
+                { 
                     Column(
                         horizontalAlignment: Alignment.CenterHorizontally,
                         modifier: Modifier

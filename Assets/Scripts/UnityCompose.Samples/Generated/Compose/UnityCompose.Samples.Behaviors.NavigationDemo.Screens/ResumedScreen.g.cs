@@ -46,19 +46,6 @@ internal partial class ResumedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01)
         {
-            __composer.StartReplaceGroup(1587820450);
-            if (expanded)
-            {
-                __ModalMenu((!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_11_00) == 0b_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
-                {
-                    __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize().Background(Color.black.With(a: 0.9f)), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_11_00) == 0b_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
-                    {
-                        __Spacer(Modifier.Size(100.Px()).Background(Color.yellow).OnClick(onDismissRequest), __composer: __composer, __changed: 0b_00);
-                    })), __composer: __composer, __changed: 0b_00_00_00);
-                })), __composer: __composer, __changed: 0b_00);
-            }
-
-            __composer.EndReplaceGroup(1587820450);
         }
         else
         {

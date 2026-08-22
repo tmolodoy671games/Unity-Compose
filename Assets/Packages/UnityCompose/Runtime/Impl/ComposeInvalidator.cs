@@ -66,8 +66,8 @@ namespace UnityCompose
             }
         }
 
-        private readonly List<ComposeRestartScope> _invalidatedGroups = new();
-        private readonly List<ComposeRestartScope> _groupsToRestart = new();
+        private readonly List<IComposeRestartScope> _invalidatedGroups = new();
+        private readonly List<IComposeRestartScope> _groupsToRestart = new();
 
         public ComposeInvalidator()
         {
@@ -107,12 +107,12 @@ namespace UnityCompose
             return new ComposeDisposableImpl(Instance.StartCoroutine(coroutine));
         }
 
-        internal static void RequestInvalidate(ComposeRestartScope scope)
+        internal static void RequestInvalidate(IComposeRestartScope scope)
         {
             Instance._invalidatedGroups.Add(scope);
         }
 
-        internal static void CancelInvalidate(ComposeRestartScope scope)
+        internal static void CancelInvalidate(IComposeRestartScope scope)
         {
             Instance._invalidatedGroups.Remove(scope);
         }

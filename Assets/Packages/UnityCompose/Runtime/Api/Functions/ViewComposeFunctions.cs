@@ -21,15 +21,10 @@ public static partial class ComposeFunctions
     ) where T : VisualElement, new()
     {
         var composer = CurrentComposer;
-        composer.StartReusableGroup(123);
+        composer.StartReusableGroup<T>(123);
         var parent = composer.GetParentVisualElement().NotNull();
         var indexInParent = composer.GetElementIndex();
         var node = composer.GetReusableNode<T>();
-        node.VisualElement ??= new T
-        {
-            pickingMode = PickingMode.Ignore
-        };
-
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 

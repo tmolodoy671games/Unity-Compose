@@ -13,7 +13,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entit
 internal interface IComposeRestartScope : IScopeUpdateScope
 {
     void Add(BaseMutableStateImpl state);
-    void RequestRestart();
+    bool RequestRestart();
     void Restart();
 }
 
@@ -61,12 +61,13 @@ internal class ComposeRestartScope : IComposeRestartScope, IComposeDisposable
     public void Add(BaseMutableStateImpl state) => _states.Add(state);
     public void Remove(BaseMutableStateImpl state) => _states.Remove(state);
 
-    public void RequestRestart()
+    public bool RequestRestart()
     {
         if (_isRequestedToRestart)
-            return;
+            return true;
         ComposeInvalidator.RequestInvalidate(this);
         _isRequestedToRestart = true;
+        return true;
     }
 
     public void Restart()

@@ -13,6 +13,8 @@ public partial interface IModifier
     void Revert(VisualElement element);
     void Flatten(IMutableStableCollection<IModifier> modifiers);
     bool IsComposable => false;
+
+    [Composable]
     IModifier Compose() => this;
 
     public static IModifier operator +(IModifier left, IModifier right)
@@ -33,7 +35,7 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     }
 
     protected abstract bool Equals(T other);
-    
+
     public virtual bool IsComposable => false;
     public virtual IModifier Compose() => this;
 
@@ -145,10 +147,11 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
 
     public override string ToString()
     {
-        var builder = new StringBuilder();
-        builder.Append(_first);
-        builder.AppendLine();
-        builder.Append(_second);
-        return builder.ToString();
+        return "Modifier";
+        // var builder = new StringBuilder();
+        // builder.Append(_first);
+        // builder.AppendLine();
+        // builder.Append(_second);
+        // return builder.ToString();
     }
 }

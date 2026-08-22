@@ -13,7 +13,25 @@ namespace UnityCompose.Samples.Behaviors
         [Composable]
         protected override void Preview()
         {
-            Layout();
+            Column(() =>
+            {
+                Spacer(
+                    modifier: Modifier
+                        .Size(100.Px())
+                        .Background(Color.yellow)
+                );
+                Row(() =>
+                {
+                    for (var i = 0; i < 10; i++)
+                    {
+                        Spacer(
+                            modifier: Modifier
+                                .Size(100.Px())
+                                .Background(Color.yellow)
+                        );
+                    }
+                });
+            });
         }
 
         [Composable]
@@ -31,13 +49,29 @@ namespace UnityCompose.Samples.Behaviors
                             .Size(400.Px()),
                         content: () =>
                         {
-                            Spacer(
-                                modifier: Modifier
-                                    .Size(100.Px())
-                                    .Float()
-                                    .Background(Color.yellow)
-                                    .Position(top: 5.Px())
-                            );
+                            Column(() =>
+                            {
+                                Spacer(
+                                    modifier: Modifier
+                                        .Size(100.Px())
+                                        .Float()
+                                        .Background(Color.yellow)
+                                        .Position(top: 5.Px())
+                                );
+                                Row(() =>
+                                {
+                                    for (var i = 0; i < 10; i++)
+                                    {
+                                        Spacer(
+                                            modifier: Modifier
+                                                .Size(100.Px())
+                                                .Float()
+                                                .Background(Color.yellow)
+                                                .Position(top: 5.Px())
+                                        );
+                                    }
+                                });
+                            });
                             Spacer(
                                 modifier: Modifier
                                     .Size(100.Px())
