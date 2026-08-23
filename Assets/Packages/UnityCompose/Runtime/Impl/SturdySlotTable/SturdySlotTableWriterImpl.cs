@@ -455,8 +455,23 @@ internal class SturdySlotTableWriterImpl
 
     public void Clear()
     {
+        foreach (var child in _root.Children)
+            child.Dispose();
         _root.Children.Clear();
         _root.Slots.Clear();
+        _enteredRestartGroups.Clear();
+        _enteredReusableGroups.Clear();
+        _enteredLocalGroups.Clear();
+        _enteredGroupIndices.Clear();
+        _enteredSlotIndices.Clear();
+        _enteredElements.Clear();
+        _enteredElementIndices.Clear();
+
+        _currentParent = _root;
+        _currentGroupIndex = 0;
+        _currentSlotIndex = 0;
+        _currentElementIndex = 0;
+        _invalidationRoot = null;
     }
 
     public string Format()
@@ -538,7 +553,6 @@ internal class SturdySlotTableWriterImpl
 
     private static void SwapVisualElements(SturdyComposeGroup first, SturdyComposeGroup second)
     {
-        Debug.Log("Swap VisualElements");
         var firstIndex = first.Parent.NotNull().Children.IndexOf(first);
         var secondIndex = second.Parent.NotNull().Children.IndexOf(second);
         if (firstIndex > secondIndex)
@@ -546,7 +560,7 @@ internal class SturdySlotTableWriterImpl
             // (firstIndex, secondIndex) = (secondIndex, firstIndex);
             (first, second) = (second, first);
         }
-        
+
         var firstElementIndex = GetVisualElementInsertIndex(first);
         var secondElementIndex = GetVisualElementInsertIndex(second);
         if (firstElementIndex == secondElementIndex)
@@ -565,12 +579,13 @@ internal class SturdySlotTableWriterImpl
         {
             parentElement.Insert(firstElementIndex + i, secondElements[i]);
         }
+
         var newSecondElementIndex = secondElementIndex - firstElements.Count + secondElements.Count;
 
         for (var i = 0; i < firstElements.Count; i++)
             parentElement.Insert(newSecondElementIndex + i, firstElements[i]);
     }
-    
+
     private static IStableList<VisualElement> GetChildElements(SturdyComposeGroup movableGroup)
     {
         var result = MutableStableListOf<VisualElement>();

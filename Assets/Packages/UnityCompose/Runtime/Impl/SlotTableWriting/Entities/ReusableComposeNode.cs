@@ -113,6 +113,10 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
         var visualElement = VisualElement;
         var parent = visualElement.parent;
         parent?.FastRemove(_indexInParent, visualElement);
+        VisualElement = new T()
+        {
+            pickingMode = PickingMode.Ignore
+        };
 
         _indexInParent = -1;
         _lastModifier = null;

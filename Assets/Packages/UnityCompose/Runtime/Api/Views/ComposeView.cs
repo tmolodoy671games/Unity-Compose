@@ -30,32 +30,33 @@ public partial class ComposeView : VisualElement
     }
 
     [Composable]
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private void ContentImpl(ComposableContent<Composer, int> content)
     {
-        // var onScreenManager = Remember(() => new ModalMenuManager());
+        var onScreenManager = Remember(() => new ModalMenuManager());
         var composer = CurrentComposer;
         composer.StartReusableGroup<ComposeView>(0);
         composer.SetVisualElement(this);
         composer.EnterVisualElement(this);
-        // var isActiveInstance = Remember(onScreenManager.Contents.IsEmpty(),
-        //     () => new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)
-        // );
+        var isActiveInstance = Remember(onScreenManager.Contents.IsEmpty(),
+            () => new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)
+        );
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
-            // LocalIsActive.Provides(isActiveInstance),
-            // LocalOnScreenMenuManager.Provides(onScreenManager),
+            LocalIsActive.Provides(isActiveInstance),
+            LocalOnScreenMenuManager.Provides(onScreenManager),
             () => content(composer, 0)
         );
-        // foreach (var overlayContent in onScreenManager.Contents)
-        // {
-        //     Box(
-        //         modifier: Modifier
-        //             .OnClick(() => { })
-        //             .FillMaxSize()
-        //             .Float(),
-        //         content: overlayContent
-        //     );
-        // }
+        foreach (var overlayContent in onScreenManager.Contents)
+        {
+            Box(
+                modifier: Modifier
+                    .OnClick(() => { })
+                    .FillMaxSize()
+                    .Float(),
+                content: overlayContent
+            );
+        }
 
         composer.EndReusableGroup(0);
     }

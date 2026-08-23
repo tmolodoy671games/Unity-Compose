@@ -31,25 +31,26 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
                             var resumedScreen = Remember(() => new ResumedScreen());
                             var pausedScreen = Remember(() => new PausedScreen());
                             var isSwitched = Remember(() => MutableStateOf(false));
-                            AnimatedContent(
-                                transitionSpec: it => FadeIn().TogetherWith(FadeOut()).With(animationSpec),
-                                targetState: isSwitched.Value,
-                                modifier: Modifier.FillMaxSize(),
-                                content: (it, m) =>
-                                {
-                                    ComposeScreen screen = it ? pausedScreen : resumedScreen;
-                                    screen.Content(m.OnClick(() => isSwitched.Value = !isSwitched.Value));
-                                }
-                            );
-                            // Navigation(
-                            //     coordinator: Remember(() => new SampleCoordinatorImpl()),
-                            //     transition: Remember(animationSpec, () => FadeIn()
-                            //         .TogetherWith(FadeOut())
-                            //         .With(animationSpec)
-                            //     ),
-                            //     modifier: Modifier
-                            //         .FillMaxSize()
+                            // AnimatedContent(
+                            //     transitionSpec: _ => IEnterTransition.Empty().TogetherWith(Hide()),
+                            //     // transitionSpec: it => FadeIn().TogetherWith(FadeOut()).With(animationSpec),
+                            //     targetState: isSwitched.Value,
+                            //     modifier: Modifier.FillMaxSize(),
+                            //     content: (it, m) =>
+                            //     {
+                            //         ComposeScreen screen = it ? pausedScreen : resumedScreen;
+                            //         screen.Content(m.OnClick(() => isSwitched.Value = !isSwitched.Value));
+                            //     }
                             // );
+                            Navigation(
+                                coordinator: Remember(() => new SampleCoordinatorImpl()),
+                                transition: Remember(animationSpec, () => FadeIn()
+                                    .TogetherWith(FadeOut())
+                                    .With(animationSpec)
+                                ),
+                                modifier: Modifier
+                                    .FillMaxSize()
+                            );
                         }
                     );
                 }

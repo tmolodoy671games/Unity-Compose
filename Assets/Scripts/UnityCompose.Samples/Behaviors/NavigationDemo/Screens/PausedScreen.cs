@@ -46,17 +46,17 @@ internal partial class PausedScreen : ComposeScreen
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
                         .Offset(y: -100 * (1 - 1).Px())
                 );
-                Spacer(
-                    modifier: Modifier
-                        .FillMaxSize()
-                        .OnClick(onTabContentClick)
-                );
-                // Navigation(
-                //     modifier: Modifier.FillMaxSize()
-                //         .OnClick(onTabContentClick),
-                //     transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
-                //     coordinator: pausedCoordinator
+                // Spacer(
+                //     modifier: Modifier
+                //         .FillMaxSize()
+                //         .OnClick(onTabContentClick)
                 // );
+                Navigation(
+                    modifier: Modifier.FillMaxSize()
+                        .OnClick(onTabContentClick),
+                    transition: Remember((previousTab.Value, tab), () => ResolveTransform(previousTab.Value, tab)),
+                    coordinator: pausedCoordinator
+                );
             }
         );
         previousTab.Value = tab;
@@ -83,9 +83,9 @@ internal partial class PausedScreen : ComposeScreen
             content: () =>
             {
                 Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
-                // Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
-                // Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
-                // Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
+                Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
+                Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
+                Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
             }
         );
     }

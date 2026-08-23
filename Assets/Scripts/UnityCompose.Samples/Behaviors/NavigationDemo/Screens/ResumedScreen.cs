@@ -13,7 +13,7 @@ internal partial class ResumedScreen : ComposeScreen
             modifier: modifier
                 .FillMaxSize()
                 .Background(Color.green)
-                .OnClick(() => coordinator.ShowPausedScreen()),
+                .OnClick(coordinator.ShowPausedScreen),
             content: () =>
             {
                 var showMenu = Remember(() => MutableStateOf(false));

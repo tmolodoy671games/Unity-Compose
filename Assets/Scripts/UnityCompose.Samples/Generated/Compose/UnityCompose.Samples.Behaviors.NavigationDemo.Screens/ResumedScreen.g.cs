@@ -18,7 +18,7 @@ internal partial class ResumedScreen
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
             var coordinator = FindCoordinator<ISampleCoordinator>();
-            __Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick((!__composer.Changed<global::UnityCompose.Samples.Behaviors.NavigationDemo.ISampleCoordinator>(coordinator!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => coordinator.ShowPausedScreen()))), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            __Box(alignment: Alignment.Center, modifier: modifier.FillMaxSize().Background(Color.green).OnClick(coordinator.ShowPausedScreen), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 var showMenu = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                 __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(showMenu!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0b_00_00);

@@ -57,20 +57,18 @@ namespace UnityCompose.Samples.Behaviors.NavigationDemo
                         var resumedScreen = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.ResumedScreen>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.ResumedScreen>(new ResumedScreen()));
                         var pausedScreen = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.PausedScreen>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.PausedScreen>(new PausedScreen()));
                         var isSwitched = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                        __AnimatedContent(transitionSpec: (!__composer.Changed<global::UnityCompose.AnimationSpec>(animationSpec!) ? __composer.RememberedValue<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<bool>, global::UnityCompose.ContentTransform>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<bool>, global::UnityCompose.ContentTransform>>(it => FadeIn().TogetherWith(FadeOut()).With(animationSpec))), targetState: isSwitched.Value, modifier: Modifier.FillMaxSize(), content: (!__composer.BuildChanged().Changed<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.ResumedScreen>(resumedScreen!).Changed<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.PausedScreen>(pausedScreen!).Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<bool, global::UnityCompose.IModifier>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<bool, global::UnityCompose.IModifier>>((it, m) =>
-                        {
-                            ComposeScreen screen = it ? pausedScreen : resumedScreen;
-                            screen.__Content(m.OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_00);
-                        })), __composer: __composer, __changed: 0b_01_00_00_00);
-                    // Navigation(
-                    //     coordinator: Remember(() => new SampleCoordinatorImpl()),
-                    //     transition: Remember(animationSpec, () => FadeIn()
-                    //         .TogetherWith(FadeOut())
-                    //         .With(animationSpec)
-                    //     ),
-                    //     modifier: Modifier
-                    //         .FillMaxSize()
-                    // );
+                        // AnimatedContent(
+                        //     transitionSpec: _ => IEnterTransition.Empty().TogetherWith(Hide()),
+                        //     // transitionSpec: it => FadeIn().TogetherWith(FadeOut()).With(animationSpec),
+                        //     targetState: isSwitched.Value,
+                        //     modifier: Modifier.FillMaxSize(),
+                        //     content: (it, m) =>
+                        //     {
+                        //         ComposeScreen screen = it ? pausedScreen : resumedScreen;
+                        //         screen.Content(m.OnClick(() => isSwitched.Value = !isSwitched.Value));
+                        //     }
+                        // );
+                        __Navigation(coordinator: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.Samples.Behaviors.NavigationDemo.SampleCoordinatorImpl>(new SampleCoordinatorImpl())), transition: (!__composer.Changed<global::UnityCompose.AnimationSpec>(animationSpec!) ? __composer.RememberedValue<global::UnityCompose.ContentTransform>() : __composer.UpdateRememberedValue<global::UnityCompose.ContentTransform>(FadeIn().TogetherWith(FadeOut()).With(animationSpec))), modifier: Modifier.FillMaxSize(), __composer: __composer, __changed: 0b_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_01_00_00);
             }
