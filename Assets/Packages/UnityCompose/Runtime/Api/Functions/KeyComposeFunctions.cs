@@ -15,9 +15,9 @@ public static partial class ComposeFunctions
         // BRUH
         var composer = CurrentComposer;
         var intKey = key?.GetHashCode() ?? 0;
-        composer.StartMovableGroup(intKey, key);
+        // composer.StartMovableGroup(intKey, key);
         KeyImpl(content);
-        composer.EndMovableGroup(intKey);
+        // composer.EndMovableGroup(intKey);
     }
 
     [Composable]

@@ -83,9 +83,9 @@ internal partial class PausedScreen : ComposeScreen
             content: () =>
             {
                 Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
-                Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
-                Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
-                Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
+                // Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
+                // Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
+                // Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
             }
         );
     }

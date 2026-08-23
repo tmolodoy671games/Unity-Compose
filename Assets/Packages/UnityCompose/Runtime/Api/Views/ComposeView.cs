@@ -24,6 +24,7 @@ public partial class ComposeView : VisualElement
         userData = null;
         _composer.SetAsCurrentComposer();
         Clear();
+        _composer.Clear();
         __ContentImpl(content, _composer, 0b_10);
         _composer.ResetAsCurrentComposer();
     }

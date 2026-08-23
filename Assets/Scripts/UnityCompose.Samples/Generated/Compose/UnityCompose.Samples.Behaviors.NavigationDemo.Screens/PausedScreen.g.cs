@@ -94,9 +94,9 @@ internal partial class PausedScreen
             __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
-                __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
-                __Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
-                __Tab(PausedTab.System, currentTab == PausedTab.System, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
+            // Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick);
+            // Tab(PausedTab.Journal, currentTab == PausedTab.Journal, onClick);
+            // Tab(PausedTab.System, currentTab == PausedTab.System, onClick);
             })), __composer: __composer, __changed: 0b_01_01_00_00);
         }
         else

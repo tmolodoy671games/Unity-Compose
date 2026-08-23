@@ -46,8 +46,8 @@ public abstract class BaseMutableStateImpl : IMutableState
             Debug.Log($"{this}.Notify()");
         foreach (var group in _scopes)
         {
-            if (group.RequestRestart())
-                _scopes.Add(group);
+            if (!group.RequestRestart())
+                _scopesToRemove.Add(group);
         }
         if (_scopesToRemove.IsNotEmpty())
             _scopes.RemoveRange(_scopesToRemove);
