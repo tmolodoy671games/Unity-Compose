@@ -24,6 +24,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
     private int _currentSlotIndex;
     private int _currentElementIndex;
     private SturdyComposeGroup? _invalidationRoot;
+    private int _composition;
 
     private readonly IMutableStableStack<SturdyComposeGroup> _enteredRestartGroups =
         MutableStableStackOf<SturdyComposeGroup>();
@@ -56,7 +57,6 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         if (!EnterOrCreateGroup(key, SturdyComposeGroupType.Restart))
         {
             var parent = RequireCurrentParent();
-            parent.GetMetadata<SturdyComposeRestartScope>().GroupIndex = _currentGroupIndex;
             _enteredRestartGroups.Push(parent);
             return false;
         }
@@ -75,6 +75,8 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
             localGroup: _enteredLocalGroups.PeekOrNull()
         );
         newScope.GroupIndex = _currentGroupIndex;
+        newScope.ElementIndex = _enteredElements.PeekOrNull()?.RequireElementManager()
+            .GetAnchor(_currentElementIndex, _composition);
         newGroup.Metadata = newScope;
 
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
@@ -143,7 +145,6 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         );
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
         EnterGroup(newGroup);
-        return;
     }
 
     public void EndReplaceGroup(int key)
@@ -176,6 +177,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         );
         newGroup.ElementsCount = 1;
         newGroup.Metadata = ReusableComposeNode.Get<T>();
+        _enteredElements.PeekOrNull()?.ElementManagerOrNull()?.NotifyInsert(_currentElementIndex, 1, _composition);
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
         EnterGroup(newGroup);
         _enteredReusableGroups.Push(newGroup);
@@ -415,13 +417,14 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         SturdyComposeRestartScope scope
     )
     {
+        _composition++;
         var group = scope.Group.NotNull();
         _invalidationRoot = group;
         _currentParent = group.Parent;
         _currentGroupIndex = scope.GroupIndex;
         _currentSlotIndex = 0;
-        // _currentElementIndex = scope.ElementIndex;
-        _currentElementIndex = GetVisualElementInsertIndex(group);
+        _currentElementIndex = scope.ElementIndex != null ? scope.ElementIndex.Index : 0;
+        // _currentElementIndex = GetVisualElementInsertIndex(group);
         _enteredRestartGroups.Clear();
         _enteredReusableGroups.Clear();
         _enteredLocalGroups.Clear();
@@ -485,6 +488,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         _currentSlotIndex = 0;
         _currentElementIndex = 0;
         _invalidationRoot = null;
+        _composition = 0;
     }
 
     public string Format()
@@ -514,6 +518,13 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         var existingGroup = currentParent.Children!.GetOrDefault(_currentGroupIndex, null);
         if (existingGroup != null && existingGroup.Key == key && existingGroup.Type == type)
         {
+            if (existingGroup.Type == SturdyComposeGroupType.Restart)
+            {
+                var scope = existingGroup.GetMetadata<SturdyComposeRestartScope>();
+                scope.GroupIndex = _currentGroupIndex;
+                // scope.ElementIndex = _currentElementIndex;
+            }
+
             existingGroup.Parent = currentParent;
             EnterGroup(existingGroup);
             return false;
@@ -521,12 +532,28 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
 
         if (existingGroup != null)
         {
+            if (existingGroup.Type != SturdyComposeGroupType.Replace)
+                Debug.LogWarning("Replacing non-replace group. Suspicious!");
+            if (type != SturdyComposeGroupType.Replace)
+                Debug.LogWarning("Replacing with non-replace group. Suspicious!");
+            NotifyElementsRemoveOnReplaceSwap(existingGroup);
+
             IncrementElementsCountRecursively(existingGroup, -existingGroup.ElementsCount);
             existingGroup.Dispose();
             currentParent.Children.RemoveAt(_currentGroupIndex);
         }
 
         return true;
+    }
+
+    private void NotifyElementsRemoveOnReplaceSwap(SturdyComposeGroup existingGroup)
+    {
+        if (existingGroup.ElementsCount <= 0) return;
+        var firstElement = GetChildElementRecursively(existingGroup).NotNull();
+        var manager = firstElement.ElementManagerOrNull();
+        if (manager == null) return;
+        var firstElementIndex = firstElement.parent.IndexOf(firstElement);
+        manager.NotifyRemove(firstElementIndex, existingGroup.ElementsCount, _composition);
     }
 
     // True if created
@@ -568,7 +595,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         return true;
     }
 
-    private static void SwapVisualElements(SturdyComposeGroup first, SturdyComposeGroup second)
+    private void SwapVisualElements(SturdyComposeGroup first, SturdyComposeGroup second)
     {
         var firstIndex = first.Parent.NotNull().Children.IndexOf(first);
         var secondIndex = second.Parent.NotNull().Children.IndexOf(second);
@@ -586,6 +613,14 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         var secondElements = GetChildElements(second);
         if (firstElements.IsEmpty() && secondElements.IsEmpty())
             return;
+
+        _enteredElements.PeekOrNull()?.ElementManagerOrNull()?.NotifySwap(
+            firstIndex: firstElementIndex,
+            firstCount: firstElements.Count,
+            secondIndex: secondElementIndex,
+            secondCount: secondElements.Count,
+            composition: _composition
+        );
         var parentElement = firstElements.IsNotEmpty() ? firstElements[0].parent : secondElements[0].parent;
         foreach (var element in firstElements)
             parentElement.Remove(element);
@@ -654,12 +689,44 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
 
         if (_currentSlotIndex > currentParent.SlotsCount)
             LogWarning($"Trying to exit invalid group {key}!");
+
+        NotifyElementsShiftOnTrim();
         currentParent.Trim(_currentGroupIndex, _currentSlotIndex);
 
         _currentParent = currentParent.Parent;
         _currentGroupIndex = _enteredGroupIndices.Pop();
         _currentGroupIndex++;
         _currentSlotIndex = _enteredSlotIndices.Pop();
+    }
+
+    private void NotifyElementsShiftOnTrim()
+    {
+        var currentParent = RequireCurrentParent();
+        if (_currentGroupIndex == currentParent.Children.Count)
+            return;
+        var elementsCount = 0;
+        for (var index = _currentGroupIndex; index < currentParent.Children.Count; index++)
+        {
+            var child = currentParent.Children[index];
+            elementsCount += child.ElementsCount;
+        }
+
+        if (elementsCount == 0)
+            return;
+        var manager = _enteredElements.PeekOrNull()?.ElementManagerOrNull();
+        if (manager == null)
+            return;
+        VisualElement? firstElement = null;
+        for (var index = _currentGroupIndex; index < currentParent.Children.Count; index++)
+        {
+            var child = currentParent.Children[index];
+            firstElement = GetChildElementRecursively(child);
+            if (firstElement != null)
+                break;
+        }
+
+        var firstIndex = firstElement.NotNull().parent.IndexOf(firstElement.NotNull());
+        manager.NotifyRemove(firstIndex, elementsCount, _composition);
     }
 
     private static void IncrementElementsCountRecursively(SturdyComposeGroup group, int increment,

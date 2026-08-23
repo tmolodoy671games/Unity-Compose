@@ -42,6 +42,7 @@ internal class SturdyComposeGroup : IDisposable
     public int ChildrenCount => _children != null ? _children.Count : 0;
     public int SlotsCount => _slots != null ? _slots.Count : 0;
     public object? Metadata { private get; set; }
+    public IStableProperty<int> GroupIndex { get; set; } = null!;
 
     public IMutableStableList<SturdyComposeGroup> Children
     {

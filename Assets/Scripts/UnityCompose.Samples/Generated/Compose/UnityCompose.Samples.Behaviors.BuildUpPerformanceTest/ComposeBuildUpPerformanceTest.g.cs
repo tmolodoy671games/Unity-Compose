@@ -12,7 +12,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
     {
         protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1018115190);
+            var __isCreated = __composer.StartRestartGroup(2069875098);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1018115190, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+            __composer.EndRestartGroup(2069875098, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
     }
 }

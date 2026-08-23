@@ -8,11 +8,14 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
     [DisallowMultipleComponent]
     internal partial class ComposeBuildUpPerformanceTest : ComposeUI
     {
+        [SerializeField] private SlotTableType type;
+
+        protected override SlotTableType SlotTableType => type;
+
         [Button]
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();
-
             root.SetContent(static (_, _) => {});
             root.SetContent((_, _) =>
             {

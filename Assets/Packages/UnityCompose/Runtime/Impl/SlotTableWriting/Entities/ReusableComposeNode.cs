@@ -110,13 +110,13 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
         if (_isDisposed)
             return;
         _isDisposed = true;
-        var visualElement = VisualElement;
-        var parent = visualElement.parent;
-        parent?.FastRemove(_indexInParent, visualElement);
-        VisualElement = new T()
+        if (typeof(T) != typeof(ComposeView))
         {
-            pickingMode = PickingMode.Ignore
-        };
+            var visualElement = VisualElement;
+            if (visualElement.enabledInHierarchy) visualElement.parent?.FastRemove(_indexInParent, visualElement);
+
+            VisualElement = new T { pickingMode = PickingMode.Ignore };
+        }
 
         _indexInParent = -1;
         _lastModifier = null;
