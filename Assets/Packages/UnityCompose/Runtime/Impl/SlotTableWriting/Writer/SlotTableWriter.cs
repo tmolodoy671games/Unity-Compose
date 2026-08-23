@@ -13,7 +13,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 
-internal class SlotTableWriter
+internal class SlotTableWriter : ISlotTableWriter
 {
     private readonly Groups _groups;
     private readonly Slots _slots;
@@ -211,7 +211,7 @@ internal class SlotTableWriter
 
     #region Reusable Group
 
-    public void StartReusableGroup<T>(int key)
+    public void StartReusableGroup<T>(int key) where T : VisualElement, new()
     {
         if (ComposeConstants.Logging)
             Log($"StartReusableGroup({key})");
@@ -468,6 +468,11 @@ internal class SlotTableWriter
     }
 
     public int GetCurrentElementIndex() => _currentElementIndex;
+
+    public void WriteVisualElement(ComposeView visualElement)
+    {
+        WriteVisualElement((VisualElement)visualElement);
+    }
 
     public void EnterVisualElement(VisualElement element)
     {
@@ -867,7 +872,7 @@ internal class SlotTableWriter
     {
         return _slots.Format(_currentSlotIndex);
     }
-    
+
     public void WriteSlotsToFile(TextWriter writer)
     {
         _slots.WriteToFile(_currentSlotIndex, writer);

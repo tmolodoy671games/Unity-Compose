@@ -18,13 +18,11 @@ public class Composer
 {
     public static Composer? Current { get; private set; }
 
-    // private readonly SlotTableWriter _writer;
-    private readonly SturdySlotTableWriterImpl _writer;
+    private ISlotTableWriter _writer;
 
     internal Composer()
     {
-        // _writer = new SlotTableWriter(this);
-        _writer = new SturdySlotTableWriterImpl();
+        _writer = new SturdySlotTableWriterImpl(this);
     }
 
     public void SetAsCurrentComposer()
@@ -34,15 +32,37 @@ public class Composer
 
     public void ResetAsCurrentComposer()
     {
-        // if (_current == this)
-        //     _current = null;
+        if (Current == this)
+            Current = null;
+    }
+
+    public void SetSlotTableType(SlotTableType type)
+    {
+        switch (type)
+        {
+            case SlotTableType.Stable:
+                if (_writer is not SturdySlotTableWriterImpl)
+                {
+                    _writer.Clear();
+                    _writer = new SturdySlotTableWriterImpl(this);
+                }
+
+                break;
+            case SlotTableType.Performant:
+                if (_writer is not SlotTableWriter)
+                {
+                    _writer.Clear();
+                    _writer = new SlotTableWriter(this);
+                }
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
     }
 
     #region Restart Group
 
     public bool IsRestarted() => _writer.IsInInvalidationRoot();
-
-    // public bool ShouldExecute() => ShouldExecute(SingletonState.Instance);
 
     public bool StartRestartGroup(int key)
     {

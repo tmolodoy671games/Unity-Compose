@@ -14,6 +14,21 @@ public partial class ComposeView : VisualElement
 
     private readonly Composer _composer = new();
     private ComposableContent<Composer, int>? _content;
+    private SlotTableType _slotTableType;
+
+    public SlotTableType Type
+    {
+        get => _slotTableType;
+        set
+        {
+            if (_slotTableType == value)
+                return;
+            _slotTableType = value;
+            Clear();
+            _composer.Clear();
+            _composer.SetSlotTableType(value);
+        }
+    }
 
     public void SetContent(ComposableContent<Composer, int> content)
     {
@@ -62,4 +77,10 @@ public partial class ComposeView : VisualElement
     }
 
     public override string ToString() => "ComposeView";
+}
+
+public enum SlotTableType
+{
+    Stable,
+    Performant,
 }

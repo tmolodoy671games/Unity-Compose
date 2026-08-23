@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using SharpExtensions;
 using Sirenix.OdinInspector;
@@ -16,7 +17,7 @@ public abstract partial class ComposeUI
     protected abstract void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1);
     protected virtual void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var __isCreated = __composer.StartRestartGroup(832656256);
+        var __isCreated = __composer.StartRestartGroup(1386397072);
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __changed != 0b_00)
         {
@@ -26,6 +27,6 @@ public abstract partial class ComposeUI
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(832656256, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        __composer.EndRestartGroup(1386397072, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using SharpExtensions;
 using Sirenix.OdinInspector;
@@ -14,18 +15,24 @@ public abstract partial class ComposeUI : MonoBehaviour
 {
     private UIDocument? _document;
 
+    protected virtual SlotTableType SlotTableType => SlotTableType.Stable;
+
     private void Awake()
     {
         if (!ApplicationUtils.IsPlaying)
             return;
         _document ??= GetUiDocument();
+        var composeView = _document.rootVisualElement.Q<ComposeView>();
+        composeView.Type = SlotTableType;
         _document.rootVisualElement.Q<ComposeView>().SetContent(__Content);
     }
 
     [Composable]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     protected abstract void Content();
 
     [Composable]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     protected virtual void Preview()
     {
     }
@@ -33,13 +40,16 @@ public abstract partial class ComposeUI : MonoBehaviour
     private void OnEnable()
     {
         _document ??= GetUiDocument();
+        var composeView = _document?.rootVisualElement?.Q<ComposeView>();
         if (ApplicationUtils.IsPlaying)
         {
-            _document?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Content);
+            if (composeView != null)
+                composeView.Type = SlotTableType;
+            composeView?.SetContent(__Content);
             return;
         }
 
-        _document?.rootVisualElement?.Q<ComposeView>()?.SetContent(__Preview);
+        composeView?.SetContent(__Preview);
     }
 
     [Button]

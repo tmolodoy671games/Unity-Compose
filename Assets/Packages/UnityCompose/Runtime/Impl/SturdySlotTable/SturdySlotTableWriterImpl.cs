@@ -3,13 +3,14 @@ using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Writer;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SturdySlotTable.Models;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Impl.SturdySlotTable;
 
-internal class SturdySlotTableWriterImpl
+internal class SturdySlotTableWriterImpl : ISlotTableWriter
 {
     private readonly SturdyComposeGroup _root = SturdyComposeGroup.Get(
         key: 123,
@@ -17,6 +18,7 @@ internal class SturdySlotTableWriterImpl
         parent: null
     );
 
+    private readonly Composer _composer;
     private SturdyComposeGroup? _currentParent;
     private int _currentGroupIndex;
     private int _currentSlotIndex;
@@ -37,9 +39,10 @@ internal class SturdySlotTableWriterImpl
     private readonly IMutableStableStack<VisualElement> _enteredElements = MutableStableStackOf<VisualElement>();
     private readonly IMutableStableStack<int> _enteredElementIndices = MutableStableStackOf<int>();
 
-    public SturdySlotTableWriterImpl()
+    public SturdySlotTableWriterImpl(Composer composer)
     {
         _currentParent = _root;
+        _composer = composer;
     }
 
     private SturdyComposeGroup RequireCurrentParent() => _currentParent.NotNull();
@@ -123,12 +126,12 @@ internal class SturdySlotTableWriterImpl
 
     #region Replace Group
 
-    public bool StartReplaceGroup(int key)
+    public void StartReplaceGroup(int key)
     {
         if (ComposeConstants.Logging)
             Log($"StartReplaceGroup({key})");
         if (!EnterOrCreateGroup(key, SturdyComposeGroupType.Replace))
-            return false;
+            return;
 
         var currentParent = RequireCurrentParent();
         var newGroup = SturdyComposeGroup.Get(
@@ -138,7 +141,7 @@ internal class SturdySlotTableWriterImpl
         );
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
         EnterGroup(newGroup);
-        return true;
+        return;
     }
 
     public void EndReplaceGroup(int key)
@@ -239,6 +242,11 @@ internal class SturdySlotTableWriterImpl
         newGroup.Metadata = dataKey;
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
         EnterGroup(newGroup);
+    }
+
+    public void StartMovableGroup(int key)
+    {
+        throw new NotImplementedException();
     }
 
     public void EndMovableGroup(int key)
@@ -478,6 +486,10 @@ internal class SturdySlotTableWriterImpl
     {
         return _root.Format("", _currentParent, _currentGroupIndex, _currentSlotIndex);
     }
+
+    public void RequestCurrentComposer() => _composer.SetAsCurrentComposer();
+
+    public void ReleaseCurrentComposer() => _composer.ResetAsCurrentComposer();
 
     private void Log(object? message = null)
     {

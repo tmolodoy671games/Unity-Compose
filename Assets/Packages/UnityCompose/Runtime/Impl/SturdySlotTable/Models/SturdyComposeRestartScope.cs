@@ -94,7 +94,9 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
         if (Group == null || VisualElement == null || RestartCallback == null || Writer == null)
             return;
         Writer.ResetTo(this);
+        Writer.RequestCurrentComposer();
         RestartCallback();
+        Writer.ReleaseCurrentComposer();
     }
 
     public void Dispose()
