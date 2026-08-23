@@ -56,6 +56,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         if (!EnterOrCreateGroup(key, SturdyComposeGroupType.Restart))
         {
             var parent = RequireCurrentParent();
+            parent.GetMetadata<SturdyComposeRestartScope>().GroupIndex = _currentGroupIndex;
             _enteredRestartGroups.Push(parent);
             return false;
         }
@@ -73,6 +74,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
             visualElement: _enteredElements.PeekOrNull(),
             localGroup: _enteredLocalGroups.PeekOrNull()
         );
+        newScope.GroupIndex = _currentGroupIndex;
         newGroup.Metadata = newScope;
 
         currentParent.Children.Insert(_currentGroupIndex, newGroup);
@@ -416,7 +418,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         var group = scope.Group.NotNull();
         _invalidationRoot = group;
         _currentParent = group.Parent;
-        _currentGroupIndex = group.Parent.NotNull().Children.IndexOf(group);
+        _currentGroupIndex = scope.GroupIndex;
         _currentSlotIndex = 0;
         // _currentElementIndex = scope.ElementIndex;
         _currentElementIndex = GetVisualElementInsertIndex(group);

@@ -48,6 +48,7 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
     private Action? RestartCallback { get; set; }
     public SturdySlotTableWriterImpl? Writer { get; private set; }
     public SturdyComposeGroup? AncestorLocalGroup { get; private set; }
+    public int GroupIndex { get; set; }
 
     private IMutableStableList<BaseMutableStateImpl> CapturedStates
     {
@@ -99,6 +100,7 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
             return;
         }
 
+        SyncGroupIndex();
         Writer.ResetTo(this);
         Writer.RequestCurrentComposer();
         RestartCallback();
@@ -120,6 +122,15 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
         AncestorLocalGroup = null;
         _capturedStates?.Clear();
         Pool.Return(this);
+    }
+
+    private void SyncGroupIndex()
+    {
+        if (Group?.Parent == null)
+            return;
+        if (Group.Parent.Children[GroupIndex] == Group)
+            return;
+        GroupIndex = Group.Parent.Children.IndexOf(Group);
     }
 
     private void AssertNotDisposed()

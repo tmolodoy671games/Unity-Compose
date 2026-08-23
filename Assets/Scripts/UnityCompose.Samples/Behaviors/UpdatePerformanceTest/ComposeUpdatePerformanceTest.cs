@@ -1,11 +1,13 @@
 // ReSharper disable ArrangeNamespaceBody
 
-using StableCollections;
-
 namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
 {
     internal partial class ComposeUpdatePerformanceTest : ComposeUI
     {
+        [SerializeField] private SlotTableType type;
+
+        protected override SlotTableType SlotTableType => type;
+
         [Composable]
         protected override void Content()
         {
