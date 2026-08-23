@@ -57,7 +57,7 @@ public abstract class BaseMutableStateImpl : IMutableState
     internal bool Add(IComposeRestartScope restartScope)
     {
         var result = _scopes.Add(restartScope);
-        if (!result)
+        if (result)
             restartScope.Add(this);
         return result;
     }

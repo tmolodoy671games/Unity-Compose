@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using StableCollections;
 using UnityCompose;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
@@ -12,7 +13,7 @@ public partial class ComposeView : VisualElement
     {
     }
 
-    private readonly Composer _composer = new();
+    public readonly Composer Composer = new();
     private ComposableContent<Composer, int>? _content;
     private SlotTableType _slotTableType;
 
@@ -25,8 +26,8 @@ public partial class ComposeView : VisualElement
                 return;
             _slotTableType = value;
             Clear();
-            _composer.Clear();
-            _composer.SetSlotTableType(value);
+            Composer.Clear();
+            Composer.SetSlotTableType(value);
         }
     }
 
@@ -37,11 +38,11 @@ public partial class ComposeView : VisualElement
             return;
         _content = content;
         userData = null;
-        _composer.SetAsCurrentComposer();
+        Composer.SetAsCurrentComposer();
         Clear();
-        _composer.Clear();
-        __ContentImpl(content, _composer, 0b_10);
-        _composer.ResetAsCurrentComposer();
+        Composer.Clear();
+        __ContentImpl(content, Composer, 0b_10);
+        Composer.ResetAsCurrentComposer();
     }
 
     [Composable]

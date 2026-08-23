@@ -428,8 +428,12 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         _enteredElements.Clear();
         _enteredElementIndices.Clear();
 
-        _enteredElements.Push(scope.VisualElement.NotNull());
-        _enteredElementIndices.Push(_currentElementIndex);
+        if (scope.VisualElement != null)
+        {
+            _enteredElements.Push(scope.VisualElement.NotNull());
+            _enteredElementIndices.Push(_currentElementIndex);
+        }
+
         if (scope.AncestorLocalGroup != null)
             _enteredLocalGroups.Push(scope.AncestorLocalGroup);
     }
@@ -457,8 +461,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
             current = parent;
         }
 
-        throw new InvalidOperationException(
-            "RestartGroup does not have a ReusableGroup ancestor.");
+        return 0;
     }
 
     public void Clear()

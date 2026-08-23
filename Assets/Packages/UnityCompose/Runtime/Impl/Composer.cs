@@ -171,7 +171,10 @@ public class Composer
         var restartScope = _writer.RequireRestartScope();
         if (restartScope == null)
             return;
-        state.Add(restartScope);
+        if (state.Add(restartScope) && state.Log)
+        {
+            Debug.Log($"Captured successfully by {restartScope}");
+        }
     }
 
     public void Clear()

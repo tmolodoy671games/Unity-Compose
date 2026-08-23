@@ -55,7 +55,7 @@ public abstract partial class ComposeUI : MonoBehaviour
     [Button]
     protected void PrintTreeStructure()
     {
-        Debug.Log(CurrentComposer.Format());
+        Debug.Log(_document?.rootVisualElement?.Q<ComposeView>().Composer.Format());
     }
 
     [Button]

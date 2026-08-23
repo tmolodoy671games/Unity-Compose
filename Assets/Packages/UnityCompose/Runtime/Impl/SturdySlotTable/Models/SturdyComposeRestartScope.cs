@@ -90,9 +90,15 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
     {
         _isRequestedToRestart = false;
         if (_isDisposed)
+        {
             return;
-        if (Group == null || VisualElement == null || RestartCallback == null || Writer == null)
+        }
+
+        if (Group == null || RestartCallback == null || Writer == null)
+        {
             return;
+        }
+
         Writer.ResetTo(this);
         Writer.RequestCurrentComposer();
         RestartCallback();
@@ -124,6 +130,7 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
 
     public override string ToString()
     {
-        return $"SturdyComposeRestartScope()[{GetHashCode()}]";
+        return Group?.ToString() ?? "null";
+        // return $"SturdyComposeRestartScope()[{GetHashCode()}]";
     }
 }

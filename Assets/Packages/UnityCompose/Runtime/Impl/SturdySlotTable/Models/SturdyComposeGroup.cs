@@ -122,6 +122,11 @@ internal class SturdyComposeGroup : IDisposable
             throw new InvalidOperationException("Trying to access disposed SturdySlots!");
     }
 
+    public override string ToString()
+    {
+        return $"(Key: {Key}, Type: {Type})";
+    }
+
     public string Format(string indent, SturdyComposeGroup? currentParent, int currentGroupIndex, int currentSlotIndex)
     {
         var result = new StringBuilder();
