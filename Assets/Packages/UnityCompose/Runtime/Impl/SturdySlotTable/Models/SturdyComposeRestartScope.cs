@@ -83,7 +83,7 @@ internal class SturdyComposeRestartScope : IComposeRestartScope, IComposeDisposa
             return true;
         if (_isDisposed)
             return false;
-        AssertNotDisposed();
+        _isRequestedToRestart = true;
         ComposeInvalidator.RequestInvalidate(this);
         return true;
     }
