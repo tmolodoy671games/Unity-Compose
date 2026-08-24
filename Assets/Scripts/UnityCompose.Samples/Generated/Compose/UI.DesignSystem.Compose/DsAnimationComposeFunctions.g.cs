@@ -35,11 +35,11 @@ public static partial class DesignSystemComposeFunctions
         var isVisible = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
         var forwardState = __AnimateFloatAsState(isVisible.Value.ToInt(), isVisible.Value ? resolvedAnimationSpec : resolvedBackwardAnimationSpec, __composer: __composer, __changed: 0b_01_00_00);
         var state = LocalTransitionState.Current;
-        isVisible.Value = state switch
+        isVisible.Value = state.Phase switch
         {
-            TransitionState.Entering => true,
-            TransitionState.Idle => true,
-            TransitionState.Exiting => false,
+            TransitionPhase.Entering => true,
+            TransitionPhase.Idle => true,
+            TransitionPhase.Exiting => false,
             _ => throw new ArgumentOutOfRangeException()};
         ;
         return forwardState;

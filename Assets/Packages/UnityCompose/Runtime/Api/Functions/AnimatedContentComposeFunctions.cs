@@ -10,12 +10,9 @@ namespace UnityCompose;
 public static partial class ComposeFunctions
 {
     public static readonly ICompositionLocal<TransitionState> LocalTransitionState =
-        CompositionLocalOf(() => TransitionState.Idle);
-
-    public static readonly ICompositionLocal<float> LocalTransitionProgress = CompositionLocalOf(() => 1f);
-    public static readonly ICompositionLocal<float> LocalTransitionAbsoluteProgress = CompositionLocalOf(() => 1f);
-    public static readonly ICompositionLocal<float> LocalTransitionAbsoluteTimeElapsed = CompositionLocalOf(() => 0f);
-    public static readonly ICompositionLocal<float> LocalTransitionDuration = CompositionLocalOf(() => 0f);
+        CompositionLocalOf(() => TransitionState.Create(TransitionPhase.Idle, 0, 0));
+    public static readonly ICompositionLocal<TransitionState> LocalResolvedTransitionState =
+        CompositionLocalOf(() => TransitionState.Create(TransitionPhase.Idle, 0, 0));
 
     [Composable]
     public static void AnimatedContent<T>(
@@ -77,12 +74,12 @@ public static partial class ComposeFunctions
                 var next = (
                     Value: targetState,
                     Modifier: nextModifier,
-                    ContentState: isAnimationRunning ? TransitionState.Idle : TransitionState.Entering
+                    ContentState: isAnimationRunning ? TransitionPhase.Idle : TransitionPhase.Entering
                 );
                 var previous = (
                     Value: previousValue.Value,
                     Modifier: previousModifier,
-                    ContentState: TransitionState.Exiting
+                    ContentState: TransitionPhase.Exiting
                 );
                 var pair = isSwitched.Value
                     ? (First: next, Second: previous)
@@ -90,34 +87,30 @@ public static partial class ComposeFunctions
 
                 if (isSwitched.Value || isAnimationRunning)
                 {
-                    var state = TransitionResolvedState.Create(
-                        state: pair.First.ContentState,
+                    var state = TransitionState.Create(
+                        phase: pair.First.ContentState,
                         absoluteProgress: resolvedProgress,
                         duration: resolvedTransition.TotalDuration
                     );
+                    var resolvedState = TransitionState.Create(state, LocalResolvedTransitionState.Current);
                     CompositionLocalProvider(
-                        LocalTransitionState.Provides(state.State),
-                        LocalTransitionProgress.Provides(state.Progress),
-                        LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                        LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                        LocalTransitionDuration.Provides(state.Duration),
+                        LocalTransitionState.Provides(state),
+                        LocalResolvedTransitionState.Provides(resolvedState),
                         content: () => content(pair.First.Value, pair.First.Modifier)
                     );
                 }
 
                 if (!isSwitched.Value || isAnimationRunning)
                 {
-                    var state = TransitionResolvedState.Create(
-                        state: pair.Second.ContentState,
+                    var state = TransitionState.Create(
+                        phase: pair.Second.ContentState,
                         absoluteProgress: resolvedProgress,
                         duration: resolvedTransition.TotalDuration
                     );
+                    var resolvedState = TransitionState.Create(state, LocalResolvedTransitionState.Current);
                     CompositionLocalProvider(
-                        LocalTransitionState.Provides(state.State),
-                        LocalTransitionProgress.Provides(state.Progress),
-                        LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                        LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                        LocalTransitionDuration.Provides(state.Duration),
+                        LocalTransitionState.Provides(state),
+                        LocalResolvedTransitionState.Provides(resolvedState),
                         content: () => content(pair.Second.Value, pair.Second.Modifier)
                     );
                 }

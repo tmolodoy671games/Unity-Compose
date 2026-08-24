@@ -4,7 +4,6 @@ using System.Linq;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Views;
-using UnityEngine;
 using static SharpExtensions.CustomSwitch;
 
 // ReSharper disable CheckNamespace
@@ -119,15 +118,15 @@ public static partial class ComposeFunctions
                 .Select(screen =>
                 {
                     var screenState = Switch()
-                        .Case(appearingScreens.Contains(screen), TransitionState.Entering)
-                        .Case(disappearingScreens.Contains(screen), TransitionState.Exiting)
-                        .Default(TransitionState.Idle)
+                        .Case(appearingScreens.Contains(screen), TransitionPhase.Entering)
+                        .Case(disappearingScreens.Contains(screen), TransitionPhase.Exiting)
+                        .Default(TransitionPhase.Idle)
                         .Get();
-                    if (screenState == TransitionState.Entering && isTransitionFinished)
-                        screenState = TransitionState.Idle;
+                    if (screenState == TransitionPhase.Entering && isTransitionFinished)
+                        screenState = TransitionPhase.Idle;
                     return (Screen: screen, ScreenState: screenState);
                 })
-                .Where(it => it.ScreenState != TransitionState.Exiting || !isTransitionFinished)
+                .Where(it => it.ScreenState != TransitionPhase.Exiting || !isTransitionFinished)
                 .ToImmutableStableList()
         );
 
@@ -147,21 +146,22 @@ public static partial class ComposeFunctions
                             );
                             var contentModifier = screenState switch
                             {
-                                TransitionState.Idle => Modifier
+                                TransitionPhase.Idle => Modifier
                                     .Float(!isCurrentScreen),
-                                TransitionState.Entering => resolvedTransition.Enter
+                                TransitionPhase.Entering => resolvedTransition.Enter
                                     .Get(resolvedDuration, parent)
                                     .Float(!isCurrentScreen),
-                                TransitionState.Exiting => resolvedTransition.Exit
+                                TransitionPhase.Exiting => resolvedTransition.Exit
                                     .Get(resolvedDuration, parent)
                                     .Float(),
                                 _ => throw new ArgumentOutOfRangeException()
                             };
-                            var state = TransitionResolvedState.Create(
-                                state: screenState,
+                            var state = TransitionState.Create(
+                                phase: screenState,
                                 absoluteProgress: resolvedProgress,
                                 duration: resolvedTransition.TotalDuration
                             );
+                            var resolvedState = TransitionState.Create(state, LocalResolvedTransitionState.Current);
                             var isActive = LocalIsActive.Current;
                             CompositionLocalProvider(
                                 LocalCoordinator.Provides(new CoordinatorEntry(coordinator, coordinatorEntry)),
@@ -172,11 +172,8 @@ public static partial class ComposeFunctions
                                         Parent: isActive
                                     )
                                 ),
-                                LocalTransitionState.Provides(state.State),
-                                LocalTransitionProgress.Provides(state.Progress),
-                                LocalTransitionAbsoluteProgress.Provides(state.AbsoluteProgress),
-                                LocalTransitionAbsoluteTimeElapsed.Provides(state.AbsoluteTimeElapsed),
-                                LocalTransitionDuration.Provides(state.Duration),
+                                LocalTransitionState.Provides(state),
+                                LocalResolvedTransitionState.Provides(resolvedState),
                                 content: () => screen.Content(contentModifier)
                             );
                         }

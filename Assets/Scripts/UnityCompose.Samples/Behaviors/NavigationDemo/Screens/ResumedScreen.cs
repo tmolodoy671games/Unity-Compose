@@ -26,7 +26,7 @@ internal partial class ResumedScreen : ComposeScreen
                         .Size(300.Px())
                         .Background(Color.blue)
                         .OnClick(() => showMenu.Value = true)
-                        .Scale(1 - 0.5f * (1 - LocalTransitionProgress.Current))
+                        .Scale(1 - 0.5f * (1 - LocalTransitionState.Current.Progress))
                 );
             }
         );

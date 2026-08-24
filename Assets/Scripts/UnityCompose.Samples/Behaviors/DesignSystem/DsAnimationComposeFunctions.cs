@@ -35,11 +35,11 @@ public static partial class DesignSystemComposeFunctions
             isVisible.Value ? resolvedAnimationSpec : resolvedBackwardAnimationSpec
         );
         var state = LocalTransitionState.Current;
-        isVisible.Value = state switch
+        isVisible.Value = state.Phase switch
         {
-            TransitionState.Entering => true,
-            TransitionState.Idle => true,
-            TransitionState.Exiting => false,
+            TransitionPhase.Entering => true,
+            TransitionPhase.Idle => true,
+            TransitionPhase.Exiting => false,
             _ => throw new ArgumentOutOfRangeException()
         };;
         return forwardState;
