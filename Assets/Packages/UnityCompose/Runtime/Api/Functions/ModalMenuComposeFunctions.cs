@@ -9,6 +9,8 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
+    public static readonly ICompositionLocal<bool> LocalModalMenuVisibility = CompositionLocalOf(() => false);
+    
     internal static readonly ICompositionLocal<ModalMenuManager> LocalOnScreenMenuManager =
         CompositionLocalOf<ModalMenuManager>(() =>
             throw new IllegalStateException("No LocalOnScreenManager provided!")

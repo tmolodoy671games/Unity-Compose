@@ -14,7 +14,7 @@ public static partial class ComposeFunctions
     public static void __ModalMenu(ComposableContent content, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __content = (content);
-        var __isCreated = __composer.StartRestartGroup(1669541423);
+        var __isCreated = __composer.StartRestartGroup(1573022062);
         var __dirty = __changed;
         if ((__changed & 0b_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_10 : 0b_01;
@@ -34,6 +34,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01;
-        __composer.EndRestartGroup(1669541423, __isRestarted)?.UpdateScope(() => __ModalMenu(__content, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(1573022062, __isRestarted)?.UpdateScope(() => __ModalMenu(__content, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

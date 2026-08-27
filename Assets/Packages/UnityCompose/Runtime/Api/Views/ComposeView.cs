@@ -61,6 +61,7 @@ public partial class ComposeView : VisualElement
             LocalVisualElement.Provides(this),
             LocalIsActive.Provides(isActiveInstance),
             LocalOnScreenMenuManager.Provides(onScreenManager),
+            LocalModalMenuVisibility.Provides(onScreenManager.Contents.IsNotEmpty()),
             () => content(composer, 0)
         );
         foreach (var overlayContent in onScreenManager.Contents)

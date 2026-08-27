@@ -1,5 +1,7 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
+using SharpExtensions;
+
 namespace UnityCompose.Samples.Behaviors
 {
     internal partial class ModalMenuSample : ComposeUI
@@ -20,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
                             Spacer(
                                 modifier: Modifier
                                     .Background(Color.lightYellow)
-                                    .Size(200.Px())
+                                    .Size(100.Px())
                                     .Border(16.Px())
                                     .OnClick(() => showModalMenu.Value = false)
                             )
@@ -37,6 +39,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Padding(horizontal: 20.Px(), vertical: 8.Px())
                             .Background(Color.lightGreen)
+                            .Blur(AnimateFloatAsState(LocalModalMenuVisibility.Current.ToInt()).Value * 10)
                             .OnClick(() => showModalMenu.Value = true)
                             .Border(16.Px()),
                         content: () =>

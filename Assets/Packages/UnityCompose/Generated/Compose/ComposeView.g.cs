@@ -27,9 +27,9 @@ public partial class ComposeView
             composer.EnterVisualElement(this);
             var isActiveInstance = (!__composer.Changed<bool>(onScreenManager.Contents.IsEmpty()!) ? __composer.RememberedValue<global::UnityCompose.IsActiveEntry>() : __composer.UpdateRememberedValue<global::UnityCompose.IsActiveEntry>(new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)));
             __composer.StartReplaceGroup(40194246);
-            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.Composer>(composer!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0b_00_00_00_00);
+            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), LocalModalMenuVisibility.Provides(onScreenManager.Contents.IsNotEmpty()), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.Composer>(composer!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0b_00_00_00_00_00);
             __composer.EndReplaceGroup(40194246);
-            __composer.StartReplaceGroup(1447485500);
+            __composer.StartReplaceGroup(361697116);
             foreach (var overlayContent in onScreenManager.Contents)
             {
                 __Box(modifier: Modifier.OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
@@ -37,7 +37,7 @@ public partial class ComposeView
                 }))).FillMaxSize().Float(), content: overlayContent, __composer: __composer, __changed: 0b_01_00_00);
             }
 
-            __composer.EndReplaceGroup(1447485500);
+            __composer.EndReplaceGroup(361697116);
             composer.EndReusableGroup(0);
         }
         else

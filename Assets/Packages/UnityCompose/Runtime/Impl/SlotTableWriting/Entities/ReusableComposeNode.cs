@@ -2,6 +2,7 @@
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Extensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.SturdySlotTable.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -110,6 +111,7 @@ internal class ReusableComposeNode<T> : ReusableComposeNode, IComposeDisposable 
         if (_isDisposed)
             return;
         _isDisposed = true;
+        VisualElement.ElementManagerOrNull()?.Dispose();
         if (typeof(T) != typeof(ComposeView))
         {
             var visualElement = VisualElement;

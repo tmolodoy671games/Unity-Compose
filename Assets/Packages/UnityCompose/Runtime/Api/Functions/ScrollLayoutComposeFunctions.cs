@@ -9,7 +9,7 @@ namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    private const float DefaultMultiplier = 30;
+    private const float DefaultScrollMultiplier = 30;
 
     [Composable]
     public static ScrollState RememberScrollState(float initialValue = 0) =>
@@ -17,12 +17,13 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void ScrollableColumn(
-        ScrollState state,
         ComposableContent content,
+        ScrollState? state = null,
         float scrollStrength = 1f,
         IModifier? modifier = null
     )
     {
+        var resolvedState = state ?? Remember(() => new ScrollState(0f));
         ReusableComposeView<ScrollableColumn>(
             initializer: it =>
             {
@@ -32,12 +33,10 @@ public static partial class ComposeFunctions
             },
             modifier: modifier.OrEmpty()
                 .Clip()
-                .OnGloballyPositioned(it =>
-                {
-                    if (!float.IsNaN(it.Height))
-                        state.ViewportSize = it.Height;
-                })
-                .OnVerticalScroll(it => state.AnimateScrollBy(scrollStrength * DefaultMultiplier * it)),
+                .OnGloballyPositioned(it => resolvedState.ViewportSize = it.Height)
+                .OnVerticalScroll(
+                    onVerticalScroll: it => resolvedState.AnimateScrollBy(scrollStrength * DefaultScrollMultiplier * it)
+                ),
             content: () =>
             {
                 ReusableComposeView<ScrollableColumnContent>(
@@ -48,12 +47,8 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = Justify.FlexStart;
                     },
                     modifier: Modifier
-                        .Offset(y: -state.Value.Px())
-                        .OnGloballyPositioned(it =>
-                        {
-                            if (!float.IsNaN(it.Height))
-                                state.ContentSize = it.Height;
-                        }),
+                        .Offset(y: -resolvedState.Value.Px())
+                        .OnGloballyPositioned(it => resolvedState.ContentSize = it.Height),
                     content: content
                 );
             }
@@ -62,12 +57,13 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void ScrollableRow(
-        ScrollState state,
         ComposableContent content,
+        ScrollState? state = null,
         float scrollStrength = 1f,
         IModifier? modifier = null
     )
     {
+        var resolvedState = state ?? Remember(() => new ScrollState(0f));
         ReusableComposeView<ScrollableRow>(
             initializer: it =>
             {
@@ -77,9 +73,10 @@ public static partial class ComposeFunctions
             },
             modifier: modifier.OrEmpty()
                 .Clip()
-                .OnGloballyPositioned(it => state.ViewportSize = it.Width)
-                .OnVerticalScroll(it => state.AnimateScrollBy(scrollStrength * DefaultMultiplier * it))
-                .OnHorizontalScroll(it => state.AnimateScrollBy(scrollStrength * DefaultMultiplier * it)),
+                .OnGloballyPositioned(it => resolvedState.ViewportSize = it.Width)
+                .OnHorizontalScroll(
+                    onHorizontalScroll: it => resolvedState.AnimateScrollBy(scrollStrength * DefaultScrollMultiplier * it)
+                ),
             content: () =>
             {
                 ReusableComposeView<ScrollableRowContent>(
@@ -90,8 +87,8 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = Justify.FlexStart;
                     },
                     modifier: Modifier
-                        .Offset(x: -state.Value.Px())
-                        .OnGloballyPositioned(it => state.ContentSize = it.Width),
+                        .Offset(x: -resolvedState.Value.Px())
+                        .OnGloballyPositioned(it => resolvedState.ContentSize = it.Width),
                     content: content
                 );
             }
@@ -107,7 +104,7 @@ public class ScrollState : IComposeDisposable
     private IDisposable? _coroutine;
     private float _animationTargetValue;
 
-    public ScrollState(float initialValue)
+    internal ScrollState(float initialValue)
     {
         _value = MutableStateOf(initialValue);
     }
