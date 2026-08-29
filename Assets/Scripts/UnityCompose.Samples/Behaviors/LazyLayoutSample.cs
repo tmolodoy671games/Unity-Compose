@@ -23,14 +23,14 @@ namespace UnityCompose.Samples.Behaviors
                         content: () =>
                         {
                             ColumnSample();
-                            Spacer(Modifier.Height(100.Px()));
+                            Spacer(Modifier.Height(100.Dp()));
                             RowSample();
                         }
                     );
                     Spacer(
                         Modifier
                             .Float()
-                            .Size(100.Percent())
+                            .FillMaxSize()
                             .IgnoreInput()
                     );
                 }
@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Box(
                     modifier: Modifier
-                        .Height(400.Px()),
+                        .Height(400.Dp()),
                     content: () =>
                     {
                         LazyColumn(
@@ -60,12 +60,12 @@ namespace UnityCompose.Samples.Behaviors
                                         Text(
                                             text: it.ToString(),
                                             color: Color.white,
-                                            fontSize: 32,
+                                            fontSize: 32.Sp(),
                                             textAlign: TextAlign.MiddleCenter,
                                             modifier: Modifier
                                                 .Background(Color.red)
-                                                .Size(100.Px())
-                                                .Margin(vertical: 4.Px())
+                                                .Size(100.Dp())
+                                                .Margin(vertical: 4.Dp())
                                                 .OnClick(() => state.AnimateScrollToItem(it))
                                         );
                                     }
@@ -76,15 +76,15 @@ namespace UnityCompose.Samples.Behaviors
                             modifier: Modifier
                                 .Height(100.Percent())
                                 .Float()
-                                .Position(right: 0.Px()),
+                                .Position(right: 0.Dp()),
                             content: () =>
                             {
                                 var scrollerSize = state.ViewportSize / state.ContentSize;
                                 Spacer(
                                     Modifier
                                         .Background(Color.cadetBlue)
-                                        .Width(32.Px())
-                                        .Border(16.Px())
+                                        .Width(32.Dp())
+                                        .Border(16.Dp())
                                         .Height(scrollerSize * 100.Percent())
                                         .Position(top: (state.Value / state.ContentSize) * 100.Percent())
                                 );
@@ -104,7 +104,7 @@ namespace UnityCompose.Samples.Behaviors
                 LazyRow(
                     state: state,
                     modifier: Modifier
-                        .Width(400.Px()),
+                        .Width(400.Dp()),
                     content: scope =>
                     {
                         Row(
@@ -119,12 +119,12 @@ namespace UnityCompose.Samples.Behaviors
                                         Text(
                                             text: it.ToString(),
                                             color: Color.white,
-                                            fontSize: 32,
+                                            fontSize: 32.Sp(),
                                             textAlign: TextAlign.MiddleCenter,
                                             modifier: Modifier
                                                 .Background(Color.red)
-                                                .Size(100.Px())
-                                                .Margin(horizontal: 4.Px())
+                                                .Size(100.Dp())
+                                                .Margin(horizontal: 4.Dp())
                                                 .OnClick(() => Debug.Log("Glick"))
                                                 .OnClick(() => state.AnimateScrollToItem(it))
                                         );
@@ -138,12 +138,12 @@ namespace UnityCompose.Samples.Behaviors
                 Row(
                     modifier: Modifier
                         .FillMaxWidth()
-                        .Height(width.Px()),
+                        .Height(width.Dp()),
                     content: () =>
                     {
                         Spacer(
                             Modifier
-                                .Size(width.Px())
+                                .Size(width.Dp())
                                 .Background(Color.forestGreen)
                                 .OnClick(() => state.AnimateScrollToItem(0))
                         );
@@ -154,7 +154,7 @@ namespace UnityCompose.Samples.Behaviors
                         );
                         Spacer(
                             Modifier
-                                .Size(width.Px())
+                                .Size(width.Dp())
                                 .Background(Color.forestGreen)
                                 .OnClick(() => state.AnimateScrollToItem(19))
                         );

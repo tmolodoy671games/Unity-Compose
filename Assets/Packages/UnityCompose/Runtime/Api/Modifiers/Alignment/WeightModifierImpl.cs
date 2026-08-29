@@ -8,7 +8,7 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    public static IModifier Weight(this IModifier modifier, int weight)
+    public static IModifier Weight(this IModifier modifier, float weight)
     {
         return modifier + new WeightModifierImpl(weight);
     }

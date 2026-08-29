@@ -74,12 +74,12 @@ namespace UnityCompose.Samples.Behaviors
                         Spacer(
                             modifier: Modifier
                                 .Background(Color.red)
-                                .Size(16.Px())
-                                .Border(4.Px(), topLeftRadius: 0.Px())
+                                .Size(16.Dp())
+                                .Border(4.Dp(), topLeftRadius: 0.Dp())
                                 .Float()
                                 .Position(
-                                    left: coordinates.GlobalToLocal(position).x.Px(),
-                                    top: coordinates.GlobalToLocal(position).y.Px()
+                                    left: coordinates.GlobalToLocal(position).x.Dp(),
+                                    top: coordinates.GlobalToLocal(position).y.Dp()
                                 )
                         );
                     }
@@ -99,11 +99,11 @@ namespace UnityCompose.Samples.Behaviors
                 modifier: modifier.OrEmpty()
                     .Background(Color.grey)
                     .Padding(
-                        vertical: 8.Px(),
-                        horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Px()
+                        vertical: 8.Dp(),
+                        horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Dp()
                     )
-                    .Margin(horizontal: 2.Px())
-                    .Border(16.Px(), topLeftRadius: 0.Px())
+                    .Margin(horizontal: 2.Dp())
+                    .Border(16.Dp(), topLeftRadius: 0.Dp())
                     .Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value),
                 content: () =>
                 {
@@ -112,7 +112,7 @@ namespace UnityCompose.Samples.Behaviors
                         LocalTextStyle.Provides(
                             new TextStyle(
                                 Color: Color.white,
-                                FontSize: 32
+                                FontSize: 32.Sp()
                             )
                         ),
                         content: content

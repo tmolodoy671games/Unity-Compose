@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
             CompositionLocalProvider(
                 LocalTextStyle.Provides(
                     new TextStyle(
-                        FontSize: 40,
+                        FontSize: 40.Sp(),
                         Color: Color.black
                     )
                 ),
@@ -48,8 +48,8 @@ namespace UnityCompose.Samples.Behaviors
                                             modifier: Modifier
                                                 .FillMaxWidth()
                                                 .Background(Color.red)
-                                                .Padding(all: 20.Px())
-                                                .Border(radius: 16.Px())
+                                                .Padding(all: 20.Dp())
+                                                .Border(radius: 16.Dp())
                                                 .OnClick(() => firstCount.Value++)
                                                 .Name("first-button")
                                         );
@@ -62,9 +62,9 @@ namespace UnityCompose.Samples.Behaviors
                                         modifier: Modifier
                                             .FillMaxWidth()
                                             .Background(Color.green)
-                                            .Padding(all: 20.Px())
-                                            .Border(radius: 16.Px())
-                                            .Margin(top: 16.Px())
+                                            .Padding(all: 20.Dp())
+                                            .Border(radius: 16.Dp())
+                                            .Margin(top: 16.Dp())
                                             .OnClick(() => secondCount.Value++)
                                             .Name("second-button")
                                     );
@@ -74,9 +74,9 @@ namespace UnityCompose.Samples.Behaviors
                                         modifier: Modifier
                                             .FillMaxWidth()
                                             .Background(Color.blue)
-                                            .Padding(all: 20.Px())
-                                            .Border(radius: 16.Px())
-                                            .Margin(top: 16.Px())
+                                            .Padding(all: 20.Dp())
+                                            .Border(radius: 16.Dp())
+                                            .Margin(top: 16.Dp())
                                             .OnClick(() => showFirst.Value = !showFirst.Value)
                                             .Name("switch-button")
                                     );

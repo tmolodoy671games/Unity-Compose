@@ -19,19 +19,19 @@ internal partial class PausedTabScreen : ComposeScreen
         Box(
             modifier: modifier.OrEmpty()
                 .FillMaxSize()
-                .Padding(16.Px()),
+                .Padding(16.Dp()),
             content: () =>
             {
                 Text(
                     text: _tab.ToString(),
                     color: Color.white,
                     fontWeight: FontWeight.Bold,
-                    fontSize: 32,
+                    fontSize: 32.Sp(),
                     textAlign: TextAlign.MiddleCenter,
                     modifier: Modifier
                         .FillMaxSize()
                         .Background(_background)
-                        .Border(16.Px())
+                        .Border(16.Dp())
                 );
             }
         );

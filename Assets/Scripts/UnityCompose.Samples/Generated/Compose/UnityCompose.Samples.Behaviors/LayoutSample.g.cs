@@ -35,13 +35,13 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __Column((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Spacer(modifier: Modifier.Size(100.Px()).Background(Color.yellow), __composer: __composer, __changed: 0b_00);
+                    __Spacer(modifier: Modifier.Size(100.Dp()).Background(Color.yellow), __composer: __composer, __changed: 0b_00);
                     __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __composer.StartReplaceGroup(1605829516);
                         for (var i = 0; i < 10; i++)
                         {
-                            __Spacer(modifier: Modifier.Size(100.Px()).Background(Color.yellow), __composer: __composer, __changed: 0b_00);
+                            __Spacer(modifier: Modifier.Size(100.Dp()).Background(Color.yellow), __composer: __composer, __changed: 0b_00);
                         }
 
                         __composer.EndReplaceGroup(1605829516);
@@ -64,23 +64,23 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Box(modifier: Modifier.Background(Color.red).Size(400.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Box(modifier: Modifier.Background(Color.red).Size(400.Dp()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __Column((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
-                            __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(top: 5.Px()), __composer: __composer, __changed: 0b_00);
+                            __Spacer(modifier: Modifier.Size(100.Dp()).Float().Background(Color.yellow).Position(top: 5.Dp()), __composer: __composer, __changed: 0b_00);
                             __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                             {
                                 __composer.StartReplaceGroup(1309801539);
                                 for (var i = 0; i < 10; i++)
                                 {
-                                    __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(top: 5.Px()), __composer: __composer, __changed: 0b_00);
+                                    __Spacer(modifier: Modifier.Size(100.Dp()).Float().Background(Color.yellow).Position(top: 5.Dp()), __composer: __composer, __changed: 0b_00);
                                 }
 
                                 __composer.EndReplaceGroup(1309801539);
                             })), __composer: __composer, __changed: 0b_01_01_01_00);
                         })), __composer: __composer, __changed: 0b_01_01_01_00);
-                        __Spacer(modifier: Modifier.Size(100.Px()).Float().Background(Color.yellow).Position(bottom: 5.Px()), __composer: __composer, __changed: 0b_00);
+                        __Spacer(modifier: Modifier.Size(100.Dp()).Float().Background(Color.yellow).Position(bottom: 5.Dp()), __composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_00_00_00);
             }

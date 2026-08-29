@@ -22,8 +22,8 @@ namespace UnityCompose.Samples.Behaviors
                             Spacer(
                                 modifier: Modifier
                                     .Background(Color.lightYellow)
-                                    .Size(100.Px())
-                                    .Border(16.Px())
+                                    .Size(100.Dp())
+                                    .Border(16.Dp())
                                     .OnClick(() => showModalMenu.Value = false)
                             )
                     );
@@ -37,17 +37,17 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     Box(
                         modifier: Modifier
-                            .Padding(horizontal: 20.Px(), vertical: 8.Px())
+                            .Padding(horizontal: 20.Dp(), vertical: 8.Dp())
                             .Background(Color.lightGreen)
                             .Blur(AnimateFloatAsState(LocalModalMenuVisibility.Current.ToInt()).Value * 10)
                             .OnClick(() => showModalMenu.Value = true)
-                            .Border(16.Px()),
+                            .Border(16.Dp()),
                         content: () =>
                         {
                             Text(
                                 text: "Show modal",
                                 color: Color.white,
-                                fontSize: 32
+                                fontSize: 32.Sp()
                             );
                         }
                     );

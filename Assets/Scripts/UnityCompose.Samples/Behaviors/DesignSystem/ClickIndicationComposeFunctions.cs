@@ -46,8 +46,8 @@ public static partial class DesignSystemComposeFunctions
                         .Float()
                         .FillMaxSize()
                         .Position(
-                            top: 0.Px(),
-                            left: 0.Px()
+                            top: 0.Dp(),
+                            left: 0.Dp()
                         )
                         .Background(
                             AnimateColorAsState(hovered ? resolvedHoverColor : resolvedHoverColor.With(a: 0))
@@ -78,15 +78,15 @@ public static partial class DesignSystemComposeFunctions
                 var size = maxSize * pressProgress;
                 Spacer(
                     Modifier
-                        .Size(size.Px())
-                        .Border(size.Px() / 2)
+                        .Size(size.Dp())
+                        .Border(size.Dp() / 2)
                         .Background(resolvedPressColor)
                         .Alpha(1 - releaseAnimation.Progress)
                         .Float()
-                        .Offset(x: -size.Px() / 2, y: -size.Px() / 2)
+                        .Offset(x: -size.Dp() / 2, y: -size.Dp() / 2)
                         .Position(
-                            top: pressPosition.y.Px(),
-                            left: pressPosition.x.Px()
+                            top: pressPosition.y.Dp(),
+                            left: pressPosition.x.Dp()
                         )
                 );
             }

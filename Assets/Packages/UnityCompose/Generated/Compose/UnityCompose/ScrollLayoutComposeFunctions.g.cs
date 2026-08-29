@@ -48,7 +48,7 @@ public static partial class ComposeFunctions
                     it.style.flexDirection = FlexDirection.Column;
                     it.style.alignItems = Align.FlexStart;
                     it.style.justifyContent = Justify.FlexStart;
-                })), modifier: Modifier.Offset(y: -resolvedState.Value.Px()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Height))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
+                })), modifier: Modifier.Offset(y: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Height))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
             })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
@@ -89,7 +89,7 @@ public static partial class ComposeFunctions
                     it.style.flexDirection = FlexDirection.Row;
                     it.style.alignItems = Align.FlexStart;
                     it.style.justifyContent = Justify.FlexStart;
-                })), modifier: Modifier.Offset(x: -resolvedState.Value.Px()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Width))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
+                })), modifier: Modifier.Offset(x: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Width))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
             })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else

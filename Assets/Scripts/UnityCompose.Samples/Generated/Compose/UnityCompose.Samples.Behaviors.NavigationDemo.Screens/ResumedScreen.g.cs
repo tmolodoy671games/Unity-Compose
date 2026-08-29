@@ -22,7 +22,7 @@ internal partial class ResumedScreen
             {
                 var showMenu = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                 __DropdownMenu(expanded: showMenu.Value, onDismissRequest: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(showMenu!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = false)), __composer: __composer, __changed: 0b_00_00);
-                __Spacer(modifier: Modifier.Size(300.Px()).Background(Color.blue).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(showMenu!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionState.Current.Progress)), __composer: __composer, __changed: 0b_00);
+                __Spacer(modifier: Modifier.Size(300.Dp()).Background(Color.blue).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(showMenu!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => showMenu.Value = true))).Scale(1 - 0.5f * (1 - LocalTransitionState.Current.Progress)), __composer: __composer, __changed: 0b_00);
             })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else

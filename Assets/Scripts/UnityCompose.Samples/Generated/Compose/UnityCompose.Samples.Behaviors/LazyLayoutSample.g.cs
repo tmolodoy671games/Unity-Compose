@@ -54,10 +54,10 @@ namespace UnityCompose.Samples.Behaviors
                     __Column(horizontalAlignment: Alignment.CenterHorizontally, content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __ColumnSample(__composer: __composer, __changed: 0b_00);
-                        __Spacer(Modifier.Height(100.Px()), __composer: __composer, __changed: 0b_00);
+                        __Spacer(Modifier.Height(100.Dp()), __composer: __composer, __changed: 0b_00);
                         __RowSample(__composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_00_01_00);
-                    __Spacer(Modifier.Float().Size(100.Percent()).IgnoreInput(), __composer: __composer, __changed: 0b_00);
+                    __Spacer(Modifier.Float().FillMaxSize().IgnoreInput(), __composer: __composer, __changed: 0b_00);
                 })), __composer: __composer, __changed: 0b_00_00_00);
             }
             else
@@ -77,19 +77,19 @@ namespace UnityCompose.Samples.Behaviors
                 var state = __RememberLazyListState(__composer: __composer, __changed: 0b_00);
                 __Row((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Box(modifier: Modifier.Height(400.Px()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Box(modifier: Modifier.Height(400.Dp()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         __LazyColumn(state: state, content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>(scope =>
                         {
                             scope.Items(count: 20, key: it => it, content: it =>
                             {
-                                __Text(text: it.ToString(), color: Color.white, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Px()).Margin(vertical: 4.Px()).OnClick((!__composer.BuildChanged().Changed<global::UnityCompose.LazyListState>(state!).Changed<int>(it!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(it)))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                                __Text(text: it.ToString(), color: Color.white, fontSize: 32.Sp(), textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Dp()).Margin(vertical: 4.Dp()).OnClick((!__composer.BuildChanged().Changed<global::UnityCompose.LazyListState>(state!).Changed<int>(it!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(it)))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
                             });
                         })), __composer: __composer, __changed: 0b_01_01_01_01_00_00);
-                        __Box(modifier: Modifier.Height(100.Percent()).Float().Position(right: 0.Px()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                        __Box(modifier: Modifier.Height(100.Percent()).Float().Position(right: 0.Dp()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
                             var scrollerSize = state.ViewportSize / state.ContentSize;
-                            __Spacer(Modifier.Background(Color.cadetBlue).Width(32.Px()).Border(16.Px()).Height(scrollerSize * 100.Percent()).Position(top: (state.Value / state.ContentSize) * 100.Percent()), __composer: __composer, __changed: 0b_00);
+                            __Spacer(Modifier.Background(Color.cadetBlue).Width(32.Dp()).Border(16.Dp()).Height(scrollerSize * 100.Percent()).Position(top: (state.Value / state.ContentSize) * 100.Percent()), __composer: __composer, __changed: 0b_00);
                         })), __composer: __composer, __changed: 0b_01_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_01_01_01_00);
@@ -111,22 +111,22 @@ namespace UnityCompose.Samples.Behaviors
                 var state = __RememberLazyListState(__composer: __composer, __changed: 0b_00);
                 __Column((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __LazyRow(state: state, modifier: Modifier.Width(400.Px()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>(scope =>
+                    __LazyRow(state: state, modifier: Modifier.Width(400.Dp()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.ILazyListScope>>(scope =>
                     {
                         __Row(modifier: Modifier.Background(Color.white), content: () =>
                         {
                             scope.Items(count: 20, key: (!__composer.Changed() ? __composer.RememberedValue<global::System.Func<int, object>>() : __composer.UpdateRememberedValue<global::System.Func<int, object>>(it => it)), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent<int>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<int>>(it =>
                             {
-                                __Text(text: it.ToString(), color: Color.white, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("Glick")))).OnClick((!__composer.BuildChanged().Changed<global::UnityCompose.LazyListState>(state!).Changed<int>(it!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(it)))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                                __Text(text: it.ToString(), color: Color.white, fontSize: 32.Sp(), textAlign: TextAlign.MiddleCenter, modifier: Modifier.Background(Color.red).Size(100.Dp()).Margin(horizontal: 4.Dp()).OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => Debug.Log("Glick")))).OnClick((!__composer.BuildChanged().Changed<global::UnityCompose.LazyListState>(state!).Changed<int>(it!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(it)))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
                             })));
                         }, __composer: __composer, __changed: 0b_01_01_00_00);
                     })), __composer: __composer, __changed: 0b_01_01_01_00_00);
                     const float width = 32;
-                    __Row(modifier: Modifier.FillMaxWidth().Height(width.Px()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Row(modifier: Modifier.FillMaxWidth().Height(width.Dp()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Spacer(Modifier.Size(width.Px()).Background(Color.forestGreen).OnClick((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(0)))), __composer: __composer, __changed: 0b_00);
+                        __Spacer(Modifier.Size(width.Dp()).Background(Color.forestGreen).OnClick((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(0)))), __composer: __composer, __changed: 0b_00);
                         __Spacer(Modifier.Weight(1).Background(Color.indianRed), __composer: __composer, __changed: 0b_00);
-                        __Spacer(Modifier.Size(width.Px()).Background(Color.forestGreen).OnClick((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(19)))), __composer: __composer, __changed: 0b_00);
+                        __Spacer(Modifier.Size(width.Dp()).Background(Color.forestGreen).OnClick((!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.AnimateScrollToItem(19)))), __composer: __composer, __changed: 0b_00);
                     })), __composer: __composer, __changed: 0b_01_01_00_00);
                 })), __composer: __composer, __changed: 0b_01_01_01_00);
             }

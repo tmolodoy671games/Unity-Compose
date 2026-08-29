@@ -10,9 +10,9 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
 {
     private readonly Length _value;
 
-    private LayoutLength(Px px) : this()
+    private LayoutLength(Dp dp) : this()
     {
-        _value = px.ToLength();
+        _value = dp.ToLength();
         HasValue = true;
     }
 
@@ -44,7 +44,7 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
         return HashCode.Combine(HasValue, _value);
     }
 
-    public static implicit operator LayoutLength(Px px) => new(px);
+    public static implicit operator LayoutLength(Dp dp) => new(dp);
 
     public static implicit operator LayoutLength(Percent percent) => new(percent);
     
@@ -72,32 +72,32 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
     {
         return _value.unit switch
         {
-            LengthUnit.Pixel => _value.value.Px().ToString(),
+            LengthUnit.Pixel => _value.value.Dp().ToString(),
             LengthUnit.Percent => _value.value.Percent().ToString(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
 }
 
-public readonly struct Px : IEquatable<Px>
+public readonly struct Dp : IEquatable<Dp>
 {
     private readonly float _value;
 
-    public Px(float value)
+    public Dp(float value)
     {
         _value = value;
     }
 
     internal Length ToLength() => new(_value, LengthUnit.Pixel);
 
-    public bool Equals(Px other)
+    public bool Equals(Dp other)
     {
         return _value.AlmostEquals(other._value);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Px other && Equals(other);
+        return obj is Dp other && Equals(other);
     }
 
     public override int GetHashCode() => _value.GetHashCode();
@@ -107,67 +107,67 @@ public readonly struct Px : IEquatable<Px>
         return $"{_value}px";
     }
     
-    public static Px operator -(Px left)
+    public static Dp operator -(Dp left)
     {
-        return new Px(-left._value);
+        return new Dp(-left._value);
     }
 
-    public static Px operator +(Px left, Px right)
+    public static Dp operator +(Dp left, Dp right)
     {
-        return new Px(left._value + right._value);
+        return new Dp(left._value + right._value);
     }
 
-    public static Px operator -(Px left, Px right)
+    public static Dp operator -(Dp left, Dp right)
     {
-        return new Px(left._value - right._value);
+        return new Dp(left._value - right._value);
     }
 
-    public static Px operator *(Px left, Px right)
+    public static Dp operator *(Dp left, Dp right)
     {
-        return new Px(left._value * right._value);
+        return new Dp(left._value * right._value);
     }
     
-    public static Px operator *(float left, Px right)
+    public static Dp operator *(float left, Dp right)
     {
-        return new Px(left * right._value);
+        return new Dp(left * right._value);
     }
     
-    public static Px operator *(Px left, float right)
+    public static Dp operator *(Dp left, float right)
     {
-        return new Px(left._value * right);
+        return new Dp(left._value * right);
     }
     
-    public static Px operator *(int left, Px right)
+    public static Dp operator *(int left, Dp right)
     {
-        return new Px(left * right._value);
+        return new Dp(left * right._value);
     }
     
-    public static Px operator *(Px left, int right)
+    public static Dp operator *(Dp left, int right)
     {
-        return new Px(left._value * right);
+        return new Dp(left._value * right);
     }
     
-    public static Px operator /(Px left, Px right)
+    public static Dp operator /(Dp left, Dp right)
     {
-        return new Px(left._value / right._value);
+        return new Dp(left._value / right._value);
     }
     
-    public static Px operator /(Px left, float right)
+    public static Dp operator /(Dp left, float right)
     {
-        return new Px(left._value / right);
+        return new Dp(left._value / right);
     }
     
-    public static Px operator /(Px left, int right)
+    public static Dp operator /(Dp left, int right)
     {
-        return new Px(left._value / right);
+        return new Dp(left._value / right);
     }
 
-    public static bool operator ==(Px lhs, Px rhs)
+    public static bool operator ==(Dp lhs, Dp rhs)
     {
         return lhs.Equals(rhs);
     }
 
-    public static bool operator !=(Px lhs, Px rhs)
+    public static bool operator !=(Dp lhs, Dp rhs)
     {
         return !(lhs == rhs);
     }
@@ -254,10 +254,10 @@ public static partial class FloatExtensions
 {
     public static Percent Percent(this float coordinate) => new(coordinate);
 
-    public static Px Px(this float value) => new Px(value);
+    public static Dp Dp(this float value) => new Dp(value);
 
 
     public static Percent Percent(this int coordinate) => new(coordinate);
 
-    public static Px Px(this int value) => new Px(value);
+    public static Dp Dp(this int value) => new Dp(value);
 }

@@ -51,10 +51,10 @@ namespace UnityCompose.Samples.Behaviors
             {
                 __Box(alignment: Alignment.Center, modifier: Modifier, content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("reordarable-list-sample").Padding(top: 100.Px()).FillMaxHeight().Width(800.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("reordarable-list-sample").Padding(top: 100.Dp()).FillMaxHeight().Width(800.Dp()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         var items = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableStateList<int>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableStateList<int>>(MutableStateListOf(1, 2)));
-                        __Text(text: "Add Item", color: Color.white, fontSize: 40, modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32.Px(), vertical: 16.Px()).Border(radius: 16.Px()).OnClick((!__composer.Changed<global::UnityCompose.IMutableStateList<int>>(items!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                        __Text(text: "Add Item", color: Color.white, fontSize: 40.Sp(), modifier: Modifier.Name("add-item-button").Align(Alignment.Right).Background(Color.blue).Padding(horizontal: 32.Dp(), vertical: 16.Dp()).Border(radius: 16.Dp()).OnClick((!__composer.Changed<global::UnityCompose.IMutableStateList<int>>(items!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                         {
                             for (var i = 1; i <= items.Count + 1; i++)
                             {
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors
                                     return;
                                 }
                             }
-                        }))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                        }))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
                         var immutableItems = items.ToImmutableList();
                         __Column(horizontalAlignment: Alignment.CenterHorizontally, modifier: Modifier.Name("nested-column").FillMaxWidth(), content: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableStateList<int>>(items!).Changed<global::Sirenix.Utilities.ImmutableList<int>>(immutableItems!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
@@ -128,18 +128,18 @@ namespace UnityCompose.Samples.Behaviors
                     {
                     }, __composer: __composer, __changed: 0b_00_01);
                 __composer.EndReplaceGroup(2007911671);
-                __Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Px()).Border(radius: 12.Px()).Margin(vertical: 4.Px()), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_11) == 0b_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_11_00) == 0b_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_11_00_00) == 0b_00_10_00_00).ChangedAsFlag((__dirty & 0b_11_00_00_00) == 0b_10_00_00_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __Row(verticalAlignment: Alignment.CenterVertically, modifier: Modifier.Name("item-row").Background(Color.cyan).FillMaxWidth().Padding(all: 4.Dp()).Border(radius: 12.Dp()).Margin(vertical: 4.Dp()), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_11) == 0b_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_11_00) == 0b_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_11_00_00) == 0b_00_10_00_00).ChangedAsFlag((__dirty & 0b_11_00_00_00) == 0b_10_00_00_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Text(text: $"Item no. {state}", color: Color.black, fontSize: 40, modifier: Modifier.Name("item-name-label").Margin(left: 32.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                    __Text(text: $"Item no. {state}", color: Color.black, fontSize: 40.Sp(), modifier: Modifier.Name("item-name-label").Margin(left: 32.Dp()), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
                     __Spacer(Modifier.Weight(1), __composer: __composer, __changed: 0b_00);
                     var counter = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<int>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<int>>(MutableStateOf(0)));
-                    __Text(text: counter.Value.ToString(), color: Color.white, fontSize: 40, modifier: Modifier.Background(Color.green).Padding(horizontal: 16.Px()).Border(12.Px()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<int>>(counter!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => counter.Value++))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                    __Text(text: counter.Value.ToString(), color: Color.white, fontSize: 40.Sp(), modifier: Modifier.Background(Color.green).Padding(horizontal: 16.Dp()).Border(12.Dp()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<int>>(counter!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => counter.Value++))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
                     __Column(content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11_00) == 0b_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_11_00_00) == 0b_00_10_00_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Text(text: "↑", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("up-arrow-button").Background(Color.green).Padding(horizontal: 6.Px(), vertical: 4.Px()).Border(radius: 16.Px()).OnClick(onMoveUpClick), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
-                        __Text(text: "↓", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("down-arrow-button").Background(Color.green).Padding(horizontal: 6.Px(), vertical: 4.Px()).Border(radius: 16.Px()).OnClick(onMoveDownClick), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                        __Text(text: "↑", color: Color.white, fontSize: 40.Sp(), fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("up-arrow-button").Background(Color.green).Padding(horizontal: 6.Dp(), vertical: 4.Dp()).Border(radius: 16.Dp()).OnClick(onMoveUpClick), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
+                        __Text(text: "↓", color: Color.white, fontSize: 40.Sp(), fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("down-arrow-button").Background(Color.green).Padding(horizontal: 6.Dp(), vertical: 4.Dp()).Border(radius: 16.Dp()).OnClick(onMoveDownClick), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
                     })), __composer: __composer, __changed: 0b_01_01_01_00);
-                    __Text(text: "X", color: Color.white, fontSize: 40, fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("remove-button").Background(Color.red).Padding(horizontal: 16.Px(), vertical: 4.Px()).Border(radius: 16.Px()).OnClick(onRemoveClick), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                    __Text(text: "X", color: Color.white, fontSize: 40.Sp(), fontWeight: FontWeight.Bold, textAlign: TextAlign.MiddleCenter, modifier: Modifier.Name("remove-button").Background(Color.red).Padding(horizontal: 16.Dp(), vertical: 4.Dp()).Border(radius: 16.Dp()).OnClick(onRemoveClick), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
                 })), __composer: __composer, __changed: 0b_01_00_00);
             }
             else

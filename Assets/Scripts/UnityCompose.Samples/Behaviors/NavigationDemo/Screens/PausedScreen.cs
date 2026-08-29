@@ -44,7 +44,7 @@ internal partial class PausedScreen : ComposeScreen
                     currentTab: tab,
                     onClick: onClick,
                     modifier: Modifier.Align(Alignment.CenterHorizontally)
-                        .Offset(y: -100 * (1 - 1).Px())
+                        .Offset(y: -100 * (1 - 1).Dp())
                 );
                 // Spacer(
                 //     modifier: Modifier
@@ -79,7 +79,7 @@ internal partial class PausedScreen : ComposeScreen
         Row(
             modifier: modifier.OrEmpty()
                 .Align(Alignment.CenterHorizontally)
-                .Margin(top: 16.Px()),
+                .Margin(top: 16.Dp()),
             content: () =>
             {
                 Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick);
@@ -100,17 +100,17 @@ internal partial class PausedScreen : ComposeScreen
         DsClickIndication(
             modifier: Modifier
                 .Background(Color.gray)
-                .Padding(horizontal: AnimateFloatAsState(selected ? 120 : 40).Value.Px())
-                .Padding(vertical: 12.Px())
-                .Border(8.Px())
-                .Margin(horizontal: 4.Px())
+                .Padding(horizontal: AnimateFloatAsState(selected ? 120 : 40).Value.Dp())
+                .Padding(vertical: 12.Dp())
+                .Border(8.Dp())
+                .Margin(horizontal: 4.Dp())
                 .OnClick(() => onClick(tab)),
             content: it =>
             {
                 Text(
                     text: tab.ToString(),
                     color: Color.white,
-                    fontSize: 20,
+                    fontSize: 20.Sp(),
                     fontWeight: FontWeight.Bold,
                     modifier: Modifier
                         .Scale(1.5f - AnimateFloatAsState(it.IsPressed.ToInt()).Value * 0.25f)

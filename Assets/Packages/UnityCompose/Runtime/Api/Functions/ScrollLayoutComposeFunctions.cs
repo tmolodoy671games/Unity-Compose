@@ -47,7 +47,7 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = Justify.FlexStart;
                     },
                     modifier: Modifier
-                        .Offset(y: -resolvedState.Value.Px())
+                        .Offset(y: -resolvedState.Value.Dp())
                         .OnGloballyPositioned(it => resolvedState.ContentSize = it.Height),
                     content: content
                 );
@@ -87,7 +87,7 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = Justify.FlexStart;
                     },
                     modifier: Modifier
-                        .Offset(x: -resolvedState.Value.Px())
+                        .Offset(x: -resolvedState.Value.Dp())
                         .OnGloballyPositioned(it => resolvedState.ContentSize = it.Width),
                     content: content
                 );

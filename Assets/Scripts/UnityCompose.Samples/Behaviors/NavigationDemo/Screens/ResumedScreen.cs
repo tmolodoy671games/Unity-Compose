@@ -23,7 +23,7 @@ internal partial class ResumedScreen : ComposeScreen
                 );
                 Spacer(
                     modifier: Modifier
-                        .Size(300.Px())
+                        .Size(300.Dp())
                         .Background(Color.blue)
                         .OnClick(() => showMenu.Value = true)
                         .Scale(1 - 0.5f * (1 - LocalTransitionState.Current.Progress))
@@ -51,7 +51,7 @@ internal partial class ResumedScreen : ComposeScreen
         //             {
         //                 Spacer(
         //                     Modifier
-        //                         .Size(100.Px())
+        //                         .Size(100.Dp())
         //                         .Background(Color.yellow)
         //                         .OnClick(onDismissRequest)
         //                 );

@@ -41,11 +41,11 @@ namespace UnityCompose.Samples.Behaviors
                                 horizontal: AnimateFloatAsState(
                                     isHovered.Value ? 160 : 40,
                                     animationSpec: Tween(duration: 2)
-                                ).Value.Px(),
-                                vertical: 16.Px()
+                                ).Value.Dp(),
+                                vertical: 16.Dp()
                             )
                             .Background((isPressed.Value ? Color.darkBlue : Color.blue))
-                            .Border(radius: 16.Px())
+                            .Border(radius: 16.Dp())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .CapturePointer(isCapturingPointer.Value)
@@ -77,7 +77,7 @@ namespace UnityCompose.Samples.Behaviors
                                 {
                                     Text(
                                         text: "Click me",
-                                        fontSize: 24,
+                                        fontSize: 24.Sp(),
                                         modifier: Modifier
                                             .Scale((isPressed.Value ? 0.6f : 1f))
                                             .Alpha((isPressed.Value ? 0.6f : 1f))

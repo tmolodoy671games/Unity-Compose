@@ -19,7 +19,7 @@ internal partial class InventoryTabScreen
         {
             __Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                __Column(modifier: Modifier.Background(Color.black).Padding(8.Px()).Border(16.Px()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __Column(modifier: Modifier.Background(Color.black).Padding(8.Dp()).Border(16.Dp()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __Row((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
@@ -53,7 +53,7 @@ internal partial class InventoryTabScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __changed != 0b_00)
         {
-            __Spacer(Modifier.Size(100.Px()).Border(16.Px()).Background(Color.grey).Margin(2.Px()), __composer: __composer, __changed: 0b_00);
+            __Spacer(Modifier.Size(100.Dp()).Border(16.Dp()).Background(Color.grey).Margin(2.Dp()), __composer: __composer, __changed: 0b_00);
         }
         else
         {

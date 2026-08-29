@@ -37,6 +37,10 @@ public static partial class ComposeFunctions
             var node = composer.GetReusableNode<T>();
             var visualElement = node.VisualElement.NotNull();
             composer.EnterVisualElement(visualElement);
+            __composer.StartReplaceGroup(1320298374);
+            if (modifier is { IsComposable: true })
+                modifier = modifier.__Compose(__composer: __composer, __changed: 0b_00);
+            __composer.EndReplaceGroup(1320298374);
             node.Update(parent: parent, indexInParent: indexInParent, modifier: modifier, initializer: initializer);
             __composer.StartReplaceGroup(1265773657);
             __composer.StartReplaceGroup(1265773657);
@@ -169,7 +173,7 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(930722157, __isRestarted)?.UpdateScope(() => __Spacer(__modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
-    public static void __Text(string text, Optional<Color> color = default, Optional<float> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static void __Text(string text, Optional<Color> color = default, Optional<Sp> fontSize = default, Optional<TextStyle> style = default, Optional<FontStyle> fontStyle = default, Optional<FontWeight> fontWeight = default, bool softWrap = true, TextAlign textAlign = TextAlign.UpperLeft, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__text, __color, __fontSize, __style, __fontStyle, __fontWeight, __softWrap, __textAlign, __modifier) = (text, color, fontSize, style, fontStyle, fontWeight, softWrap, textAlign, modifier);
         var __isCreated = __composer.StartRestartGroup(860831349);
@@ -197,52 +201,19 @@ public static partial class ComposeFunctions
         {
             var localContentColor = LocalContentColor.Current;
             var localTextStyle = LocalTextStyle.Current;
-            __ReusableComposeView<Text>(modifier: modifier, initializer: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_00_00_11) == 0b_00_00_00_00_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_00_11_00) == 0b_00_00_00_00_00_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_11_00_00) == 0b_00_00_00_00_00_00_10_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_00_10_00_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_11_00_00_00_00) == 0b_00_00_00_00_10_00_00_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_11_00_00_00_00_00) == 0b_00_00_00_10_00_00_00_00_00).ChangedAsFlag((__dirty & 0b_00_00_11_00_00_00_00_00_00) == 0b_00_00_10_00_00_00_00_00_00).ChangedAsFlag((__dirty & 0b_00_11_00_00_00_00_00_00_00) == 0b_00_10_00_00_00_00_00_00_00).Changed<global::SharpExtensions.Optional<global::UnityEngine.Color>>(localContentColor!).Changed<global::SharpExtensions.Optional<global::UnityCompose.TextStyle>>(localTextStyle!).Get() ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>(it =>
+            var resolvedFontStyle = (!__composer.Changed<(global::SharpExtensions.Optional<global::UnityCompose.FontStyle> fontStyle, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> style, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> localTextStyle)>((fontStyle, style, localTextStyle)!) ? __composer.RememberedValue<global::UnityCompose.FontStyle>() : __composer.UpdateRememberedValue<global::UnityCompose.FontStyle>(fontStyle.HasValue ? fontStyle.Value : style.HasValue ? style.Value.FontStyle : localTextStyle.HasValue ? localTextStyle.Value.FontStyle : FontStyle.Normal));
+            var resolvedFontWeight = (!__composer.Changed<(global::SharpExtensions.Optional<global::UnityCompose.FontWeight> fontWeight, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> style, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> localTextStyle)>((fontWeight, style, localTextStyle)!) ? __composer.RememberedValue<global::UnityCompose.FontWeight>() : __composer.UpdateRememberedValue<global::UnityCompose.FontWeight>(fontWeight.HasValue ? fontWeight.Value : style.HasValue ? style.Value.FontWeight : localTextStyle.HasValue ? localTextStyle.Value.FontWeight : FontWeight.Normal));
+            var resolvedFontSize = (!__composer.Changed<(global::SharpExtensions.Optional<global::UnityCompose.Sp> fontSize, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> style, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> localTextStyle)>((fontSize, style, localTextStyle)!) ? __composer.RememberedValue<global::UnityCompose.Sp>() : __composer.UpdateRememberedValue<global::UnityCompose.Sp>(fontSize.HasValue ? fontSize.Value : style.HasValue ? style.Value.FontSize : localTextStyle.HasValue ? localTextStyle.Value.FontSize : 14.Sp()));
+            var resolvedFontSizeValue = resolvedFontSize.__Resolve(__composer: __composer, __changed: 0b_00);
+            var resolvedColor = (!__composer.Changed<(global::SharpExtensions.Optional<global::UnityEngine.Color> color, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> style, global::SharpExtensions.Optional<global::UnityEngine.Color> localContentColor, global::SharpExtensions.Optional<global::UnityCompose.TextStyle> localTextStyle)>((color, style, localContentColor, localTextStyle)!) ? __composer.RememberedValue<global::UnityEngine.Color>() : __composer.UpdateRememberedValue<global::UnityEngine.Color>(color.HasValue ? color.Value : style is { HasValue: true, Value.Color.HasValue: true } ? style.Value.Color.Value : localContentColor.HasValue ? localContentColor.Value : localTextStyle is { HasValue: true, Value.Color.HasValue: true } ? localTextStyle.Value.Color.Value : Color.black));
+            __ReusableComposeView<Text>(modifier: modifier, initializer: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_00_00_11) == 0b_00_00_00_00_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_11_00_00_00_00_00_00) == 0b_00_00_10_00_00_00_00_00_00).ChangedAsFlag((__dirty & 0b_00_11_00_00_00_00_00_00_00) == 0b_00_10_00_00_00_00_00_00_00).Changed<global::UnityCompose.FontStyle>(resolvedFontStyle!).Changed<global::UnityCompose.FontWeight>(resolvedFontWeight!).Changed<float>(resolvedFontSizeValue!).Changed<global::UnityEngine.Color>(resolvedColor!).Get() ? __composer.RememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Views.Text>>(it =>
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
-                // FontStyle
-                FontStyle resolvedFontStyle;
-                if (fontStyle.HasValue)
-                    resolvedFontStyle = fontStyle.Value;
-                else if (style.HasValue)
-                    resolvedFontStyle = style.Value.FontStyle;
-                else if (localTextStyle.HasValue)
-                    resolvedFontStyle = localTextStyle.Value.FontStyle;
-                else
-                    resolvedFontStyle = FontStyle.Normal;
-                // FontWeight
-                FontWeight resolvedFontWeight;
-                if (fontWeight.HasValue)
-                    resolvedFontWeight = fontWeight.Value;
-                else if (style.HasValue)
-                    resolvedFontWeight = style.Value.FontWeight;
-                else if (localTextStyle.HasValue)
-                    resolvedFontWeight = localTextStyle.Value.FontWeight;
-                else
-                    resolvedFontWeight = FontWeight.Normal;
                 it.style.unityFontStyleAndWeight = FontStyleUtils.ToUnityFontStyle(resolvedFontStyle, resolvedFontWeight);
                 it.style.unityTextAlign = textAlign.ToTextAnchor();
-                // FontSize
-                if (fontSize.HasValue)
-                    it.style.fontSize = fontSize.Value;
-                else if (style.HasValue)
-                    it.style.fontSize = style.Value.FontSize;
-                else if (localTextStyle.HasValue)
-                    it.style.fontSize = localTextStyle.Value.FontSize;
-                else
-                    it.style.fontSize = 14f;
-                // Color
-                if (color.HasValue)
-                    it.style.color = color.Value;
-                else if (style is { HasValue: true, Value.Color.HasValue: true })
-                    it.style.color = style.Value.Color.Value;
-                else if (localContentColor.HasValue)
-                    it.style.color = localContentColor.Value;
-                else if (localTextStyle is { HasValue: true, Value.Color.HasValue: true })
-                    it.style.color = localTextStyle.Value.Color.Value;
-                else
-                    it.style.color = Color.black;
+                it.style.fontSize = resolvedFontSizeValue;
+                it.style.color = resolvedColor;
             })), __composer: __composer, __changed: 0b_01_00_00 | ((__dirty & 0b_11_00_00_00_00_00_00_00_00) >> 16));
         }
         else
@@ -257,7 +228,7 @@ public static partial class ComposeFunctions
     public static void __Image(ComposeImage image, Optional<Color> tint = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__image, __tint, __modifier) = (image, tint, modifier);
-        var __isCreated = __composer.StartRestartGroup(993727079);
+        var __isCreated = __composer.StartRestartGroup(1956783564);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(image) ? 0b_00_00_10 : 0b_00_00_01;
@@ -282,6 +253,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(993727079, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(1956783564, __isRestarted)?.UpdateScope(() => __Image(__image, __tint, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

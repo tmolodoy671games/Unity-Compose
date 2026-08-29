@@ -53,7 +53,7 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = (verticalArrangement ?? Arrangement.Top).ToJustify();
                     },
                     modifier: Modifier
-                        .Offset(y: -resolvedState.Value.Px())
+                        .Offset(y: -resolvedState.Value.Dp())
                         .OnGloballyPositioned(it => resolvedState.ContentSize = it.Height),
                     content: () =>
                     {
@@ -120,7 +120,7 @@ public static partial class ComposeFunctions
                         it.style.justifyContent = (horizontalArrangement ?? Arrangement.Left).ToJustify();
                     },
                     modifier: Modifier
-                        .Offset(x: -resolvedState.Value.Px())
+                        .Offset(x: -resolvedState.Value.Dp())
                         .OnGloballyPositioned(it => resolvedState.ContentSize = it.Width),
                     content: () =>
                     {

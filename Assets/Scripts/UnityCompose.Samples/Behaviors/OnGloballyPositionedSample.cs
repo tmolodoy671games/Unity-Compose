@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 horizontalAlignment: Alignment.CenterHorizontally,
                 modifier: Modifier.FillMaxSize()
-                    .Padding(100.Px())
+                    .Padding(100.Dp())
                     .OnGloballyPositioned(it => parentCoordinates.Value = it),
                 content: () =>
                 {
@@ -40,13 +40,13 @@ namespace UnityCompose.Samples.Behaviors
                             Box(
                                 alignment: Alignment.Center,
                                 modifier: Modifier
-                                    .Size(40.Px())
+                                    .Size(40.Dp())
                                     .Background(Color.blue)
                                     .Offset(
                                         x: AnimateFloatAsState(
                                             targetValue: 500 * isSwitched.Value.ToInt(),
                                             animationSpec: transitionSpec
-                                        ).Value.Px()
+                                        ).Value.Dp()
                                     ),
                                 content: () =>
                                 {
@@ -57,7 +57,7 @@ namespace UnityCompose.Samples.Behaviors
                                             Spacer(
                                                 Modifier
                                                     .Background(Color.green)
-                                                    .Size(20.Px())
+                                                    .Size(20.Dp())
                                                     .OnGloballyPositioned(it => layout.Value = it.GlobalCenter)
                                             );
                                         });
@@ -69,8 +69,8 @@ namespace UnityCompose.Samples.Behaviors
                     Text(
                         modifier: Modifier
                             .Background(Color.blue)
-                            .Padding(32.Px())
-                            .Border(32.Px())
+                            .Padding(32.Dp())
+                            .Border(32.Dp())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value),
                         color: Color.white,
                         text: "Switch"
@@ -81,12 +81,12 @@ namespace UnityCompose.Samples.Behaviors
                         var parentCoordinatesValue = parentCoordinates.Value.Value;
                         Spacer(
                             modifier: Modifier
-                                .Size(10.Px())
+                                .Size(10.Dp())
                                 .Background(Color.red)
                                 .Float()
                                 .Position(
-                                    left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x.Px(),
-                                    top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y.Px()
+                                    left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).x.Dp(),
+                                    top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value).y.Dp()
                                 )
                         );
                     }

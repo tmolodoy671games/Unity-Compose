@@ -28,8 +28,8 @@ public static partial class ComposeFunctions
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
-        // if (modifier is { IsComposable: true })
-        //     modifier = modifier.Compose();
+        if (modifier is { IsComposable: true })
+            modifier = modifier.Compose();
         node.Update(
             parent: parent,
             indexInParent: indexInParent,
@@ -115,7 +115,7 @@ public static partial class ComposeFunctions
     public static void Text(
         string text,
         Optional<Color> color = default,
-        Optional<float> fontSize = default,
+        Optional<Sp> fontSize = default,
         Optional<TextStyle> style = default,
         Optional<FontStyle> fontStyle = default,
         Optional<FontWeight> fontWeight = default,
@@ -126,60 +126,57 @@ public static partial class ComposeFunctions
     {
         var localContentColor = LocalContentColor.Current;
         var localTextStyle = LocalTextStyle.Current;
+        var resolvedFontStyle = Remember((fontStyle, style, localTextStyle), () =>
+            fontStyle.HasValue
+                ? fontStyle.Value
+                : style.HasValue
+                    ? style.Value.FontStyle
+                    : localTextStyle.HasValue
+                        ? localTextStyle.Value.FontStyle
+                        : FontStyle.Normal
+        );
+        var resolvedFontWeight = Remember((fontWeight, style, localTextStyle), () =>
+            fontWeight.HasValue
+                ? fontWeight.Value
+                : style.HasValue
+                    ? style.Value.FontWeight
+                    : localTextStyle.HasValue
+                        ? localTextStyle.Value.FontWeight
+                        : FontWeight.Normal
+        );
+        var resolvedFontSize = Remember((fontSize, style, localTextStyle), () =>
+            fontSize.HasValue
+                ? fontSize.Value
+                : style.HasValue
+                    ? style.Value.FontSize
+                    : localTextStyle.HasValue
+                        ? localTextStyle.Value.FontSize
+                        : 14.Sp()
+        );
+        var resolvedFontSizeValue = resolvedFontSize.Resolve();
+        var resolvedColor = Remember((color, style, localContentColor, localTextStyle), () =>
+            color.HasValue
+                ? color.Value
+                : style is { HasValue: true, Value.Color.HasValue: true }
+                    ? style.Value.Color.Value
+                    : localContentColor.HasValue
+                        ? localContentColor.Value
+                        : localTextStyle is { HasValue: true, Value.Color.HasValue: true }
+                            ? localTextStyle.Value.Color.Value
+                            : Color.black
+        );
+
         ReusableComposeView<Text>(
             modifier: modifier,
             initializer: it =>
             {
                 it.text = text;
                 it.style.whiteSpace = softWrap ? WhiteSpace.Normal : WhiteSpace.NoWrap;
-
-                // FontStyle
-                FontStyle resolvedFontStyle;
-                if (fontStyle.HasValue)
-                    resolvedFontStyle = fontStyle.Value;
-                else if (style.HasValue)
-                    resolvedFontStyle = style.Value.FontStyle;
-                else if (localTextStyle.HasValue)
-                    resolvedFontStyle = localTextStyle.Value.FontStyle;
-                else
-                    resolvedFontStyle = FontStyle.Normal;
-
-                // FontWeight
-                FontWeight resolvedFontWeight;
-                if (fontWeight.HasValue)
-                    resolvedFontWeight = fontWeight.Value;
-                else if (style.HasValue)
-                    resolvedFontWeight = style.Value.FontWeight;
-                else if (localTextStyle.HasValue)
-                    resolvedFontWeight = localTextStyle.Value.FontWeight;
-                else
-                    resolvedFontWeight = FontWeight.Normal;
-
                 it.style.unityFontStyleAndWeight =
                     FontStyleUtils.ToUnityFontStyle(resolvedFontStyle, resolvedFontWeight);
                 it.style.unityTextAlign = textAlign.ToTextAnchor();
-
-                // FontSize
-                if (fontSize.HasValue)
-                    it.style.fontSize = fontSize.Value;
-                else if (style.HasValue)
-                    it.style.fontSize = style.Value.FontSize;
-                else if (localTextStyle.HasValue)
-                    it.style.fontSize = localTextStyle.Value.FontSize;
-                else
-                    it.style.fontSize = 14f;
-
-                // Color
-                if (color.HasValue)
-                    it.style.color = color.Value;
-                else if (style is { HasValue: true, Value.Color.HasValue: true })
-                    it.style.color = style.Value.Color.Value;
-                else if (localContentColor.HasValue)
-                    it.style.color = localContentColor.Value;
-                else if (localTextStyle is { HasValue: true, Value.Color.HasValue: true })
-                    it.style.color = localTextStyle.Value.Color.Value;
-                else
-                    it.style.color = Color.black;
+                it.style.fontSize = resolvedFontSizeValue;
+                it.style.color = resolvedColor;
             }
         );
     }

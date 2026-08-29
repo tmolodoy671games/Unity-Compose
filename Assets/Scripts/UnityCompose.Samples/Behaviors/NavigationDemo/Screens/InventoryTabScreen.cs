@@ -14,8 +14,8 @@ internal partial class InventoryTabScreen : ComposeScreen
                 Column(
                     modifier: Modifier
                         .Background(Color.black)
-                        .Padding(8.Px())
-                        .Border(16.Px()),
+                        .Padding(8.Dp())
+                        .Border(16.Dp()),
                     content: () =>
                     {
                         Row(() =>
@@ -43,10 +43,10 @@ internal partial class InventoryTabScreen : ComposeScreen
     {
         Spacer(
             Modifier
-                .Size(100.Px())
-                .Border(16.Px())
+                .Size(100.Dp())
+                .Border(16.Dp())
                 .Background(Color.grey)
-                .Margin(2.Px())
+                .Margin(2.Dp())
         );
     }
 }

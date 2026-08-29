@@ -41,13 +41,13 @@ namespace UnityCompose.Samples.Behaviors
                     Text(
                         text: "Switch",
                         color: Color.white,
-                        fontSize: 32,
+                        fontSize: 32.Sp(),
                         modifier: Modifier
                             .Background(Color.blue)
-                            .Padding(all: 32.Px())
-                            .Border(radius: 16.Px())
+                            .Padding(all: 32.Dp())
+                            .Border(radius: 16.Dp())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Margin(top: 80.Px())
+                            .Margin(top: 80.Dp())
                     );
                 }
             );
@@ -72,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors
                                 LocalIsSwitched.Current ? Color.green : Color.red,
                                 transition: Transition()
                             )
-                            .Padding(all: 100.Px())
+                            .Padding(all: 100.Dp())
                     );
                 });
             });

@@ -17,9 +17,9 @@ internal partial class PausedTabScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01)
         {
-            __Box(modifier: modifier.OrEmpty().FillMaxSize().Padding(16.Px()), content: (!__composer.Changed<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.PausedTabScreen>(this !) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            __Box(modifier: modifier.OrEmpty().FillMaxSize().Padding(16.Dp()), content: (!__composer.Changed<global::UnityCompose.Samples.Behaviors.NavigationDemo.Screens.PausedTabScreen>(this !) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                __Text(text: _tab.ToString(), color: Color.white, fontWeight: FontWeight.Bold, fontSize: 32, textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxSize().Background(_background).Border(16.Px()), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                __Text(text: _tab.ToString(), color: Color.white, fontWeight: FontWeight.Bold, fontSize: 32.Sp(), textAlign: TextAlign.MiddleCenter, modifier: Modifier.FillMaxSize().Background(_background).Border(16.Dp()), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
             })), __composer: __composer, __changed: 0b_01_00_00);
         }
         else

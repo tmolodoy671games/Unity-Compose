@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             );
 
             var baseModifier = Remember(currentI, () => Modifier
-                .Size(50.Px())
+                .Size(50.Dp())
                 .Background(
                     PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length])
                 .Float()
@@ -54,8 +54,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
                 modifier:
                 baseModifier
                     .Position(
-                        left: position.Value.x.Px(),
-                        top: position.Value.y.Px()
+                        left: position.Value.x.Dp(),
+                        top: position.Value.y.Dp()
                     )
             );
         }

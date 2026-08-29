@@ -35,9 +35,9 @@ namespace UnityCompose.Samples.Behaviors
                             Box(() =>
                                 Spacer(
                                     Modifier
-                                        .Size(100.Px())
+                                        .Size(100.Dp())
                                         .Background(Color.green)
-                                        .Offset(offset.Px())
+                                        .Offset(offset.Dp())
                                         .OnClick(() => isSwitched.Value = !isSwitched.Value)
                                 )
                             )
@@ -48,15 +48,15 @@ namespace UnityCompose.Samples.Behaviors
                     Text(
                         text: "Switch",
                         color: Color.white,
-                        fontSize: 32,
+                        fontSize: 32.Sp(),
                         modifier: Modifier
                             .Background(Color.blue)
                             .Padding(
-                                horizontal: 32.Px() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Px(),
-                                vertical: 16.Px()
+                                horizontal: 32.Dp() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Dp(),
+                                vertical: 16.Dp()
                             )
-                            .Border(16.Px())
-                            .Margin(top: 32.Px())
+                            .Border(16.Dp())
+                            .Margin(top: 32.Dp())
                             .OnClick(() => showMovingSquare.Value = !showMovingSquare.Value)
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)

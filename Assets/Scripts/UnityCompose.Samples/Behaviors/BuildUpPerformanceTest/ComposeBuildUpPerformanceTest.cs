@@ -20,11 +20,11 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
             root.SetContent((_, _) =>
             {
                 var rowModifier = Modifier
-                    .Margin(vertical: 2.Px());
+                    .Margin(vertical: 2.Dp());
                 var spacerModifier = Modifier
-                    .Size(4.Px())
+                    .Size(4.Dp())
                     .Background(Color.white)
-                    .Margin(horizontal: 2.Px());
+                    .Margin(horizontal: 2.Dp());
                 GC.Collect();
                 var time = TimeUtils.Measure(() =>
                 {

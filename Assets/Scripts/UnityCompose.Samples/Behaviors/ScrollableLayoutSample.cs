@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors
                         content: () =>
                         {
                             ColumnSample();
-                            Spacer(Modifier.Height(100.Px()));
+                            Spacer(Modifier.Height(100.Dp()));
                             RowSample();
                         }
                     );
@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Box(
                     modifier: Modifier
-                        .Height(400.Px()),
+                        .Height(400.Dp()),
                     content: () =>
                     {
                         ScrollableColumn(
@@ -61,12 +61,12 @@ namespace UnityCompose.Samples.Behaviors
                                             Text(
                                                 text: i.ToString(),
                                                 color: Color.white,
-                                                fontSize: 32,
+                                                fontSize: 32.Sp(),
                                                 textAlign: TextAlign.MiddleCenter,
                                                 modifier: Modifier
                                                     .Background(Color.red)
-                                                    .Size(100.Px())
-                                                    .Margin(vertical: 4.Px())
+                                                    .Size(100.Dp())
+                                                    .Margin(vertical: 4.Dp())
                                                     .OnClick(() => Debug.Log("Glick"))
                                             );
                                         }
@@ -78,15 +78,15 @@ namespace UnityCompose.Samples.Behaviors
                             modifier: Modifier
                                 .Height(100.Percent())
                                 .Float()
-                                .Position(right: 0.Px()),
+                                .Position(right: 0.Dp()),
                             content: () =>
                             {
                                 var scrollerSize = state.ViewportSize / state.ContentSize;
                                 Spacer(
                                     Modifier
                                         .Background(Color.cadetBlue)
-                                        .Width(32.Px())
-                                        .Border(16.Px())
+                                        .Width(32.Dp())
+                                        .Border(16.Dp())
                                         .Height(scrollerSize * 100.Percent())
                                         .Position(top: (state.Value / state.ContentSize) * 100.Percent())
                                 );
@@ -106,7 +106,7 @@ namespace UnityCompose.Samples.Behaviors
                 ScrollableRow(
                     state: state,
                     modifier: Modifier
-                        .Width(400.Px()),
+                        .Width(400.Dp()),
                     content: () =>
                     {
                         Row(
@@ -118,12 +118,12 @@ namespace UnityCompose.Samples.Behaviors
                                     Text(
                                         text: i.ToString(),
                                         color: Color.white,
-                                        fontSize: 32,
+                                        fontSize: 32.Sp(),
                                         textAlign: TextAlign.MiddleCenter,
                                         modifier: Modifier
                                             .Background(Color.red)
-                                            .Size(100.Px())
-                                            .Margin(horizontal: 4.Px())
+                                            .Size(100.Dp())
+                                            .Margin(horizontal: 4.Dp())
                                             .OnClick(() => Debug.Log("Glick"))
                                     );
                                 }
@@ -135,12 +135,12 @@ namespace UnityCompose.Samples.Behaviors
                 Row(
                     modifier: Modifier
                         .FillMaxWidth()
-                        .Height(width.Px()),
+                        .Height(width.Dp()),
                     content: () =>
                     {
                         Spacer(
                             Modifier
-                                .Size(width.Px())
+                                .Size(width.Dp())
                                 .Background(Color.forestGreen)
                                 .OnClick(() => state.AnimateScrollBy(-200))
                         );
@@ -151,7 +151,7 @@ namespace UnityCompose.Samples.Behaviors
                         );
                         Spacer(
                             Modifier
-                                .Size(width.Px())
+                                .Size(width.Dp())
                                 .Background(Color.forestGreen)
                                 .OnClick(() => state.AnimateScrollBy(200))
                         );

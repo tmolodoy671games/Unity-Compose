@@ -54,8 +54,8 @@ namespace UnityCompose.Samples.Behaviors.UpdatePerformanceTest
             {
                 var position = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(Vector2.zero)));
                 __LaunchedEffect(key: parentSize, coroutine: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11_00) == 0b_10_00).Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(position!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => PerformanceUtils.MoveRandomlyCoroutine(parentSize: () => parentSize, it => position.Value = it))), __composer: __composer, __changed: ((__dirty & 0b_11_00) >> 2));
-                var baseModifier = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IModifier>() : __composer.UpdateRememberedValue<global::UnityCompose.IModifier>(Modifier.Size(50.Px()).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float()));
-                __Spacer(modifier: baseModifier.Position(left: position.Value.x.Px(), top: position.Value.y.Px()), __composer: __composer, __changed: 0b_00);
+                var baseModifier = (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11) == 0b_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.IModifier>() : __composer.UpdateRememberedValue<global::UnityCompose.IModifier>(Modifier.Size(50.Dp()).Background(PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length]).Float()));
+                __Spacer(modifier: baseModifier.Position(left: position.Value.x.Dp(), top: position.Value.y.Dp()), __composer: __composer, __changed: 0b_00);
             }
             else
             {

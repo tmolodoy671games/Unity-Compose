@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UnityCompose;
 
 public readonly record struct TextStyle(
-    float FontSize,
+    Sp FontSize,
     Optional<Color> Color = default,
     FontWeight FontWeight = FontWeight.Normal, 
     FontStyle FontStyle = FontStyle.Normal

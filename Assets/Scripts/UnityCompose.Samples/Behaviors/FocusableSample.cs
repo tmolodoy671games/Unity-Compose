@@ -21,8 +21,8 @@ namespace UnityCompose.Samples.Behaviors
                     Row(
                         modifier: Modifier
                             .Background(Color.white)
-                            .Border(16.Px())
-                            .Padding(16.Px()),
+                            .Border(16.Dp())
+                            .Padding(16.Dp()),
                         content: () =>
                         {
                             Repeat(3, it =>
@@ -74,12 +74,12 @@ namespace UnityCompose.Samples.Behaviors
                 SideEffect(0, focusRequester.RequestFocus);
             Spacer(
                 Modifier
-                    .Margin(4.Px())
+                    .Margin(4.Dp())
                     .Size(
-                        width: 100.Px(),
-                        height: 40.Px()
+                        width: 100.Dp(),
+                        height: 40.Dp()
                     )
-                    .Border(16.Px())
+                    .Border(16.Dp())
                     .Background(AnimateColorAsState(isFocused.Value ? Color.lightSeaGreen : Color.indianRed).Value)
                     .Scale(AnimateFloatAsState(isFocused.Value ? 1.1f : 1f).Value)
                     .Name(name)

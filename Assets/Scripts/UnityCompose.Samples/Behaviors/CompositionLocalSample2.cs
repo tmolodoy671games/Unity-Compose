@@ -20,7 +20,7 @@ namespace UnityCompose.Samples.Behaviors
             CompositionLocalProvider(
                 LocalTextStyle.Provides(
                     new TextStyle(
-                        FontSize: 80,
+                        FontSize: 80.Sp(),
                         Color: Color.white
                     )
                 ),

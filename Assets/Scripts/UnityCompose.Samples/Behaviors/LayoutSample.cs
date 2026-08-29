@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors
             {
                 Spacer(
                     modifier: Modifier
-                        .Size(100.Px())
+                        .Size(100.Dp())
                         .Background(Color.yellow)
                 );
                 Row(() =>
@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors
                     {
                         Spacer(
                             modifier: Modifier
-                                .Size(100.Px())
+                                .Size(100.Dp())
                                 .Background(Color.yellow)
                         );
                     }
@@ -46,17 +46,17 @@ namespace UnityCompose.Samples.Behaviors
                     Box(
                         modifier: Modifier
                             .Background(Color.red)
-                            .Size(400.Px()),
+                            .Size(400.Dp()),
                         content: () =>
                         {
                             Column(() =>
                             {
                                 Spacer(
                                     modifier: Modifier
-                                        .Size(100.Px())
+                                        .Size(100.Dp())
                                         .Float()
                                         .Background(Color.yellow)
-                                        .Position(top: 5.Px())
+                                        .Position(top: 5.Dp())
                                 );
                                 Row(() =>
                                 {
@@ -64,20 +64,20 @@ namespace UnityCompose.Samples.Behaviors
                                     {
                                         Spacer(
                                             modifier: Modifier
-                                                .Size(100.Px())
+                                                .Size(100.Dp())
                                                 .Float()
                                                 .Background(Color.yellow)
-                                                .Position(top: 5.Px())
+                                                .Position(top: 5.Dp())
                                         );
                                     }
                                 });
                             });
                             Spacer(
                                 modifier: Modifier
-                                    .Size(100.Px())
+                                    .Size(100.Dp())
                                     .Float()
                                     .Background(Color.yellow)
-                                    .Position(bottom: 5.Px())
+                                    .Position(bottom: 5.Dp())
                             );
                         }
                     );

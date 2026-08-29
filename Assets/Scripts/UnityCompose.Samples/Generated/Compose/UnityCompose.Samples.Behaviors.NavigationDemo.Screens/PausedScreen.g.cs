@@ -57,7 +57,7 @@ internal partial class PausedScreen
             var previousTab = (!__composer.Changed() ? __composer.RememberedValue<global::StableCollections.IMutableStableProperty<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>() : __composer.UpdateRememberedValue<global::StableCollections.IMutableStableProperty<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(IMutableStableProperty.Create(tab)));
             __Column(modifier: modifier.OrEmpty().FillMaxSize(), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_00_11_00) == 0b_00_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_00_11_00_00) == 0b_00_00_10_00_00).ChangedAsFlag((__dirty & 0b_00_11_00_00_00) == 0b_00_10_00_00_00).Changed<global::StableCollections.IMutableStableProperty<global::UnityCompose.Samples.Behaviors.NavigationDemo.PausedTab>>(previousTab!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
-                __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - 1).Px()), __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_11_00_00) >> 2));
+                __TabsRow(currentTab: tab, onClick: onClick, modifier: Modifier.Align(Alignment.CenterHorizontally).Offset(y: -100 * (1 - 1).Dp()), __composer: __composer, __changed: ((__dirty & 0b_00_11_00) >> 2) | ((__dirty & 0b_11_00_00) >> 2));
                 // Spacer(
                 //     modifier: Modifier
                 //         .FillMaxSize()
@@ -90,7 +90,7 @@ internal partial class PausedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Px()), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            __Row(modifier: modifier.OrEmpty().Align(Alignment.CenterHorizontally).Margin(top: 16.Dp()), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 __Tab(PausedTab.Inventory, currentTab == PausedTab.Inventory, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
                 __Tab(PausedTab.Map, currentTab == PausedTab.Map, onClick, __composer: __composer, __changed: 0b_00_00_01 | ((__dirty & 0b_00_11_00) << 2));
@@ -121,9 +121,9 @@ internal partial class PausedScreen
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
         {
-            __DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: __AnimateFloatAsState(selected ? 120 : 40, __composer: __composer, __changed: 0b_01_01_00).Value.Px()).Padding(vertical: 12.Px()).Border(8.Px()).Margin(horizontal: 4.Px()).OnClick((!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).ChangedAsFlag((__dirty & 0b_11_00_00) == 0b_10_00_00).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => onClick(tab)))), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
+            __DsClickIndication(modifier: Modifier.Background(Color.gray).Padding(horizontal: __AnimateFloatAsState(selected ? 120 : 40, __composer: __composer, __changed: 0b_01_01_00).Value.Dp()).Padding(vertical: 12.Dp()).Border(8.Dp()).Margin(horizontal: 4.Dp()).OnClick((!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).ChangedAsFlag((__dirty & 0b_11_00_00) == 0b_10_00_00).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => onClick(tab)))), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<global::UI.DesignSystem.Compose.DsClickIndicationScope>>(it =>
             {
-                __Text(text: tab.ToString(), color: Color.white, fontSize: 20, fontWeight: FontWeight.Bold, modifier: Modifier.Scale(1.5f - __AnimateFloatAsState(it.IsPressed.ToInt(), __composer: __composer, __changed: 0b_01_01_00).Value * 0.25f), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                __Text(text: tab.ToString(), color: Color.white, fontSize: 20.Sp(), fontWeight: FontWeight.Bold, modifier: Modifier.Scale(1.5f - __AnimateFloatAsState(it.IsPressed.ToInt(), __composer: __composer, __changed: 0b_01_01_00).Value * 0.25f), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_00);
             })), __composer: __composer, __changed: 0b_01_01_01_00);
         }
         else

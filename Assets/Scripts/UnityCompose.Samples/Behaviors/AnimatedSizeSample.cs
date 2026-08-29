@@ -44,9 +44,9 @@ namespace UnityCompose.Samples.Behaviors
                                         isSwitched.Value ? Color.green : Color.red,
                                         Transition(AnimationDuration)
                                     )
-                                    .Padding(all: 16.Px())
+                                    .Padding(all: 16.Dp())
                                     .Border(
-                                        AnimateFloatAsState(isSwitched.Value ? 8 : 32, animationSpec).Value.Px()
+                                        AnimateFloatAsState(isSwitched.Value ? 8 : 32, animationSpec).Value.Dp()
                                     ),
                                 animationSpec: animationSpec,
                                 content: modifier =>
@@ -54,7 +54,7 @@ namespace UnityCompose.Samples.Behaviors
                                     Text(
                                         text: text,
                                         color: Color.white,
-                                        fontSize: 64,
+                                        fontSize: 64.Sp(),
                                         textAlign: TextAlign.MiddleCenter,
                                         modifier: modifier
                                             .Name("animated-label-child")
@@ -65,13 +65,13 @@ namespace UnityCompose.Samples.Behaviors
                             Text(
                                 text: "Switch",
                                 color: Color.white,
-                                fontSize: 64,
+                                fontSize: 64.Sp(),
                                 modifier: Modifier
                                     .Name("switch-button")
-                                    .Padding(all: 32.Px())
+                                    .Padding(all: 32.Dp())
                                     .Background(Color.blue)
-                                    .Margin(top: 16.Px())
-                                    .Border(radius: 16.Px())
+                                    .Margin(top: 16.Dp())
+                                    .Border(radius: 16.Dp())
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );
                         }
