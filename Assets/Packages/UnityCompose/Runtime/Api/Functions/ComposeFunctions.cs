@@ -18,9 +18,24 @@ public static partial class ComposeFunctions
     }
 
     public static bool IsInPreview => !ApplicationUtils.IsPlaying;
-    
+
     public static readonly IModifier Modifier = EmptyModifierImpl.Instance;
 
-    public static ICompositionLocal<VisualElement> LocalVisualElement =
+    public static readonly ICompositionLocal<IFocusManager> LocalFocusManager =
+        CompositionLocalOf<IFocusManager>(() => throw new InvalidOperationException("No LocalFocusManager provided!"));
+
+    public static readonly ICompositionLocal<VisualElement> LocalVisualElement =
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("LocalVisualElement is not provided!"));
+
+    public static void Repeat(int times, Action body)
+    {
+        for (var i = 0; i < times; i++)
+            body();
+    }
+    
+    public static void Repeat(int times, Action<int> body)
+    {
+        for (var i = 0; i < times; i++)
+            body(i);
+    }
 }

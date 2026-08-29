@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using StableCollections;
 using UnityCompose;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,11 +58,13 @@ public partial class ComposeView : VisualElement
         var isActiveInstance = Remember(onScreenManager.Contents.IsEmpty(),
             () => new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)
         );
+        var focusManager = Remember(this.FocusManager);
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
             LocalIsActive.Provides(isActiveInstance),
             LocalOnScreenMenuManager.Provides(onScreenManager),
             LocalModalMenuVisibility.Provides(onScreenManager.Contents.IsNotEmpty()),
+            LocalFocusManager.Provides(focusManager),
             () => content(composer, 0)
         );
         foreach (var overlayContent in onScreenManager.Contents)
