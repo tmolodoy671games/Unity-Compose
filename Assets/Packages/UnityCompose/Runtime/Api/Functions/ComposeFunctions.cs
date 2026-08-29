@@ -27,6 +27,8 @@ public static partial class ComposeFunctions
     public static readonly ICompositionLocal<VisualElement> LocalVisualElement =
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("LocalVisualElement is not provided!"));
 
+    public static IMutableInteractionSource MutableInteractionSource() => new MutableInteractionSourceImpl();
+    
     public static void Repeat(int times, Action body)
     {
         for (var i = 0; i < times; i++)
