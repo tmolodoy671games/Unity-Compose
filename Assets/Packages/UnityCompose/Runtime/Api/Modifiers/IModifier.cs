@@ -32,7 +32,7 @@ public partial interface IModifier
     }
 }
 
-public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
+public abstract partial class BaseModifier<T> : IModifier where T : BaseModifier<T>
 {
     public abstract void Apply(VisualElement element);
 
@@ -41,6 +41,16 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     public virtual void Flatten(IMutableStableCollection<IModifier> modifiers)
     {
         modifiers.Add(this);
+    }
+
+    [Composable]
+    public virtual void DrawBefore()
+    {
+    }
+
+    [Composable]
+    public virtual void DrawAfter()
+    {
     }
 
     protected abstract bool Equals(T other);
@@ -81,7 +91,7 @@ public abstract partial class BaseComposableModifier<T> : IModifier where T : Ba
     public virtual IModifier Compose() => this;
 
     [Composable]
-    public  void DrawBefore()
+    public void DrawBefore()
     {
     }
 
@@ -145,7 +155,7 @@ internal class EmptyModifierImpl : BaseModifier<EmptyModifierImpl>
     }
 }
 
-internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
+internal partial class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
 {
     private readonly IModifier _first;
     private readonly IModifier _second;
@@ -184,6 +194,20 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
     {
         _first.Revert(element);
         _second.Revert(element);
+    }
+
+    [Composable]
+    public override void DrawBefore()
+    {
+        _first.DrawBefore();
+        _second.DrawBefore();
+    }
+
+    [Composable]
+    public override void DrawAfter()
+    {
+        _first.DrawAfter();
+        _second.DrawAfter();
     }
 
     protected override bool Equals(CompositeModifierImpl other)
