@@ -28,8 +28,7 @@ public static partial class ComposeFunctions
         var visualElement = node.VisualElement.NotNull();
         composer.EnterVisualElement(visualElement);
 
-        if (modifier is { IsComposable: true })
-            modifier = modifier.Compose();
+        modifier = modifier?.Compose();
         node.Update(
             parent: parent,
             indexInParent: indexInParent,
@@ -37,7 +36,9 @@ public static partial class ComposeFunctions
             initializer: initializer
         );
 
+        modifier?.DrawBefore();
         content?.Invoke();
+        modifier?.DrawAfter();
 
         composer.EndReusableGroup(123);
     }

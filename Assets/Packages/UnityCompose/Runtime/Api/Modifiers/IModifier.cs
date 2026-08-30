@@ -12,10 +12,19 @@ public partial interface IModifier
     void Apply(VisualElement element);
     void Revert(VisualElement element);
     void Flatten(IMutableStableCollection<IModifier> modifiers);
-    bool IsComposable => false;
 
     [Composable]
     IModifier Compose() => this;
+
+    [Composable]
+    void DrawBefore()
+    {
+    }
+
+    [Composable]
+    void DrawAfter()
+    {
+    }
 
     public static IModifier operator +(IModifier left, IModifier right)
     {
@@ -35,9 +44,51 @@ public abstract class BaseModifier<T> : IModifier where T : BaseModifier<T>
     }
 
     protected abstract bool Equals(T other);
-
-    public virtual bool IsComposable => false;
     public virtual IModifier Compose() => this;
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((T)obj);
+    }
+
+    [SuppressMessage("ReSharper", "BaseObjectGetHashCodeCallInGetHashCode")]
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}
+
+public abstract partial class BaseComposableModifier<T> : IModifier where T : BaseComposableModifier<T>
+{
+    public void Apply(VisualElement element)
+    {
+    }
+
+    public void Revert(VisualElement element)
+    {
+    }
+
+    public virtual void Flatten(IMutableStableCollection<IModifier> modifiers)
+    {
+        modifiers.Add(this);
+    }
+
+    protected abstract bool Equals(T other);
+
+    public virtual IModifier Compose() => this;
+
+    [Composable]
+    public virtual void DrawBefore()
+    {
+    }
+
+    [Composable]
+    public void DrawAfter()
+    {
+    }
 
     public override bool Equals(object? obj)
     {
@@ -106,7 +157,6 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         _second = second;
         _depth = (first is CompositeModifierImpl firstComposite ? firstComposite._depth : 1) +
                  (second is CompositeModifierImpl secondComposite ? secondComposite._depth : 1);
-        Composable = _first.IsComposable || _second.IsComposable;
     }
 
     public override void Apply(VisualElement element)
@@ -121,13 +171,11 @@ internal class CompositeModifierImpl : BaseModifier<CompositeModifierImpl>
         _second.Flatten(modifiers);
     }
 
-    public bool Composable { get; }
-
     public override IModifier Compose()
     {
         var firstComposed = _first.Compose();
         var secondComposed = _second.Compose();
-        if (firstComposed != _first || _second != secondComposed)
+        if (!Equals(firstComposed, _first) || !Equals(_second, secondComposed))
             return new CompositeModifierImpl(firstComposed, secondComposed);
         return this;
     }
