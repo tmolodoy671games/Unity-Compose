@@ -12,7 +12,7 @@ public static partial class ModifierExtensions
 {
     public static IModifier OnClick(
         this IModifier modifier,
-        Action<MouseClickInfo> onClick,
+        Action<PointerClickInfo> onClick,
         bool enabled = true
     )
     {
@@ -34,7 +34,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnLmbClick(
         this IModifier modifier,
-        Action<MouseClickInfo> onClick,
+        Action<PointerClickInfo> onClick,
         bool enabled = true
     )
     {
@@ -56,7 +56,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnRmbClick(
         this IModifier modifier,
-        Action<MouseClickInfo> onClick,
+        Action<PointerClickInfo> onClick,
         bool enabled = true
     )
     {
@@ -78,7 +78,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnMmbClick(
         this IModifier modifier,
-        Action<MouseClickInfo> onClick,
+        Action<PointerClickInfo> onClick,
         bool enabled = true
     )
     {
@@ -99,7 +99,7 @@ public static partial class ModifierExtensions
     }
 }
 
-public readonly record struct MouseClickInfo(
+public readonly record struct PointerClickInfo(
     int Button,
     Vector2 Position,
     Vector2 LocalPosition
@@ -107,58 +107,55 @@ public readonly record struct MouseClickInfo(
 
 internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
 {
-    private readonly Action? _parameterlessLambda;
-    private readonly Action<MouseClickInfo>? _lambda;
+    private readonly Action<PointerClickInfo>? _onClick;
+    private readonly Action? _parameterlessOnClick;
+    private readonly EventCallback<ClickEvent> _callback;
     private readonly int _allowedButton;
-    private Action<ClickEvent>? _onClick;
 
-    public OnClickModiferImpl(Action<MouseClickInfo> onClick, int allowedButton = -1)
+    public OnClickModiferImpl(Action<PointerClickInfo> onClick, int allowedButton = -1)
     {
-        _lambda = onClick;
+        _onClick = onClick;
         _allowedButton = allowedButton;
+        _callback = OnClickCallback;
     }
 
     public OnClickModiferImpl(Action onClick, int allowedButton = -1)
     {
-        _parameterlessLambda = onClick;
+        _parameterlessOnClick = onClick;
         _allowedButton = allowedButton;
+        _callback = OnClickCallback;
     }
 
     public override void Apply(VisualElement element)
     {
-        EnsureOnClick();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<ClickEvent>().Add(Key, _onClick!);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
-        EnsureOnClick();
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<ClickEvent>().Remove(Key);
+        element.UnregisterCallback(_callback);
     }
 
-    private void EnsureOnClick()
+    private void OnClickCallback(ClickEvent it)
     {
-        _onClick ??= it =>
-        {
-            if (_allowedButton >= 0 && it.button != _allowedButton)
-                return;
-            _lambda?.Invoke(
-                new MouseClickInfo(
-                    Button: it.button,
-                    Position: it.position,
-                    LocalPosition: it.localPosition
-                )
-            );
-            _parameterlessLambda?.Invoke();
-        };
+        if (_allowedButton >= 0 && it.button != _allowedButton)
+            return;
+        _onClick?.Invoke(
+            new PointerClickInfo(
+                Button: it.button,
+                Position: it.position,
+                LocalPosition: it.localPosition
+            )
+        );
+        _parameterlessOnClick?.Invoke();
     }
-
-    private object? Key => _lambda as object ?? _parameterlessLambda;
 
     protected override bool Equals(OnClickModiferImpl other)
     {
-        return Key == other.Key && _allowedButton == other._allowedButton;
+        return _onClick == other._onClick &&
+               _parameterlessOnClick == other._parameterlessOnClick &&
+               _allowedButton == other._allowedButton;
     }
 }

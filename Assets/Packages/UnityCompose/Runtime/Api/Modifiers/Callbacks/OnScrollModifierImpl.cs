@@ -8,7 +8,11 @@ namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    public static IModifier OnScroll(this IModifier modifier, Action<Vector2> onScroll, bool enabled = true)
+    public static IModifier OnScroll(
+        this IModifier modifier,
+        Action<Vector2> onScroll,
+        bool enabled = true
+    )
     {
         if (!enabled)
             return modifier;
@@ -40,10 +44,10 @@ public static partial class ModifierExtensions
 
 internal class OnScrollModifierImpl : BaseModifier<OnScrollModifierImpl>
 {
-    private readonly Action<Vector2>? _callback;
-    private readonly Action<float>? _verticalCallback;
-    private readonly Action<float>? _horizontalCallback;
-    private Action<WheelEvent>? _onWheel;
+    private readonly Action<Vector2>? _onScroll;
+    private readonly Action<float>? _onVerticalScroll;
+    private readonly Action<float>? _onHorizontalScroll;
+    private readonly EventCallback<WheelEvent>? _callback;
 
     public OnScrollModifierImpl(
         Action<Vector2>? callback = null,
@@ -51,24 +55,22 @@ internal class OnScrollModifierImpl : BaseModifier<OnScrollModifierImpl>
         Action<float>? horizontalCallback = null
     )
     {
-        _callback = callback;
-        _verticalCallback = verticalCallback;
-        _horizontalCallback = horizontalCallback;
+        _onScroll = callback;
+        _onVerticalScroll = verticalCallback;
+        _onHorizontalScroll = horizontalCallback;
+        _callback = OnScroll;
     }
-
-    private object? Key => _callback as object ?? _verticalCallback ?? _horizontalCallback;
 
     public override void Apply(VisualElement element)
     {
-        _onWheel ??= CreateWheelEvent();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<WheelEvent>().Add(Key, _onWheel);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<WheelEvent>().Remove(Key);
+        element.UnregisterCallback(_callback);
     }
 
     protected override bool Equals(OnScrollModifierImpl other)
@@ -76,15 +78,12 @@ internal class OnScrollModifierImpl : BaseModifier<OnScrollModifierImpl>
         return _callback == other._callback;
     }
 
-    private Action<WheelEvent> CreateWheelEvent()
+    private void OnScroll(WheelEvent evt)
     {
-        return it =>
-        {
-            _callback?.Invoke(it.delta);
-            if (it.delta.x != 0)
-                _horizontalCallback?.Invoke(it.delta.x);
-            if (it.delta.y != 0)
-                _verticalCallback?.Invoke(it.delta.y);
-        };
+        _onScroll?.Invoke(evt.delta);
+        if (evt.delta.x != 0)
+            _onHorizontalScroll?.Invoke(evt.delta.x);
+        if (evt.delta.y != 0)
+            _onVerticalScroll?.Invoke(evt.delta.y);
     }
 }

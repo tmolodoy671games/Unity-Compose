@@ -1,8 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Runtime.CompilerServices;
-using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -11,7 +9,7 @@ public static partial class ModifierExtensions
 {
     public static IModifier OnMouseMove(
         this IModifier modifier,
-        Action<MouseMoveInfo> onMouseMove,
+        Action<PointerMoveInfo> onMouseMove,
         bool enabled = true
     )
     {
@@ -34,51 +32,48 @@ public static partial class ModifierExtensions
 
 internal class OnMouseMoveModifierImpl : BaseModifier<OnMouseMoveModifierImpl>
 {
-    private readonly Action<MouseMoveInfo>? _callback;
-    private readonly Action? _parameterlessCallback;
-    private Action<MouseMoveEvent>? _onMouseMove;
+    private readonly Action<PointerMoveInfo>? _onMouseMove;
+    private readonly Action? _parameterlessOnMouseMove;
+    private readonly EventCallback<MouseMoveEvent> _callback;
 
-    public OnMouseMoveModifierImpl(Action<MouseMoveInfo> onMouseMove)
+    public OnMouseMoveModifierImpl(Action<PointerMoveInfo> onMouseMove)
     {
-        _callback = onMouseMove;
+        _onMouseMove = onMouseMove;
+        _callback = OnMouseMove;
     }
-    
+
     public OnMouseMoveModifierImpl(Action onMouseMove)
     {
-        _parameterlessCallback = onMouseMove;
+        _parameterlessOnMouseMove = onMouseMove;
+        _callback = OnMouseMove;
     }
-    
-    private object? Key => _callback as object ?? _parameterlessCallback;
 
     public override void Apply(VisualElement element)
     {
-        _onMouseMove ??= CreateOnMouseMove();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseMoveEvent>().Add(Key, _onMouseMove);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseMoveEvent>().Remove(Key);
+        element.UnregisterCallback(_callback);
     }
 
     protected override bool Equals(OnMouseMoveModifierImpl other)
     {
-        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+        return _onMouseMove == other._onMouseMove &&
+               _parameterlessOnMouseMove == other._parameterlessOnMouseMove;
     }
 
-    private Action<MouseMoveEvent> CreateOnMouseMove()
+    private void OnMouseMove(MouseMoveEvent evt)
     {
-        return it =>
-        {
-            _callback?.Invoke(
-                new MouseMoveInfo(
-                    Position: it.mousePosition,
-                    LocalPosition: it.localMousePosition
-                )
-            );
-            _parameterlessCallback?.Invoke();
-        };
+        _onMouseMove?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.mousePosition,
+                LocalPosition: evt.localMousePosition
+            )
+        );
+        _parameterlessOnMouseMove?.Invoke();
     }
 }

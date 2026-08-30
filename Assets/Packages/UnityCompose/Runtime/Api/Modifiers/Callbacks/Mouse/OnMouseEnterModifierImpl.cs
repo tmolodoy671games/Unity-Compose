@@ -1,8 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Runtime.CompilerServices;
-using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,7 +10,7 @@ public static partial class ModifierExtensions
 {
     public static IModifier OnMouseEnter(
         this IModifier modifier,
-        Action<MouseMoveInfo> onMouseEnter,
+        Action<PointerMoveInfo> onMouseEnter,
         bool enabled = true
     )
     {
@@ -33,58 +31,55 @@ public static partial class ModifierExtensions
     }
 }
 
-public readonly record struct MouseMoveInfo(
+public readonly record struct PointerMoveInfo(
     Vector2 Position,
     Vector2 LocalPosition
 );
 
 internal class OnMouseEnterModifierImpl : BaseModifier<OnMouseEnterModifierImpl>
 {
-    private readonly Action? _parameterlessCallback;
-    private readonly Action<MouseMoveInfo>? _callback;
-    private Action<MouseEnterEvent>? _onMouseEnter;
+    private readonly Action? _parameterlessOnMouseEnter;
+    private readonly Action<PointerMoveInfo>? _onMouseEnter;
+    private readonly EventCallback<MouseEnterEvent> _callback;
 
-    public OnMouseEnterModifierImpl(Action<MouseMoveInfo> onMouseEnter)
+    public OnMouseEnterModifierImpl(Action<PointerMoveInfo> onMouseEnter)
     {
-        _callback = onMouseEnter;
+        _onMouseEnter = onMouseEnter;
+        _callback = OnMouseEnterEvent;
     }
-    
+
     public OnMouseEnterModifierImpl(Action onMouseEnter)
     {
-        _parameterlessCallback = onMouseEnter;
+        _parameterlessOnMouseEnter = onMouseEnter;
+        _callback = OnMouseEnterEvent;
     }
-    
-    private object? Key => _callback as object ?? _parameterlessCallback;
 
     public override void Apply(VisualElement element)
     {
-        _onMouseEnter ??= CreateOnMouseEnter();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseEnterEvent>().Add(Key, _onMouseEnter);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseEnterEvent>().Remove(Key);
+        element.UnregisterCallback(_callback);
     }
 
     protected override bool Equals(OnMouseEnterModifierImpl other)
     {
-        return Key == other.Key;
+        return _onMouseEnter == other._onMouseEnter &&
+               _parameterlessOnMouseEnter == other._parameterlessOnMouseEnter;
     }
 
-    private Action<MouseEnterEvent> CreateOnMouseEnter()
+    private void OnMouseEnterEvent(MouseEnterEvent evt)
     {
-        return it =>
-        {
-            _callback?.Invoke(
-                new MouseMoveInfo(
-                    Position: it.mousePosition,
-                    LocalPosition: it.localMousePosition
-                )
-            );
-            _parameterlessCallback?.Invoke();
-        };
+        _onMouseEnter?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.mousePosition,
+                LocalPosition: evt.localMousePosition
+            )
+        );
+        _parameterlessOnMouseEnter?.Invoke();
     }
 }

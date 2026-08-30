@@ -13,7 +13,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnMouseDown(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<PointerClickInfo> onMouseDown,
         bool enabled = true
     )
     {
@@ -39,7 +39,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnLmbDown(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<PointerClickInfo> onMouseDown,
         bool enabled = true
     )
     {
@@ -60,12 +60,12 @@ public static partial class ModifierExtensions
     }
 
     #endregion
-    
+
     #region OnRmbDown
 
     public static IModifier OnRmbDown(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<PointerClickInfo> onMouseDown,
         bool enabled = true
     )
     {
@@ -86,12 +86,12 @@ public static partial class ModifierExtensions
     }
 
     #endregion
-    
+
     #region OnMmbDown
 
     public static IModifier OnMmbDown(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseDown,
+        Action<PointerClickInfo> onMouseDown,
         bool enabled = true
     )
     {
@@ -116,57 +116,53 @@ public static partial class ModifierExtensions
 
 internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
 {
-    private readonly Action? _parameterlessCallback;
-    private readonly Action<MouseClickInfo>? _callback;
+    private readonly Action? _parameterlessOnMouseDown;
+    private readonly Action<PointerClickInfo>? _onMouseDown;
+    private readonly EventCallback<MouseDownEvent> _callback;
     private readonly int _button;
-    private Action<MouseDownEvent>? _onMouseDown;
 
-    public OnMouseDownModifierImpl(Action<MouseClickInfo> onMouseDown, int button)
+    public OnMouseDownModifierImpl(Action<PointerClickInfo> onMouseDown, int button)
     {
-        _callback = onMouseDown;
+        _onMouseDown = onMouseDown;
         _button = button;
+        _callback = OnMouseDown;
     }
 
     public OnMouseDownModifierImpl(Action onMouseDown, int button)
     {
-        _parameterlessCallback = onMouseDown;
+        _parameterlessOnMouseDown = onMouseDown;
         _button = button;
+        _callback = OnMouseDown;
     }
 
     public override void Apply(VisualElement element)
     {
-        _onMouseDown ??= CreateOnMouseDown();
-        element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseDownEvent>().Add(Key, _onMouseDown);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
-        element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseDownEvent>().Remove(Key!);
+        element.UnregisterCallback(_callback);
     }
 
     protected override bool Equals(OnMouseDownModifierImpl other)
     {
-        return Key == other.Key;
+        return _onMouseDown == other._onMouseDown &&
+               _parameterlessOnMouseDown == other._parameterlessOnMouseDown &&
+               _button == other._button;
     }
-    
-    private object? Key => _callback as object ?? _parameterlessCallback;
 
-    private Action<MouseDownEvent> CreateOnMouseDown()
+    private void OnMouseDown(MouseDownEvent it)
     {
-        return it =>
-        {
-            if (_button >= 0 && _button != it.button)
-                return;
-            _callback?.Invoke(
-                new MouseClickInfo(
-                    Button: it.button,
-                    Position: it.mousePosition,
-                    LocalPosition: it.localMousePosition
-                )
-            );
-            _parameterlessCallback?.Invoke();
-        };
+        if (_button >= 0 && _button != it.button)
+            return;
+        _onMouseDown?.Invoke(
+            new PointerClickInfo(
+                Button: it.button,
+                Position: it.mousePosition,
+                LocalPosition: it.localMousePosition
+            )
+        );
+        _parameterlessOnMouseDown?.Invoke();
     }
 }

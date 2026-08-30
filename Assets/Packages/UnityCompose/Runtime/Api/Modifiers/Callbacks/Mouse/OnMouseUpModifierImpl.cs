@@ -1,8 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Runtime.CompilerServices;
-using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -13,7 +11,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnMouseUp(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseUp,
+        Action<PointerClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -39,7 +37,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnLmbUp(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseUp,
+        Action<PointerClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -62,10 +60,10 @@ public static partial class ModifierExtensions
     #endregion
 
     #region OnRmbUp
-    
+
     public static IModifier OnRmbUp(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseUp,
+        Action<PointerClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -91,7 +89,7 @@ public static partial class ModifierExtensions
 
     public static IModifier OnMmbUp(
         this IModifier modifier,
-        Action<MouseClickInfo> onMouseUp,
+        Action<PointerClickInfo> onMouseUp,
         bool enabled = true
     )
     {
@@ -116,57 +114,55 @@ public static partial class ModifierExtensions
 
 internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
 {
-    private readonly Action<MouseClickInfo>? _callback;
-    private readonly Action? _parameterlessCallback;
+    private readonly Action<PointerClickInfo>? _onMouseUp;
+    private readonly Action? _parameterlessOnMouseUp;
+    private readonly EventCallback<MouseUpEvent> _callback;
     private readonly int _button;
-    private Action<MouseUpEvent>? _onMouseUp;
 
-    public OnMouseUpModifierImpl(Action<MouseClickInfo> onMouseUp, int button)
+    public OnMouseUpModifierImpl(Action<PointerClickInfo> onMouseUp, int button)
     {
-        _callback = onMouseUp;
+        _onMouseUp = onMouseUp;
         _button = button;
+        _callback = OnMouseUp;
     }
-    
+
     public OnMouseUpModifierImpl(Action onMouseUp, int button)
     {
-        _parameterlessCallback = onMouseUp;
+        _parameterlessOnMouseUp = onMouseUp;
         _button = button;
+        _callback = OnMouseUp;
     }
 
-    private object? Key => _callback as object ?? _parameterlessCallback;
 
     public override void Apply(VisualElement element)
     {
-        _onMouseUp ??= CreateOnMouseUp();
         element.ComposePickingMode().Increment();
-        element.GetComposeCallback<MouseUpEvent>().Add(Key, _onMouseUp);
+        element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
         element.ComposePickingMode().Decrement();
-        element.GetComposeCallback<MouseUpEvent>().Remove(Key);
+        element.UnregisterCallback(_callback);
     }
 
     protected override bool Equals(OnMouseUpModifierImpl other)
     {
-        return _callback == other._callback && _parameterlessCallback == other._parameterlessCallback;
+        return _onMouseUp == other._onMouseUp && 
+               _parameterlessOnMouseUp == other._parameterlessOnMouseUp;
     }
 
-    private Action<MouseUpEvent> CreateOnMouseUp()
+    private void OnMouseUp(MouseUpEvent evt)
     {
-        return it =>
-        {
-            if (_button >= 0 && it.button != _button)
-                return;
-            _callback?.Invoke(
-                new MouseClickInfo(
-                    Button: it.button,
-                    Position: it.mousePosition,
-                    LocalPosition: it.localMousePosition
-                )
-            );
-            _parameterlessCallback?.Invoke();
-        };
+        if (_button >= 0 && evt.button != _button)
+            return;
+        _onMouseUp?.Invoke(
+            new PointerClickInfo(
+                Button: evt.button,
+                Position: evt.mousePosition,
+                LocalPosition: evt.localMousePosition
+            )
+        );
+        _parameterlessOnMouseUp?.Invoke();
     }
 }
