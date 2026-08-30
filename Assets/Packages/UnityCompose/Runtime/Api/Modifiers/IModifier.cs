@@ -91,7 +91,7 @@ public abstract partial class BaseComposableModifier<T> : IModifier where T : Ba
     public virtual IModifier Compose() => this;
 
     [Composable]
-    public void DrawBefore()
+    public virtual void DrawBefore()
     {
     }
 

@@ -86,7 +86,7 @@ public abstract partial class BaseModifier<T>
 public abstract partial class BaseComposableModifier<T>
     where T : BaseComposableModifier<T>
 {
-    public void __DrawBefore(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public virtual void __DrawBefore(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __isCreated = __composer.StartRestartGroup(161664111);
         var __isRestarted = __composer.IsRestarted();
