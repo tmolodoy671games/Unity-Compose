@@ -2,6 +2,7 @@
 
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 
@@ -49,12 +50,14 @@ internal class HoverableModiferImpl : BaseModifier<HoverableModiferImpl>
 
     public override void Apply(VisualElement element)
     {
+        element.ComposePickingMode().Increment();
         element.RegisterCallback(_pointerEnterCallback);
         element.RegisterCallback(_pointerLeaveCallback);
     }
 
     public override void Revert(VisualElement element)
     {
+        element.ComposePickingMode().Decrement();
         element.UnregisterCallback(_pointerEnterCallback);
         element.UnregisterCallback(_pointerLeaveCallback);
     }

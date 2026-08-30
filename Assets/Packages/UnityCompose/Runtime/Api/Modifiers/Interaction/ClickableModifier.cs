@@ -49,12 +49,14 @@ internal class ClickableModifierImpl : BaseModifier<ClickableModifierImpl>
 
     public override void Apply(VisualElement element)
     {
+        element.ComposePickingMode().Increment();
         element.RegisterCallback(_pointerDownCallback);
         element.RegisterCallback(_pointerUpCallback);
     }
 
     public override void Revert(VisualElement element)
     {
+        element.ComposePickingMode().Decrement();
         element.UnregisterCallback(_pointerDownCallback);
         element.UnregisterCallback(_pointerUpCallback);
     }
