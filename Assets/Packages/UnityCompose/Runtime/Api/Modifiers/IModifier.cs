@@ -81,12 +81,12 @@ public abstract partial class BaseComposableModifier<T> : IModifier where T : Ba
     public virtual IModifier Compose() => this;
 
     [Composable]
-    public virtual void DrawBefore()
+    public  void DrawBefore()
     {
     }
 
     [Composable]
-    public void DrawAfter()
+    public virtual void DrawAfter()
     {
     }
 

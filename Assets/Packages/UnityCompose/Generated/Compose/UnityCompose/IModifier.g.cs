@@ -52,7 +52,7 @@ public partial interface IModifier
 public abstract partial class BaseComposableModifier<T>
     where T : BaseComposableModifier<T>
 {
-    public virtual void __DrawBefore(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public void __DrawBefore(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __isCreated = __composer.StartRestartGroup(723220195);
         var __isRestarted = __composer.IsRestarted();
@@ -67,7 +67,7 @@ public abstract partial class BaseComposableModifier<T>
         __composer.EndRestartGroup(723220195, __isRestarted)?.UpdateScope(() => __DrawBefore(__composer, 0));
     }
 
-    public void __DrawAfter(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public virtual void __DrawAfter(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var __isCreated = __composer.StartRestartGroup(1178099079);
         var __isRestarted = __composer.IsRestarted();
