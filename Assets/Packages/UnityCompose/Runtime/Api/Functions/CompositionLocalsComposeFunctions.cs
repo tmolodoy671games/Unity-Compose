@@ -15,5 +15,5 @@ public static partial class ComposeFunctions
     public static readonly ICompositionLocal<Optional<TextStyle>> LocalTextStyle =
         CompositionLocalOf(Optional.Empty<TextStyle>);
 
-    public static readonly ICompositionLocal<float> LocalTextScale = CompositionLocalOf(() => 0f);
+    public static readonly ICompositionLocal<float> LocalTextScale = CompositionLocalOf(() => 1f);
 }
