@@ -55,17 +55,16 @@ public partial class ComposeView : VisualElement
         composer.StartReusableGroup<ComposeView>(0);
         composer.SetVisualElement(this);
         composer.EnterVisualElement(this);
-        var isActiveInstance = Remember(onScreenManager.Contents.IsEmpty(),
-            () => new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)
-        );
         var focusManager = Remember(this.FocusManager);
         CompositionLocalProvider(
             LocalVisualElement.Provides(this),
-            LocalIsActive.Provides(isActiveInstance),
             LocalOnScreenMenuManager.Provides(onScreenManager),
-            LocalModalMenuVisibility.Provides(onScreenManager.Contents.IsNotEmpty()),
+            LocalModalMenuTags.Provides(onScreenManager.Tags),
             LocalFocusManager.Provides(focusManager),
-            () => content(composer, 0)
+            () => WithIsActive(
+                onScreenManager.Contents.IsEmpty(),
+                () => content(composer, 0)
+            )
         );
         foreach (var overlayContent in onScreenManager.Contents)
         {

@@ -1,6 +1,7 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
 using SharpExtensions;
+using StableCollections;
 
 namespace UnityCompose.Samples.Behaviors
 {
@@ -39,7 +40,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Padding(horizontal: 20.Dp(), vertical: 8.Dp())
                             .Background(Color.lightGreen)
-                            .Blur(AnimateFloatAsState(LocalModalMenuVisibility.Current.ToInt()).Value * 10)
+                            .Blur(AnimateFloatAsState(LocalModalMenuTags.Current.IsNotEmpty().ToInt()).Value * 10)
                             .OnClick(() => showModalMenu.Value = true)
                             .Border(16.Dp()),
                         content: () =>

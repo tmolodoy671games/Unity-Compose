@@ -26,12 +26,11 @@ public partial class ComposeView
             composer.StartReusableGroup<ComposeView>(0);
             composer.SetVisualElement(this);
             composer.EnterVisualElement(this);
-            var isActiveInstance = (!__composer.Changed<bool>(onScreenManager.Contents.IsEmpty()!) ? __composer.RememberedValue<global::UnityCompose.IsActiveEntry>() : __composer.UpdateRememberedValue<global::UnityCompose.IsActiveEntry>(new IsActiveEntry(onScreenManager.Contents.IsEmpty(), null)));
             var focusManager = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.FocusManagerImpl>() : __composer.UpdateRememberedValue<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.FocusManagerImpl>(this.FocusManager));
-            __composer.StartReplaceGroup(942824616);
-            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalIsActive.Provides(isActiveInstance), LocalOnScreenMenuManager.Provides(onScreenManager), LocalModalMenuVisibility.Provides(onScreenManager.Contents.IsNotEmpty()), LocalFocusManager.Provides(focusManager), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.Composer>(composer!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0b_00_00_00_00_00_00);
-            __composer.EndReplaceGroup(942824616);
-            __composer.StartReplaceGroup(440910603);
+            __composer.StartReplaceGroup(732721416);
+            __CompositionLocalProvider(LocalVisualElement.Provides(this), LocalOnScreenMenuManager.Provides(onScreenManager), LocalModalMenuTags.Provides(onScreenManager.Tags), LocalFocusManager.Provides(focusManager), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.ModalMenuManager>(onScreenManager!).Changed<global::UnityCompose.Composer>(composer!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __WithIsActive(onScreenManager.Contents.IsEmpty(), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Changed<global::UnityCompose.Composer>(composer!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(composer, 0))), __composer: __composer, __changed: 0b_00_00))), __composer: __composer, __changed: 0b_00_00_00_00_00);
+            __composer.EndReplaceGroup(732721416);
+            __composer.StartReplaceGroup(630224542);
             foreach (var overlayContent in onScreenManager.Contents)
             {
                 __Box(modifier: Modifier.OnClick((!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
@@ -39,7 +38,7 @@ public partial class ComposeView
                 }))).FillMaxSize().Float(), content: overlayContent, __composer: __composer, __changed: 0b_01_00_00);
             }
 
-            __composer.EndReplaceGroup(440910603);
+            __composer.EndReplaceGroup(630224542);
             composer.EndReusableGroup(0);
         }
         else

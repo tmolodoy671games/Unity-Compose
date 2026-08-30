@@ -2,15 +2,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 
 namespace UnityCompose;
 
 public static partial class ComposeFunctions
 {
-    public static readonly ICompositionLocal<bool> LocalModalMenuVisibility = CompositionLocalOf(() => false);
-    
+    public static readonly ICompositionLocal<IImmutableStableList<string?>> LocalModalMenuTags =
+        CompositionLocalOf(ImmutableStableListOf<string?>);
+
     internal static readonly ICompositionLocal<ModalMenuManager> LocalOnScreenMenuManager =
         CompositionLocalOf<ModalMenuManager>(() =>
             throw new IllegalStateException("No LocalOnScreenManager provided!")
@@ -18,31 +21,43 @@ public static partial class ComposeFunctions
 
     [Composable]
     public static void ModalMenu(
-        ComposableContent content
+        ComposableContent content,
+        string? key = null
     )
     {
         var manager = LocalOnScreenMenuManager.Current;
         DisposableEffect(content, it =>
         {
-            manager.AddContent(content);
-            return it.OnDispose(() => manager.RemoveContent(content));
+            manager.AddContent(key, content);
+            return it.OnDispose(() => manager.RemoveContent(key, content));
         });
     }
 }
 
 internal class ModalMenuManager
 {
-    private readonly IMutableStateList<ComposableContent> _contents = MutableStateListOf<ComposableContent>();
+    private readonly record struct ModalMenuEntry(
+        string? Key,
+        ComposableContent Content
+    );
 
-    public IStateList<ComposableContent> Contents => _contents;
+    private readonly IMutableStateList<ModalMenuEntry> _contents = MutableStateListOf<ModalMenuEntry>();
 
-    public void AddContent(ComposableContent content)
+    public IImmutableStableList<ComposableContent> Contents => _contents
+        .Select(it => it.Content)
+        .ToImmutableStableList();
+
+    public IImmutableStableList<string?> Tags => _contents
+        .Select(it => it.Key)
+        .ToImmutableStableList();
+
+    public void AddContent(string? key, ComposableContent content)
     {
-        _contents.Add(content);
+        _contents.Add(new ModalMenuEntry(key, content));
     }
 
-    public void RemoveContent(ComposableContent content)
+    public void RemoveContent(string? key, ComposableContent content)
     {
-        _contents.Remove(content);
+        _contents.Remove(new ModalMenuEntry(key, content));
     }
 }
