@@ -93,24 +93,3 @@ public static partial class ComposeFunctions
         __composer.EndRestartGroup(2104044227, __isRestarted)?.UpdateScope(() => __Navigation(__coordinator, __transition, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }
-
-internal partial class NavigationScopeImpl
-{
-    public void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
-    {
-        var __isCreated = __composer.StartRestartGroup(905666498);
-        var __isRestarted = __composer.IsRestarted();
-        if (__isCreated || __isRestarted || __changed != 0b_00)
-        {
-            __composer.StartReplaceGroup(2017493040);
-            _content();
-            __composer.EndReplaceGroup(2017493040);
-        }
-        else
-        {
-            __composer.SkipToGroupEnd();
-        }
-
-        __composer.EndRestartGroup(905666498, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
-    }
-}

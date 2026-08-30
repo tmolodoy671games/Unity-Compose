@@ -1,8 +1,5 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using SharpExtensions;
-using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,7 +7,7 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 namespace UnityCompose;
 
-[DisallowMultipleComponent, ExecuteAlways, HideMonoScript]
+[DisallowMultipleComponent, ExecuteAlways]
 public abstract partial class ComposeUI : MonoBehaviour
 {
     private UIDocument? _document;
@@ -50,32 +47,6 @@ public abstract partial class ComposeUI : MonoBehaviour
         }
 
         composeView?.SetContent(__Preview);
-    }
-
-    [Button]
-    protected void PrintTreeStructure()
-    {
-        Debug.Log(_document?.rootVisualElement?.Q<ComposeView>().Composer.Format());
-    }
-
-    [Button]
-    protected void PrintSlots()
-    {
-        Debug.Log(CurrentComposer.SlotsToString());
-    }
-
-    [Button]
-    protected void PrintTreeStructureToFile()
-    {
-        using TextWriter writer = new StreamWriter("output.txt");
-        CurrentComposer.WriteToFile(writer);
-    }
-
-    [Button]
-    private void PrintSlotsToFile()
-    {
-        using TextWriter writer = new StreamWriter("output.txt");
-        CurrentComposer.WriteSlotsToFile(writer);
     }
 
     private UIDocument GetUiDocument() => GetComponent<UIDocument>().NotNull();

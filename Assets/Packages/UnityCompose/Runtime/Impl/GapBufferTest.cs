@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SharpExtensions;
-using Sirenix.OdinInspector;
 using StableCollections;
 using UnityCompose;
 using UnityEngine;
@@ -12,7 +11,6 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Impl
     [DisallowMultipleComponent]
     internal class GapBufferTest : MonoBehaviour
     {
-        [Button]
         private void Test()
         {
             var result = Optional.Empty<Color>().Equals(Optional.Empty<Color>());

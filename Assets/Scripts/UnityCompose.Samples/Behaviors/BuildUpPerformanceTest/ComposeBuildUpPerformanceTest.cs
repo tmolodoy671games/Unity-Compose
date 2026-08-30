@@ -1,6 +1,5 @@
 using System;
 using SharpExtensions;
-using Sirenix.OdinInspector;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
@@ -12,7 +11,6 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
 
         protected override SlotTableType SlotTableType => type;
 
-        [Button]
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();

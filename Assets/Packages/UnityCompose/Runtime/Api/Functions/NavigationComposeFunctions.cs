@@ -209,28 +209,6 @@ public static partial class ComposeFunctions
     }
 }
 
-public interface INavigationScope
-{
-    [Composable]
-    void Content();
-}
-
-internal partial class NavigationScopeImpl : INavigationScope
-{
-    private readonly ComposableContent _content;
-
-    public NavigationScopeImpl(ComposableContent content)
-    {
-        _content = content;
-    }
-
-    [Composable]
-    public void Content()
-    {
-        _content();
-    }
-}
-
 internal class ComposeNavigatorImpl : IComposeNavigator
 {
     private readonly IComposeCoordinator? _parentCoordinator;

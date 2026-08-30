@@ -1,5 +1,4 @@
 ﻿using SharpExtensions;
-using Sirenix.OdinInspector;
 using UnityEngine.UIElements;
 // ReSharper disable ArrangeNamespaceBody
 
@@ -8,7 +7,6 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
     [DisallowMultipleComponent]
     internal class VisualElementBuildUpPerformanceTest : MonoBehaviour
     {
-        [Button]
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();

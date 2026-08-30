@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sirenix.Utilities;
+﻿using System.Collections.Generic;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.SlotTableWriting.Entities;
 using UnityEngine;

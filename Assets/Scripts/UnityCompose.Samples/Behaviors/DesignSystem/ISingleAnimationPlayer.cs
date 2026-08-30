@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using Core.Unity.Behaviors;
 using UnityCompose;
+using UnityCompose.Samples.Behaviors.DesignSystem;
 using UnityEngine;
 
 namespace UI.DesignSystem.Compose.Players;

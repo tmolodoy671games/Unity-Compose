@@ -1,12 +1,10 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
 using SharpExtensions;
-using Sirenix.OdinInspector;
-using UnityEngine;
 
-namespace Core.Unity.Behaviors
+namespace UnityCompose.Samples.Behaviors.DesignSystem
 {
-    [DisallowMultipleComponent, HideMonoScript]
+    [DisallowMultipleComponent]
     public class SingletonMonoBehavior : MonoBehaviour
     {
         private static SingletonMonoBehavior _instance = null!;

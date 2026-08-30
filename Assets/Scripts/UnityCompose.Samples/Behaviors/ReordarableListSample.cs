@@ -1,6 +1,5 @@
 using System;
-using Sirenix.Utilities;
-using UnityEngine.SocialPlatforms;
+using StableCollections;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -61,7 +60,7 @@ namespace UnityCompose.Samples.Behaviors
                                     })
                             );
 
-                            var immutableItems = items.ToImmutableList();
+                            var immutableItems = items.ToImmutableStableList();
                             Column(
                                 horizontalAlignment: Alignment.CenterHorizontally,
                                 modifier: Modifier

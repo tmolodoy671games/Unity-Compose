@@ -1,12 +1,10 @@
 #nullable enable
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using SharpExtensions;
-using Sirenix.OdinInspector;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 using UnityCompose;
 using static UnityCompose.ComposeFunctions;
 
@@ -17,7 +15,7 @@ public abstract partial class ComposeUI
     protected abstract void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1);
     protected virtual void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var __isCreated = __composer.StartRestartGroup(1386397072);
+        var __isCreated = __composer.StartRestartGroup(770363910);
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __changed != 0b_00)
         {
@@ -27,6 +25,6 @@ public abstract partial class ComposeUI
             __composer.SkipToGroupEnd();
         }
 
-        __composer.EndRestartGroup(1386397072, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        __composer.EndRestartGroup(770363910, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
     }
 }
