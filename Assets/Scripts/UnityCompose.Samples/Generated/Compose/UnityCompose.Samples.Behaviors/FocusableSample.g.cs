@@ -42,14 +42,14 @@ namespace UnityCompose.Samples.Behaviors
                 {
                     while (true)
                     {
-                        if (Input.GetKeyDown(KeyCode.UpArrow))
-                            focusManager.MoveFocus(FocusDirection.Up);
-                        else if (Input.GetKeyDown(KeyCode.DownArrow))
-                            focusManager.MoveFocus(FocusDirection.Down);
-                        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-                            focusManager.MoveFocus(FocusDirection.Left);
-                        else if (Input.GetKeyDown(KeyCode.RightArrow))
-                            focusManager.MoveFocus(FocusDirection.Right);
+                        // if (Input.GetKeyDown(KeyCode.UpArrow))
+                        //     focusManager.MoveFocus(FocusDirection.Up);
+                        // else if (Input.GetKeyDown(KeyCode.DownArrow))
+                        //     focusManager.MoveFocus(FocusDirection.Down);
+                        // else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        //     focusManager.MoveFocus(FocusDirection.Left);
+                        // else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        //     focusManager.MoveFocus(FocusDirection.Right);
                         yield return null;
                     }
                 }
