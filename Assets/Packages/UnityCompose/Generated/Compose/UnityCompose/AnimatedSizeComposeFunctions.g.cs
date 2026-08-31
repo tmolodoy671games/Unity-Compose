@@ -58,7 +58,7 @@ public static partial class ComposeFunctions
         var containerPaddings = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
         var contentSize = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(new Vector2(-1, -1))));
         var contentModifier = Modifier;
-        var containerModifier = Modifier.Clip(RoundedCornerShape()).OnLocallyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(containerPaddings!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
+        var containerModifier = Modifier.Clip().OnLocallyPositioned((!__composer.Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(containerPaddings!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it =>
         {
             containerPaddings.Value = new Vector2(it.PaddingLeft + it.PaddingRight, it.PaddingTop + it.PaddingBottom).Approximate();
         })));

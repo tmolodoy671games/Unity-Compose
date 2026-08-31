@@ -26,7 +26,7 @@ public static partial class DesignSystemComposeFunctions
         var isPressed = Remember(() => MutableStateOf(Optional.Empty<bool>()));
         Box(
             modifier: modifier.OrEmpty()
-                .Clip(RoundedCornerShape())
+                .Clip()
                 .OnGloballyPositioned(it => layout.Value = it)
                 .OnMouseEnter(() => onHover())
                 .OnMouseLeave(() =>
