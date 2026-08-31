@@ -13,6 +13,18 @@ public static partial class ModifierExtensions
 {
     public static IModifier Scale(
         this IModifier modifier,
+        float scale,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new ScaleModifierImpl(
+            new Vector2(scale, scale),
+            transition
+        );
+    }
+    
+    public static IModifier Scale(
+        this IModifier modifier,
         Optional<float> scaleX = default,
         Optional<float> scaleY = default,
         Optional<ComposeTransition> transition = default
