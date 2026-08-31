@@ -58,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors
                     //     isPressed.Value ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f),
                     //     Tween(1)
                     // ).Value;
-                    __Box(modifier: Modifier.Padding(horizontal: __AnimateFloatAsState(isHovered.Value ? 160 : 40, animationSpec: Tween(duration: 2), __composer: __composer, __changed: 0b_01_00_00).Value.Dp(), vertical: 16.Dp()).Background((isPressed.Value ? Color.darkBlue : Color.blue)).Border(radius: 16.Dp()).OnMouseEnter((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true))).OnMouseLeave((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false))).CapturePointer(isCapturingPointer.Value)// .DrawAfter(it =>
+                    __Box(modifier: Modifier.Padding(horizontal: __AnimateFloatAsState(isHovered.Value ? 160 : 40, animationSpec: Tween(duration: 2), __composer: __composer, __changed: 0b_01_00_00).Value.Dp(), vertical: 16.Dp()).Background((isPressed.Value ? Color.darkBlue : Color.blue)).Clip(RoundedCornerShape(16.Dp())).OnMouseEnter((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = true))).OnMouseLeave((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isHovered!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isHovered.Value = false))).CapturePointer(isCapturingPointer.Value)// .DrawAfter(it =>
                     // {
                     //     var size = it.visualElement.layout.size;
                     //     it.painter2D.fillColor = circleColor;
@@ -66,7 +66,7 @@ namespace UnityCompose.Samples.Behaviors
                     //     it.painter2D.Arc(size / 2, 50, 0, 360);
                     //     it.painter2D.Fill();
                     // })
-                    .Clip().Scale(2).OnLmbDown((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                    .Clip(RoundedCornerShape(16.Dp())).Scale(2).OnLmbDown((!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<bool>>(isPressed!).Changed<global::UnityCompose.IMutableState<bool>>(isCapturingPointer!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                     {
                         isPressed.Value = true;
                         isCapturingPointer.Value = true;

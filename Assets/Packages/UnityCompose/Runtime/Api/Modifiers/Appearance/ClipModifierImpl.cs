@@ -1,35 +1,45 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System.Runtime.CompilerServices;
-using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
 public static partial class ModifierExtensions
 {
-    public static IModifier Clip(this IModifier modifier)
+    public static IModifier Clip(
+        this IModifier modifier,
+        RoundedCornerShape shape
+    )
     {
-        return modifier + ClipModifierImpl.Instance;
+        return modifier + new ClipModifierImpl(shape);
     }
 }
 
 internal class ClipModifierImpl : BaseModifier<ClipModifierImpl>
 {
-    public static readonly ClipModifierImpl Instance = new();
+    private readonly RoundedCornerShape _shape;
 
-    private ClipModifierImpl()
+    public ClipModifierImpl(RoundedCornerShape shape)
     {
+        _shape = shape;
     }
 
     public override void Apply(VisualElement element)
     {
         element.style.overflow = Overflow.Hidden;
+        element.style.borderTopLeftRadius = _shape.TopLeft.ToLength();
+        element.style.borderTopRightRadius = _shape.TopRight.ToLength();
+        element.style.borderBottomLeftRadius = _shape.BottomLeft.ToLength();
+        element.style.borderBottomRightRadius = _shape.BottomRight.ToLength();
     }
 
     public override void Revert(VisualElement element)
     {
         element.style.overflow = StyleKeyword.Null;
+        element.style.borderTopLeftRadius = StyleKeyword.Null;
+        element.style.borderTopRightRadius = StyleKeyword.Null;
+        element.style.borderBottomLeftRadius = StyleKeyword.Null;
+        element.style.borderBottomRightRadius = StyleKeyword.Null;
     }
 
     protected override bool Equals(ClipModifierImpl other)

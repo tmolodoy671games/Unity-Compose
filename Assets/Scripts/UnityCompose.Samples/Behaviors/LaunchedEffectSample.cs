@@ -69,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(AnimateColorAsState(isHovered.Value ? Color.cyan : Color.blue).Value)
                             .Padding(vertical: 20.Dp())
                             .Padding(horizontal: AnimateFloatAsState(isHovered.Value ? 40 : 20).Value.Dp())
-                            .Border(radius: 16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Margin(top: 32.Dp())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)

@@ -24,7 +24,7 @@ namespace UnityCompose.Samples.Behaviors
                                 modifier: Modifier
                                     .Background(Color.lightYellow)
                                     .Size(100.Dp())
-                                    .Border(16.Dp())
+                                    .Clip(RoundedCornerShape(16.Dp()))
                                     .OnClick(() => showModalMenu.Value = false)
                             )
                     );
@@ -42,7 +42,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.lightGreen)
                             .Blur(AnimateFloatAsState(LocalModalMenuTags.Current.IsNotEmpty().ToInt()).Value * 10)
                             .OnClick(() => showModalMenu.Value = true)
-                            .Border(16.Dp()),
+                            .Clip(RoundedCornerShape(16.Dp())),
                         content: () =>
                         {
                             Text(

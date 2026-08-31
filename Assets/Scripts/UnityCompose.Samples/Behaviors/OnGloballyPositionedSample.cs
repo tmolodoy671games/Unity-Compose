@@ -70,7 +70,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Background(Color.blue)
                             .Padding(32.Dp())
-                            .Border(32.Dp())
+                            .Clip(RoundedCornerShape(32.Dp()))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value),
                         color: Color.white,
                         text: "Switch"

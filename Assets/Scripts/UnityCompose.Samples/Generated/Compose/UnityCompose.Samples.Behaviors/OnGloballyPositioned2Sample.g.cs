@@ -67,7 +67,7 @@ namespace UnityCompose.Samples.Behaviors
                     foreach (var position in positions.Values)
                     {
                         var coordinates = layoutCoordinates.Value.Value;
-                        __Spacer(modifier: Modifier.Background(Color.red).Size(16.Dp()).Border(4.Dp(), topLeftRadius: 0.Dp()).Float().Position(left: coordinates.GlobalToLocal(position).x.Dp(), top: coordinates.GlobalToLocal(position).y.Dp()), __composer: __composer, __changed: 0b_00);
+                        __Spacer(modifier: Modifier.Background(Color.red).Size(16.Dp()).Clip(RoundedCornerShape(4.Dp())).Float().Position(left: coordinates.GlobalToLocal(position).x.Dp(), top: coordinates.GlobalToLocal(position).y.Dp()), __composer: __composer, __changed: 0b_00);
                     }
 
                     __composer.EndReplaceGroup(1630269357);
@@ -96,7 +96,7 @@ namespace UnityCompose.Samples.Behaviors
             if (__isCreated || __isRestarted || __dirty != 0b_01_01_01)
             {
                 var animationSpec = Tween();
-                __Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Dp(), horizontal: __AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec, __composer: __composer, __changed: 0b_01_00_00).Value.Dp()).Margin(horizontal: 2.Dp()).Border(16.Dp(), topLeftRadius: 0.Dp()).Scale(__AnimateFloatAsState(selected ? 0.8f : 1, __composer: __composer, __changed: 0b_01_01_00).Value), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __Box(modifier: modifier.OrEmpty().Background(Color.grey).Padding(vertical: 8.Dp(), horizontal: __AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec, __composer: __composer, __changed: 0b_01_00_00).Value.Dp()).Margin(horizontal: 2.Dp()).Clip(RoundedCornerShape(16.Dp())).Scale(__AnimateFloatAsState(selected ? 0.8f : 1, __composer: __composer, __changed: 0b_01_01_00).Value), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __CompositionLocalProvider(LocalContentColor.Provides(Color.white), LocalTextStyle.Provides(new TextStyle(Color: Color.white, FontSize: 32.Sp())), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_11_00) << 2));
                 })), __composer: __composer, __changed: 0b_01_00_00);

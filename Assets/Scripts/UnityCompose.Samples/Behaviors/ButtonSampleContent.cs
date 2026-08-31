@@ -45,7 +45,7 @@ namespace UnityCompose.Samples.Behaviors
                                 vertical: 16.Dp()
                             )
                             .Background((isPressed.Value ? Color.darkBlue : Color.blue))
-                            .Border(radius: 16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)
                             .CapturePointer(isCapturingPointer.Value)
@@ -57,7 +57,7 @@ namespace UnityCompose.Samples.Behaviors
                             //     it.painter2D.Arc(size / 2, 50, 0, 360);
                             //     it.painter2D.Fill();
                             // })
-                            .Clip()
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Scale(2)
                             .OnLmbDown(() =>
                             {

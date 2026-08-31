@@ -55,7 +55,7 @@ namespace UnityCompose.Samples.Behaviors
                                 horizontal: 32.Dp() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Dp(),
                                 vertical: 16.Dp()
                             )
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Margin(top: 32.Dp())
                             .OnClick(() => showMovingSquare.Value = !showMovingSquare.Value)
                             .OnMouseEnter(() => isHovered.Value = true)

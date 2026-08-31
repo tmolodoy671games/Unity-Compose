@@ -75,7 +75,7 @@ namespace UnityCompose.Samples.Behaviors
                             modifier: Modifier
                                 .Background(Color.red)
                                 .Size(16.Dp())
-                                .Border(4.Dp(), topLeftRadius: 0.Dp())
+                                .Clip(RoundedCornerShape(4.Dp()))
                                 .Float()
                                 .Position(
                                     left: coordinates.GlobalToLocal(position).x.Dp(),
@@ -103,7 +103,7 @@ namespace UnityCompose.Samples.Behaviors
                         horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Dp()
                     )
                     .Margin(horizontal: 2.Dp())
-                    .Border(16.Dp(), topLeftRadius: 0.Dp())
+                    .Clip(RoundedCornerShape(16.Dp()))
                     .Scale(AnimateFloatAsState(selected ? 0.8f : 1).Value),
                 content: () =>
                 {

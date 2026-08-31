@@ -41,7 +41,7 @@ public static partial class ComposeFunctions
         var contentSize = Remember(() => MutableStateOf(new Vector2(-1, -1)));
         var contentModifier = Modifier;
         var containerModifier = Modifier
-            .Clip()
+            .Clip(RoundedCornerShape())
             .OnLocallyPositioned(it =>
             {
                 containerPaddings.Value = new Vector2(

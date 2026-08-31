@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 62.Sp(),
                         modifier: Modifier
                             .Padding(horizontal: 20.Dp(), vertical: 12.Dp())
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Background(Color.blue)
                             .Margin(top: 16.Dp())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)

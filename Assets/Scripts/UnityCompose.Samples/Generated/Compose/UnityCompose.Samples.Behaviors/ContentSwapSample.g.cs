@@ -65,7 +65,7 @@ namespace UnityCompose.Samples.Behaviors
                         __composer.EndReplaceGroup(1284654179);
                     }
 
-                    __Text(text: "Switch", color: Color.white, fontSize: 62.Sp(), modifier: Modifier.Padding(horizontal: 20.Dp(), vertical: 12.Dp()).Border(16.Dp()).Background(Color.blue).Margin(top: 16.Dp()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
+                    __Text(text: "Switch", color: Color.white, fontSize: 62.Sp(), modifier: Modifier.Padding(horizontal: 20.Dp(), vertical: 12.Dp()).Clip(RoundedCornerShape(16.Dp())).Background(Color.blue).Margin(top: 16.Dp()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00_01);
                 })), __composer: __composer, __changed: 0b_00_00_00_00);
             }
             else

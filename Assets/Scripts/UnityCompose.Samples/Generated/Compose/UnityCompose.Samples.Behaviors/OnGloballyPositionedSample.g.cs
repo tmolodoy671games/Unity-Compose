@@ -68,7 +68,7 @@ namespace UnityCompose.Samples.Behaviors
                             })), __composer: __composer, __changed: 0b_01_01_00);
                         })), __composer: __composer, __changed: 0b_00_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
-                    __Text(modifier: Modifier.Background(Color.blue).Padding(32.Dp()).Border(32.Dp()).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), color: Color.white, text: "Switch", __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
+                    __Text(modifier: Modifier.Background(Color.blue).Padding(32.Dp()).Clip(RoundedCornerShape(32.Dp())).OnClick((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isSwitched!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isSwitched.Value = !isSwitched.Value))), color: Color.white, text: "Switch", __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_01);
                     __composer.StartReplaceGroup(835651239);
                     if (layout.Value.HasValue && parentCoordinates.Value.HasValue)
                     {

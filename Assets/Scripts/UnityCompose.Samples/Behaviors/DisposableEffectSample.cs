@@ -48,10 +48,10 @@ namespace UnityCompose.Samples.Behaviors
                         fontSize: 40.Sp(),
                         modifier: Modifier
                             .Name("test-button")
-                            .Background(isHovered.Value ? Color.cyan : Color.blue, Transition())
+                            .Background(isHovered.Value ? Color.cyan : Color.blue, transition:Transition())
                             .Padding(vertical: 20.Dp())
                             .Padding(horizontal: isHovered.Value ? 40.Dp() : 20.Dp(), transition: Transition())
-                            .Border(radius: 16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Margin(top: 32.Dp())
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)

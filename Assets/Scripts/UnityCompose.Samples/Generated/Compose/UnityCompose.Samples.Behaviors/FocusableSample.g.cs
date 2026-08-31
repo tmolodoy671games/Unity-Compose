@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
                 StartCoroutine(InputCoroutine());
                 __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Row(modifier: Modifier.Background(Color.white).Border(16.Dp()).Padding(16.Dp()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __Row(modifier: Modifier.Background(Color.white).Clip(RoundedCornerShape(16.Dp())).Padding(16.Dp()), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
                         Repeat(3, (!__composer.Changed() ? __composer.RememberedValue<global::System.Action<int>>() : __composer.UpdateRememberedValue<global::System.Action<int>>(it =>
                         {
@@ -96,7 +96,7 @@ namespace UnityCompose.Samples.Behaviors
                 if (isDefault)
                     __SideEffect(0, focusRequester.RequestFocus, __composer: __composer, __changed: 0b_00_01);
                 __composer.EndReplaceGroup(1407512844);
-                __Spacer(Modifier.Margin(4.Dp()).Size(width: 100.Dp(), height: 40.Dp()).Border(16.Dp()).Background(__AnimateColorAsState(isFocused.Value ? Color.lightSeaGreen : Color.indianRed, __composer: __composer, __changed: 0b_01_01_00).Value).Scale(__AnimateFloatAsState(isFocused.Value ? 1.1f : 1f, __composer: __composer, __changed: 0b_01_01_00).Value).Name(name).Focusable().OnFocusChanged((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isFocused!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.FocusState>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.FocusState>>(it => isFocused.Value = it.IsFocused))).FocusRequester(focusRequester), __composer: __composer, __changed: 0b_00);
+                __Spacer(Modifier.Margin(4.Dp()).Size(width: 100.Dp(), height: 40.Dp()).Clip(RoundedCornerShape(16.Dp())).Background(__AnimateColorAsState(isFocused.Value ? Color.lightSeaGreen : Color.indianRed, __composer: __composer, __changed: 0b_01_01_00).Value).Scale(__AnimateFloatAsState(isFocused.Value ? 1.1f : 1f, __composer: __composer, __changed: 0b_01_01_00).Value).Name(name).Focusable().OnFocusChanged((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isFocused!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.FocusState>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.FocusState>>(it => isFocused.Value = it.IsFocused))).FocusRequester(focusRequester), __composer: __composer, __changed: 0b_00);
             }
             else
             {

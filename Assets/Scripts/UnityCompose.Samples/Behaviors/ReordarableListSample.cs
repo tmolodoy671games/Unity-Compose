@@ -46,7 +46,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Align(Alignment.Right)
                                     .Background(Color.blue)
                                     .Padding(horizontal: 32.Dp(), vertical: 16.Dp())
-                                    .Border(radius: 16.Dp())
+                                    .Clip(RoundedCornerShape(16.Dp()))
                                     .OnClick(() =>
                                     {
                                         for (var i = 1; i <= items.Count + 1; i++)
@@ -122,7 +122,7 @@ namespace UnityCompose.Samples.Behaviors
                     .Background(Color.cyan)
                     .FillMaxWidth()
                     .Padding(all: 4.Dp())
-                    .Border(radius: 12.Dp())
+                    .Clip(RoundedCornerShape(12.Dp()))
                     .Margin(vertical: 4.Dp()),
                 content: () =>
                 {
@@ -143,7 +143,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Background(Color.green)
                             .Padding(horizontal: 16.Dp())
-                            .Border(12.Dp())
+                            .Clip(RoundedCornerShape(12.Dp()))
                             .OnClick(() => counter.Value++)
                     );
                     Column(
@@ -159,7 +159,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("up-arrow-button")
                                     .Background(Color.green)
                                     .Padding(horizontal: 6.Dp(), vertical: 4.Dp())
-                                    .Border(radius: 16.Dp())
+                                    .Clip(RoundedCornerShape(16.Dp()))
                                     .OnClick(onMoveUpClick)
                             );
                             Text(
@@ -172,7 +172,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("down-arrow-button")
                                     .Background(Color.green)
                                     .Padding(horizontal: 6.Dp(), vertical: 4.Dp())
-                                    .Border(radius: 16.Dp())
+                                    .Clip(RoundedCornerShape(16.Dp()))
                                     .OnClick(onMoveDownClick)
                             );
                         }
@@ -187,7 +187,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Name("remove-button")
                             .Background(Color.red)
                             .Padding(horizontal: 16.Dp(), vertical: 4.Dp())
-                            .Border(radius: 16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(onRemoveClick)
                     );
                 }

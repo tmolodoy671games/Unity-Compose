@@ -26,7 +26,7 @@ public static partial class DesignSystemComposeFunctions
         var isPressed = Remember(() => MutableStateOf(Optional.Empty<bool>()));
         Box(
             modifier: modifier.OrEmpty()
-                .Clip()
+                .Clip(RoundedCornerShape())
                 .OnGloballyPositioned(it => layout.Value = it)
                 .OnMouseEnter(() => onHover())
                 .OnMouseLeave(() =>
@@ -79,7 +79,7 @@ public static partial class DesignSystemComposeFunctions
                 Spacer(
                     Modifier
                         .Size(size.Dp())
-                        .Border(size.Dp() / 2)
+                        .Clip(RoundedCornerShape(size.Dp() / 2))
                         .Background(resolvedPressColor)
                         .Alpha(1 - releaseAnimation.Progress)
                         .Float()

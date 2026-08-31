@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 
@@ -28,16 +29,44 @@ public static partial class ComposeFunctions
         CompositionLocalOf<VisualElement>(() => throw new ArgumentException("LocalVisualElement is not provided!"));
 
     public static IMutableInteractionSource MutableInteractionSource() => new MutableInteractionSourceImpl();
-    
+
     public static void Repeat(int times, Action body)
     {
         for (var i = 0; i < times; i++)
             body();
     }
-    
+
     public static void Repeat(int times, Action<int> body)
     {
         for (var i = 0; i < times; i++)
             body(i);
+    }
+    
+    public static RoundedCornerShape RoundedCornerShape(
+        Dp size
+    )
+    {
+        return new RoundedCornerShape(
+            TopLeft: size,
+            TopRight: size,
+            BottomLeft: size,
+            BottomRight: size
+        );
+    }
+
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]
+    public static RoundedCornerShape RoundedCornerShape(
+        Dp topLeft = default,
+        Dp topRight = default,
+        Dp bottomLeft = default,
+        Dp bottomRight = default
+    )
+    {
+        return new RoundedCornerShape(
+            TopLeft: topLeft,
+            TopRight: topRight,
+            BottomLeft: bottomLeft,
+            BottomRight: bottomRight
+        );
     }
 }

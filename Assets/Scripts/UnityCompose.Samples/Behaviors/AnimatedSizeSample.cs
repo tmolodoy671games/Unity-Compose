@@ -42,12 +42,12 @@ namespace UnityCompose.Samples.Behaviors
                                     .Name("animated-size")
                                     .Background(
                                         isSwitched.Value ? Color.green : Color.red,
-                                        Transition(AnimationDuration)
+                                        transition: Transition(AnimationDuration)
                                     )
                                     .Padding(all: 16.Dp())
-                                    .Border(
+                                    .Clip(RoundedCornerShape(
                                         AnimateFloatAsState(isSwitched.Value ? 8 : 32, animationSpec).Value.Dp()
-                                    ),
+                                    )),
                                 animationSpec: animationSpec,
                                 content: modifier =>
                                 {
@@ -71,7 +71,7 @@ namespace UnityCompose.Samples.Behaviors
                                     .Padding(all: 32.Dp())
                                     .Background(Color.blue)
                                     .Margin(top: 16.Dp())
-                                    .Border(radius: 16.Dp())
+                                    .Clip(RoundedCornerShape(16.Dp()))
                                     .OnClick(() => isSwitched.Value = !isSwitched.Value)
                             );
                         }

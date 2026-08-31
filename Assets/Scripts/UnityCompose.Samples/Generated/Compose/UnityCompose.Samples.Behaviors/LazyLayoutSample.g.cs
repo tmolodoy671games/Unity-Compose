@@ -89,7 +89,7 @@ namespace UnityCompose.Samples.Behaviors
                         __Box(modifier: Modifier.Height(100.Percent()).Float().Position(right: 0.Dp()), content: (!__composer.Changed<global::UnityCompose.LazyListState>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
                             var scrollerSize = state.ViewportSize / state.ContentSize;
-                            __Spacer(Modifier.Background(Color.cadetBlue).Width(32.Dp()).Border(16.Dp()).Height(scrollerSize * 100.Percent()).Position(top: (state.Value / state.ContentSize) * 100.Percent()), __composer: __composer, __changed: 0b_00);
+                            __Spacer(Modifier.Background(Color.cadetBlue).Width(32.Dp()).Clip(RoundedCornerShape(16.Dp())).Height(scrollerSize * 100.Percent()).Position(top: (state.Value / state.ContentSize) * 100.Percent()), __composer: __composer, __changed: 0b_00);
                         })), __composer: __composer, __changed: 0b_01_00_00);
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_01_01_01_00);

@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors
                         Modifier
                             .Size(100.Dp())
                             .Background(Color.red)
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isRedSwitched.Value = !isRedSwitched.Value)
                             .Scale(AnimateFloatAsState(isRedSwitched.Value ? 1.5f : 1f).Value)
                             .Margin(top: 40.Dp())
@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors
                         Modifier
                             .Size(100.Dp())
                             .Background(Color.green)
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isGreenSwitched.Value = !isGreenSwitched.Value)
                             .Scale(AnimateFloatAsState(isGreenSwitched.Value ? 1.5f : 1f).Value)
                             .Margin(top: 40.Dp())
@@ -47,7 +47,7 @@ namespace UnityCompose.Samples.Behaviors
                         Modifier
                             .Size(100.Dp())
                             .Background(Color.blue)
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isBlueSwitched.Value = !isBlueSwitched.Value)
                             .Scale(AnimateFloatAsState(isBlueSwitched.Value ? 1.5f : 1f).Value)
                             .Margin(top: 40.Dp())

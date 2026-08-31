@@ -84,7 +84,7 @@ namespace UnityCompose.Samples.Behaviors
                                     Modifier
                                         .Background(Color.cadetBlue)
                                         .Width(32.Dp())
-                                        .Border(16.Dp())
+                                        .Clip(RoundedCornerShape(16.Dp()))
                                         .Height(scrollerSize * 100.Percent())
                                         .Position(top: (state.Value / state.ContentSize) * 100.Percent())
                                 );

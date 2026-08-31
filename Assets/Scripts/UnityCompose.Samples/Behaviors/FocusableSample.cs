@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors
                     Row(
                         modifier: Modifier
                             .Background(Color.white)
-                            .Border(16.Dp())
+                            .Clip(RoundedCornerShape(16.Dp()))
                             .Padding(16.Dp()),
                         content: () =>
                         {
@@ -79,7 +79,7 @@ namespace UnityCompose.Samples.Behaviors
                         width: 100.Dp(),
                         height: 40.Dp()
                     )
-                    .Border(16.Dp())
+                    .Clip(RoundedCornerShape(16.Dp()))
                     .Background(AnimateColorAsState(isFocused.Value ? Color.lightSeaGreen : Color.indianRed).Value)
                     .Scale(AnimateFloatAsState(isFocused.Value ? 1.1f : 1f).Value)
                     .Name(name)

@@ -32,7 +32,7 @@ public static partial class ComposeFunctions
                 it.style.justifyContent = Justify.FlexStart;
             },
             modifier: modifier.OrEmpty()
-                .Clip()
+                .Clip(RoundedCornerShape())
                 .OnGloballyPositioned(it => resolvedState.ViewportSize = it.Height)
                 .OnVerticalScroll(
                     onVerticalScroll: it => resolvedState.AnimateScrollBy(scrollStrength * DefaultScrollMultiplier * it)
@@ -72,7 +72,7 @@ public static partial class ComposeFunctions
                 it.style.justifyContent = Justify.FlexStart;
             },
             modifier: modifier.OrEmpty()
-                .Clip()
+                .Clip(RoundedCornerShape())
                 .OnGloballyPositioned(it => resolvedState.ViewportSize = it.Width)
                 .OnHorizontalScroll(
                     onHorizontalScroll: it => resolvedState.AnimateScrollBy(scrollStrength * DefaultScrollMultiplier * it)
