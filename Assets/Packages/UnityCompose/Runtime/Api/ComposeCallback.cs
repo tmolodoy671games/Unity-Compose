@@ -48,6 +48,13 @@ public static partial class VisualElementExtensions
         foreach (var name in names)
             element.AddTransition(transition, name);
     }
+    
+    public static void RemoveTransitions(this VisualElement element, params string[] names)
+    {
+        foreach (var name in names)
+            element.RemoveTransition(name);
+    }
+
 
     public static IMutableStableDictionary<object, object?> UserData(this VisualElement element)
     {

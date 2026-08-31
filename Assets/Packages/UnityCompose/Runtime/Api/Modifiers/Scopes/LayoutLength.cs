@@ -2,6 +2,7 @@
 
 using System;
 using SharpExtensions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -77,22 +78,54 @@ public readonly struct LayoutLength : IEquatable<LayoutLength>
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
+    public static LayoutLength Lerp(LayoutLength a, LayoutLength b, float t)
+    {
+        if (!a.HasValue || !b.HasValue)
+            throw new ArgumentException("No value present!");
+        if (a._value.unit == LengthUnit.Pixel && b._value.unit == LengthUnit.Pixel)
+        {
+            return Dp.Lerp(a._value.value.Dp(), b._value.value.Dp(), t);
+        }
+        if (a._value.unit == LengthUnit.Percent && b._value.unit == LengthUnit.Percent)
+        {
+            return Percent.Lerp(a._value.value.Percent(), b._value.value.Percent(), t);
+        }
+
+        throw new ArgumentException("Not of the same type!");
+    }
+
+    public static LayoutLength LerpUnclamped(LayoutLength a, LayoutLength b, float t)
+    {
+        if (!a.HasValue || !b.HasValue)
+            throw new ArgumentException("No value present!");
+        if (a._value.unit == LengthUnit.Pixel && b._value.unit == LengthUnit.Pixel)
+        {
+            return Dp.LerpUnclamped(a._value.value.Dp(), b._value.value.Dp(), t);
+        }
+        if (a._value.unit == LengthUnit.Percent && b._value.unit == LengthUnit.Percent)
+        {
+            return Percent.LerpUnclamped(a._value.value.Percent(), b._value.value.Percent(), t);
+        }
+
+        throw new ArgumentException("Not of the same type!");
+    }
 }
 
 public readonly struct Dp : IEquatable<Dp>
 {
-    private readonly float _value;
+    public readonly float Value;
 
     public Dp(float value)
     {
-        _value = value;
+        Value = value;
     }
 
-    internal Length ToLength() => new(_value, LengthUnit.Pixel);
+    internal Length ToLength() => new(Value, LengthUnit.Pixel);
 
     public bool Equals(Dp other)
     {
-        return _value.AlmostEquals(other._value);
+        return Value.AlmostEquals(other.Value);
     }
 
     public override bool Equals(object? obj)
@@ -100,66 +133,66 @@ public readonly struct Dp : IEquatable<Dp>
         return obj is Dp other && Equals(other);
     }
 
-    public override int GetHashCode() => _value.GetHashCode();
+    public override int GetHashCode() => Value.GetHashCode();
 
     public override string ToString()
     {
-        return $"{_value}px";
+        return $"{Value}px";
     }
     
     public static Dp operator -(Dp left)
     {
-        return new Dp(-left._value);
+        return new Dp(-left.Value);
     }
 
     public static Dp operator +(Dp left, Dp right)
     {
-        return new Dp(left._value + right._value);
+        return new Dp(left.Value + right.Value);
     }
 
     public static Dp operator -(Dp left, Dp right)
     {
-        return new Dp(left._value - right._value);
+        return new Dp(left.Value - right.Value);
     }
 
     public static Dp operator *(Dp left, Dp right)
     {
-        return new Dp(left._value * right._value);
+        return new Dp(left.Value * right.Value);
     }
     
     public static Dp operator *(float left, Dp right)
     {
-        return new Dp(left * right._value);
+        return new Dp(left * right.Value);
     }
     
     public static Dp operator *(Dp left, float right)
     {
-        return new Dp(left._value * right);
+        return new Dp(left.Value * right);
     }
     
     public static Dp operator *(int left, Dp right)
     {
-        return new Dp(left * right._value);
+        return new Dp(left * right.Value);
     }
     
     public static Dp operator *(Dp left, int right)
     {
-        return new Dp(left._value * right);
+        return new Dp(left.Value * right);
     }
     
     public static Dp operator /(Dp left, Dp right)
     {
-        return new Dp(left._value / right._value);
+        return new Dp(left.Value / right.Value);
     }
     
     public static Dp operator /(Dp left, float right)
     {
-        return new Dp(left._value / right);
+        return new Dp(left.Value / right);
     }
     
     public static Dp operator /(Dp left, int right)
     {
-        return new Dp(left._value / right);
+        return new Dp(left.Value / right);
     }
 
     public static bool operator ==(Dp lhs, Dp rhs)
@@ -171,22 +204,32 @@ public readonly struct Dp : IEquatable<Dp>
     {
         return !(lhs == rhs);
     }
+
+    public static Dp Lerp(Dp a, Dp b, float t)
+    {
+        return new Dp(Mathf.Lerp(a.Value, b.Value, t));
+    }
+
+    public static Dp LerpUnclamped(Dp a, Dp b, float t)
+    {
+        return new Dp(Mathf.LerpUnclamped(a.Value, b.Value, t));
+    }
 }
 
 public readonly struct Percent : IEquatable<Percent>
 {
-    private readonly float _value;
+    public readonly float Value;
 
     public Percent(float value)
     {
-        _value = value;
+        Value = value;
     }
 
-    internal Length ToLength() => new(_value, LengthUnit.Percent);
+    internal Length ToLength() => new(Value, LengthUnit.Percent);
 
     public bool Equals(Percent other)
     {
-        return _value.AlmostEquals(other._value);
+        return Value.AlmostEquals(other.Value);
     }
 
     public override bool Equals(object? obj)
@@ -194,49 +237,49 @@ public readonly struct Percent : IEquatable<Percent>
         return obj is Percent other && Equals(other);
     }
 
-    public override int GetHashCode() => _value.GetHashCode();
+    public override int GetHashCode() => Value.GetHashCode();
 
     public override string ToString()
     {
-        return $"{_value}%";
+        return $"{Value}%";
     }
     
     public static Percent operator *(float left, Percent right) {
-        return new Percent(left * right._value);
+        return new Percent(left * right.Value);
     }
     
     public static Percent operator /(Percent left, float right) {
-        return new Percent(left._value / right);
+        return new Percent(left.Value / right);
     }
 
     public static Percent operator +(Percent left, Percent right)
     {
-        return new Percent(left._value + right._value);
+        return new Percent(left.Value + right.Value);
     }
 
     public static Percent operator -(Percent left, Percent right)
     {
-        return new Percent(left._value - right._value);
+        return new Percent(left.Value - right.Value);
     }
     
     public static Percent operator -(Percent left)
     {
-        return new Percent(-left._value);
+        return new Percent(-left.Value);
     }
 
     public static Percent operator *(Percent left, Percent right)
     {
-        return new Percent(left._value * right._value);
+        return new Percent(left.Value * right.Value);
     }
 
     public static Percent operator *(Percent left, float right)
     {
-        return new Percent(left._value * right);
+        return new Percent(left.Value * right);
     }
 
     public static Percent operator /(Percent left, Percent right)
     {
-        return new Percent(left._value / right._value);
+        return new Percent(left.Value / right.Value);
     }
 
     public static bool operator ==(Percent lhs, Percent rhs)
@@ -247,6 +290,16 @@ public readonly struct Percent : IEquatable<Percent>
     public static bool operator !=(Percent lhs, Percent rhs)
     {
         return !(lhs == rhs);
+    }
+
+    public static Percent Lerp(Percent a, Percent b, float t)
+    {
+        return new Percent(Mathf.Lerp(a.Value, b.Value, t));
+    }
+
+    public static Percent LerpUnclamped(Percent a, Percent b, float t)
+    {
+        return new Percent(Mathf.LerpUnclamped(a.Value, b.Value, t));
     }
 }
 

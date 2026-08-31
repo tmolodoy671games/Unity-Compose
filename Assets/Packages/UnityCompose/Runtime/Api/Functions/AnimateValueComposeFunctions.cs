@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 
@@ -18,13 +19,11 @@ public static partial class ComposeFunctions
     [Composable]
     public static IState<float> AnimateFloatAsState(
         float targetValue,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<float> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
-            initialValue: initialValue,
             interpolator: FloatInterpolator,
             animationSpec: animationSpec
         );
@@ -34,13 +33,11 @@ public static partial class ComposeFunctions
     public static IState<float> AnimateFloatAsState(
         object key,
         Func<float> targetValueFactory,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<float> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             key: key,
-            initialValue: initialValue,
             targetValueFactory: targetValueFactory,
             interpolator: FloatInterpolator,
             animationSpec: animationSpec
@@ -50,13 +47,11 @@ public static partial class ComposeFunctions
     [Composable]
     public static IState<Vector2> AnimateVector2AsState(
         Vector2 targetValue,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<Vector2> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
-            initialValue: initialValue,
             interpolator: Vector2Interpolator,
             animationSpec: animationSpec
         );
@@ -66,13 +61,11 @@ public static partial class ComposeFunctions
     public static IState<Vector2> AnimateVector2AsState<TKey>(
         TKey key,
         Func<Vector2> targetValueFactory,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<Vector2> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             key: key,
-            initialValue: initialValue,
             targetValueFactory: targetValueFactory,
             interpolator: Vector2Interpolator,
             animationSpec: animationSpec
@@ -82,13 +75,11 @@ public static partial class ComposeFunctions
     [Composable]
     public static IState<Color> AnimateColorAsState(
         Color targetValue,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<Color> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
-            initialValue: initialValue,
             interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress),
             animationSpec: animationSpec
         );
@@ -98,15 +89,73 @@ public static partial class ComposeFunctions
     public static IState<Color> AnimateColorAsState<TKey>(
         TKey key,
         Func<Color> targetValueFactory,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<Color> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             key: key,
             targetValueFactory: targetValueFactory,
-            initialValue: initialValue,
             interpolator: static (initial, target, progress) => Color.LerpUnclamped(initial, target, progress),
+            animationSpec: animationSpec
+        );
+    }
+
+    [Composable]
+    public static IState<PaddingValues> AnimatePaddingValuesAsState(
+        PaddingValues targetValue,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        return AnimateValueAsState(
+            targetValue: targetValue,
+            interpolator: static (initial, target, progress) =>
+                UnityCompose.PaddingValues.LerpUnclamped(initial, target, progress),
+            animationSpec: animationSpec
+        );
+    }
+
+    [Composable]
+    public static IState<PaddingValues> AnimatePaddingValuesAsState<TKey>(
+        TKey key,
+        Func<PaddingValues> targetValueFactory,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        return AnimateValueAsState(
+            key: key,
+            targetValueFactory: targetValueFactory,
+            interpolator: static (initial, target, progress) =>
+                UnityCompose.PaddingValues.LerpUnclamped(initial, target, progress),
+            animationSpec: animationSpec
+        );
+    }
+    
+    [Composable]
+    public static IState<RoundedCornerShape> AnimateRoundedCornerShapeAsState(
+        RoundedCornerShape targetValue,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        return AnimateValueAsState(
+            targetValue: targetValue,
+            interpolator: static (initial, target, progress) =>
+                UnityCompose.RoundedCornerShape.LerpUnclamped(initial, target, progress),
+            animationSpec: animationSpec
+        );
+    }
+
+    [Composable]
+    public static IState<RoundedCornerShape> AnimateRoundedCornerShapeAsState<TKey>(
+        TKey key,
+        Func<RoundedCornerShape> targetValueFactory,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        return AnimateValueAsState(
+            key: key,
+            targetValueFactory: targetValueFactory,
+            interpolator: static (initial, target, progress) =>
+                UnityCompose.RoundedCornerShape.LerpUnclamped(initial, target, progress),
             animationSpec: animationSpec
         );
     }
@@ -115,11 +164,10 @@ public static partial class ComposeFunctions
     public static IState<T> AnimateValueAsState<T>(
         T targetValue,
         Func<T, T, float, T> interpolator,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<T> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
-        var property = Remember(() => MutableStateOf(initialValue.GetOrDefault(targetValue)));
+        var property = Remember(() => MutableStateOf(targetValue));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
@@ -160,12 +208,11 @@ public static partial class ComposeFunctions
         TKey key,
         Func<T> targetValueFactory,
         Func<T, T, float, T> interpolator,
-        Optional<AnimationSpec> animationSpec = default,
-        Optional<T> initialValue = default
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         var targetValue = targetValueFactory();
-        var property = Remember(() => MutableStateOf(initialValue.GetOrDefault(targetValue)));
+        var property = Remember(() => MutableStateOf(targetValue));
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
