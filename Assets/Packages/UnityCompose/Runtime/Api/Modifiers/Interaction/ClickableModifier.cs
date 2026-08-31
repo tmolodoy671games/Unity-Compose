@@ -97,8 +97,6 @@ internal class ClickableModifierImpl : BaseModifier<ClickableModifierImpl>
 
     private void OnPointerCancel(PointerCancelEvent evt)
     {
-        if (evt.button != 0)
-            return;
         var pressInteractions = evt.VisualElement().PressInteractions();
         if (pressInteractions.IsEmpty())
             return;
@@ -109,8 +107,6 @@ internal class ClickableModifierImpl : BaseModifier<ClickableModifierImpl>
 
     private void OnPointerLeave(PointerLeaveEvent evt)
     {
-        if (evt.button != 0)
-            return;
         var pressInteractions = evt.VisualElement().PressInteractions();
         if (pressInteractions.IsEmpty())
             return;
