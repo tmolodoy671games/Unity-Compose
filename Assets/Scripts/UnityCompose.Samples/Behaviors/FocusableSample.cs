@@ -22,7 +22,7 @@ namespace UnityCompose.Samples.Behaviors
                         modifier: Modifier
                             .Background(Color.white)
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .Padding(16.Dp()),
+                            .Padding(all: 16.Dp()),
                         content: () =>
                         {
                             Repeat(3, it =>
@@ -74,7 +74,7 @@ namespace UnityCompose.Samples.Behaviors
                 SideEffect(0, focusRequester.RequestFocus);
             Spacer(
                 Modifier
-                    .Margin(4.Dp())
+                    .Margin(all: 4.Dp())
                     .Size(
                         width: 100.Dp(),
                         height: 40.Dp()

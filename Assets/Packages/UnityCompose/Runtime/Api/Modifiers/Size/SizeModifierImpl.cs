@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using SharpExtensions;
 using StableCollections;
@@ -13,17 +14,28 @@ public static partial class ModifierExtensions
 {
     public static IModifier Size(
         this IModifier modifier,
-        LayoutLength size = default,
+        LayoutLength size
+    )
+    {
+        return modifier + new SizeModifierImpl(
+            width: size,
+            height: size
+        );
+    }
+
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]
+    public static IModifier Size(
+        this IModifier modifier,
         LayoutLength width = default,
         LayoutLength height = default
     )
     {
         return modifier + new SizeModifierImpl(
-            width: ParamUtils.Resolve(width, size),
-            height: ParamUtils.Resolve(height, size)
+            width: width,
+            height: height
         );
     }
-    
+
     public static IModifier Width(this IModifier modifier, LayoutLength width)
     {
         return modifier + new SizeModifierImpl(

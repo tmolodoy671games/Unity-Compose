@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 
@@ -43,7 +44,7 @@ public static partial class ComposeFunctions
     }
     
     public static RoundedCornerShape RoundedCornerShape(
-        Dp size
+        LayoutLength size
     )
     {
         return new RoundedCornerShape(
@@ -56,10 +57,10 @@ public static partial class ComposeFunctions
 
     [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]
     public static RoundedCornerShape RoundedCornerShape(
-        Dp topLeft = default,
-        Dp topRight = default,
-        Dp bottomLeft = default,
-        Dp bottomRight = default
+        LayoutLength topLeft = default,
+        LayoutLength topRight = default,
+        LayoutLength bottomLeft = default,
+        LayoutLength bottomRight = default
     )
     {
         return new RoundedCornerShape(
@@ -67,6 +68,48 @@ public static partial class ComposeFunctions
             TopRight: topRight,
             BottomLeft: bottomLeft,
             BottomRight: bottomRight
+        );
+    }
+    
+    public static PaddingValues PaddingValues(
+        Dp all
+    )
+    {
+        return new PaddingValues(
+            Top: all,
+            Bottom: all,
+            Left: all,
+            Right: all
+        );
+    }
+
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]
+    public static PaddingValues PaddingValues(
+        Dp horizontal = default,
+        Dp vertical = default
+    )
+    {
+        return new PaddingValues(
+            Top: vertical,
+            Bottom: vertical,
+            Left: horizontal,
+            Right: horizontal
+        );
+    }
+
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter")]
+    public static PaddingValues PaddingValues(
+        Dp top = default,
+        Dp bottom = default,
+        Dp left = default,
+        Dp right = default
+    )
+    {
+        return new PaddingValues(
+            Top: top,
+            Bottom: bottom,
+            Left: left,
+            Right: right
         );
     }
 }

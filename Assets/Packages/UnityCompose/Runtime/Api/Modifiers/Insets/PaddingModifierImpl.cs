@@ -3,6 +3,7 @@
 using System.Runtime.CompilerServices;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 
@@ -12,9 +13,37 @@ public static partial class ModifierExtensions
 {
     public static IModifier Padding(
         this IModifier modifier,
-        LayoutLength all = default,
+        LayoutLength all,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new PaddingModifierImpl(
+            top: all,
+            bottom: all,
+            left: all,
+            right: all,
+            transition: transition
+        );
+    }
+    
+    public static IModifier Padding(
+        this IModifier modifier,
         LayoutLength horizontal = default,
         LayoutLength vertical = default,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new PaddingModifierImpl(
+            top: vertical,
+            bottom: vertical,
+            left: horizontal,
+            right: horizontal,
+            transition: transition
+        );
+    }
+    
+    public static IModifier Padding(
+        this IModifier modifier,
         LayoutLength top = default,
         LayoutLength bottom = default,
         LayoutLength left = default,
@@ -23,10 +52,25 @@ public static partial class ModifierExtensions
     )
     {
         return modifier + new PaddingModifierImpl(
-            top: ParamUtils.Resolve(top, vertical, all),
-            bottom: ParamUtils.Resolve(bottom, vertical, all),
-            left: ParamUtils.Resolve(left, horizontal, all),
-            right: ParamUtils.Resolve(right, horizontal, all),
+            top: top,
+            bottom: bottom,
+            left: left,
+            right: right,
+            transition: transition
+        );
+    }
+    
+    public static IModifier Padding(
+        this IModifier modifier,
+        PaddingValues paddingValues,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new PaddingModifierImpl(
+            top: paddingValues.Top,
+            bottom: paddingValues.Bottom,
+            left: paddingValues.Left,
+            right: paddingValues.Right,
             transition: transition
         );
     }

@@ -9,7 +9,7 @@ namespace UnityCompose.Samples.Behaviors
     {
         [Composable]
         protected override void Content()
-        { 
+        {
             Layout();
         }
 
@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors
             Column(
                 horizontalAlignment: Alignment.CenterHorizontally,
                 modifier: Modifier.FillMaxSize()
-                    .Padding(100.Dp())
+                    .Padding(all: 100.Dp())
                     .OnGloballyPositioned(it => parentCoordinates.Value = it),
                 content: () =>
                 {
@@ -69,7 +69,7 @@ namespace UnityCompose.Samples.Behaviors
                     Text(
                         modifier: Modifier
                             .Background(Color.blue)
-                            .Padding(32.Dp())
+                            .Padding(all: 32.Dp())
                             .Clip(RoundedCornerShape(32.Dp()))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value),
                         color: Color.white,

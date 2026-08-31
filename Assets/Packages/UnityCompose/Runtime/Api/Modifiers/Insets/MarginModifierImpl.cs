@@ -12,9 +12,37 @@ public static partial class ModifierExtensions
 {
     public static IModifier Margin(
         this IModifier modifier,
-        LayoutLength all = default,
+        LayoutLength all,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new MarginModifierImpl(
+            top: all,
+            bottom: all,
+            left: all,
+            right: all,
+            transition: transition
+        );
+    }
+    
+    public static IModifier Margin(
+        this IModifier modifier,
         LayoutLength horizontal = default,
         LayoutLength vertical = default,
+        Optional<ComposeTransition> transition = default
+    )
+    {
+        return modifier + new MarginModifierImpl(
+            top: vertical,
+            bottom: vertical,
+            left: horizontal,
+            right: horizontal,
+            transition: transition
+        );
+    }
+    
+    public static IModifier Margin(
+        this IModifier modifier,
         LayoutLength top = default,
         LayoutLength bottom = default,
         LayoutLength left = default,
@@ -23,10 +51,10 @@ public static partial class ModifierExtensions
     )
     {
         return modifier + new MarginModifierImpl(
-            top: ParamUtils.Resolve(top, vertical, all),
-            bottom: ParamUtils.Resolve(bottom, vertical, all),
-            left: ParamUtils.Resolve(left, horizontal, all),
-            right: ParamUtils.Resolve(right, horizontal, all),
+            top: top,
+            bottom: bottom,
+            left: left,
+            right: right,
             transition: transition
         );
     }

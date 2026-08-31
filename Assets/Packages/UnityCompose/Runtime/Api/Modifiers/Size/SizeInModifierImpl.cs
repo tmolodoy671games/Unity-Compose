@@ -13,8 +13,6 @@ public static partial class ModifierExtensions
 {
     public static IModifier SizeIn(
         this IModifier modifier,
-        LayoutLength min = default,
-        LayoutLength max = default,
         LayoutLength minWidth = default,
         LayoutLength maxWidth = default,
         LayoutLength minHeight = default,
@@ -22,10 +20,10 @@ public static partial class ModifierExtensions
     )
     {
         return modifier + new SizeInModifierImpl(
-            minWidth: ParamUtils.Resolve(minWidth, min),
-            maxWidth: ParamUtils.Resolve(maxWidth, max),
-            minHeight: ParamUtils.Resolve(minHeight, min),
-            maxHeight: ParamUtils.Resolve(maxHeight, max)
+            minWidth: minWidth,
+            maxWidth: maxWidth,
+            minHeight: minHeight,
+            maxHeight: maxHeight
         );
     }
 

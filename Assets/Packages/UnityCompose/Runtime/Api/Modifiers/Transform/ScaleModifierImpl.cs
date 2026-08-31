@@ -13,7 +13,6 @@ public static partial class ModifierExtensions
 {
     public static IModifier Scale(
         this IModifier modifier,
-        Optional<float> scale = default,
         Optional<float> scaleX = default,
         Optional<float> scaleY = default,
         Optional<ComposeTransition> transition = default
@@ -21,8 +20,8 @@ public static partial class ModifierExtensions
     {
         return modifier + new ScaleModifierImpl(
             new Vector2(
-                ParamUtils.Resolve(scaleX, scale).GetOrDefault(1),
-                ParamUtils.Resolve(scaleY, scale).GetOrDefault(1)
+                scaleX.GetOrDefault(1),
+                scaleY.GetOrDefault(1)
             ),
             transition
         );
