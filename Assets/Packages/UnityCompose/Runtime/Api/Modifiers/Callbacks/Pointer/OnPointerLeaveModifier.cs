@@ -51,13 +51,13 @@ internal class OnPointerLeaveModifierImpl : BaseModifier<OnPointerLeaveModifierI
 
     public override void Apply(VisualElement element)
     {
-        element.ComposePickingMode().Increment();
+        element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
-        element.ComposePickingMode().Decrement();
+        element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
     }
 

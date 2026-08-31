@@ -137,11 +137,13 @@ internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
 
     public override void Apply(VisualElement element)
     {
+        element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
     public override void Revert(VisualElement element)
     {
+        element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
     }
 

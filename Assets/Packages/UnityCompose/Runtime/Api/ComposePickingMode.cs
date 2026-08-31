@@ -31,7 +31,7 @@ public class ComposePickingMode
 
 public static partial class VisualElementExtensions
 {
-    public static ComposePickingMode ComposePickingMode(this VisualElement element)
+    public static ComposePickingMode PickingMode(this VisualElement element)
     {
         const string key = "UnityCompose.ComposePickingMode";
         var userData = element.UserData();

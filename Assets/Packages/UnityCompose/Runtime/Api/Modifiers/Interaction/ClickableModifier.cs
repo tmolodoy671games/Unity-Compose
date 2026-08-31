@@ -39,26 +39,30 @@ internal class ClickableModifierImpl : BaseModifier<ClickableModifierImpl>
     private readonly IMutableInteractionSource _interactionSource;
     private readonly EventCallback<PointerDownEvent> _pointerDownCallback;
     private readonly EventCallback<PointerUpEvent> _pointerUpCallback;
+    private readonly EventCallback<PointerCancelEvent> _pointerCancelCallback;
 
     public ClickableModifierImpl(IMutableInteractionSource interactionSource)
     {
         _interactionSource = interactionSource;
         _pointerDownCallback = OnPointerDown;
         _pointerUpCallback = OnPointerUp;
+        _pointerCancelCallback = OnPointerCancel;
     }
 
     public override void Apply(VisualElement element)
     {
-        element.ComposePickingMode().Increment();
+        element.PickingMode().Increment();
         element.RegisterCallback(_pointerDownCallback);
         element.RegisterCallback(_pointerUpCallback);
+        element.RegisterCallback(_pointerCancelCallback);
     }
 
     public override void Revert(VisualElement element)
     {
-        element.ComposePickingMode().Decrement();
+        element.PickingMode().Decrement();
         element.UnregisterCallback(_pointerDownCallback);
         element.UnregisterCallback(_pointerUpCallback);
+        element.UnregisterCallback(_pointerCancelCallback);
     }
 
     protected override bool Equals(ClickableModifierImpl other)
@@ -85,5 +89,17 @@ internal class ClickableModifierImpl : BaseModifier<ClickableModifierImpl>
         var pressInteraction = pressInteractions[0];
         pressInteractions.RemoveAt(0);
         _interactionSource.Emit(new IPressInteraction.Release(pressInteraction));
+    }
+
+    private void OnPointerCancel(PointerCancelEvent evt)
+    {
+        if (evt.button != 0)
+            return;
+        var pressInteractions = evt.VisualElement().PressInteractions();
+        if (pressInteractions.IsEmpty())
+            return;
+        var pressInteraction = pressInteractions[0];
+        pressInteractions.RemoveAt(0);
+        _interactionSource.Emit(new IPressInteraction.Cancel(pressInteraction));
     }
 }
