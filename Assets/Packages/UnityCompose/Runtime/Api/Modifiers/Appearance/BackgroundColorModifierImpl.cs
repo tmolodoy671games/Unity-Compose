@@ -80,6 +80,8 @@ internal class BackgroundColorModifierImpl : BaseModifier<BackgroundColorModifie
 
     protected override bool Equals(BackgroundColorModifierImpl other)
     {
-        return _backgroundColor == other._backgroundColor && _transition == other._transition;
+        return _backgroundColor == other._backgroundColor &&
+               _shape.Equals(other._shape) &&
+               _transition == other._transition;
     }
 }
