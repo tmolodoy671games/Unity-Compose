@@ -75,5 +75,6 @@ internal class OnMouseMoveModifierImpl : BaseModifier<OnMouseMoveModifierImpl>
             )
         );
         _parameterlessOnMouseMove?.Invoke();
+        evt.StopPropagation();
     }
 }

@@ -150,6 +150,7 @@ internal class OnClickModiferImpl : BaseModifier<OnClickModiferImpl>
             )
         );
         _parameterlessOnClick?.Invoke();
+        it.StopPropagation();
     }
 
     protected override bool Equals(OnClickModiferImpl other)

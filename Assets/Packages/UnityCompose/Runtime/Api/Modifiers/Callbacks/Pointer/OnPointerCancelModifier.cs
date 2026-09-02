@@ -81,5 +81,6 @@ internal class OnPointerCancelModifierImpl : BaseModifier<OnPointerCancelModifie
             )
         );
         _parameterlessOnPointerCancel?.Invoke();
+        evt.StopPropagation();
     }
 }

@@ -81,5 +81,6 @@ internal class OnMouseEnterModifierImpl : BaseModifier<OnMouseEnterModifierImpl>
             )
         );
         _parameterlessOnMouseEnter?.Invoke();
+        evt.StopPropagation();
     }
 }

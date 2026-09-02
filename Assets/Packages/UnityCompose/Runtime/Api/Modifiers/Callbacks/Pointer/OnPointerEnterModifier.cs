@@ -76,5 +76,6 @@ internal class OnPointerEnterModifierImpl : BaseModifier<OnPointerEnterModifierI
             )
         );
         _parameterlessOnPointerEnter?.Invoke();
+        evt.StopPropagation();
     }
 }

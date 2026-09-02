@@ -154,17 +154,18 @@ internal class OnMouseDownModifierImpl : BaseModifier<OnMouseDownModifierImpl>
                _button == other._button;
     }
 
-    private void OnMouseDown(MouseDownEvent it)
+    private void OnMouseDown(MouseDownEvent evt)
     {
-        if (_button >= 0 && _button != it.button)
+        if (_button >= 0 && _button != evt.button)
             return;
         _onMouseDown?.Invoke(
             new PointerClickInfo(
-                Button: it.button,
-                Position: it.mousePosition,
-                LocalPosition: it.localMousePosition
+                Button: evt.button,
+                Position: evt.mousePosition,
+                LocalPosition: evt.localMousePosition
             )
         );
         _parameterlessOnMouseDown?.Invoke();
+        evt.StopPropagation();
     }
 }

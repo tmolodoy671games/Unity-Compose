@@ -82,5 +82,6 @@ internal class OnPointerUpModifierImpl : BaseModifier<OnPointerUpModifierImpl>
             )
         );
         _parameterlessOnPointerUp?.Invoke();
+        evt.StopPropagation();
     }
 }

@@ -164,5 +164,6 @@ internal class OnMouseUpModifierImpl : BaseModifier<OnMouseUpModifierImpl>
             )
         );
         _parameterlessOnMouseUp?.Invoke();
+        evt.StopPropagation();
     }
 }

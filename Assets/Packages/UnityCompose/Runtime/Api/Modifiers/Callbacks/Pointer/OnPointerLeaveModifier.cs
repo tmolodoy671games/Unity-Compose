@@ -76,5 +76,6 @@ internal class OnPointerLeaveModifierImpl : BaseModifier<OnPointerLeaveModifierI
             )
         );
         _parameterlessOnPointerLeave?.Invoke();
+        evt.StopPropagation();
     }
 }

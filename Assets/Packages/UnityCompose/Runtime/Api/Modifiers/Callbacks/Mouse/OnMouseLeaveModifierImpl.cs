@@ -76,5 +76,6 @@ internal class OnMouseLeaveModifierImpl : BaseModifier<OnMouseLeaveModifierImpl>
             )
         );
         _parameterlessOnMouseLeave?.Invoke();
+        evt.StopPropagation();
     }
 }

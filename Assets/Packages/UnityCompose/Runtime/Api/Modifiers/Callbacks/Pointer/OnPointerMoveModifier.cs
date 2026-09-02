@@ -75,5 +75,6 @@ internal class OnPointerMoveModifierImpl : BaseModifier<OnPointerMoveModifierImp
             )
         );
         _parameterlessOnPointerMove?.Invoke();
+        evt.StopPropagation();
     }
 }

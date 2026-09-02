@@ -82,5 +82,6 @@ internal class OnPointerDownModifierImpl : BaseModifier<OnPointerDownModifierImp
             )
         );
         _parameterlessOnPointerDown?.Invoke();
+        it.StopPropagation();
     }
 }
