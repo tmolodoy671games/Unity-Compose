@@ -48,7 +48,7 @@ public static partial class ComposeFunctions
                     it.style.flexDirection = FlexDirection.Column;
                     it.style.alignItems = Align.FlexStart;
                     it.style.justifyContent = Justify.FlexStart;
-                })), modifier: Modifier.Offset(y: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Height))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
+                })), modifier: Modifier.FillMaxWidth().Offset(y: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Height))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
             })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
@@ -63,7 +63,7 @@ public static partial class ComposeFunctions
     public static void __ScrollableRow(ComposableContent content, ScrollState? state = null, float scrollStrength = 1f, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__content, __state, __scrollStrength, __modifier) = (content, state, scrollStrength, modifier);
-        var __isCreated = __composer.StartRestartGroup(214649107);
+        var __isCreated = __composer.StartRestartGroup(1040492166);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(content) ? 0b_00_00_00_10 : 0b_00_00_00_01;
@@ -89,7 +89,7 @@ public static partial class ComposeFunctions
                     it.style.flexDirection = FlexDirection.Row;
                     it.style.alignItems = Align.FlexStart;
                     it.style.justifyContent = Justify.FlexStart;
-                })), modifier: Modifier.Offset(x: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Width))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
+                })), modifier: Modifier.FillMaxHeight().Offset(x: -resolvedState.Value.Dp()).OnGloballyPositioned((!__composer.Changed<global::UnityCompose.ScrollState>(resolvedState!) ? __composer.RememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>() : __composer.UpdateRememberedValue<global::System.Action<global::UnityCompose.LayoutCoordinates>>(it => resolvedState.ContentSize = it.Width))), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11) << 4));
             })), __composer: __composer, __changed: 0b_00_00_00);
         }
         else
@@ -98,6 +98,6 @@ public static partial class ComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01;
-        __composer.EndRestartGroup(214649107, __isRestarted)?.UpdateScope(() => __ScrollableRow(__content, __state, __scrollStrength, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(1040492166, __isRestarted)?.UpdateScope(() => __ScrollableRow(__content, __state, __scrollStrength, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }
