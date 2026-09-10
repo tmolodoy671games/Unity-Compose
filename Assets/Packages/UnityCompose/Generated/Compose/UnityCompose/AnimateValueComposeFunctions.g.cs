@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using SharpExtensions;
-using UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using UnityCompose;
@@ -125,7 +124,7 @@ public static partial class ComposeFunctions
     public static IState<T> __AnimateValueAsState<T>(T targetValue, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__targetValue, __interpolator, __animationSpec) = (targetValue, interpolator, animationSpec);
-        __composer.StartReplaceGroup(1291332680);
+        __composer.StartReplaceGroup(341168765);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(targetValue) ? 0b_00_00_10 : 0b_00_00_01;
@@ -137,19 +136,19 @@ public static partial class ComposeFunctions
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
-            __composer.EndReplaceGroup(1291332680);
+            __composer.EndReplaceGroup(341168765);
             return property;
         }
 
         if (EqualityUtils.FastEquals(property.Value, targetValue))
         {
-            __composer.EndReplaceGroup(1291332680);
+            __composer.EndReplaceGroup(341168765);
             return property;
         }
 
         __LaunchedEffect(key: targetValue, // block: () => property.Value = targetValue
         coroutine: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11) == 0b_00_00_10).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValue))), __composer: __composer, __changed: (__dirty & 0b_00_11));
-        __composer.EndReplaceGroup(1291332680);
+        __composer.EndReplaceGroup(341168765);
         return property;
         IEnumerator UpdatePropertyCoroutine(T newValue)
         {
@@ -175,7 +174,7 @@ public static partial class ComposeFunctions
     public static IState<T> __AnimateValueAsState<TKey, T>(TKey key, Func<T> targetValueFactory, Func<T, T, float, T> interpolator, Optional<AnimationSpec> animationSpec = default, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__key, __targetValueFactory, __interpolator, __animationSpec) = (key, targetValueFactory, interpolator, animationSpec);
-        __composer.StartReplaceGroup(943101359);
+        __composer.StartReplaceGroup(433242855);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_00_11) == 0)
             __dirty |= __composer.Changed(key) ? 0b_00_00_00_10 : 0b_00_00_00_01;
@@ -190,19 +189,19 @@ public static partial class ComposeFunctions
         if (!ApplicationUtils.IsPlaying)
         {
             property.Value = targetValue;
-            __composer.EndReplaceGroup(943101359);
+            __composer.EndReplaceGroup(433242855);
             return property;
         }
 
         if (EqualityUtils.FastEquals(property.Value, targetValue))
         {
-            __composer.EndReplaceGroup(943101359);
+            __composer.EndReplaceGroup(433242855);
             return property;
         }
 
         var resolvedAnimationSpec = animationSpec.GetOrDefault();
         __LaunchedEffect(key: key, coroutine: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_11_00) == 0b_00_00_10_00).Changed<global::UnityCompose.IMutableState<T>>(property!).Get() ? __composer.RememberedValue<global::System.Func<global::System.Collections.IEnumerator>>() : __composer.UpdateRememberedValue<global::System.Func<global::System.Collections.IEnumerator>>(() => UpdatePropertyCoroutine(targetValueFactory))), __composer: __composer, __changed: (__dirty & 0b_00_11));
-        __composer.EndReplaceGroup(943101359);
+        __composer.EndReplaceGroup(433242855);
         return property;
         IEnumerator UpdatePropertyCoroutine(Func<T> newValueFactory)
         {

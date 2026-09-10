@@ -11,13 +11,14 @@ public static partial class ComposeFunctions
 {
     public static readonly ICompositionLocal<TransitionState> LocalTransitionState =
         CompositionLocalOf(() => TransitionState.Create(TransitionPhase.Idle, 0, 0));
+
     public static readonly ICompositionLocal<TransitionState> LocalResolvedTransitionState =
         CompositionLocalOf(() => TransitionState.Create(TransitionPhase.Idle, 0, 0));
 
     [Composable]
     public static void AnimatedContent<T>(
         T targetState,
-        Func<IAnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
+        Func<AnimatedContentTransitionScope<T>, ContentTransform> transitionSpec,
         ComposableContent<T, IModifier> content,
         Optional<AnimationSpec> sizeAnimationSpec = default,
         IModifier? modifier = null
@@ -39,7 +40,7 @@ public static partial class ComposeFunctions
             targetState,
             () => Equals(previousValue.Value, targetState)
                 ? IEnterTransition.Empty().TogetherWith(Hide())
-                : transitionSpec(new AnimatedContentTransitionScopeImpl<T>(previousValue.Value, targetState))
+                : transitionSpec(new AnimatedContentTransitionScope<T>(previousValue.Value, targetState))
         );
         var transitionDuration = resolvedTransition.TotalDuration;
 
@@ -118,3 +119,8 @@ public static partial class ComposeFunctions
         );
     }
 }
+
+public readonly record struct AnimatedContentTransitionScope<T>(
+    T InitialState,
+    T TargetState
+);
