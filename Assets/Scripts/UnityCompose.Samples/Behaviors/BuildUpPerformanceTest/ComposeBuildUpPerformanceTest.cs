@@ -14,8 +14,8 @@ namespace UnityCompose.Samples.Behaviors.BuildUpPerformanceTest
         private void Test()
         {
             var root = GetComponent<UIDocument>().rootVisualElement.Q<ComposeView>();
-            root.SetContent(static (_, _) => {});
-            root.SetContent((_, _) =>
+            root.SetContent(static () => {});
+            root.SetContent(() =>
             {
                 var rowModifier = Modifier
                     .Margin(vertical: 2.Dp());

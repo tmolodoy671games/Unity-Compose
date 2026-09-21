@@ -21,7 +21,7 @@ public abstract partial class ComposeUI : MonoBehaviour
         _document ??= GetUiDocument();
         var composeView = _document.rootVisualElement.Q<ComposeView>();
         composeView.Type = SlotTableType;
-        _document.rootVisualElement.Q<ComposeView>().SetContent(__Content);
+        _document.rootVisualElement.Q<ComposeView>().SetContent(Content);
     }
 
     [Composable]
@@ -42,11 +42,11 @@ public abstract partial class ComposeUI : MonoBehaviour
         {
             if (composeView != null)
                 composeView.Type = SlotTableType;
-            composeView?.SetContent(__Content);
+            composeView?.SetContent(Content);
             return;
         }
 
-        composeView?.SetContent(__Preview);
+        composeView?.SetContent(Preview);
     }
 
     private UIDocument GetUiDocument() => GetComponent<UIDocument>().NotNull();

@@ -165,8 +165,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -175,6 +179,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!114 &43529847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b737bbe5f814daeab2e1caf33030800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityCompose.Samples::UnityCompose.Samples.Behaviors.ModalMenuSample
+  _document: {fileID: 0}
 --- !u!1 &124559697
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235915ae1a5b44ff84a683e50daa8398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &124559700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,8 +254,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -255,6 +268,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &180422217
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,8 +329,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -323,6 +343,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &212806251
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,8 +392,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -379,6 +406,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!114 &212806255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbaab4d3e74b48b5b25d5dd7e4906ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!1 &226280193
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b67303e2ee04de783fbe3d2709d467f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &226280196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,8 +481,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -459,6 +495,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &286942628
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8643a1e629a342b18ee507f6e68ebc8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
   type: 0
 --- !u!114 &286942631
 MonoBehaviour:
@@ -518,8 +558,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -528,6 +572,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &338640577
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2547684b9739424b862e4a6475292617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityCompose.Samples::UnityCompose.Samples.Behaviors.ScrollableLayoutSample
+  _document: {fileID: 0}
 --- !u!114 &338640580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,8 +634,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -596,6 +648,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +697,6 @@ MonoBehaviour:
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
-    serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
@@ -823,6 +877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b52bfc78e33405cb9d1232a7e9b316c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &694267289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -836,8 +891,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -846,6 +905,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1015534220
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71637650d6394d00bc258b6640a4426c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
   type: 0
 --- !u!114 &1015534223
 MonoBehaviour:
@@ -905,8 +968,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -915,6 +982,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1063748395
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,6 +1030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd9cd3e2ab54312b0d989c784711f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1063748398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,8 +1044,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -983,6 +1058,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1105791076
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,6 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297ed3f5c6de453687f9bc04359907f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1112046909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,8 +1164,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1095,6 +1178,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1183895588
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1183895589
 Transform:
   m_ObjectHideFlags: 0
@@ -1140,6 +1226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d916f5408eb74516a2c21183147cf177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 1183895591}
 --- !u!114 &1183895591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,8 +1240,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 1
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1163,6 +1254,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  m_OldSortingOrder: 0
 --- !u!1 &1240140403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,6 +1302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c53bd615c2bd44069aa61f30e4abdafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1240140406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1221,8 +1316,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1231,6 +1330,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1319168495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,6 +1378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c8413da7b2426e869053c1e5022594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1319168498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,8 +1392,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1299,6 +1406,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1437942539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,8 +1467,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1367,6 +1481,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1493362760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1457,8 +1574,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1467,6 +1588,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!114 &1518666536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,6 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8df10180c84486a885df88e5e2b40c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!1 &1561811950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38cb31c677d440889a533c709593850a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityCompose.Samples::UnityCompose.Samples.Behaviors.LazyLayoutSample
+  _document: {fileID: 0}
 --- !u!114 &1561811953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1537,8 +1663,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1547,6 +1677,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1578781599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,6 +1725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198a8043b86b41458ad85e86b07504f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1578781602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1605,8 +1739,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1615,6 +1753,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1640130101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c20ce4f29cc4c90a3ea31f7d3337e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1640130104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1673,8 +1815,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1683,6 +1829,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1734709274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13eb2d68016344b785825b5aaaff44d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &1805280211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1795,8 +1945,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1805,6 +1959,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &1852336653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,8 +2008,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1861,6 +2022,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!114 &1852336656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,6 +2037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bcf13390cf45a59aaaf437d9e7d68a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!1 &2007338079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,6 +2127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93535546398b47f2a11a51bcdd2db8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityCompose.Samples::UnityCompose.Samples.Behaviors.FocusableSample
+  _document: {fileID: 0}
 --- !u!114 &2057462662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1975,8 +2141,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -1985,6 +2155,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1 &2058572866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb143ace5514403da0a1549c2bf62eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _document: {fileID: 0}
 --- !u!114 &2058572869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2043,8 +2217,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 50b96943a16be5846ac7b8d7c4439fed, type: 2}
+  m_PreviousPanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
+  m_ChildrenContentCopy: []
   sourceAsset: {fileID: 9197481963319205126, guid: cf1be021266c4d32979b4a2851699fb0, type: 3}
+  softPointerCaptures: 0
+  m_FirstChildInsertIndex: 0
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -2053,6 +2231,9 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+  m_RootHasWorldTransform: 0
+  m_OldUxml: {fileID: 0}
+  m_OldSortingOrder: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

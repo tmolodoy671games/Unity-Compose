@@ -15,7 +15,7 @@ public partial class ComposeView : VisualElement
     }
 
     public readonly Composer Composer = new();
-    private ComposableContent<Composer, int>? _content;
+    private ComposableContent? _content;
     private SlotTableType _slotTableType;
 
     public SlotTableType Type
@@ -32,7 +32,7 @@ public partial class ComposeView : VisualElement
         }
     }
 
-    public void SetContent(ComposableContent<Composer, int> content)
+    public void SetContent(ComposableContent content)
     {
         pickingMode = PickingMode.Ignore;
         if (_content == content)
@@ -42,13 +42,13 @@ public partial class ComposeView : VisualElement
         Composer.SetAsCurrentComposer();
         Clear();
         Composer.Clear();
-        __ContentImpl(content, Composer, 0b_10);
+        ContentImpl(content);
         Composer.ResetAsCurrentComposer();
     }
 
     [Composable]
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    private void ContentImpl(ComposableContent<Composer, int> content)
+    private void ContentImpl(ComposableContent content)
     {
         var onScreenManager = Remember(() => new ModalMenuManager());
         var composer = CurrentComposer;
@@ -63,7 +63,7 @@ public partial class ComposeView : VisualElement
             LocalFocusManager.Provides(focusManager),
             () => WithIsActive(
                 onScreenManager.Contents.IsEmpty(),
-                () => content(composer, 0)
+                content
             )
         );
         foreach (var overlayContent in onScreenManager.Contents)

@@ -34,7 +34,7 @@ public abstract partial class ComposePreview : MonoBehaviour
         var composeView = document.rootVisualElement?.Q<ComposeView>();
         if (composeView != null)
             composeView.Type = SlotTableType;
-        composeView?.SetContent(isSelected ? __Preview : __EmptyPreview);
+        composeView?.SetContent(isSelected ? Preview : EmptyPreview);
 #endif
     }
 
