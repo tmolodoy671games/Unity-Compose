@@ -35,7 +35,7 @@ public abstract class BaseMutableStateImpl : IMutableState
 
     protected void Capture()
     {
-        Composer.Current?.Capture(this);
+        ComposerImpl.Current?.Capture(this);
     }
 
     protected void Notify()

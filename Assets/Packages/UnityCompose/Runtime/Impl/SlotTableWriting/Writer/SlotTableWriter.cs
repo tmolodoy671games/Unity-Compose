@@ -19,7 +19,7 @@ internal class SlotTableWriter : ISlotTableWriter
     private readonly Slots _slots;
     private readonly Anchors _groupsAnchors;
     private readonly Anchors _slotsAnchors;
-    private readonly Composer _composer;
+    private readonly ComposerImpl _composer;
 
     private readonly Stack<ComposeGroupEntry> _enteredParents = new();
     private readonly Stack<int> _enteredElementIndices = new();
@@ -39,7 +39,7 @@ internal class SlotTableWriter : ISlotTableWriter
     private int _invalidationRoot = -1;
     private int _currentElementIndex = 0;
 
-    public SlotTableWriter(Composer composer)
+    public SlotTableWriter(ComposerImpl composer)
     {
         _composer = composer;
         var table = new SlotTable();

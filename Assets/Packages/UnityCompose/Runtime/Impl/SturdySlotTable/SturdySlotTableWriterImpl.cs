@@ -18,7 +18,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
         parent: null
     );
 
-    private readonly Composer _composer;
+    private readonly ComposerImpl _composer;
     private SturdyComposeGroup? _currentParent;
     private int _currentGroupIndex;
     private int _currentSlotIndex;
@@ -40,7 +40,7 @@ internal class SturdySlotTableWriterImpl : ISlotTableWriter
     private readonly IMutableStableStack<VisualElement> _enteredElements = MutableStableStackOf<VisualElement>();
     private readonly IMutableStableStack<int> _enteredElementIndices = MutableStableStackOf<int>();
 
-    public SturdySlotTableWriterImpl(Composer composer)
+    public SturdySlotTableWriterImpl(ComposerImpl composer)
     {
         _currentParent = _root;
         _composer = composer;

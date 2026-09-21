@@ -1,4 +1,7 @@
 ﻿{
   "name": "UnityCompose",
-  "rootNamespace": "UnityCompose"
+  "rootNamespace": "UnityCompose",
+  "precompiledReferences": [
+    "Compose.Net.CodeGen.dll"
+  ]
 }

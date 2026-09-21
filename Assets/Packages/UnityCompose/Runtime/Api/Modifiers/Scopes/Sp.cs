@@ -103,7 +103,9 @@ public static partial class SpExtensions
     [Composable]
     public static float Resolve(this Sp sp)
     {
-        return sp.Value * LocalTextScale.Current;
+        return sp.Value;
+        // BRUH
+        // return sp.Value * LocalTextScale.Current;
     }
 }
 

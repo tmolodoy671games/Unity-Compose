@@ -4,9 +4,9 @@ namespace UnityCompose;
 public struct ChangedBuilder
 {
     private bool _changed;
-    private readonly Composer _composer;
+    private readonly IComposer _composer;
 
-    public ChangedBuilder(Composer composer)
+    public ChangedBuilder(IComposer composer)
     {
         _composer = composer;
         _changed = false;

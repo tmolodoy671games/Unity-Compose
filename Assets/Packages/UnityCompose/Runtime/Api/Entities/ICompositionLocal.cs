@@ -9,7 +9,11 @@ public interface ICompositionLocal
 
 public interface ICompositionLocal<T> : ICompositionLocal
 {
-    T Current { get; }
+    T Current
+    {
+        [Composable, Compiled]
+        get;
+    }
 
     public CompositionLocalProvides<T> Provides(T value)
     {

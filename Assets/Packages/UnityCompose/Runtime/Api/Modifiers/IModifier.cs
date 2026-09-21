@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Text;
 using StableCollections;
 using UnityEngine.UIElements;
 
@@ -12,19 +10,6 @@ public partial interface IModifier
     void Apply(VisualElement element);
     void Revert(VisualElement element);
     void Flatten(IMutableStableCollection<IModifier> modifiers);
-
-    [Composable]
-    IModifier Compose() => this;
-
-    [Composable]
-    void DrawBefore()
-    {
-    }
-
-    [Composable]
-    void DrawAfter()
-    {
-    }
 
     public static IModifier operator +(IModifier left, IModifier right)
     {
@@ -41,16 +26,6 @@ public abstract partial class BaseModifier<T> : IModifier where T : BaseModifier
     public virtual void Flatten(IMutableStableCollection<IModifier> modifiers)
     {
         modifiers.Add(this);
-    }
-
-    [Composable]
-    public virtual void DrawBefore()
-    {
-    }
-
-    [Composable]
-    public virtual void DrawAfter()
-    {
     }
 
     protected abstract bool Equals(T other);
@@ -89,16 +64,6 @@ public abstract partial class BaseComposableModifier<T> : IModifier where T : Ba
     protected abstract bool Equals(T other);
 
     public virtual IModifier Compose() => this;
-
-    [Composable]
-    public virtual void DrawBefore()
-    {
-    }
-
-    [Composable]
-    public virtual void DrawAfter()
-    {
-    }
 
     public override bool Equals(object? obj)
     {
@@ -180,34 +145,12 @@ internal partial class CompositeModifierImpl : BaseModifier<CompositeModifierImp
         _first.Flatten(modifiers);
         _second.Flatten(modifiers);
     }
-
-    public override IModifier Compose()
-    {
-        var firstComposed = _first.Compose();
-        var secondComposed = _second.Compose();
-        if (!Equals(firstComposed, _first) || !Equals(_second, secondComposed))
-            return new CompositeModifierImpl(firstComposed, secondComposed);
-        return this;
-    }
+    
 
     public override void Revert(VisualElement element)
     {
         _first.Revert(element);
         _second.Revert(element);
-    }
-
-    [Composable]
-    public override void DrawBefore()
-    {
-        _first.DrawBefore();
-        _second.DrawBefore();
-    }
-
-    [Composable]
-    public override void DrawAfter()
-    {
-        _first.DrawAfter();
-        _second.DrawAfter();
     }
 
     protected override bool Equals(CompositeModifierImpl other)
