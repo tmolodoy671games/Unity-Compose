@@ -1,0 +1,12 @@
+﻿// ReSharper disable CheckNamespace
+
+using Compose.Net;
+using UnityEngine;
+
+namespace UnityCompose;
+
+public static class Vector2Extensions
+{
+    public static Offset ToOffset(this Vector2 vector2) => new(vector2.x, vector2.y);
+    public static Offset ToOffset(this Vector3 vector2) => new(vector2.x, vector2.y);
+}
