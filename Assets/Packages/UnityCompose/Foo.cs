@@ -1,12 +1,11 @@
-﻿using UnityCompose;
+﻿using Compose.Net;
 
-namespace System.Runtime.CompilerServices.CodeGen
+namespace UnityCompose.Packages.UnityCompose;
+
+internal partial class Foo
 {
-    internal partial class Foo
+    [Composable]
+    void Bar()
     {
-        [Composable]
-        void Bar()
-        {
-        }
     }
 }

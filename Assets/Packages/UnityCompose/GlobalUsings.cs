@@ -1,2 +1,2 @@
-﻿global using static UnityCompose.ComposeFunctions;
-global using static StableCollections.StableCollectionsFactory;
+﻿global using static StableCollections.StableCollectionsFactory;
+global using static Compose.Net.ComposeFunctions;

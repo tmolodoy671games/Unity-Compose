@@ -1,8 +1,10 @@
-﻿namespace UnityCompose.Samples.Behaviors;
+﻿using Compose.Net;
+
+namespace UnityCompose.Samples.Behaviors;
 
 public partial class MySampleClass
 {
-    // [Composable]
+    [Composable]
     public void Foo()
     {
         
