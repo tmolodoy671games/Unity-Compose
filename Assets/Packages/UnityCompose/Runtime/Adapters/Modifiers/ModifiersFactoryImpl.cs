@@ -14,7 +14,7 @@ internal class ModifiersFactoryImpl : IModifiersFactory
     }
 
     public IAlignmentModifiersFactory Alignment { get; } = new AlignmentModifiersFactoryImpl();
-    public IAppearanceModifiersFactory Appearance { get; }
+    public IAppearanceModifiersFactory Appearance { get; } = new AppearanceModifiersFactoryImpl();
     public IPointerModifiersFactory Pointer { get; }
     public IMouseModifiersFactory Mouse { get; }
     public ITransformModifiersFactory Transform { get; }
