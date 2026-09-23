@@ -6,7 +6,7 @@ using Unity.CompilationPipeline.Common.ILPostProcessing;
 namespace Packages.UnityCompose.Editor.Rewriters;
 
 // BRUH
-// internal class ComposePostProcessor : ILPostProcessor
+// internal class ComposeILPostProcessor : ILPostProcessor
 // {
 //     public override ILPostProcessor GetInstance() => this;
 //

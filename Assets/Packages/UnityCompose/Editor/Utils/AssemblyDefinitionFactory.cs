@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.IO;
 using Mono.Cecil;
 using UnityEditor;
@@ -7,12 +8,23 @@ namespace Packages.UnityCompose.Editor.Utils;
 
 internal static class AssemblyDefinitionFactory
 {
-    public static AssemblyDefinition Create(FileInfo file)
+    public static AssemblyDefinition? Create(FileInfo file)
     {
         var resolver = new DefaultAssemblyResolver();
 
         AddAssemblySearchDirectories(resolver, file);
-        return AssemblyDefinition.ReadAssembly(file.FullName);
+        try
+        {
+            return AssemblyDefinition.ReadAssembly(file.FullName);
+        }
+        catch (AssemblyResolutionException)
+        {
+            return null;
+        }
+        catch (BadImageFormatException)
+        {
+            return null;
+        }
     }
 
     private static void AddAssemblySearchDirectories(
