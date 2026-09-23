@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using Mono.Cecil;
 using Packages.UnityCompose.Editor.Extensions;
 
@@ -17,3 +18,4 @@ internal class ParameterEqualityComparer : IEqualityComparer<ParameterDefinition
                obj.ParameterType.FullName.GetHashCode();
     }
 }
+#endif

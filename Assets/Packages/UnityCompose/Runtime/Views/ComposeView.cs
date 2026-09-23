@@ -3,6 +3,7 @@ using Compose.Net;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace

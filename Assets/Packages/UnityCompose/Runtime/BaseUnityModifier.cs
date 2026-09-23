@@ -10,11 +10,13 @@ public abstract class BaseUnityModifier<T> : BaseModifier<T> where T : BaseUnity
     public override void Apply(IReusableComposeNode node)
     {
         var element = node.VisualElement();
+        Apply(element);
     }
 
     public override void Revert(IReusableComposeNode node)
     {
         var element = node.VisualElement();
+        Apply(element);
     }
     
     public abstract void Apply(VisualElement element);

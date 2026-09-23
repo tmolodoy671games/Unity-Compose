@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if UNITY_EDITOR
+using System.IO;
 using Mono.Cecil;
 using Unity.CompilationPipeline.Common.ILPostProcessing;
 
@@ -20,13 +21,8 @@ internal static class CompiledAssemblyExtensions
 
         return AssemblyDefinition.ReadAssembly(
             new MemoryStream(compiledAssembly.InMemoryAssembly.PeData),
-            new ReaderParameters
-            {
-                AssemblyResolver = resolver,
-            });
-        
-        // return AssemblyDefinition.ReadAssembly(
-        //     new MemoryStream(compiledAssembly.InMemoryAssembly.PeData)
-        // );
+            new ReaderParameters { AssemblyResolver = resolver, }
+        );
     }
 }
+#endif

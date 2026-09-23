@@ -1,33 +1,35 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿#if UNITY_EDITOR
 using System.IO;
 using System.Linq;
 using Mono.Cecil;
 using Packages.UnityCompose.Editor.Extensions;
 using Packages.UnityCompose.Editor.Utils;
+using StableCollections;
 using Unity.CompilationPipeline.Common.Diagnostics;
-using Unity.CompilationPipeline.Common.ILPostProcessing;
 
 namespace Packages.UnityCompose.Editor.Rewriters;
 
-internal class UnityComposeMethodRewriter : ILPostProcessor
+internal static class ComposableMethodRewriter
 {
-    public override ILPostProcessor GetInstance() => this;
-
-    public override bool WillProcess(ICompiledAssembly compiledAssembly)
+    public static bool CanPatch(AssemblyDefinition assembly)
     {
-        return false; // BRUH
-        var assembly = compiledAssembly.ToAssemblyDefinition();
         return assembly.MainModule.Types
             .SelectMany(it => it.Methods)
             .Any(it => it.IsComposable());
     }
 
-    public override ILPostProcessResult Process(ICompiledAssembly compiledAssembly)
+    public static IStableList<DiagnosticMessage> Patch(AssemblyDefinition assembly)
     {
-        var assembly = compiledAssembly.ToAssemblyDefinition();
-        var messages = new List<DiagnosticMessage>();
+        var messages = MutableStableListOf<DiagnosticMessage>();
+        if (!CanPatch(assembly))
+            return messages;
 
+        var myMessage = new DiagnosticMessage
+        {
+            DiagnosticType = DiagnosticType.Warning,
+            MessageData = $"Patching {assembly.Name}...",
+        };
+        messages.Add(myMessage);
         foreach (var type in assembly.MainModule.Types)
         {
             var composableMethods = type.Methods
@@ -35,6 +37,8 @@ internal class UnityComposeMethodRewriter : ILPostProcessor
                 .ToList();
             foreach (var composableMethod in composableMethods)
             {
+                if (!composableMethod.HasBody)
+                    continue;
                 var recompiledMethod = type.Methods
                     .Where(it => it.Name == "__" + composableMethod.Name)
                     .FirstOrDefault(it =>
@@ -43,10 +47,11 @@ internal class UnityComposeMethodRewriter : ILPostProcessor
                 var sequencePoint = composableMethod.DebugInformation.SequencePoints.FirstOrDefault();
                 if (recompiledMethod == null)
                 {
-                    var message = new DiagnosticMessage()
+                    var message = new DiagnosticMessage
                     {
                         DiagnosticType = DiagnosticType.Warning,
-                        MessageData = $"{type.FullName}.{composableMethod.Name} is not marked as partial (or code generation failed)!",
+                        MessageData =
+                            $"{type.FullName}.{composableMethod.Name} is not marked as partial (or code generation failed)!",
                     };
                     if (sequencePoint != null)
                     {
@@ -54,6 +59,7 @@ internal class UnityComposeMethodRewriter : ILPostProcessor
                         message.Line = sequencePoint.StartLine;
                         message.Column = sequencePoint.StartColumn;
                     }
+
                     messages.Add(message);
                     continue;
                 }
@@ -71,8 +77,9 @@ internal class UnityComposeMethodRewriter : ILPostProcessor
             // SymbolStream = pdbStream,
         };
         assembly.Write(peStream);
+        assembly.Dispose();
 
-        var newAssembly = new InMemoryAssembly(peStream.ToArray(), pdbStream.ToArray());
-        return new ILPostProcessResult(newAssembly, messages);
+        return messages;
     }
 }
+#endif
