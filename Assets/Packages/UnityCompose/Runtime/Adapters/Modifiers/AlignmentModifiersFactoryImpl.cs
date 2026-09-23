@@ -1,4 +1,5 @@
 ﻿using Compose.Net;
+using SharpExtensions;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
 
@@ -14,7 +15,7 @@ internal class AlignmentModifiersFactoryImpl : IAlignmentModifiersFactory
         return new VerticalAlignModifierImpl(verticalAlignment);
     }
 
-    public IModifier Position(Dp top, Dp bottom, Dp left, Dp right)
+    public IModifier Position(Optional<Dp> top, Optional<Dp> bottom, Optional<Dp> left, Optional<Dp> right)
     {
         return new PositionModifierImpl(top, bottom, left, right);
     }

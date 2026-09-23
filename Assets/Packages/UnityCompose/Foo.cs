@@ -5,7 +5,7 @@ namespace UnityCompose.Packages.UnityCompose;
 internal partial class Foo
 {
     [Composable]
-    void Bar()
+    public static void Bar()
     {
     }
 }

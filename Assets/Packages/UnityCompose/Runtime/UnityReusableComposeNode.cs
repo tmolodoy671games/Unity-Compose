@@ -25,11 +25,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
         visualElement.SetReusableComposeNode(this);
     }
 
-    public IReusableComposeNode? GetChildOrNull(int index)
-    {
-        return VisualElement.GetOrNull(index)?.GetReusableComposeNode();
-    }
-
     public void Remove(IReusableComposeNode child)
     {
         var childVisualElement = child.VisualElement();
