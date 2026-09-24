@@ -13,8 +13,8 @@ internal class ScaleModifierImpl : BaseUnityModifier<ScaleModifierImpl>
 
     public ScaleModifierImpl(float scaleX, float scaleY)
     {
-        scaleX = scaleX;
-        scaleY = scaleY;
+        _scaleX = scaleX;
+        _scaleY = scaleY;
     }
 
     public override void Apply(VisualElement element)

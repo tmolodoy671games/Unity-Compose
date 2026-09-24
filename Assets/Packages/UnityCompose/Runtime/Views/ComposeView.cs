@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class ComposeView : VisualElement
 {
-    private Action _content;
+    private Action? _content;
     private readonly IReusableComposeNode _rootNode;
     private readonly IComposer _composer = IComposer.Create();
 

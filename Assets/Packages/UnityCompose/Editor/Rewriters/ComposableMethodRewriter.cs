@@ -50,8 +50,7 @@ internal static class ComposableMethodRewriter
                     var message = new DiagnosticMessage
                     {
                         DiagnosticType = DiagnosticType.Warning,
-                        MessageData =
-                            $"{type.FullName} is not marked as partial (or code generation failed)!",
+                        MessageData = $"{type.FullName} is not marked as partial (or code generation failed)!",
                     };
                     if (sequencePoint != null)
                     {
