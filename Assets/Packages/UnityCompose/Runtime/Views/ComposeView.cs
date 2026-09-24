@@ -31,6 +31,9 @@ public partial class ComposeView : VisualElement
             composer: _composer,
             preview: false,
             rootNode: _rootNode,
+            config: new ComposeConfig(
+                Logging: false
+            ),
             content: content
         );
     }

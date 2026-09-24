@@ -20,4 +20,5 @@ internal class UnityComposeAdapter : IComposeAdapter
     public ComposeInvalidator ComposeInvalidatorInstance => ComposeInvalidatorHolder.ComposeInvalidator;
     public IModifiersFactory ModifiersFactory { get; } = new ModifiersFactoryImpl();
     public IReusableNodeFactory NodeFactory { get; } = new ReusableNodeFactoryImpl();
+    public IComposeLogger Logger { get; } = new ComposeLoggerImpl();
 }

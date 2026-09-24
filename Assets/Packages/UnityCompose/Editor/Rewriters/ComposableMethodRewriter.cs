@@ -23,13 +23,6 @@ internal static class ComposableMethodRewriter
         var messages = MutableStableListOf<DiagnosticMessage>();
         if (!CanPatch(assembly))
             return messages;
-
-        var myMessage = new DiagnosticMessage
-        {
-            DiagnosticType = DiagnosticType.Warning,
-            MessageData = $"Patching {assembly.Name}...",
-        };
-        messages.Add(myMessage);
         foreach (var type in assembly.MainModule.Types)
         {
             var composableMethods = type.Methods
@@ -49,8 +42,8 @@ internal static class ComposableMethodRewriter
                 {
                     var message = new DiagnosticMessage
                     {
-                        DiagnosticType = DiagnosticType.Warning,
-                        MessageData = $"{type.FullName} is not marked as partial (or code generation failed)!",
+                        DiagnosticType = DiagnosticType.Error,
+                        MessageData = $"{composableMethod.Name}: {type.FullName} is not marked as partial (or code generation failed)!",
                     };
                     if (sequencePoint != null)
                     {
