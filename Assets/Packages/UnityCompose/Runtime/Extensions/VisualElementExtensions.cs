@@ -22,4 +22,9 @@ public static partial class VisualElementExtensions
             return null;
         return visualElement[index];
     }
+
+    public static VisualElement VisualElement(this EventBase evt)
+    {
+        return (VisualElement)evt.target;
+    }
 }

@@ -20,7 +20,7 @@ internal class ModifiersFactoryImpl : IModifiersFactory
     public ITransformModifiersFactory Transform { get; } = new TransformModifiersFactoryImpl();
     public IInsetsModifiersFactory Insets { get; } = new InsetsModifiersFactoryImpl();
     public ISizeModifiersFactory Size { get; } = new SizeModifiersFactoryImpl();
-    public IInteractionModifiersFactory Interaction { get; }
+    public IInteractionModifiersFactory Interaction { get; } = new InteractionModifiersFactoryImpl();
     public ICaptureModifiersFactory Capture { get; }
     public IScrollModifiersFactory Scroll { get; }
     public IClickModifiersFactory Click { get; }
