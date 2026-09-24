@@ -19,7 +19,7 @@ internal class ModifiersFactoryImpl : IModifiersFactory
     public IMouseModifiersFactory Mouse { get; } = new MouseModifiersFactoryImpl();
     public ITransformModifiersFactory Transform { get; } = new TransformModifiersFactoryImpl();
     public IInsetsModifiersFactory Insets { get; } = new InsetsModifiersFactoryImpl();
-    public ISizeModifiersFactory Size { get; }
+    public ISizeModifiersFactory Size { get; } = new SizeModifiersFactoryImpl();
     public IInteractionModifiersFactory Interaction { get; }
     public ICaptureModifiersFactory Capture { get; }
     public IScrollModifiersFactory Scroll { get; }
