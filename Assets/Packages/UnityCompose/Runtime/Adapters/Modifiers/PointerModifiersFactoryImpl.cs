@@ -64,4 +64,6 @@ internal class PointerModifiersFactoryImpl : IPointerModifiersFactory
     {
         return new OnPointerCancelModifierImpl(onPointerCancel, pointerId);
     }
+
+    public IModifier CapturePointer(int pointerId) => new CapturePointerModifierImpl(pointerId);
 }

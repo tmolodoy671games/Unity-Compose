@@ -21,8 +21,6 @@ internal class ModifiersFactoryImpl : IModifiersFactory
     public IInsetsModifiersFactory Insets { get; } = new InsetsModifiersFactoryImpl();
     public ISizeModifiersFactory Size { get; } = new SizeModifiersFactoryImpl();
     public IInteractionModifiersFactory Interaction { get; } = new InteractionModifiersFactoryImpl();
-    public ICaptureModifiersFactory Capture { get; }
     public IScrollModifiersFactory Scroll { get; }
-    public IClickModifiersFactory Click { get; }
     public IPositionModifiersFactory Position { get; }
 }

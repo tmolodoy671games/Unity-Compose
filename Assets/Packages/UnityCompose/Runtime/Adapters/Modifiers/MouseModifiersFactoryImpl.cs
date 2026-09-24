@@ -12,13 +12,17 @@ internal class MouseModifiersFactoryImpl : IMouseModifiersFactory
     public IModifier OnMouseMove(Action<PointerMoveInfo> onMouseMove) => new OnMouseMoveModifierImpl(onMouseMove);
     public IModifier OnMouseLeave(Action onMouseLeave) => new OnMouseLeaveModifierImpl(onMouseLeave);
     public IModifier OnMouseLeave(Action<PointerMoveInfo> onMouseLeave) => new OnMouseLeaveModifierImpl(onMouseLeave);
-    public IModifier OnMouseDown(Action onMouseDown, int button) => new OnMouseDownModifierImpl(onMouseDown, button);
 
+    public IModifier OnMouseDown(Action onMouseDown, int button) => new OnMouseDownModifierImpl(onMouseDown, button);
     public IModifier OnMouseDown(Action<PointerClickInfo> onMouseDown, int button) =>
         new OnMouseDownModifierImpl(onMouseDown, button);
 
     public IModifier OnMouseUp(Action onMouseUp, int button) => new OnMouseUpModifierImpl(onMouseUp, button);
-
     public IModifier OnMouseUp(Action<PointerClickInfo> onMouseUp, int button) =>
         new OnMouseUpModifierImpl(onMouseUp, button);
+
+    public IModifier OnClick(Action<PointerClickInfo> onClick, int button) => new OnClickModiferImpl(onClick, button);
+    public IModifier OnClick(Action onClick, int button) => new OnClickModiferImpl(onClick, button);
+
+    public IModifier CaptureMouse() => CaptureMouseModifierImpl.Instance;
 }
