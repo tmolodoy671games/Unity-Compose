@@ -28,9 +28,14 @@ namespace UnityCompose.Samples.Behaviors
                     var interactionSource = Remember(MutableInteractionSource);
                     var hovered = interactionSource.CollectIsHoveredAsState().Value;
                     var pressed = interactionSource.CollectIsPressedAsState().Value;
+                    var background = AnimateColorAsState(
+                        pressed
+                            ? Color.darkGreen.ToSystemColor()
+                            : Color.seaGreen.ToSystemColor()
+                    ).Value;
                     Box(
                         modifier: Modifier
-                            .Background(AnimateColorAsState(pressed ? Color.darkGreen : Color.seaGreen).Value)
+                            .Background(background)
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Hoverable(interactionSource)
                             .Clickable(interactionSource)
