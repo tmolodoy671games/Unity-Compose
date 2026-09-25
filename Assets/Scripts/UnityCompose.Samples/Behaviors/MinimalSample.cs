@@ -31,8 +31,7 @@ namespace UnityCompose.Samples.Behaviors
                             .Background(Color.lightGreen.ToSystemColor())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Hoverable(interactionSource)
-                            .Padding(vertical: 16.Dp())
-                            .Padding(horizontal: isHovered ? 32.Dp() : 16.Dp()),
+                            .Padding(vertical: 16.Dp()),
                         content: [Composable]() =>
                         {
                             Text(

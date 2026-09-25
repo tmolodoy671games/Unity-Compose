@@ -59,7 +59,7 @@ internal static class ComposableMethodRewriter
                 }
 
                 composableMethod.CopyBodyFrom(recompiledMethod);
-                messages.Add(new DiagnosticMessage { MessageData = $"Patched {composableMethod.Name}" });
+                // messages.Add(new DiagnosticMessage { MessageData = $"Patched {composableMethod.Name}" });
             }
         }
 

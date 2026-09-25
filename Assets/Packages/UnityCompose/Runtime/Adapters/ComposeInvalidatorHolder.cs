@@ -5,44 +5,53 @@ using Compose.Net;
 using SharpExtensions;
 using UnityEngine;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters;
+// ReSharper disable ArrangeNamespaceBody
+// ReSharper disable CheckNamespace
 
-internal class ComposeInvalidatorHolder : MonoBehaviour
+namespace UnityCompose
 {
-    private static ComposeInvalidatorHolder? _instance;
-    private readonly ComposeInvalidator _invalidator = new();
-
-    private static ComposeInvalidatorHolder Instance
+    internal class ComposeInvalidatorHolder : MonoBehaviour
     {
-        get
+        private static ComposeInvalidatorHolder? _instance;
+        private readonly ComposeInvalidator _invalidator = new();
+
+        private static ComposeInvalidatorHolder Instance
         {
-            if (_instance == null)
-                _instance = new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
-            return _instance;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = GameObject.Find("Coroutine Runner")?.GetComponent<ComposeInvalidatorHolder>() ??
+                                new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
+                    DontDestroyOnLoad(_instance);
+                }
+
+                return _instance;
+            }
         }
-    }
-    
-    public static ComposeInvalidator ComposeInvalidator => Instance._invalidator;
 
-    private void Update()
-    {
-        _invalidator.Tick();
-    }
+        public static ComposeInvalidator ComposeInvalidator => Instance._invalidator;
 
-    public static IDisposable StartCoroutine(IEnumerable<TimeSpan?> coroutine)
-    {
-        var coroutineHandle = Instance.StartCoroutine(CoroutineAdapter(coroutine));
-        return new CustomDisposable(() => Instance.StopCoroutine(coroutineHandle));
-    }
-
-    private static IEnumerator CoroutineAdapter(IEnumerable<TimeSpan?> coroutine)
-    {
-        foreach (var step in coroutine)
+        private void Update()
         {
-            if (step == null)
-                yield return null;
-            else
-                yield return new WaitForSeconds(step.Value.TotalSeconds.ToFloat());
+            _invalidator.Tick();
+        }
+
+        public static IDisposable StartCoroutine(IEnumerable<TimeSpan?> coroutine)
+        {
+            var coroutineHandle = Instance.StartCoroutine(CoroutineAdapter(coroutine));
+            return new CustomDisposable(() => Instance.StopCoroutine(coroutineHandle));
+        }
+
+        private static IEnumerator CoroutineAdapter(IEnumerable<TimeSpan?> coroutine)
+        {
+            foreach (var step in coroutine)
+            {
+                if (step == null)
+                    yield return null;
+                else
+                    yield return new WaitForSeconds(step.Value.TotalSeconds.ToFloat());
+            }
         }
     }
 }
