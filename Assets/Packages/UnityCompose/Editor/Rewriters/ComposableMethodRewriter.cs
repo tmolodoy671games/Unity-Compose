@@ -6,6 +6,7 @@ using Packages.UnityCompose.Editor.Extensions;
 using Packages.UnityCompose.Editor.Utils;
 using StableCollections;
 using Unity.CompilationPipeline.Common.Diagnostics;
+using Unity.CompilationPipeline.Common.ILPostProcessing;
 
 namespace Packages.UnityCompose.Editor.Rewriters;
 
@@ -43,7 +44,8 @@ internal static class ComposableMethodRewriter
                     var message = new DiagnosticMessage
                     {
                         DiagnosticType = DiagnosticType.Error,
-                        MessageData = $"{composableMethod.Name}: {type.FullName} is not marked as partial (or code generation failed)!",
+                        MessageData =
+                            $"{composableMethod.Name}: {type.FullName} is not marked as partial (or code generation failed)!",
                     };
                     if (sequencePoint != null)
                     {
@@ -57,21 +59,12 @@ internal static class ComposableMethodRewriter
                 }
 
                 composableMethod.CopyBodyFrom(recompiledMethod);
+                messages.Add(new DiagnosticMessage { MessageData = $"Patched {composableMethod.Name}" });
             }
         }
-
-        // Debug.Log($"Recompiling {assembly.FullName}");
-        using var peStream = new MemoryStream();
-        using var pdbStream = new MemoryStream();
-        var writeParameters = new WriterParameters
-        {
-            // WriteSymbols = true,
-            // SymbolStream = pdbStream,
-        };
-        assembly.Write(peStream);
-        assembly.Dispose();
 
         return messages;
     }
 }
+
 #endif
