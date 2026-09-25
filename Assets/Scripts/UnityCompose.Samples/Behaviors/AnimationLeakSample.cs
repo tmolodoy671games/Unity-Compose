@@ -33,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors
                             animationSpec: Tween(duration: 3)
                         ).Value;
                         Box(() =>
-                            Box([Composable]() =>
+                            Box(() =>
                                 {
                                     Spacer(
                                         Modifier
