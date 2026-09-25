@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Compose.Net;
+using SharpExtensions;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -21,23 +23,29 @@ namespace UnityCompose.Samples.Behaviors
                 alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize(),
-                content: [Composable]() =>
+                content: () =>
                 {
-                    var b = Remember(MutableInteractionSource);
                     var interactionSource = Remember(MutableInteractionSource);
-                    var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
+                    var pressed = interactionSource.CollectIsPressedAsState().Value;
                     Box(
                         modifier: Modifier
-                            .Background(Color.lightGreen.ToSystemColor())
+                            .Background(AnimateColorAsState(pressed ? Color.darkGreen : Color.seaGreen).Value)
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Hoverable(interactionSource)
-                            .Padding(vertical: 16.Dp()),
-                        content: [Composable]() =>
+                            .Clickable(interactionSource)
+                            .Padding(vertical: 16.Dp())
+                            .Padding(
+                                horizontal: AnimateFloatAsState(hovered ? 128 : 16).Value.Dp()
+                            ),
+                        content: () =>
                         {
                             Text(
                                 fontSize: 40.Sp(),
                                 color: Color.white.ToSystemColor(),
-                                text: "Click Me!"
+                                text: "Click Me!",
+                                modifier: Modifier
+                                    .Scale(AnimateFloatAsState(pressed ? 0.6f : 1f).Value)
                             );
                         }
                     );
