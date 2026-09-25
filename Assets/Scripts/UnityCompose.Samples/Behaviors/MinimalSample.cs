@@ -7,7 +7,7 @@ using SharpExtensions;
 
 namespace UnityCompose.Samples.Behaviors
 {
-    internal partial class MinimalSample : ComposeContent
+    internal partial class MinimalSample : ComposeUI
     {
         [Composable]
         protected override void Content() => Layout();

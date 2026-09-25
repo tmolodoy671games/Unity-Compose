@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 namespace UnityCompose;
 
 [ExecuteAlways]
-public abstract partial class ComposeContent : MonoBehaviour
+public abstract partial class ComposeUI : MonoBehaviour
 {
     [Composable]
     protected abstract void Content();
