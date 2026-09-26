@@ -19,4 +19,9 @@ internal class SizeModifiersFactoryImpl : ISizeModifiersFactory
     {
         return new SizeModifierImpl(width, height);
     }
+
+    public IModifier AnimateContentSize(Optional<AnimationSpec> animationSpec)
+    {
+        return new AnimateContentSizeModifierImpl(animationSpec.GetOrDefault());
+    }
 }

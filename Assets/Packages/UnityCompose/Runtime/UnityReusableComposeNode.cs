@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
@@ -11,11 +12,13 @@ public class UnityReusableComposeNode : IReusableComposeNode
 {
     public readonly VisualElement VisualElement;
     private AnchorManager? _anchorManager;
-
-
+    private VisualElement? _contentContainer;
+    
     public UnityReusableComposeNode(VisualElement visualElement) : this(visualElement, false)
     {
     }
+    
+    public VisualElement ContentContainer => _contentContainer ?? VisualElement;
 
     internal UnityReusableComposeNode(VisualElement visualElement, bool isRoot)
     {
@@ -28,7 +31,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     public void Remove(IReusableComposeNode child)
     {
         var childVisualElement = child.VisualElement();
-        VisualElement.Remove(childVisualElement);
+        ContentContainer.Remove(childVisualElement);
     }
 
     public void FastRemove(int index, IReusableComposeNode child)
@@ -36,24 +39,24 @@ public class UnityReusableComposeNode : IReusableComposeNode
         var childVisualElement = child.VisualElement();
         if (childVisualElement.parent != VisualElement)
             return;
-        if (VisualElement.GetOrNull(index) == childVisualElement)
+        if (ContentContainer.GetOrNull(index) == childVisualElement)
         {
-            VisualElement.RemoveAt(index);
+            ContentContainer.RemoveAt(index);
             return;
         }
 
-        VisualElement.Remove(childVisualElement);
+        ContentContainer.Remove(childVisualElement);
     }
 
     public void Insert(int index, IReusableComposeNode child)
     {
-        VisualElement.Insert(index, child.VisualElement());
+        ContentContainer.Insert(index, child.VisualElement());
     }
 
     public void Reinsert(int index, IReusableComposeNode child)
     {
         var childVisualElement = child.VisualElement();
-        var parent = VisualElement;
+        var parent = ContentContainer;
         if (parent.GetOrNull(index) == childVisualElement)
             return;
         childVisualElement.RemoveFromHierarchy();
@@ -71,6 +74,31 @@ public class UnityReusableComposeNode : IReusableComposeNode
     public IReusableComposeNode? Parent => VisualElement.parent?.GetReusableComposeNode();
     public int IndexInParent => VisualElement.parent.IndexOf(VisualElement);
     public AnchorManager? AnchorManager => _anchorManager;
+
+    public void SetContentContainer(VisualElement contentContainer)
+    {
+        if (_contentContainer != null)
+            return;
+        var children = VisualElement.Children().ToImmutableStableList();
+        foreach (var child in children)
+            child.parent.Remove(child);
+        _contentContainer = contentContainer;
+        VisualElement.Insert(0, contentContainer);
+        foreach (var child in children)
+            _contentContainer.Add(child);
+    }
+    
+    public void RemoveContentContainer()
+    {
+        if (_contentContainer == null)
+            return;
+        var children = _contentContainer.Children().ToImmutableStableList();
+        foreach (var child in children)
+            child.parent.Remove(child);
+        VisualElement.Remove(_contentContainer);
+        foreach (var child in children)
+            VisualElement.Add(child);
+    }
 }
 
 public static class ReusableComposeNodeExtensions
@@ -80,6 +108,11 @@ public static class ReusableComposeNodeExtensions
         return node.CastTo<UnityReusableComposeNode>().VisualElement;
     }
     
+    public static VisualElement ContentContainer(this IReusableComposeNode node)
+    {
+        return node.CastTo<UnityReusableComposeNode>().ContentContainer;
+    }
+
     public static T VisualElement<T>(this IReusableComposeNode node) where T : VisualElement
     {
         return node.CastTo<UnityReusableComposeNode>().VisualElement.CastTo<T>();

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class PaddingModifierImpl : BaseUnityModifier<PaddingModifierImpl>
+internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 {
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
@@ -26,8 +26,9 @@ internal class PaddingModifierImpl : BaseUnityModifier<PaddingModifierImpl>
         _right = right;
     }
 
-    public override void Apply(VisualElement element)
+    public override void Apply(IReusableComposeNode node)
     {
+        var element = node.ContentContainer();
         if (_top.HasValue)
         {
             element.style.paddingTop = _top.Value.ToLength();
@@ -49,8 +50,9 @@ internal class PaddingModifierImpl : BaseUnityModifier<PaddingModifierImpl>
         }
     }
 
-    public override void Revert(VisualElement element)
+    public override void Revert(IReusableComposeNode node)
     {
+        var element = node.ContentContainer();
         if (_top.HasValue)
         {
             element.style.paddingTop = StyleKeyword.Null;
