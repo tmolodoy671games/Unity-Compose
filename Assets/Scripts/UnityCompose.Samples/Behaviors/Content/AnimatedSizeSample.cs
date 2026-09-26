@@ -2,7 +2,7 @@
 
 // ReSharper disable ArrangeNamespaceBody
 
-namespace UnityCompose.Samples.Behaviors
+namespace UnityCompose.Samples.Behaviors.Content
 {
     public partial class AnimatedSizeSample : ComposeUI
     {

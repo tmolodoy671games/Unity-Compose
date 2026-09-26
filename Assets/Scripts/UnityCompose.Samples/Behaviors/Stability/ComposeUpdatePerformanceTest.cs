@@ -2,7 +2,7 @@
 
 using Compose.Net;
 
-namespace UnityCompose.Samples.Behaviors
+namespace UnityCompose.Samples.Behaviors.Stability
 {
     internal partial class ComposeUpdatePerformanceTest : ComposeUI
     {
