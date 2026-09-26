@@ -3,6 +3,7 @@ using Compose.Net;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,7 +30,7 @@ public partial class ComposeView : VisualElement
         Bootstrap(
             adapter: UnityComposeAdapter.Instance,
             composer: _composer,
-            preview: false,
+            preview: !ApplicationUtils.IsPlaying,
             rootNode: _rootNode,
             config: new ComposeConfig(
                 Logging: false
