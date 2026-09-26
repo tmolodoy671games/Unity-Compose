@@ -15,7 +15,7 @@ namespace UnityCompose
         private static ComposeInvalidatorHolder? _instance;
         private readonly ComposeInvalidator _invalidator = new();
 
-        private static ComposeInvalidatorHolder Instance
+        public static ComposeInvalidatorHolder Instance
         {
             get
             {
