@@ -15,6 +15,11 @@ internal class AlignmentModifiersFactoryImpl : IAlignmentModifiersFactory
         return new VerticalAlignModifierImpl(verticalAlignment);
     }
 
+    public IModifier Alignment(Alignment alignment)
+    {
+        return new AlignModifierImpl(alignment);
+    }
+
     public IModifier Position(Optional<Dp> top, Optional<Dp> bottom, Optional<Dp> left, Optional<Dp> right)
     {
         return new PositionModifierImpl(top, bottom, left, right);

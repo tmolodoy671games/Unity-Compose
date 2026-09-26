@@ -16,10 +16,10 @@ public static partial class UnityComposeFunctions
     {
         DisposableEffect(
             key: key,
-            effect: it =>
+            effect: () =>
             {
                 var coroutineInstance = ComposeInvalidatorHolder.Instance.StartCoroutine(coroutine());
-                return it.OnDispose(() => ComposeInvalidatorHolder.Instance.StopCoroutine(coroutineInstance));
+                return OnDispose(() => ComposeInvalidatorHolder.Instance.StopCoroutine(coroutineInstance));
             }
         );
     }
