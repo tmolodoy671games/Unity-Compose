@@ -3,23 +3,23 @@ using Compose.Net;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
-internal class FadeInEnterTransitionImpl : IEnterTransition
+internal class FadeOutExitTransitionImpl : IExitTransition
 {
-    private readonly float _initialAlpha;
+    private readonly float _targetAlpha;
     private readonly AnimationSpec _animationSpec;
 
-    public FadeInEnterTransitionImpl(float initialAlpha, AnimationSpec animationSpec)
+    public FadeOutExitTransitionImpl(float targetAlpha, AnimationSpec animationSpec)
     {
-        _initialAlpha = initialAlpha;
+        _targetAlpha = targetAlpha;
         _animationSpec = animationSpec;
     }
 
     public void Apply(float timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
-        node.VisualElement().style.opacity = Mathf.LerpUnclamped(_initialAlpha, 1f, progress);
+        node.VisualElement().style.opacity = Mathf.LerpUnclamped(1, _targetAlpha, progress);
     }
 
     public void Revert(IReusableComposeNode node)
@@ -29,9 +29,9 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    private bool Equals(FadeInEnterTransitionImpl other)
+    private bool Equals(FadeOutExitTransitionImpl other)
     {
-        return _initialAlpha.Equals(other._initialAlpha) && _animationSpec.Equals(other._animationSpec);
+        return _targetAlpha.Equals(other._targetAlpha) && _animationSpec.Equals(other._animationSpec);
     }
 
     public override bool Equals(object? obj)
@@ -39,11 +39,11 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
         if (obj is null) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Equals((FadeInEnterTransitionImpl)obj);
+        return Equals((FadeOutExitTransitionImpl)obj);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_initialAlpha, _animationSpec);
+        return HashCode.Combine(_targetAlpha, _animationSpec);
     }
 }

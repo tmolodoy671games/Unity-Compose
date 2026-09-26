@@ -3,24 +3,23 @@ using Compose.Net;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
-internal class ScaleInEnterTransitionImpl : IEnterTransition
+internal class ScaleOutExitTransitionImpl : IExitTransition
 {
-    private readonly float _initialScale;
+    private readonly float _targetScale;
     private readonly AnimationSpec _animationSpec;
 
-    public ScaleInEnterTransitionImpl(float initialScale, AnimationSpec animationSpec)
+    public ScaleOutExitTransitionImpl(float targetScale, AnimationSpec animationSpec)
     {
-        _initialScale = initialScale;
+        _targetScale = targetScale;
         _animationSpec = animationSpec;
     }
 
     public void Apply(float timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
-        var scale = Mathf.LerpUnclamped(_initialScale, 1, progress);
-        node.VisualElement().style.scale = new Vector2(scale, scale);
+        node.VisualElement().style.scale = Vector2.one * Mathf.LerpUnclamped(1, _targetScale, progress);
     }
 
     public void Revert(IReusableComposeNode node)
@@ -30,9 +29,9 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
 
     public float TotalDuration => _animationSpec.TotalDuration;
 
-    private bool Equals(ScaleInEnterTransitionImpl other)
+    private bool Equals(ScaleOutExitTransitionImpl other)
     {
-        return _initialScale.Equals(other._initialScale) && _animationSpec.Equals(other._animationSpec);
+        return _targetScale.Equals(other._targetScale) && _animationSpec.Equals(other._animationSpec);
     }
 
     public override bool Equals(object? obj)
@@ -40,11 +39,11 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
         if (obj is null) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Equals((ScaleInEnterTransitionImpl)obj);
+        return Equals((ScaleOutExitTransitionImpl)obj);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_initialScale, _animationSpec);
+        return HashCode.Combine(_targetScale, _animationSpec);
     }
 }

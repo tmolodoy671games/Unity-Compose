@@ -1,5 +1,6 @@
 ﻿using System;
 using Compose.Net;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
@@ -25,6 +26,13 @@ internal class SlideInEnterTransitionImpl : IEnterTransition
         var offset = Offset.LerpUnclamped(initialOffset, targetOffset, progress);
         node.VisualElement().style.translate = offset.ToVector2();
     }
+
+    public void Revert(IReusableComposeNode node)
+    {
+        node.VisualElement().style.translate = StyleKeyword.None;
+    }
+
+    public float TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(SlideInEnterTransitionImpl other)
     {

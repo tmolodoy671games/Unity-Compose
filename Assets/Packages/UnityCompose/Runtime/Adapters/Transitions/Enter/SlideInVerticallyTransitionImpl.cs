@@ -1,6 +1,7 @@
 ﻿using System;
 using Compose.Net;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
@@ -19,10 +20,17 @@ internal class SlideInVerticallyTransitionImpl : IEnterTransition
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var initialOffset = _initialOffsetY(progress);
+        var initialOffset = _initialOffsetY(element.LayoutCoordinates().Size.Y);
         var offset = Mathf.LerpUnclamped(initialOffset, 0, progress);
         element.style.translate = new Vector2(0f, offset);
     }
+
+    public void Revert(IReusableComposeNode node)
+    {
+        node.VisualElement().style.translate = StyleKeyword.None;
+    }
+
+    public float TotalDuration => _animationSpec.TotalDuration;
 
     public override bool Equals(object? obj)
     {
