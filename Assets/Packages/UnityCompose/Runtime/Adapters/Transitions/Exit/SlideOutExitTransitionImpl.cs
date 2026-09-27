@@ -1,17 +1,15 @@
 ﻿using System;
 using Compose.Net;
-using SharpExtensions;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
 internal sealed class SlideOutExitTransitionImpl : IExitTransition
 {
-    private readonly Func<Offset, Offset> _targetOffset;
+    private readonly Func<FloatSize, Offset> _targetOffset;
     private readonly AnimationSpec _animationSpec;
 
-    public SlideOutExitTransitionImpl(Func<Offset, Offset> targetOffset, AnimationSpec animationSpec)
+    public SlideOutExitTransitionImpl(AnimationSpec animationSpec, Func<FloatSize, Offset> targetOffset)
     {
         _targetOffset = targetOffset;
         _animationSpec = animationSpec;

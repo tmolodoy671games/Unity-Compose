@@ -10,7 +10,7 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
     private readonly float _targetScale;
     private readonly AnimationSpec _animationSpec;
 
-    public ScaleOutExitTransitionImpl(float targetScale, AnimationSpec animationSpec)
+    public ScaleOutExitTransitionImpl(AnimationSpec animationSpec, float targetScale)
     {
         _targetScale = targetScale;
         _animationSpec = animationSpec;

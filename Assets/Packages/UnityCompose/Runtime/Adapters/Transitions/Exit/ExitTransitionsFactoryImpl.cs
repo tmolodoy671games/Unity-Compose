@@ -6,31 +6,61 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
 internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
 {
-    public IExitTransition FadeOut(float targetAlpha, Optional<AnimationSpec> animationSpec)
+    public IExitTransition FadeOut(AnimationSpec animationSpec, float targetAlpha)
     {
-        return new FadeOutExitTransitionImpl(targetAlpha, animationSpec.GetOrDefault());
+        return new FadeOutExitTransitionImpl(animationSpec, targetAlpha);
     }
 
-    public IExitTransition ScaleOut(float targetScale, Optional<AnimationSpec> animationSpec)
+    public IExitTransition ScaleOut(AnimationSpec animationSpec, float targetScale)
     {
-        return new ScaleOutExitTransitionImpl(targetScale, animationSpec.GetOrDefault());
+        return new ScaleOutExitTransitionImpl(animationSpec, targetScale);
     }
 
-    public IExitTransition SlideOut(Func<Offset, Offset> targetOffset, Optional<AnimationSpec> animationSpec)
+    public IExitTransition SlideOut(AnimationSpec animationSpec, Func<FloatSize, Offset> targetOffset)
     {
-        return new SlideOutExitTransitionImpl(targetOffset, animationSpec.GetOrDefault());
+        return new SlideOutExitTransitionImpl(animationSpec, targetOffset);
     }
 
     public IExitTransition SlideOutHorizontally(
-        Func<float, float> targetOffsetX,
-        Optional<AnimationSpec> animationSpec
+        AnimationSpec animationSpec,
+        Func<float, float> targetOffsetX
     )
     {
-        return new SlideOutHorizontalTransitionImpl(targetOffsetX, animationSpec.GetOrDefault());
+        return new SlideOutHorizontalTransitionImpl(animationSpec, targetOffsetX);
     }
 
-    public IExitTransition SlideOutVertically(Func<float, float> targetOffsetY, Optional<AnimationSpec> animationSpec)
+    public IExitTransition SlideOutVertically(AnimationSpec animationSpec, Func<float, float> targetOffsetY)
     {
-        return new SlideOutVerticalTransitionImpl(targetOffsetY, animationSpec.GetOrDefault());
+        return new SlideOutVerticalTransitionImpl(animationSpec, targetOffsetY);
+    }
+
+    public IExitTransition ShrinkHorizontally(
+        AnimationSpec animationSpec,
+        Alignment.Horizontal shrinkTowards,
+        bool clip,
+        Func<float, float> targetWidth
+    )
+    {
+        return new ShrinkHorizontallyExitTransitionImpl(animationSpec, shrinkTowards, clip, targetWidth);
+    }
+
+    public IExitTransition ShrinkVertically(
+        AnimationSpec animationSpec,
+        Alignment.Vertical shrinkTowards,
+        bool clip,
+        Func<float, float> targetHeight
+    )
+    {
+        return new ShrinkVerticallyExitTransitionImpl(animationSpec, shrinkTowards, clip, targetHeight);
+    }
+
+    public IExitTransition ShrinkOut(
+        AnimationSpec animationSpec,
+        Alignment shrinkTowards,
+        bool clip,
+        Func<FloatSize, FloatSize> targetSize
+    )
+    {
+        return new ShrinkOutExitTransitionImpl(animationSpec, shrinkTowards, clip, targetSize);
     }
 }

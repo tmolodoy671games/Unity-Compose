@@ -11,7 +11,7 @@ internal class SlideOutHorizontalTransitionImpl : IExitTransition
     private readonly Func<float, float> _targetOffsetX;
     private readonly AnimationSpec _animationSpec;
 
-    public SlideOutHorizontalTransitionImpl(Func<float, float> targetOffsetX, AnimationSpec animationSpec)
+    public SlideOutHorizontalTransitionImpl(AnimationSpec animationSpec, Func<float, float> targetOffsetX)
     {
         _targetOffsetX = targetOffsetX;
         _animationSpec = animationSpec;
@@ -21,7 +21,7 @@ internal class SlideOutHorizontalTransitionImpl : IExitTransition
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var targetOffsetX = _targetOffsetX(element.LayoutCoordinates().Size.X);
+        var targetOffsetX = _targetOffsetX(element.LayoutCoordinates().Size.Width);
         var targetOffset = Mathf.LerpUnclamped(0f, targetOffsetX, progress);
         element.style.translate = new Vector2(targetOffset, 0f);
     }

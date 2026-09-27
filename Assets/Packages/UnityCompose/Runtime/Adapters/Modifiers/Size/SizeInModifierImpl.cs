@@ -2,6 +2,7 @@
 
 using Compose.Net;
 using SharpExtensions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;

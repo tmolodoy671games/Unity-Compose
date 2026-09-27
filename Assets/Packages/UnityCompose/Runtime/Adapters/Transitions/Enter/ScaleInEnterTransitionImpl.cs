@@ -10,7 +10,7 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
     private readonly float _initialScale;
     private readonly AnimationSpec _animationSpec;
 
-    public ScaleInEnterTransitionImpl(float initialScale, AnimationSpec animationSpec)
+    public ScaleInEnterTransitionImpl(AnimationSpec animationSpec, float initialScale)
     {
         _initialScale = initialScale;
         _animationSpec = animationSpec;

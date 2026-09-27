@@ -10,7 +10,7 @@ internal class SlideInHorizontallyTransitionImpl : IEnterTransition
     private readonly Func<float, float> _initialOffsetX;
     private readonly AnimationSpec _animationSpec;
 
-    public SlideInHorizontallyTransitionImpl(Func<float, float> initialOffsetX, AnimationSpec animationSpec)
+    public SlideInHorizontallyTransitionImpl(AnimationSpec animationSpec, Func<float, float> initialOffsetX)
     {
         _initialOffsetX = initialOffsetX;
         _animationSpec = animationSpec;
@@ -20,7 +20,7 @@ internal class SlideInHorizontallyTransitionImpl : IEnterTransition
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var initialOffset = _initialOffsetX(element.LayoutCoordinates().Size.X);
+        var initialOffset = _initialOffsetX(element.LayoutCoordinates().Size.Width);
         var offset = Mathf.LerpUnclamped(initialOffset, 0, progress);
         element.style.translate = new Vector2(offset, 0f);
     }

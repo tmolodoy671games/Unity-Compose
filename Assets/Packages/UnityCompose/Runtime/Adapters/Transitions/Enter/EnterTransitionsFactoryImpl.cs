@@ -6,34 +6,64 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
 internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
 {
-    public IEnterTransition FadeIn(float initialAlpha, Optional<AnimationSpec> animationSpec)
+    public IEnterTransition FadeIn(AnimationSpec animationSpec, float initialAlpha)
     {
-        return new FadeInEnterTransitionImpl(initialAlpha, animationSpec.GetOrDefault());
+        return new FadeInEnterTransitionImpl(animationSpec, initialAlpha);
     }
 
-    public IEnterTransition ScaleIn(float initialScale, Optional<AnimationSpec> animationSpec)
+    public IEnterTransition ScaleIn(AnimationSpec animationSpec, float initialScale)
     {
-        return new ScaleInEnterTransitionImpl(initialScale, animationSpec.GetOrDefault());
+        return new ScaleInEnterTransitionImpl(animationSpec, initialScale);
     }
 
-    public IEnterTransition SlideIn(Func<Offset, Offset> initialOffset, Optional<AnimationSpec> animationSpec)
+    public IEnterTransition SlideIn(AnimationSpec animationSpec, Func<FloatSize, Offset> initialOffset)
     {
-        return new SlideInEnterTransitionImpl(initialOffset, animationSpec.GetOrDefault());
+        return new SlideInEnterTransitionImpl(animationSpec, initialOffset);
     }
 
     public IEnterTransition SlideInHorizontally(
-        Func<float, float> initialOffsetX,
-        Optional<AnimationSpec> animationSpec
+        AnimationSpec animationSpec,
+        Func<float, float> initialOffsetX
     )
     {
-        return new SlideInHorizontallyTransitionImpl(initialOffsetX, animationSpec.GetOrDefault());
+        return new SlideInHorizontallyTransitionImpl(animationSpec, initialOffsetX);
     }
 
     public IEnterTransition SlideInVertically(
-        Func<float, float> initialOffsetY,
-        Optional<AnimationSpec> animationSpec
+        AnimationSpec animationSpec,
+        Func<float, float> initialOffsetY
     )
     {
-        return new SlideInVerticallyTransitionImpl(initialOffsetY, animationSpec.GetOrDefault());
+        return new SlideInVerticallyTransitionImpl(animationSpec, initialOffsetY);
+    }
+
+    public IEnterTransition ExpandHorizontally(
+        AnimationSpec animationSpec,
+        Alignment.Horizontal expandFrom,
+        bool clip,
+        Func<float, float> initialWidth
+    )
+    {
+        return new ExpandHorizontallyEnterTransitionImpl(animationSpec, expandFrom, clip, initialWidth);
+    }
+
+    public IEnterTransition ExpandVertically(
+        AnimationSpec animationSpec,
+        Alignment.Vertical expandFrom,
+        bool clip,
+        Func<float, float> initialHeight
+    )
+    {
+        return new ExpandVerticallyEnterTransitionImpl(animationSpec, expandFrom, clip, initialHeight);
+    }
+
+    public IEnterTransition ExpandIn(
+        AnimationSpec animationSpec,
+        Alignment expandFrom,
+        bool clip,
+        Func<FloatSize, FloatSize> initialSize
+    )
+    {
+        return new ExpandEnterTransitionImpl(animationSpec, expandFrom, clip, initialSize);
     }
 }

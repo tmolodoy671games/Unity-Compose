@@ -36,64 +36,10 @@ namespace UnityCompose.Samples.Behaviors.Content
                         content: () => Text("Text", fontSize: 64.Sp()),
                         modifier: Modifier
                             .Background(Color.lightBlue.ToSystemColor())
-                            .AnimateContentSize()
+                            .Margin(16.Dp())
                     );
                 }
             );
-        }
-
-        [Composable]
-        public static void AnimatedVisibility(
-            bool visible,
-            [Composable] Action content,
-            Optional<IEnterTransition> enter = default,
-            Optional<IExitTransition> exit = default,
-            IModifier? modifier = null
-        )
-        {
-            var resolvedEnter = enter.GetOrDefault(FadeIn(animationSpec: Tween()));
-            var resolvedExit = exit.GetOrDefault(FadeOut(animationSpec: Tween()));
-            var duration = Math.Max(resolvedEnter.TotalDuration, resolvedExit.TotalDuration);
-            var animationSpec = Tween(duration: duration, easing: LinearEasing);
-
-            var visibilityProgress = AnimateFloatAsState(visible.ToInt(), animationSpec).Value;
-            Box(
-                modifier: modifier.OrEmpty(),
-                content: () =>
-                {
-                    if (visibilityProgress <= 0f)
-                        return;
-                    var absoluteProgress = visible ? visibilityProgress : 1 - visibilityProgress;
-                    var timeElapsed = duration * absoluteProgress;
-                    var wrapperModifier = visible
-                        ? Modifier.EnterTransition(resolvedEnter, timeElapsed)
-                        : Modifier.ExitTransition(resolvedExit, timeElapsed);
-                    Box(
-                        modifier: wrapperModifier
-                            .FillMaxSize(),
-                        content: () =>
-                        {
-                            ReusableComposeNode(
-                                nodeFactory: () => new UnityReusableComposeNode(new TransitionContent()),
-                                content: content
-                            );
-                        }
-                    );
-                }
-            );
-        }
-    }
-
-    internal class TransitionContent : VisualElement
-    {
-        public TransitionContent()
-        {
-            RegisterCallback<GeometryChangedEvent>(_ =>
-            {
-                style.position = Position.Absolute;
-                parent.style.width = resolvedStyle.width;
-                parent.style.height = resolvedStyle.height;
-            });
         }
     }
 }

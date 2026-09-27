@@ -219,7 +219,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9999998
+    width: 0.9999999
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -271,7 +271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &529629830
 Transform:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &818423969
 Transform:
   m_ObjectHideFlags: 0
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 1584648798}
   - component: {fileID: 1584648797}
   m_Layer: 0
-  m_Name: Animated Size
+  m_Name: Update Performance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

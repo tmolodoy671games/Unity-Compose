@@ -10,7 +10,7 @@ internal class FadeOutExitTransitionImpl : IExitTransition
     private readonly float _targetAlpha;
     private readonly AnimationSpec _animationSpec;
 
-    public FadeOutExitTransitionImpl(float targetAlpha, AnimationSpec animationSpec)
+    public FadeOutExitTransitionImpl(AnimationSpec animationSpec, float targetAlpha)
     {
         _targetAlpha = targetAlpha;
         _animationSpec = animationSpec;

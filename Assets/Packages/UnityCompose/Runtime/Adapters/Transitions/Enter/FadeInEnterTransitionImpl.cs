@@ -10,7 +10,7 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
     private readonly float _initialAlpha;
     private readonly AnimationSpec _animationSpec;
 
-    public FadeInEnterTransitionImpl(float initialAlpha, AnimationSpec animationSpec)
+    public FadeInEnterTransitionImpl(AnimationSpec animationSpec, float initialAlpha)
     {
         _initialAlpha = initialAlpha;
         _animationSpec = animationSpec;
