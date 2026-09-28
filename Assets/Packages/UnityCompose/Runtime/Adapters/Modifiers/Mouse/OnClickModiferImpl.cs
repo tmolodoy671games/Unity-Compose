@@ -49,8 +49,8 @@ internal class OnClickModiferImpl : BaseUnityModifier<OnClickModiferImpl>
         _onClick?.Invoke(
             new PointerClickInfo(
                 Button: it.button,
-                Position: it.position.ToOffset(),
-                LocalPosition: it.localPosition.ToOffset()
+                Position: it.position.ToVector2().ToOffset(),
+                LocalPosition: it.localPosition.ToVector2().ToOffset()
             )
         );
         _parameterlessOnClick?.Invoke();

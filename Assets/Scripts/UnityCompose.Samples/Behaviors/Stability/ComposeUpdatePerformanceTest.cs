@@ -11,14 +11,16 @@ namespace UnityCompose.Samples.Behaviors.Stability
         {
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = -1;
-            var parentSize = Remember(() => MutableStateOf(Vector2.zero));
+            var parentSize = Remember(() => MutableStateOf(new FloatSize()));
             Box(
                 modifier: Modifier
                     .FillMaxSize()
-                    .OnGloballyPositioned(it => parentSize.Value = it.Size.ToVector2()),
+                    .OnGloballyPositioned(it => parentSize.Value = it.Size),
                 content: () =>
                 {
-                    for (var i = 0; i < 1; i++)
+                    if (float.IsNaN(parentSize.Value.Width) || parentSize.Value.Width <= 0)
+                        return;
+                    for (var i = 0; i < 1_000; i++)
                     {
                         var currentI = i;
                         Key(
@@ -32,26 +34,22 @@ namespace UnityCompose.Samples.Behaviors.Stability
 
         [BoxScope]
         [Composable]
-        private static void Item(int currentI, Vector2 parentSize)
+        private static void Item(int currentI, FloatSize parentSize)
         {
-            var position = Remember(static () => MutableStateOf(Vector2.zero));
-            if (parentSize.x > 0)
-            {
-                LaunchedEffect(
-                    key: 1,
-                    coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(
-                        parentSize: () => parentSize,
-                        it =>
-                        {
-                            position.Value = it;
-                        })
-                );
-            }
+            var position = Remember(static () => MutableStateOf(new Offset()));
+
+            LaunchedEffect(
+                key: 1,
+                coroutine: () => PerformanceUtils.MoveRandomlyCoroutine(
+                    parentSize: parentSize,
+                    it => position.Value = it
+                )
+            );
 
             var baseModifier = Remember(currentI, [BoxScope]() => Modifier
                 .Size(50.Dp())
                 .Background(
-                    PerformanceUtils.Colors[currentI % PerformanceUtils.Colors.Length].ToSystemColor()
+                    PerformanceUtils.GetColor(currentI).ToSystemColor()
                 )
                 .Float()
             );
@@ -59,8 +57,8 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 modifier:
                 baseModifier
                     .Position(
-                        left: position.Value.x.Dp(),
-                        top: position.Value.y.Dp()
+                        left: position.Value.X.Dp(),
+                        top: position.Value.Y.Dp()
                     )
             );
         }

@@ -20,7 +20,10 @@ public static partial class UnityComposeFunctions
             effect: () =>
             {
                 var coroutineInstance = ComposeInvalidatorHolder.Instance.StartCoroutine(coroutine());
-                return OnDispose(() => ComposeInvalidatorHolder.Instance.StopCoroutine(coroutineInstance));
+                return OnDispose(() =>
+                {
+                    ComposeInvalidatorHolder.Instance.StopCoroutine(coroutineInstance);
+                });
             }
         );
     }

@@ -27,6 +27,7 @@ public partial class ComposeView : VisualElement
         if (_content == content)
             return;
         _content = content;
+        Clear();
         Bootstrap(
             adapter: UnityComposeAdapter.Instance,
             composer: _composer,

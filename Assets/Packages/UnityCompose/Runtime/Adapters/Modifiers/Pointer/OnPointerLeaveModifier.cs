@@ -52,8 +52,8 @@ internal class OnPointerLeaveModifierImpl : BaseUnityModifier<OnPointerLeaveModi
             return;
         _onPointerLeave?.Invoke(
             new PointerMoveInfo(
-                Position: evt.position.ToOffset(),
-                LocalPosition: evt.localPosition.ToOffset()
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
             )
         );
         _parameterlessOnPointerLeave?.Invoke();

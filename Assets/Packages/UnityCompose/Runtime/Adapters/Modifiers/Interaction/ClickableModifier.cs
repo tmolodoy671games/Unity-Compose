@@ -51,7 +51,7 @@ internal class ClickableModifierImpl : BaseUnityModifier<ClickableModifierImpl>
     {
         if (evt.button != 0)
             return;
-        var pressInteraction = new IPressInteraction.Press(evt.localPosition.ToOffset());
+        var pressInteraction = new IPressInteraction.Press(evt.localPosition.ToVector2().ToOffset());
         evt.VisualElement().PressInteractions().Add(pressInteraction);
         _interactionSource.Emit(pressInteraction);
     }

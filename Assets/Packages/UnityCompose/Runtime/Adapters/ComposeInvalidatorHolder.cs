@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Compose.Net;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils;
 using UnityEngine;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -23,7 +24,8 @@ namespace UnityCompose
                 {
                     _instance = GameObject.Find("Coroutine Runner")?.GetComponent<ComposeInvalidatorHolder>() ??
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
-                    DontDestroyOnLoad(_instance);
+                    if (ApplicationUtils.IsPlaying)
+                        DontDestroyOnLoad(_instance);
                 }
 
                 return _instance;

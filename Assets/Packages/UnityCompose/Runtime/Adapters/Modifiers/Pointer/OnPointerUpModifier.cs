@@ -53,8 +53,8 @@ internal class OnPointerUpModifierImpl : BaseUnityModifier<OnPointerUpModifierIm
         _onPointerUp?.Invoke(
             new PointerClickInfo(
                 Button: evt.button,
-                Position: evt.position.ToOffset(),
-                LocalPosition: evt.localPosition.ToOffset()
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
             )
         );
         _parameterlessOnPointerUp?.Invoke();

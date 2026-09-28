@@ -53,8 +53,8 @@ internal class OnPointerDownModifierImpl : BaseUnityModifier<OnPointerDownModifi
         _onPointerDown?.Invoke(
             new PointerClickInfo(
                 Button: it.button,
-                Position: it.position.ToOffset(),
-                LocalPosition: it.localPosition.ToOffset()
+                Position: it.position.ToVector2().ToOffset(),
+                LocalPosition: it.localPosition.ToVector2().ToOffset()
             )
         );
         _parameterlessOnPointerDown?.Invoke();

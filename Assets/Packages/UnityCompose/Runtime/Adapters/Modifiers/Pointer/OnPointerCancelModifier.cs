@@ -52,8 +52,8 @@ internal class OnPointerCancelModifierImpl : BaseUnityModifier<OnPointerCancelMo
         _onPointerCancel?.Invoke(
             new PointerClickInfo(
                 Button: evt.button,
-                Position: evt.position.ToOffset(),
-                LocalPosition: evt.localPosition.ToOffset()
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
             )
         );
         _parameterlessOnPointerCancel?.Invoke();

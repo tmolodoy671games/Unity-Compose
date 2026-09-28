@@ -45,7 +45,7 @@ internal class OnScrollModifierImpl : BaseUnityModifier<OnScrollModifierImpl>
 
     private void OnScroll(WheelEvent evt)
     {
-        _onScroll?.Invoke(evt.delta.ToOffset());
+        _onScroll?.Invoke(evt.delta.ToVector2().ToOffset());
         if (evt.delta.x != 0)
             _onOnHorizontalScroll?.Invoke(evt.delta.x);
         if (evt.delta.y != 0)

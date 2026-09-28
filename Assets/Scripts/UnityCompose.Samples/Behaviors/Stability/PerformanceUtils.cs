@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
+using Compose.Net;
+using UnityRandom = UnityEngine.Random;
 
-namespace UnityCompose.Samples.Behaviors;
+namespace UnityCompose.Samples.Behaviors.Stability;
 
 public static class PerformanceUtils
 {
-    public static readonly Color[] Colors =
+    private static readonly Color[] Colors =
     {
         Color.red,
         Color.green,
@@ -17,21 +19,23 @@ public static class PerformanceUtils
         Color.gray,
     };
     
-    public static IEnumerator MoveRandomlyCoroutine(Func<Vector2> parentSize, Action<Vector2> onValueChanged)
+    public static Color GetColor(int index) => Colors[index % Colors.Length];
+    
+    public static IEnumerator MoveRandomlyCoroutine(FloatSize parentSize, Action<Offset> onValueChanged)
     {
-        while (float.IsNaN(parentSize().x) || float.IsNaN(parentSize().y))
+        while (float.IsNaN(parentSize.Width) || float.IsNaN(parentSize.Height))
             yield return null;
 
-        var current = new Vector2(
-            UnityEngine.Random.Range(0f, parentSize().x),
-            UnityEngine.Random.Range(0f, parentSize().y)
+        var current = new Offset(
+            UnityRandom.Range(0f, parentSize.Width),
+            UnityRandom.Range(0f, parentSize.Height)
         );
 
         while (true)
         {
-            var target = new Vector2(
-                UnityEngine.Random.Range(0f, parentSize().x),
-                UnityEngine.Random.Range(0f, parentSize().y)
+            var target = new Offset(
+                UnityRandom.Range(0f, parentSize.Width),
+                UnityRandom.Range(0f, parentSize.Height)
             );
 
             var elapsed = 0f;
@@ -41,7 +45,7 @@ public static class PerformanceUtils
             {
                 elapsed += Time.deltaTime;
                 var t = Mathf.Clamp01(elapsed / interval);
-                var value = Vector2.Lerp(current, target, t);
+                var value = Offset.Lerp(current, target, t);
                 onValueChanged?.Invoke(value);
 
                 yield return null;
@@ -49,31 +53,6 @@ public static class PerformanceUtils
 
             onValueChanged?.Invoke(target);
             current = target;
-        }
-    }
-    
-    public static IEnumerator MeasureFpsCoroutine(Action<int> onValueChanged)
-    {
-        var interval = 1f;
-
-        var frames = 0;
-        var elapsed = 0f;
-
-        while (true)
-        {
-            frames++;
-            elapsed += Time.deltaTime;
-
-            if (elapsed >= interval)
-            {
-                var fps = Mathf.RoundToInt(frames / elapsed);
-                onValueChanged?.Invoke(fps);
-
-                frames = 0;
-                elapsed = 0f;
-            }
-
-            yield return null;
         }
     }
 }
