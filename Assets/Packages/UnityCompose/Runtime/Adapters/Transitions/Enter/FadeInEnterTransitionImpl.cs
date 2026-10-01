@@ -16,7 +16,7 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         node.VisualElement().style.opacity = Mathf.LerpUnclamped(_initialAlpha, 1f, progress);
@@ -27,7 +27,7 @@ internal class FadeInEnterTransitionImpl : IEnterTransition
         node.VisualElement().style.opacity = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(FadeInEnterTransitionImpl other)
     {

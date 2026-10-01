@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 // ReSharper disable CheckNamespace
 
 [UxmlElement]
-public partial class ComposeView : VisualElement
+public partial class ComposeView : VisualElement, IDisposable
 {
     private ComposableContent? _content;
     private readonly IReusableComposeNode _rootNode;
@@ -38,5 +38,11 @@ public partial class ComposeView : VisualElement
             ),
             content: content
         );
+    }
+
+    public void Dispose()
+    {
+        _composer.Dispose();
+        Clear();
     }
 }

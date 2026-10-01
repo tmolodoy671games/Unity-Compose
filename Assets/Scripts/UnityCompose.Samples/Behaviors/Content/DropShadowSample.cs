@@ -1,9 +1,14 @@
-﻿using Compose.Net;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Compose.Net;
 using SharpExtensions;
+
+// ReSharper disable ArrangeNamespaceBody
 
 namespace UnityCompose.Samples.Behaviors.Content
 {
-    internal partial class ShadowSample : ComposeUI
+    internal partial class DropShadowSample : ComposeUI
     {
         [Composable]
         protected override void Content() => Layout();
@@ -23,6 +28,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 content: () =>
                 {
                     var hasShadow = Remember(() => MutableStateOf(true));
+                    var tween = Tween(1_000);
                     Spacer(
                         Modifier
                             .Size(100.Dp())
@@ -30,12 +36,9 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .DropShadow(
                                 shape: RoundedCornerShape(0.Dp()),
                                 shadow: new Shadow(
-                                    Radius: AnimateFloatAsState(32f * hasShadow.Value.ToInt()).Value.Dp(),
-                                    Color: AnimateColorAsState(
-                                        hasShadow.Value
-                                            ? Color.black.ToSystemColor()
-                                            : new Color(0, 0, 0, 0).ToSystemColor()
-                                    ).Value,
+                                    Radius: AnimateFloatAsState(64 * hasShadow.Value.ToInt(), tween).Value.Dp(),
+                                    Color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color()).Value
+                                        .ToSystemColor(),
                                     Offset: new Offset()
                                 )
                             )

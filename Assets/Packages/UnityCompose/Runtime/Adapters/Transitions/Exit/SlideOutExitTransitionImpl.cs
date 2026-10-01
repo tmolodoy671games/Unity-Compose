@@ -15,7 +15,7 @@ internal sealed class SlideOutExitTransitionImpl : IExitTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var initialOffset = new Offset();
@@ -28,7 +28,7 @@ internal sealed class SlideOutExitTransitionImpl : IExitTransition
         node.VisualElement().style.translate = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(SlideOutExitTransitionImpl other)
     {

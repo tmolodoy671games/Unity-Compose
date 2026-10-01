@@ -45,8 +45,16 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     it => position.Value = it
                 )
             );
+            // LaunchedEffect(
+            //     currentI,
+            //     token => PerformanceUtils.MoveRandomlyCoroutine(
+            //         parentSize: parentSize,
+            //         offset => position.Value = offset,
+            //         token
+            //     )
+            // );
 
-            var baseModifier = Remember(currentI, [BoxScope]() => Modifier
+            var baseModifier = Remember(currentI, () => Modifier
                 .Size(50.Dp())
                 .Background(
                     PerformanceUtils.GetColor(currentI).ToSystemColor()

@@ -26,7 +26,7 @@ public class ShrinkOutExitTransitionImpl : IExitTransition
         _clip = clip;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
@@ -47,7 +47,7 @@ public class ShrinkOutExitTransitionImpl : IExitTransition
         element.parent.style.maxHeight = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(ShrinkOutExitTransitionImpl other)
     {

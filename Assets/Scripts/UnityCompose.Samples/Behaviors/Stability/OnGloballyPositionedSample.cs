@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         modifier: Modifier.FillMaxSize(),
                         content: () =>
                         {
-                            var transitionSpec = Tween();
+                            var transitionSpec = Tween(1_000);
                             Box(
                                 alignment: Alignment.Center,
                                 modifier: Modifier

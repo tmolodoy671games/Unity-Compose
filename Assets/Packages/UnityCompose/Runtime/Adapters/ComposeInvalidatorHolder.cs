@@ -20,7 +20,7 @@ namespace UnityCompose
         {
             get
             {
-                if (_instance == null)
+                if (!_instance)
                 {
                     _instance = GameObject.Find("Coroutine Runner")?.GetComponent<ComposeInvalidatorHolder>() ??
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
@@ -32,7 +32,15 @@ namespace UnityCompose
             }
         }
 
-        public static ComposeInvalidator ComposeInvalidator => Instance._invalidator;
+        public static ComposeInvalidator? ComposeInvalidator
+        {
+            get
+            {
+                if (!ApplicationUtils.IsPlaying)
+                    return null;
+                return Instance._invalidator;
+            }
+        }
 
         private void Update()
         {

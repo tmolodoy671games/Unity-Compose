@@ -16,7 +16,7 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         node.VisualElement().style.scale = Vector2.one * Mathf.LerpUnclamped(1, _targetScale, progress);
@@ -27,7 +27,7 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
         node.VisualElement().style.scale = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(ScaleOutExitTransitionImpl other)
     {

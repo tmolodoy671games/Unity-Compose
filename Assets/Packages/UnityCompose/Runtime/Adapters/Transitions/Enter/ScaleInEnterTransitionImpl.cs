@@ -16,7 +16,7 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var scale = Mathf.LerpUnclamped(_initialScale, 1, progress);
@@ -28,7 +28,7 @@ internal class ScaleInEnterTransitionImpl : IEnterTransition
         node.VisualElement().style.scale = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     private bool Equals(ScaleInEnterTransitionImpl other)
     {

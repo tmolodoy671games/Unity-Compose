@@ -73,8 +73,8 @@ internal class Shadow : VisualElement
     )
     {
         style.position = Position.Absolute;
-        style.width = new Length(105, LengthUnit.Percent);
-        style.height = new Length(105, LengthUnit.Percent);
+        style.width = new Length(100, LengthUnit.Percent);
+        style.height = new Length(100, LengthUnit.Percent);
         style.borderTopLeftRadius = shape.TopLeft.ToLength();
         style.borderTopRightRadius = shape.TopRight.ToLength();
         style.borderBottomLeftRadius = shape.BottomLeft.ToLength();

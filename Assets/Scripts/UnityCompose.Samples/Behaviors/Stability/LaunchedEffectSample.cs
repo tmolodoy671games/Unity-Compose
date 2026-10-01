@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using Compose.Net;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -17,6 +20,25 @@ namespace UnityCompose.Samples.Behaviors.Stability
         protected override void Preview()
         {
             Layout();
+        }
+        
+        [Composable]
+        public static void LaunchedEffect<TKey>(
+            TKey key,
+            Func<CancellationToken, Task> coroutine
+        )
+        {
+            var _ = Remember(key, () =>
+            {
+                var tokenSource = new CancellationTokenSource();
+                var token = tokenSource.Token;
+                coroutine(token);
+                return new CustomComposeDisposable(() =>
+                {
+                    tokenSource.Cancel();
+                    tokenSource.Dispose();
+                });
+            });
         }
 
         [Composable]
@@ -43,18 +65,16 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     var isEffectRunning = Remember(() => MutableStateOf(false));
                     if (isEffectRunning.Value)
                     {
-                        IEnumerator EffectCoroutine()
-                        {
-                            while (true)
-                            {
-                                yield return new WaitForSeconds(1f);
-                                count.Value++;
-                            }
-                        }
-
                         LaunchedEffect(
-                            key: string.Empty,
-                            coroutine: EffectCoroutine
+                            key: "",
+                            coroutine: async it =>
+                            {
+                                while (true)
+                                {
+                                    await Task.Delay(1_000, it);
+                                    count.Value++;
+                                }
+                            }
                         );
                     }
 
@@ -66,11 +86,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         fontSize: 40.Sp(),
                         modifier: Modifier
                             .TestTag("test-button")
-                            .Background(AnimateColorAsState(isHovered.Value
+                            .Background(isHovered.Value
                                 ? Color.cyan.ToSystemColor()
-                                : Color.blue.ToSystemColor()).Value)
+                                : Color.blue.ToSystemColor())
                             .Padding(vertical: 20.Dp())
-                            .Padding(horizontal: AnimateFloatAsState(isHovered.Value ? 40 : 20).Value.Dp())
+                            .Padding(horizontal: isHovered.Value ? 40.Dp() : 20.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Margin(top: 32.Dp())
                             .OnMouseEnter(() => isHovered.Value = true)

@@ -17,23 +17,7 @@ public static partial class UnityComposeFunctions
     {
         return AnimateValueAsState(
             targetValue: targetValue,
-            interpolator: Color.LerpUnclamped,
-            animationSpec: animationSpec
-        );
-    }
-    
-    
-    [Composable]
-    public static IState<Color> AnimateColorAsState<TKey>(
-        TKey key,
-        Func<Color> targetValueFactory,
-        Optional<AnimationSpec> animationSpec = default
-    )
-    {
-        return AnimateValueAsState(
-            key: key,
-            targetValueFactory: targetValueFactory,
-            interpolator: Color.LerpUnclamped,
+            typeConverter: Color.LerpUnclamped,
             animationSpec: animationSpec
         );
     }

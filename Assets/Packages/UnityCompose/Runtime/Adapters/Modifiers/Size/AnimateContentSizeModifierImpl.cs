@@ -79,7 +79,7 @@ internal class AnimatedSizeContent : VisualElement
                 Animation: parent.experimental.animation.Start(
                     0,
                     1,
-                    (animationSpec.TotalDuration * 1000).RoundToInt(),
+                    animationSpec.TotalDuration.TotalMilliseconds.ToFloat().ToInt(),
                     (_, progress) =>
                     {
                         progress = animationSpec.GetProgress(animationSpec.TotalDuration * progress);

@@ -16,7 +16,7 @@ internal class SlideInVerticallyTransitionImpl : IEnterTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(float timeElapsed, IReusableComposeNode node)
+    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
@@ -30,7 +30,7 @@ internal class SlideInVerticallyTransitionImpl : IEnterTransition
         node.VisualElement().style.translate = StyleKeyword.None;
     }
 
-    public float TotalDuration => _animationSpec.TotalDuration;
+    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
 
     public override bool Equals(object? obj)
     {
