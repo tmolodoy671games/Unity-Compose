@@ -33,8 +33,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                     );
                     AnimatedVisibility(
                         visible: isVisible.Value,
-                        enter: FadeIn(Tween(1)) + ExpandVertically(Tween(1)),
-                        exit: FadeOut(Tween(1)) + ShrinkVertically(Tween(1)),
+                        enter: FadeIn(Tween(1_000)) + ExpandVertically(Tween(1_000)),
+                        exit: FadeOut(Tween(1_000)) + ShrinkVertically(Tween(1_000)),
                         content: () => Text(
                             "Text",
                             fontSize: 64.Sp(),

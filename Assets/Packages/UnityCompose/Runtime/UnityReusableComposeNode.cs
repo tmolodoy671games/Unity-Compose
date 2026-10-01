@@ -84,10 +84,10 @@ public class UnityReusableComposeNode : IReusableComposeNode
         var children = VisualElement.Children().ToImmutableStableList();
         foreach (var child in children)
             child.parent.Remove(child);
-        _contentContainer = contentContainer;
         VisualElement.Insert(0, contentContainer);
         foreach (var child in children)
-            _contentContainer.Add(child);
+            contentContainer.Add(child);
+        _contentContainer = contentContainer;
     }
     
     public void RemoveContentContainer()
@@ -100,6 +100,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
         VisualElement.Remove(_contentContainer);
         foreach (var child in children)
             VisualElement.Add(child);
+        _contentContainer = null;
     }
     
     public void SetRoot(VisualElement root)

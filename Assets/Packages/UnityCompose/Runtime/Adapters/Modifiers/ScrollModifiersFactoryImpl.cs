@@ -19,4 +19,19 @@ internal class ScrollModifiersFactoryImpl : IScrollModifiersFactory
     {
         return new OnScrollModifierImpl(onHorizontalScroll: onHorizontalScroll);
     }
+
+    public IModifier VerticalScroll(
+        IScrollState state,
+        bool reverseScrolling,
+        IMutableInteractionSource? interactionSource
+    )
+    {
+        return new VerticalScrollModifierImpl(state, reverseScrolling, interactionSource);
+    }
+
+    public IModifier HorizontalScroll(IScrollState state, bool reverseScrolling,
+        IMutableInteractionSource? interactionSource)
+    {
+        throw new NotImplementedException();
+    }
 }

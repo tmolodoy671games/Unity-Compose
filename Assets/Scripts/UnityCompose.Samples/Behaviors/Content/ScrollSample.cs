@@ -20,11 +20,13 @@ namespace UnityCompose.Samples.Behaviors.Content
                 modifier: Modifier.FillMaxSize(),
                 content: () =>
                 {
+                    var scrollState = RememberScrollState();
                     Column(
                         modifier: Modifier
-                            .Size(400.Dp(), 700.Dp())
+                            // .Width(400.Dp())
+                            .Height(700.Dp())
                             .Background(Color.white.ToSystemColor())
-                            .Scrollable(),
+                            .VerticalScroll(scrollState),
                         content: () =>
                         {
                             for (var i = 0; i < 100; i++)

@@ -87,7 +87,7 @@ public static class PerformanceUtils
                 targetValue: target,
                 block: it => onValueChanged?.Invoke(it),
                 animationSpec: Tween(TimeSpan.FromSeconds(interval)),
-                cancellationToken: token
+                token: token
             );
 
             onValueChanged?.Invoke(target);
