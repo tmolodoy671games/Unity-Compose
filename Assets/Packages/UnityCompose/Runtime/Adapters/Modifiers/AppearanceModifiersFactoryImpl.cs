@@ -23,4 +23,9 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
     {
         return new BackgroundColorModifierImpl(color.ToUnityColor(), default);
     }
+
+    public IModifier DropShadow(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    {
+        return new DropShadowModifierImpl(shape, shadow);
+    }
 }

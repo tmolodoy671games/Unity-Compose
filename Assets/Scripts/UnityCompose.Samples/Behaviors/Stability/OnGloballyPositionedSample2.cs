@@ -90,7 +90,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
         [Composable]
         private static void Tab(
             bool selected,
-            [Composable] Action content,
+            ComposableContent content,
             IModifier? modifier = null
         )
         {

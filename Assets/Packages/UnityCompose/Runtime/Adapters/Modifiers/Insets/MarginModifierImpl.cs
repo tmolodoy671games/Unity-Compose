@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class MarginModifierImpl : BaseUnityModifier<MarginModifierImpl>
+internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 {
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
@@ -26,8 +26,9 @@ internal class MarginModifierImpl : BaseUnityModifier<MarginModifierImpl>
         _right = right;
     }
 
-    public override void Apply(VisualElement element)
+    public override void Apply(IReusableComposeNode node)
     {
+        var element = node.Root();
         if (_top.HasValue)
         {
             element.style.marginTop = _top.Value.ToLength();
@@ -49,8 +50,9 @@ internal class MarginModifierImpl : BaseUnityModifier<MarginModifierImpl>
         }
     }
 
-    public override void Revert(VisualElement element)
+    public override void Revert(IReusableComposeNode node)
     {
+        var element = node.Root();
         if (_top.HasValue)
         {
             element.style.marginTop = StyleKeyword.Null;

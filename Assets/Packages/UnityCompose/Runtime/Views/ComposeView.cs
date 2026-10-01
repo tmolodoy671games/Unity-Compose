@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class ComposeView : VisualElement
 {
-    private Action? _content;
+    private ComposableContent? _content;
     private readonly IReusableComposeNode _rootNode;
     private readonly IComposer _composer = IComposer.Create();
 
@@ -22,7 +22,7 @@ public partial class ComposeView : VisualElement
         _rootNode = new UnityReusableComposeNode(this, true);
     }
 
-    public void SetContent([Composable] Action content)
+    public void SetContent(ComposableContent content)
     {
         if (_content == content)
             return;

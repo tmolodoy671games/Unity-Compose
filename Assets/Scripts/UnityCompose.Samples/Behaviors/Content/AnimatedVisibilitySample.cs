@@ -26,17 +26,22 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var isVisible = Remember(() => MutableStateOf(true));
                     Spacer(
                         Modifier
-                            .Size(100.Dp(), 40.Dp())
+                            .Size(100.Dp(), 100.Dp())
                             .Background(Color.forestGreen.ToSystemColor())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isVisible.Value = !isVisible.Value)
                     );
                     AnimatedVisibility(
                         visible: isVisible.Value,
-                        content: () => Text("Text", fontSize: 64.Sp()),
-                        modifier: Modifier
-                            .Background(Color.lightBlue.ToSystemColor())
-                            .Margin(16.Dp())
+                        enter: FadeIn(Tween(1)) + ExpandVertically(Tween(1)),
+                        exit: FadeOut(Tween(1)) + ShrinkVertically(Tween(1)),
+                        content: () => Text(
+                            "Text",
+                            fontSize: 64.Sp(),
+                            modifier: Modifier
+                                .Background(Color.lightBlue.ToSystemColor())
+                                .Margin(16.Dp())
+                        )
                     );
                 }
             );
