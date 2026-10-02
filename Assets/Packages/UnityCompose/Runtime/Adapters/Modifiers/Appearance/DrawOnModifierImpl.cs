@@ -28,8 +28,8 @@ internal class DrawOnModifierImpl : BaseModifier<DrawOnModifierImpl>
     public override void Revert(IReusableComposeNode node)
     {
         var unityNode = node.CastTo<UnityReusableComposeNode>();
-        unityNode.RemoveDrawOn();
         unityNode.DrawOn.generateVisualContent -= _generateVisualContent;
+        unityNode.RemoveDrawOn();
     }
 
     protected override bool Equals(DrawOnModifierImpl other)

@@ -27,6 +27,9 @@ namespace UnityCompose.Samples.Behaviors.Content
                 content: () =>
                 {
                     var isHovered = Remember(() => MutableStateOf(false));
+                    var interactionSource = Remember(MutableInteractionSource);
+                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
+                    // var hovered = isHovered.Value;
                     Spacer(
                         Modifier
                             .Height(200.Dp())
@@ -35,22 +38,24 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Clip(RoundedCornerShape(16.Dp()))
                             .OnPointerEnter(() => isHovered.Value = true)
                             .OnPointerLeave(() => isHovered.Value = false)
+                            .Hoverable(interactionSource)
                             .DrawOn(it =>
                             {
+                                var color = (hovered ? Color.white : Color.black).ToSystemColor();
                                 it.DrawLine(
-                                    color: Color.black.ToSystemColor(),
+                                    color: color,
                                     start: new Offset(10, 10),
                                     end: new Offset(100, 100),
                                     strokeCap: StrokeCap.Round,
                                     strokeWidth: 1
                                 );
                                 it.DrawRect(
-                                    color: Color.white.ToSystemColor(),
+                                    color: color,
                                     topLeft: new Offset(10, 10),
                                     size: new FloatSize(40, 40)
                                 );
                                 it.DrawRoundRect(
-                                    color: Color.wheat.ToSystemColor(),
+                                    color: color,
                                     topLeft: new Offset(30, 30),
                                     size: new FloatSize(80, 40),
                                     cornerRadius: 16
@@ -63,7 +68,7 @@ namespace UnityCompose.Samples.Behaviors.Content
 
                                 it.DrawPath(
                                     path: path,
-                                    color: Color.black.ToSystemColor()
+                                    color: color
                                 );
                             })
                     );
