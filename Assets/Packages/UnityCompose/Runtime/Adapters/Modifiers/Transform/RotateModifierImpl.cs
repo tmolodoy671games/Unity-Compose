@@ -1,8 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System.Runtime.CompilerServices;
 using SharpExtensions;
-using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -18,12 +16,19 @@ internal class RotateModifierImpl : BaseUnityModifier<RotateModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        element.style.rotate = new Rotate(_degrees);
+        StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value + _degrees);
+        if (newRotate.value.angle.value == 0f)
+            newRotate = StyleKeyword.Null;
+        element.style.rotate = newRotate;
     }
 
     public override void Revert(VisualElement element)
     {
-        element.style.rotate = StyleKeyword.Null;
+        StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value - _degrees);
+        if (newRotate.value.angle.value == 0f)
+            newRotate = StyleKeyword.Null;
+        element.style.rotate = newRotate;
+        
     }
 
     protected override bool Equals(RotateModifierImpl other)

@@ -174,11 +174,6 @@ public static class ReusableComposeNodeExtensions
         return node.CastTo<UnityReusableComposeNode>().Root;
     }
 
-    public static VisualElement ContentContainer(this IReusableComposeNode node)
-    {
-        return node.CastTo<UnityReusableComposeNode>().ContentContainer;
-    }
-
     public static T VisualElement<T>(this IReusableComposeNode node) where T : VisualElement
     {
         return node.CastTo<UnityReusableComposeNode>().VisualElement.CastTo<T>();

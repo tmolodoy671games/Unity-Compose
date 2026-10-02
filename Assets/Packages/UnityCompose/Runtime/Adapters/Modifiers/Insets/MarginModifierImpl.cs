@@ -28,7 +28,7 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 
     public override void Apply(IReusableComposeNode node)
     {
-        var element = node.Root();
+        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.marginTop = _top.Value.ToLength();
@@ -52,7 +52,7 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
 
     public override void Revert(IReusableComposeNode node)
     {
-        var element = node.Root();
+        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.marginTop = StyleKeyword.Null;

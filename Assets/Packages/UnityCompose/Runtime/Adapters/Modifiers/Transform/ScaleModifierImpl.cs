@@ -19,12 +19,16 @@ internal class ScaleModifierImpl : BaseUnityModifier<ScaleModifierImpl>
 
     public override void Apply(VisualElement element)
     {
-        element.style.scale = new Vector2(_scaleX, _scaleY);
+        var newScale = element.style.scale.value.value.ToVector2() + new Vector2(_scaleX, _scaleY);
+        var newScaleValue = newScale == Vector2.zero ? StyleKeyword.Null : new StyleScale(newScale);
+        element.style.scale = newScaleValue;
     }
 
     public override void Revert(VisualElement element)
     {
-        element.style.scale = StyleKeyword.Null;
+        var newScale = element.style.scale.value.value.ToVector2() - new Vector2(_scaleX, _scaleY);
+        var newScaleValue = newScale == Vector2.zero ? StyleKeyword.Null : new StyleScale(newScale);
+        element.style.scale = newScaleValue;
     }
 
     protected override bool Equals(ScaleModifierImpl other)

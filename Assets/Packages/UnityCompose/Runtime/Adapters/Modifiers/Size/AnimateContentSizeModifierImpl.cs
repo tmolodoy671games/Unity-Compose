@@ -45,28 +45,19 @@ internal class AnimatedSizeContent : VisualElement
 
     public AnimatedSizeContent Init(AnimationSpec animationSpec)
     {
-        RegisterCallback<AttachToPanelEvent>(it =>
-        {
-            if (_isInitialized)
-                return;
-            _isInitialized = true;
-            style.paddingTop = parent.style.paddingTop;
-            style.paddingBottom = parent.style.paddingBottom;
-            style.paddingLeft = parent.style.paddingLeft;
-            style.paddingRight = parent.style.paddingRight;
-            
-            parent.style.paddingTop = StyleKeyword.None;
-            parent.style.paddingBottom = StyleKeyword.None;
-            parent.style.paddingLeft = StyleKeyword.None;
-            parent.style.paddingRight = StyleKeyword.None;
-            it.StopPropagation();
-        });
-        
         RegisterCallback<GeometryChangedEvent>(_ =>
         {
             style.position = Position.Absolute;
-            var targetWidth = resolvedStyle.width;
-            var targetHeight = resolvedStyle.height;
+            var targetWidth = resolvedStyle.width
+                              + resolvedStyle.marginLeft
+                              + resolvedStyle.marginRight
+                              + parent.resolvedStyle.paddingLeft
+                              + parent.resolvedStyle.paddingRight;
+            var targetHeight = resolvedStyle.height
+                               + resolvedStyle.marginTop
+                               + resolvedStyle.marginBottom
+                               + parent.resolvedStyle.paddingTop
+                               + parent.resolvedStyle.paddingBottom;
             var targetSize = new Vector2(targetWidth, targetHeight);
             var previousRecord = this.UserData().GetOrNull(this)?.CastToOrNull<AnimationRecord>();
             if (previousRecord != null && previousRecord.TargetSize == targetSize)
@@ -83,8 +74,17 @@ internal class AnimatedSizeContent : VisualElement
                     (_, progress) =>
                     {
                         progress = animationSpec.GetProgress(animationSpec.TotalDuration * progress);
-                        parent.style.width = Mathf.LerpUnclamped(initialWidth, targetWidth, progress);
-                        parent.style.height = Mathf.LerpUnclamped(initialHeight, targetHeight, progress);
+                        parent.style.width = Mathf.LerpUnclamped(
+                            initialWidth,
+                            targetWidth,
+                            progress
+                        );
+
+                        parent.style.height = Mathf.LerpUnclamped(
+                            initialHeight,
+                            targetHeight,
+                            progress
+                        );
                     }
                 ).KeepAlive()
             );

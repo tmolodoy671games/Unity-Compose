@@ -28,7 +28,7 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 
     public override void Apply(IReusableComposeNode node)
     {
-        var element = node.ContentContainer();
+        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.paddingTop = _top.Value.ToLength();
@@ -52,7 +52,7 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
 
     public override void Revert(IReusableComposeNode node)
     {
-        var element = node.ContentContainer();
+        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.paddingTop = StyleKeyword.Null;
