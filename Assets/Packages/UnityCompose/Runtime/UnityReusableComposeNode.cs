@@ -14,13 +14,16 @@ public class UnityReusableComposeNode : IReusableComposeNode
     private AnchorManager? _anchorManager;
     private VisualElement? _contentContainer;
     private VisualElement? _root;
-    
+    private DrawOn? _drawOnInstance;
+    private DrawOn? _drawOn;
+
     public UnityReusableComposeNode(VisualElement visualElement) : this(visualElement, false)
     {
     }
-    
+
     public VisualElement ContentContainer => _contentContainer ?? VisualElement;
     public VisualElement Root => _root ?? VisualElement;
+    public VisualElement DrawOn => _drawOn ?? throw new ArgumentException();
 
     internal UnityReusableComposeNode(VisualElement visualElement, bool isRoot)
     {
@@ -77,6 +80,37 @@ public class UnityReusableComposeNode : IReusableComposeNode
     public int IndexInParent => VisualElement.parent.IndexOf(VisualElement);
     public AnchorManager? AnchorManager => _anchorManager;
 
+    public void SetupDrawOn()
+    {
+        if (_drawOnInstance == null)
+        {
+            _drawOnInstance = new DrawOn
+            {
+                style =
+                {
+                    width = new Length(100, LengthUnit.Percent),
+                    height = new Length(100, LengthUnit.Percent),
+                    position = Position.Absolute
+                }
+            };
+        }
+        if (_drawOn != null)
+            return;
+        _drawOn = _drawOnInstance;
+        VisualElement.Insert(VisualElement.childCount, _drawOn);
+    }
+
+    public void RemoveDrawOn()
+    {
+        if (_drawOn == null)
+            return;
+        if (VisualElement.GetOrNull(VisualElement.childCount - 1) == _drawOn)
+            VisualElement.RemoveAt(VisualElement.childCount - 1);
+        else
+            VisualElement.Remove(_drawOn);
+        _drawOn = null;
+    }
+
     public void SetContentContainer(VisualElement contentContainer)
     {
         if (_contentContainer != null)
@@ -89,7 +123,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             contentContainer.Add(child);
         _contentContainer = contentContainer;
     }
-    
+
     public void RemoveContentContainer()
     {
         if (_contentContainer == null)
@@ -102,7 +136,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             VisualElement.Add(child);
         _contentContainer = null;
     }
-    
+
     public void SetRoot(VisualElement root)
     {
         if (_root != null)
@@ -114,12 +148,12 @@ public class UnityReusableComposeNode : IReusableComposeNode
         parent.Insert(indexInParent, root);
         _root = root;
     }
-    
+
     public void RemoveRoot()
     {
         if (_root == null)
             return;
-        var parent =  Root.parent;
+        var parent = Root.parent;
         var indexInParent = parent.IndexOf(Root);
         Root.Remove(VisualElement);
         parent.RemoveAt(indexInParent);
@@ -134,12 +168,12 @@ public static class ReusableComposeNodeExtensions
     {
         return node.CastTo<UnityReusableComposeNode>().VisualElement;
     }
-    
+
     public static VisualElement Root(this IReusableComposeNode node)
     {
         return node.CastTo<UnityReusableComposeNode>().Root;
     }
-    
+
     public static VisualElement ContentContainer(this IReusableComposeNode node)
     {
         return node.CastTo<UnityReusableComposeNode>().ContentContainer;
@@ -167,4 +201,8 @@ internal static class ReusableNodeVisualElementExtensions
     {
         visualElement.UserData()[ReusableComposeNodeKey] = node;
     }
+}
+
+internal class DrawOn : VisualElement
+{
 }

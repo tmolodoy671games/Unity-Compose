@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Compose.Net;
 using SharpExtensions;
 
@@ -27,5 +28,10 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
     public IModifier DropShadow(RoundedCornerShape shape, Compose.Net.Shadow shadow)
     {
         return new DropShadowModifierImpl(shape, shadow);
+    }
+
+    public IModifier DrawOn(Action<IDrawScope> onDraw)
+    {
+        return new DrawOnModifierImpl(onDraw);
     }
 }
