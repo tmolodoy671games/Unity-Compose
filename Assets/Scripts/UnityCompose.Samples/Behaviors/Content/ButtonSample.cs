@@ -1,5 +1,6 @@
 ﻿using System;
 using Compose.Net;
+using Compose.Net.Internals.Entities.Path;
 using SharpExtensions;
 using UnityEngine.UIElements;
 
@@ -41,7 +42,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     start: new Offset(10, 10),
                                     end: new Offset(100, 100),
                                     strokeCap: StrokeCap.Round,
-                                    strokeWidth: 10
+                                    strokeWidth: 1
                                 );
                                 it.DrawRect(
                                     color: Color.white.ToSystemColor(),
@@ -53,6 +54,16 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     topLeft: new Offset(30, 30),
                                     size: new FloatSize(80, 40),
                                     cornerRadius: 16
+                                );
+                                var path = Path()
+                                    .MoveTo(new Offset(20, 20))
+                                    .LineTo(new Offset(100, 20))
+                                    .LineTo(new Offset(60, 80))
+                                    .Close();
+
+                                it.DrawPath(
+                                    path: path,
+                                    color: Color.black.ToSystemColor()
                                 );
                             })
                     );

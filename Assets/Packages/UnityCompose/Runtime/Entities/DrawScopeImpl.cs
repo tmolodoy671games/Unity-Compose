@@ -1,5 +1,7 @@
-﻿using Compose.Net;
+﻿using System;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Color = System.Drawing.Color;
@@ -26,9 +28,9 @@ internal class DrawScopeImpl : IDrawScope
         Color color,
         Offset start,
         Offset end,
-        float strokeWidth = 0.01f,
-        StrokeCap strokeCap = StrokeCap.Butt,
-        float alpha = 1
+        float strokeWidth,
+        StrokeCap strokeCap,
+        float alpha
     )
     {
         var painter = _context.painter2D;
@@ -51,7 +53,7 @@ internal class DrawScopeImpl : IDrawScope
         Offset topLeft,
         Optional<FloatSize> size,
         float alpha,
-        DrawStyle style = DrawStyle.Fill
+        DrawStyle style
     )
     {
         var painter = _context.painter2D;
@@ -84,11 +86,11 @@ internal class DrawScopeImpl : IDrawScope
 
     public void DrawRoundRect(
         Color color,
-        Offset topLeft = new(),
-        Optional<FloatSize> size = new(),
-        float cornerRadius = 0,
-        float alpha = 1,
-        DrawStyle style = DrawStyle.Fill
+        Offset topLeft,
+        Optional<FloatSize> size,
+        float cornerRadius,
+        float alpha,
+        DrawStyle style
     )
     {
         var painter = _context.painter2D;
@@ -160,6 +162,263 @@ internal class DrawScopeImpl : IDrawScope
                 painter.Stroke();
                 break;
         }
+    }
+
+    public void DrawCircle(
+        Color color,
+        Optional<float> radius,
+        Optional<Offset> center,
+        float alpha,
+        DrawStyle style
+    )
+    {
+        var painter = _context.painter2D;
+
+        var c = color.ToUnityColor();
+        c.a *= alpha;
+
+        painter.BeginPath();
+
+        painter.Arc(
+            center.GetOrDefault(Center).ToVector2(),
+            radius.GetOrDefault(Size.MinDimension / 2),
+            0f,
+            360f
+        );
+
+        painter.ClosePath();
+
+        if (style == DrawStyle.Fill)
+        {
+            painter.fillColor = c;
+            painter.Fill();
+        }
+        else
+        {
+            painter.strokeColor = c;
+            painter.Stroke();
+        }
+    }
+
+    public void DrawOval(
+        Color color,
+        Offset topLeft,
+        Optional<FloatSize> size,
+        float alpha,
+        DrawStyle style
+    )
+    {
+        var painter = _context.painter2D;
+        var resolvedSize = size.GetOrDefault(
+            new FloatSize(
+                Size.Width - topLeft.X,
+                Size.Height - topLeft.Y
+            )
+        );
+
+        var c = color.ToUnityColor();
+        c.a *= alpha;
+
+        var rect = new Rect(
+            topLeft.X,
+            topLeft.Y,
+            resolvedSize.Width,
+            resolvedSize.Height
+        );
+
+        painter.BeginPath();
+
+        painter.Arc(
+            rect.center,
+            Mathf.Min(rect.width, rect.height) / 2f,
+            0f,
+            360f
+        );
+
+        painter.ClosePath();
+
+        if (style == DrawStyle.Fill)
+        {
+            painter.fillColor = c;
+            painter.Fill();
+        }
+        else
+        {
+            painter.strokeColor = c;
+            painter.Stroke();
+        }
+    }
+
+    public void DrawArc(
+        Color color,
+        float startAngle,
+        float sweepAngle,
+        bool useCenter,
+        Offset topLeft,
+        Optional<FloatSize> size,
+        float alpha,
+        DrawStyle style
+    )
+    {
+        var painter = _context.painter2D;
+
+        var resolvedSize = size.GetOrDefault(
+            new FloatSize(
+                Size.Width - topLeft.X,
+                Size.Height - topLeft.Y
+            )
+        );
+
+        var c = color.ToUnityColor();
+        c.a *= alpha;
+
+        var rect = new Rect(
+            topLeft.X,
+            topLeft.Y,
+            resolvedSize.Width,
+            resolvedSize.Height
+        );
+
+        var center = rect.center;
+        var radius = Mathf.Min(rect.width, rect.height) / 2f;
+
+        painter.BeginPath();
+
+        if (useCenter)
+            painter.MoveTo(center);
+
+        painter.Arc(
+            center,
+            radius,
+            startAngle,
+            startAngle + sweepAngle
+        );
+
+        if (useCenter)
+            painter.ClosePath();
+
+        if (style == DrawStyle.Fill)
+        {
+            painter.fillColor = c;
+            painter.Fill();
+        }
+        else
+        {
+            painter.strokeColor = c;
+            painter.Stroke();
+        }
+    }
+
+    public void DrawPath(IPath path, Color color, float alpha, DrawStyle style)
+    {
+        var painter = _context.painter2D;
+
+        var c = color.ToUnityColor();
+        c.a *= alpha;
+
+        var adapter = new PathDrawerImpl(painter);
+
+        path.Apply(adapter);
+
+        if (style == DrawStyle.Fill)
+        {
+            painter.fillColor = c;
+            painter.Fill();
+        }
+        else
+        {
+            painter.strokeColor = c;
+            painter.Stroke();
+        }
+    }
+
+    public void DrawPoints(
+        IStableList<Offset> points,
+        PointMode pointMode,
+        Color color,
+        float strokeWidth,
+        StrokeCap strokeCap,
+        float alpha
+    )
+    {
+        if (points.Count == 0)
+            return;
+
+        var painter = _context.painter2D;
+
+        var c = color.ToUnityColor();
+        c.a *= alpha;
+
+        painter.strokeColor = c;
+        painter.lineWidth = strokeWidth;
+        painter.lineCap = strokeCap.ToUnityLineCap();
+
+        switch (pointMode)
+        {
+            case PointMode.Individual:
+                DrawPoints(painter, points);
+                break;
+
+            case PointMode.Lines:
+                DrawPointLines(painter, points);
+                break;
+
+            case PointMode.Polygon:
+                DrawPointPolygon(painter, points);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null);
+        }
+    }
+
+    private static void DrawPoints(
+        Painter2D painter,
+        IStableList<Offset> points
+    )
+    {
+        var radius = painter.lineWidth / 2f;
+
+        foreach (var point in points)
+        {
+            var p = point.ToVector2();
+
+            painter.BeginPath();
+            painter.Arc(p, radius, 0f, 360f);
+            painter.ClosePath();
+            painter.Fill();
+        }
+    }
+
+    private static void DrawPointLines(
+        Painter2D painter,
+        IStableList<Offset> points
+    )
+    {
+        for (var i = 0; i + 1 < points.Count; i += 2)
+        {
+            painter.BeginPath();
+            painter.MoveTo(points[i].ToVector2());
+            painter.LineTo(points[i + 1].ToVector2());
+            painter.Stroke();
+        }
+    }
+
+    private static void DrawPointPolygon(
+        Painter2D painter,
+        IStableList<Offset> points
+    )
+    {
+        if (points.Count < 2)
+            return;
+
+        painter.BeginPath();
+        painter.MoveTo(points[0].ToVector2());
+
+        for (var i = 1; i < points.Count; i++)
+            painter.LineTo(points[i].ToVector2());
+
+        painter.Stroke();
     }
 }
 
