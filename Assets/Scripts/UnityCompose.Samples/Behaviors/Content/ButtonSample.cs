@@ -26,54 +26,76 @@ namespace UnityCompose.Samples.Behaviors.Content
                     .FillMaxSize(),
                 content: () =>
                 {
-                    var isHovered = Remember(() => MutableStateOf(false));
                     var interactionSource = Remember(MutableInteractionSource);
-                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
-                    // var hovered = isHovered.Value;
+                    var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                    var shadowProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
                     Spacer(
                         Modifier
                             .Height(200.Dp())
-                            .Width(AnimateFloatAsState(isHovered.Value ? 600 : 400).Value.Dp())
+                            .Width(600.Dp())
                             .Background(Color.forestGreen.ToSystemColor())
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .OnPointerEnter(() => isHovered.Value = true)
-                            .OnPointerLeave(() => isHovered.Value = false)
-                            .Hoverable(interactionSource)
-                            .DrawOn(it =>
-                            {
-                                var color = (hovered ? Color.white : Color.black).ToSystemColor();
-                                it.DrawLine(
-                                    color: color,
-                                    start: new Offset(10, 10),
-                                    end: new Offset(100, 100),
-                                    strokeCap: StrokeCap.Round,
-                                    strokeWidth: 1
-                                );
-                                it.DrawRect(
-                                    color: color,
-                                    topLeft: new Offset(10, 10),
-                                    size: new FloatSize(40, 40)
-                                );
-                                it.DrawRoundRect(
-                                    color: color,
-                                    topLeft: new Offset(30, 30),
-                                    size: new FloatSize(80, 40),
-                                    cornerRadius: 16
-                                );
-                                var path = Path()
-                                    .MoveTo(new Offset(20, 20))
-                                    .LineTo(new Offset(100, 20))
-                                    .LineTo(new Offset(60, 80))
-                                    .Close();
-
-                                it.DrawPath(
-                                    path: path,
-                                    color: color
-                                );
-                            })
+                            .DropShadow(
+                                shape: RoundedCornerShape(16.Dp()),
+                                shadow: Shadow(
+                                    color: Color.LerpUnclamped(new Color(), Color.black, shadowProgress).ToSystemColor(),
+                                    radius: 32.Dp() * shadowProgress
+                                )
+                            )
+                            .ClickIndication(interactionSource)
                     );
                 }
             );
+        }
+    }
+
+    internal static partial class ModifierExtensions
+    {
+        public static IModifier ClickIndication(
+            this IModifier modifier,
+            IMutableInteractionSource? interactionSource = null,
+            bool enabled = true
+        )
+        {
+            if (!enabled)
+                return modifier;
+            return modifier.Composed(() =>
+            {
+                interactionSource = interactionSource ?? Remember(MutableInteractionSource);
+                interactionSource = interactionSource.NotNull();
+
+                var hovered = interactionSource.CollectIsHoveredAsState().Value;
+                var pressed = interactionSource.CollectIsPressedAsState().Value;
+                var hoveredScale = AnimateFloatAsState(hovered ? 1.05f : 0.8f).Value;
+                var hoveredOpacity = 0.2f * AnimateFloatAsState((hovered && !pressed).ToInt()).Value;
+
+                var pressAnimationSpec = Tween(300);
+                var pressScale = AnimateFloatAsState(pressed.ToInt(), pressAnimationSpec).Value;
+                var pressOpacity = 0.8f * AnimateFloatAsState(pressed.ToInt(), pressAnimationSpec).Value;
+
+                return Modifier
+                    .Hoverable(interactionSource, enabled: enabled)
+                    .Clickable(interactionSource, enabled: enabled)
+                    .DrawOn(it =>
+                    {
+                        var size = it.Size * hoveredScale;
+                        var topLeft = (it.Size - size) / 2;
+                        it.DrawRoundRect(
+                            color: Color.white.ToSystemColor(),
+                            topLeft: topLeft.ToOffset(),
+                            size: it.Size * hoveredScale,
+                            cornerRadius: 32,
+                            alpha: hoveredOpacity
+                        );
+                        var maxSize = Mathf.Max(it.Size.Width, it.Size.Height);
+                        it.DrawCircle(
+                            color: Color.black.ToSystemColor(),
+                            center: it.Size.ToOffset() / 2,
+                            radius: maxSize * pressScale,
+                            alpha: pressOpacity
+                        );
+                    });
+            });
         }
     }
 }

@@ -160,6 +160,11 @@ public class UnityReusableComposeNode : IReusableComposeNode
         parent.Insert(indexInParent, VisualElement);
         _root = null;
     }
+
+    public override string ToString()
+    {
+        return VisualElement.GetType().Name;
+    }
 }
 
 public static class ReusableComposeNodeExtensions
