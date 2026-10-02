@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Compose.Net;
 using SharpExtensions;
-using UnityCompose.Packages.UnityCompose.Runtime.Adapters;
 
 // ReSharper disable ArrangeNamespaceBody
 

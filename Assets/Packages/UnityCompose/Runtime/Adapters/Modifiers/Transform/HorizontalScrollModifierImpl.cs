@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierImpl>
+internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModifierImpl>
 {
     private readonly IScrollState _state;
     private readonly float _scrollMultiplier;
@@ -16,7 +16,7 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
 
-    public VerticalScrollModifierImpl(
+    public HorizontalScrollModifierImpl(
         IScrollState state,
         float scrollMultiplier,
         bool reverseScrolling,
@@ -32,11 +32,11 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
 
     public override void Apply(IReusableComposeNode node)
     {
-        var contentContainer = new VerticalScroll();
+        var contentContainer = new HorizontalScroll();
         contentContainer.RegisterCallback<GeometryChangedEvent>(it =>
-            _state.ContentSize = it.VisualElement().contentRect.height
+            _state.ContentSize = it.VisualElement().contentRect.width
         );
-        contentContainer.style.translate = new Vector2(0, _state.Value);
+        contentContainer.style.translate = new Vector2(_state.Value, 0);
         var element = node.VisualElement();
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
@@ -52,11 +52,11 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
         element.PickingMode().Decrement();
         element.UserData().Remove(this);
         element.style.overflow = Overflow.Visible;
-        element.style.width = StyleKeyword.Null;
+        element.style.height = StyleKeyword.Null;
         node.CastTo<UnityReusableComposeNode>().RemoveContentContainer();
     }
 
-    protected override bool Equals(VerticalScrollModifierImpl other)
+    protected override bool Equals(HorizontalScrollModifierImpl other)
     {
         return _reverseScrolling == other._reverseScrolling &&
                _interactionSource == other._interactionSource &&
@@ -68,7 +68,7 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
         var element = evt.VisualElement();
         if (!element.UserData().ContainsKey(this))
             return;
-        _state.ViewportSize = element.contentRect.height;
+        _state.ViewportSize = element.contentRect.width;
         var offset = -evt.delta.y;
         if (offset.AlmostEquals(0f))
             return;
@@ -79,12 +79,13 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
     }
 }
 
-internal class VerticalScroll : VisualElement
+internal class HorizontalScroll : VisualElement
 {
-    public VerticalScroll()
+    public HorizontalScroll()
     {
         RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
         pickingMode = PickingMode.Ignore;
+        style.flexDirection = FlexDirection.Row;
     }
 
     private void OnGeometryChanged(GeometryChangedEvent evt)
@@ -92,7 +93,7 @@ internal class VerticalScroll : VisualElement
         style.position = Position.Absolute;
         if (parent == null)
             return;
-        if (parent.style.width == StyleKeyword.Null)
-            parent.style.width = resolvedStyle.width;
+        if (parent.style.height == StyleKeyword.Null)
+            parent.style.height = resolvedStyle.height;
     }
 }

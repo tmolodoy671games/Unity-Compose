@@ -11,6 +11,12 @@ internal static class MethodDefinitionExtensions
         return method.HasCustomAttributes && method.CustomAttributes
             .Any(it => it.AttributeType.FullName == "Compose.Net.Composable");
     }
+    
+    public static bool IsRecompiled(this MethodDefinition method)
+    {
+        return method.HasCustomAttributes && method.CustomAttributes
+            .Any(it => it.AttributeType.FullName == "Compose.Net.RecompiledComposableCode");
+    }
 
     public static void CopyBodyFrom(this MethodDefinition method, MethodDefinition source)
     {

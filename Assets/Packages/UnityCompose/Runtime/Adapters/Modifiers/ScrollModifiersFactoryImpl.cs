@@ -22,16 +22,21 @@ internal class ScrollModifiersFactoryImpl : IScrollModifiersFactory
 
     public IModifier VerticalScroll(
         IScrollState state,
+        float scrollMultiplier,
         bool reverseScrolling,
         IMutableInteractionSource? interactionSource
     )
     {
-        return new VerticalScrollModifierImpl(state, reverseScrolling, interactionSource);
+        return new VerticalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, interactionSource);
     }
 
-    public IModifier HorizontalScroll(IScrollState state, bool reverseScrolling,
-        IMutableInteractionSource? interactionSource)
+    public IModifier HorizontalScroll(
+        IScrollState state,
+        float scrollMultiplier,
+        bool reverseScrolling,
+        IMutableInteractionSource? interactionSource
+    )
     {
-        throw new NotImplementedException();
+        return new HorizontalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, interactionSource);
     }
 }

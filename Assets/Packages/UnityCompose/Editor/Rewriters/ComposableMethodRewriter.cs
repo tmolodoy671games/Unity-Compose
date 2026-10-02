@@ -26,6 +26,23 @@ internal static class ComposableMethodRewriter
             return messages;
         foreach (var type in assembly.MainModule.Types)
         {
+            // Patching methods
+            var recompiledMethods = type.Methods
+                .Where(it => it.IsRecompiled())
+                .ToList();
+            foreach (var recompiledMethod in recompiledMethods)
+            {
+                var originalMethod = type.Methods
+                    .Where(it => it.Name == recompiledMethod.Name.TrimStart('_'))
+                    .FirstOrDefault(it =>
+                        it.Parameters.SequenceEqual(recompiledMethod.Parameters, new ParameterEqualityComparer())
+                    );
+                if (originalMethod == null)
+                    continue;
+                originalMethod.CopyBodyFrom(recompiledMethod);
+            }
+            
+            // Checking
             var composableMethods = type.Methods
                 .Where(method => method.IsComposable())
                 .ToList();

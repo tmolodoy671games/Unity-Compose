@@ -4,7 +4,7 @@ using Compose.Net;
 
 namespace UnityCompose.Samples.Behaviors.Content
 {
-    internal partial class ScrollSample : ComposeUI
+    internal partial class VerticalScrollSample : ComposeUI
     {
         [Composable]
         protected override void Content() => Layout();
@@ -23,8 +23,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var scrollState = RememberScrollState();
                     Column(
                         modifier: Modifier
-                            // .Width(400.Dp())
-                            .Height(700.Dp())
+                            .Width(700.Dp())
                             .Background(Color.white.ToSystemColor())
                             .VerticalScroll(scrollState),
                         content: () =>
