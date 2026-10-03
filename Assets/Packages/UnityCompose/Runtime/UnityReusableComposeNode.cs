@@ -12,8 +12,16 @@ public class UnityReusableComposeNode : IReusableComposeNode
 {
     public readonly VisualElement VisualElement;
     private AnchorManager? _anchorManager;
-    private VisualElement? _contentContainer;
-    private VisualElement? _root;
+
+    private ContentContainer? _contentContainerInstance;
+    private ContentContainer? _contentContainer;
+
+    private Shadow? _shadowInstance;
+    private Shadow? _shadow;
+
+    private Root? _rootInstance;
+    private Root? _root;
+
     private DrawOn? _drawOnInstance;
     private DrawOn? _drawOn;
 
@@ -21,9 +29,8 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
     }
 
-    public VisualElement ContentContainer => _contentContainer ?? VisualElement;
+    private VisualElement ContentContainer => _contentContainer ?? VisualElement;
     public VisualElement Root => _root ?? VisualElement;
-    public VisualElement DrawOn => _drawOn ?? throw new ArgumentException();
 
     internal UnityReusableComposeNode(VisualElement visualElement, bool isRoot)
     {
@@ -80,24 +87,23 @@ public class UnityReusableComposeNode : IReusableComposeNode
     public int IndexInParent => VisualElement.parent.IndexOf(VisualElement);
     public AnchorManager? AnchorManager => _anchorManager;
 
-    public void SetupDrawOn()
+    public VisualElement SetupDrawOn()
     {
-        if (_drawOnInstance == null)
-        {
-            _drawOnInstance = new DrawOn
-            {
-                style =
-                {
-                    width = new Length(100, LengthUnit.Percent),
-                    height = new Length(100, LengthUnit.Percent),
-                    position = Position.Absolute
-                }
-            };
-        }
         if (_drawOn != null)
-            return;
+            return _drawOn;
+        _drawOnInstance ??= new DrawOn
+        {
+            pickingMode = PickingMode.Ignore,
+            style =
+            {
+                width = new Length(100, LengthUnit.Percent),
+                height = new Length(100, LengthUnit.Percent),
+                position = Position.Absolute
+            }
+        };
         _drawOn = _drawOnInstance;
         VisualElement.Insert(VisualElement.childCount, _drawOn);
+        return _drawOn;
     }
 
     public void RemoveDrawOn()
@@ -111,17 +117,68 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _drawOn = null;
     }
 
-    public void SetContentContainer(VisualElement contentContainer)
+    VisualElement SetupRoot()
+    {
+        if (_root != null)
+            return _root;
+        _rootInstance ??= new Root { pickingMode = PickingMode.Ignore };
+        _root = _rootInstance;
+
+        var parent = VisualElement.parent;
+        var indexInParent = parent.IndexOf(VisualElement);
+        parent.RemoveAt(indexInParent);
+        _root.Add(VisualElement);
+        parent.Insert(indexInParent, _root);
+        return _root;
+    }
+
+    public void RemoveRoot()
+    {
+        if (_root == null)
+            return;
+        var parent = _root.parent;
+        var indexInParent = parent.IndexOf(_root);
+        _root.Remove(VisualElement);
+        parent.RemoveAt(indexInParent);
+        parent.Insert(indexInParent, VisualElement);
+        _root = null;
+    }
+
+    public VisualElement SetupShadow()
+    {
+        if (_shadow != null)
+            return _shadow;
+        _shadowInstance ??= new Shadow { pickingMode = PickingMode.Ignore };
+        _shadow = _shadowInstance;
+        SetupRoot();
+        _root.NotNull().Insert(0, _shadow);
+        return _shadow;
+    }
+
+    public void RemoveShadow()
+    {
+        if (_shadow == null)
+            return;
+        SetupRoot();
+        _root.NotNull().Remove(_shadow);
+        if (_root.NotNull().childCount == 1)
+            RemoveRoot();
+        _shadow = null;
+    }
+
+    public VisualElement SetupContentContainer()
     {
         if (_contentContainer != null)
-            return;
+            return _contentContainer;
+        _contentContainerInstance ??= new ContentContainer { pickingMode = PickingMode.Ignore };
+        _contentContainer = _contentContainerInstance;
         var children = VisualElement.Children().ToImmutableStableList();
         foreach (var child in children)
             child.parent.Remove(child);
-        VisualElement.Insert(0, contentContainer);
+        VisualElement.Insert(0, _contentContainerInstance);
         foreach (var child in children)
-            contentContainer.Add(child);
-        _contentContainer = contentContainer;
+            _contentContainerInstance.Add(child);
+        return _contentContainer;
     }
 
     public void RemoveContentContainer()
@@ -135,30 +192,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
         foreach (var child in children)
             VisualElement.Add(child);
         _contentContainer = null;
-    }
-
-    public void SetRoot(VisualElement root)
-    {
-        if (_root != null)
-            return;
-        var parent = Root.parent;
-        var indexInParent = parent.IndexOf(Root);
-        parent.RemoveAt(indexInParent);
-        root.Add(Root);
-        parent.Insert(indexInParent, root);
-        _root = root;
-    }
-
-    public void RemoveRoot()
-    {
-        if (_root == null)
-            return;
-        var parent = Root.parent;
-        var indexInParent = parent.IndexOf(Root);
-        Root.Remove(VisualElement);
-        parent.RemoveAt(indexInParent);
-        parent.Insert(indexInParent, VisualElement);
-        _root = null;
     }
 
     public override string ToString()
@@ -203,6 +236,18 @@ internal static class ReusableNodeVisualElementExtensions
     }
 }
 
+internal class Root : VisualElement
+{
+}
+
 internal class DrawOn : VisualElement
+{
+}
+
+internal class Shadow : VisualElement
+{
+}
+
+internal class ContentContainer : VisualElement
 {
 }

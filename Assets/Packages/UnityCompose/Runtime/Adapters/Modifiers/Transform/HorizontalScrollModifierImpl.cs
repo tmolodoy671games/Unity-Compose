@@ -15,6 +15,7 @@ internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModif
     private readonly bool _reverseScrolling;
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
+    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
 
     public HorizontalScrollModifierImpl(
         IScrollState state,
@@ -28,32 +29,35 @@ internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModif
         _reverseScrolling = reverseScrolling;
         _interactionSource = interactionSource;
         _callback = OnWheelEvent;
+        _onGeometryChanged = OnGeometryChanged;
     }
 
     public override void Apply(IReusableComposeNode node)
     {
-        var contentContainer = new HorizontalScroll();
-        contentContainer.RegisterCallback<GeometryChangedEvent>(it =>
-            _state.ContentSize = it.VisualElement().contentRect.width
-        );
+        var unityNode = node.CastTo<UnityReusableComposeNode>();
+        var contentContainer = unityNode.SetupContentContainer();
+        contentContainer.style.flexDirection = FlexDirection.Row;
+        contentContainer.RegisterCallback(_onGeometryChanged);
         contentContainer.style.translate = new Vector2(_state.Value, 0);
         var element = node.VisualElement();
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[this] = true;
         element.style.overflow = Overflow.Hidden;
-        node.CastTo<UnityReusableComposeNode>().SetContentContainer(contentContainer);
     }
 
     public override void Revert(IReusableComposeNode node)
     {
-        var element = node.VisualElement();
+        var unityNode = node.CastTo<UnityReusableComposeNode>();
+        var element = unityNode.VisualElement;
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
         element.UserData().Remove(this);
         element.style.overflow = Overflow.Visible;
         element.style.height = StyleKeyword.Null;
-        node.CastTo<UnityReusableComposeNode>().RemoveContentContainer();
+        var contentContainer = unityNode.SetupContentContainer();
+        contentContainer.RegisterCallback(_onGeometryChanged);
+        unityNode.RemoveContentContainer();
     }
 
     protected override bool Equals(HorizontalScrollModifierImpl other)
@@ -77,23 +81,15 @@ internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModif
         _state.ScrollBy(offset);
         _interactionSource?.Emit(new IScrollInteraction.Scroll(offset));
     }
-}
-
-internal class HorizontalScroll : VisualElement
-{
-    public HorizontalScroll()
-    {
-        RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
-        pickingMode = PickingMode.Ignore;
-        style.flexDirection = FlexDirection.Row;
-    }
 
     private void OnGeometryChanged(GeometryChangedEvent evt)
     {
-        style.position = Position.Absolute;
-        if (parent == null)
+        var element = evt.VisualElement();
+        _state.ContentSize = element.contentRect.width;
+        element.style.position = Position.Absolute;
+        if (element.parent == null)
             return;
-        if (parent.style.height == StyleKeyword.Null)
-            parent.style.height = resolvedStyle.height;
+        if (element.parent.style.height == StyleKeyword.Null)
+            element.parent.style.height = element.resolvedStyle.height;
     }
 }

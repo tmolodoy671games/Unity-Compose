@@ -21,16 +21,17 @@ internal class DrawOnModifierImpl : BaseModifier<DrawOnModifierImpl>
     public override void Apply(IReusableComposeNode node)
     {
         var unityNode = node.CastTo<UnityReusableComposeNode>();
-        unityNode.SetupDrawOn();
-        unityNode.DrawOn.generateVisualContent += _generateVisualContent;
+        unityNode.SetupDrawOn().generateVisualContent += _generateVisualContent;
     }
 
+#pragma warning disable CS8601 // Possible null reference assignment.
     public override void Revert(IReusableComposeNode node)
     {
         var unityNode = node.CastTo<UnityReusableComposeNode>();
-        unityNode.DrawOn.generateVisualContent -= _generateVisualContent;
+        unityNode.SetupDrawOn().generateVisualContent -= _generateVisualContent;
         unityNode.RemoveDrawOn();
     }
+#pragma warning restore CS8601 // Possible null reference assignment.
 
     protected override bool Equals(DrawOnModifierImpl other)
     {

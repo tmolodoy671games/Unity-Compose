@@ -1,8 +1,5 @@
-﻿using System;
-using Compose.Net;
-using Compose.Net.Internals.Entities.Path;
+﻿using Compose.Net;
 using SharpExtensions;
-using UnityEngine.UIElements;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -61,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 return modifier;
             return modifier.Composed(() =>
             {
-                interactionSource = interactionSource ?? Remember(MutableInteractionSource);
+                interactionSource ??= Remember(MutableInteractionSource);
                 interactionSource = interactionSource.NotNull();
 
                 var hovered = interactionSource.CollectIsHoveredAsState().Value;
