@@ -11,7 +11,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
         {
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = -1;
-            var parentSize = Remember(() => MutableStateOf(new FloatSize()));
+            var parentSize = Remember(() => MutableStateOf(new Size()));
             Box(
                 modifier: Modifier
                     .FillMaxSize()
@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
 
         [BoxScope]
         [Composable]
-        private static void Item(int currentI, FloatSize parentSize)
+        private static void Item(int currentI, Size parentSize)
         {
             var position = Remember(static () => MutableStateOf(new Offset()));
 

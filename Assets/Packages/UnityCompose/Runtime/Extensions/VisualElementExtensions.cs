@@ -29,44 +29,8 @@ public static partial class VisualElementExtensions
         return (VisualElement)evt.target;
     }
 
-    public static LayoutCoordinates LayoutCoordinates(this VisualElement visualElement)
+    public static ILayoutCoordinates LayoutCoordinates(this VisualElement visualElement)
     {
-        var resolvedStyle = visualElement.resolvedStyle;
-        var worldBound = visualElement.worldBound;
-        // var globalMin = element.parent.LocalToWorld(new Vector2(resolvedStyle.top, resolvedStyle.left));
-        // var globalMax = element.parent.LocalToWorld(new Vector2(resolvedStyle.bottom, resolvedStyle.right));
-        return new LayoutCoordinates(
-            // Size:
-            Width: worldBound.width,
-            Height: worldBound.height,
-
-            // Paddings:
-            PaddingTop: resolvedStyle.paddingTop,
-            PaddingBottom: resolvedStyle.paddingBottom,
-            PaddingLeft: resolvedStyle.paddingLeft,
-            PaddingRight: resolvedStyle.paddingRight,
-
-            // Margins:
-            MarginTop: resolvedStyle.marginTop,
-            MarginBottom: resolvedStyle.marginBottom,
-            MarginLeft: resolvedStyle.marginLeft,
-            MarginRight: resolvedStyle.marginRight,
-
-            // Local:
-            LocalTop: resolvedStyle.top,
-            LocalBottom: resolvedStyle.bottom,
-            LocalLeft: resolvedStyle.left,
-            LocalRight: resolvedStyle.right,
-
-            // Global:
-            GlobalTop: worldBound.yMin,
-            GlobalBottom: worldBound.yMax,
-            GlobalLeft: worldBound.xMin,
-            GlobalRight: worldBound.xMax
-            // GlobalTop: globalMin.y,
-            // GlobalBottom: globalMax.y,
-            // GlobalLeft: globalMin.x,
-            // GlobalRight: globalMax.x
-        );
+        return new LayoutCoordinatesImpl(visualElement);
     }
 }

@@ -23,15 +23,15 @@ namespace UnityCompose.Samples.Behaviors.Stability
         [Composable]
         private static void Layout()
         {
-            var layoutCoordinates = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
+            var layoutCoordinates = Remember(() => MutableStateOf(Optional.Empty<ILayoutCoordinates>()));
             Box(
                 alignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize()
-                    .OnGloballyPositioned(it => layoutCoordinates.Value = it),
+                    .OnGloballyPositioned(it => layoutCoordinates.Value = it.ToOptional()),
                 content: () =>
                 {
-                    var positions = Remember(static () => MutableStateDictionaryOf<int, Vector2>());
+                    var positions = Remember(static () => MutableStateDictionaryOf<int, Offset>());
 
                     Row(() =>
                     {
@@ -40,28 +40,28 @@ namespace UnityCompose.Samples.Behaviors.Stability
                             selected: selectionIndex.Value == 0,
                             modifier: Modifier
                                 .OnClick(() => selectionIndex.Value = 0)
-                                .OnGloballyPositioned(it => positions[0] = it.GlobalPosition.ToVector2()),
+                                .OnGloballyPositioned(it => positions[0] = it.PositionInRoot()),
                             content: () => Text(text: "First")
                         );
                         Tab(
                             selected: selectionIndex.Value == 1,
                             modifier: Modifier
                                 .OnClick(() => selectionIndex.Value = 1)
-                                .OnGloballyPositioned(it => positions[1] = it.GlobalPosition.ToVector2()),
+                                .OnGloballyPositioned(it => positions[1] = it.PositionInRoot()),
                             content: () => Text(text: "Second")
                         );
                         Tab(
                             selected: selectionIndex.Value == 2,
                             modifier: Modifier
                                 .OnClick(() => selectionIndex.Value = 2)
-                                .OnGloballyPositioned(it => positions[2] = it.GlobalPosition.ToVector2()),
+                                .OnGloballyPositioned(it => positions[2] = it.PositionInRoot()),
                             content: () => Text(text: "Third")
                         );
                         Tab(
                             selected: selectionIndex.Value == 3,
                             modifier: Modifier
                                 .OnClick(() => selectionIndex.Value = 3)
-                                .OnGloballyPositioned(it => positions[3] = it.GlobalPosition.ToVector2()),
+                                .OnGloballyPositioned(it => positions[3] = it.PositionInRoot()),
                             content: () => Text(text: "Fourth")
                         );
                     });
@@ -78,8 +78,8 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                 .Clip(RoundedCornerShape(4.Dp()))
                                 .Float()
                                 .Position(
-                                    left: coordinates.GlobalToLocal(position.ToOffset()).X.Dp(),
-                                    top: coordinates.GlobalToLocal(position.ToOffset()).Y.Dp()
+                                    left: coordinates.RootToLocal(position).X.Dp(),
+                                    top: coordinates.RootToLocal(position).Y.Dp()
                                 )
                         );
                     }

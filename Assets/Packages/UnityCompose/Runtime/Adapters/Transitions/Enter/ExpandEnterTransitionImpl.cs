@@ -8,7 +8,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
 internal class ExpandEnterTransitionImpl : IEnterTransition
 {
-    private readonly Func<FloatSize, FloatSize> _initialSize;
+    private readonly Func<Size, Size> _initialSize;
     private readonly AnimationSpec _animationSpec;
     private readonly Alignment _expandFrom;
     private readonly bool _clip;
@@ -18,7 +18,7 @@ internal class ExpandEnterTransitionImpl : IEnterTransition
         AnimationSpec animationSpec,
         Alignment expandFrom,
         bool clip,
-        Func<FloatSize, FloatSize> initialSize
+        Func<Size, Size> initialSize
     )
     {
         _key = new ReferenceKey(this);
@@ -86,7 +86,7 @@ internal class ExpandEnterTransitionImpl : IEnterTransition
         var childSize = child.LayoutCoordinates().Size;
         var initialSize = _initialSize(childSize);
         var targetSize = childSize;
-        var size = FloatSize.LerpUnclamped(initialSize, targetSize, progress);
+        var size = Size.LerpUnclamped(initialSize, targetSize, progress);
         element.style.maxWidth = size.Width;
         element.style.maxHeight = size.Height;
     }

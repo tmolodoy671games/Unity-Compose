@@ -7,5 +7,5 @@ namespace UnityCompose;
 
 public static class FloatSizeExtensions
 {
-    public static Vector2 ToVector2(this FloatSize floatSize) => new(floatSize.Width, floatSize.Height);
+    public static Vector2 ToVector2(this Size floatSize) => new(floatSize.Width, floatSize.Height);
 }

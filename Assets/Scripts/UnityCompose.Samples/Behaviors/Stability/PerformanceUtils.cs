@@ -24,7 +24,7 @@ public static class PerformanceUtils
 
     public static Color GetColor(int index) => Colors[index % Colors.Length];
 
-    public static IEnumerator MoveRandomlyCoroutine(FloatSize parentSize, Action<Offset> onValueChanged)
+    public static IEnumerator MoveRandomlyCoroutine(Size parentSize, Action<Offset> onValueChanged)
     {
         while (float.IsNaN(parentSize.Width) || float.IsNaN(parentSize.Height))
             yield return null;
@@ -60,7 +60,7 @@ public static class PerformanceUtils
     }
 
     public static async Task MoveRandomlyCoroutine(
-        FloatSize parentSize,
+        Size parentSize,
         Action<Offset> onValueChanged,
         CancellationToken token
     )

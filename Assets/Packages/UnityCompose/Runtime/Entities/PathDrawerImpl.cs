@@ -54,7 +54,8 @@ internal sealed class PathDrawerImpl : IPathDrawer
 
     public void AddRect(
         Offset topLeft,
-        FloatSize size)
+        Size size
+    )
     {
         var x = topLeft.X;
         var y = topLeft.Y;
@@ -70,9 +71,10 @@ internal sealed class PathDrawerImpl : IPathDrawer
 
     public void AddRoundRect(
         Offset topLeft,
-        FloatSize size,
+        Size size,
         float radiusX,
-        float radiusY)
+        float radiusY
+    )
     {
         var x = topLeft.X;
         var y = topLeft.Y;
@@ -117,7 +119,8 @@ internal sealed class PathDrawerImpl : IPathDrawer
 
     public void AddOval(
         Offset topLeft,
-        FloatSize size)
+        Size size
+    )
     {
         // Painter2D.Arc() умеет только окружность,
         // поэтому эллипс строим через cubic Bézier.
@@ -162,9 +165,10 @@ internal sealed class PathDrawerImpl : IPathDrawer
 
     public void AddArc(
         Offset topLeft,
-        FloatSize size,
+        Size size,
         float startAngle,
-        float sweepAngle)
+        float sweepAngle
+    )
     {
         throw new NotSupportedException(
             "Elliptical arcs are not implemented by Painter2DPathAdapter."

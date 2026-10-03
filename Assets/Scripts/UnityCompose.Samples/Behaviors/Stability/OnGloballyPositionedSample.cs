@@ -22,16 +22,16 @@ namespace UnityCompose.Samples.Behaviors.Stability
         [Composable]
         private static void Layout()
         {
-            var parentCoordinates = Remember(() => MutableStateOf(Optional.Empty<LayoutCoordinates>()));
+            var parentCoordinates = Remember(() => MutableStateOf(Optional.Empty<ILayoutCoordinates>()));
             Column(
                 horizontalAlignment: Alignment.CenterHorizontally,
                 modifier: Modifier.FillMaxSize()
                     .Padding(all: 100.Dp())
-                    .OnGloballyPositioned(it => parentCoordinates.Value = it),
+                    .OnGloballyPositioned(it => parentCoordinates.Value = it.ToOptional()),
                 content: () =>
                 {
                     var isSwitched = Remember(static () => MutableStateOf(false));
-                    var layout = Remember(static () => MutableStateOf(Optional.Empty<Vector2>()));
+                    var layout = Remember(static () => MutableStateOf(Optional.Empty<Offset>()));
                     Box(
                         modifier: Modifier.FillMaxSize(),
                         content: () =>
@@ -58,7 +58,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                                 Modifier
                                                     .Background(Color.green.ToSystemColor())
                                                     .Size(20.Dp())
-                                                    .OnGloballyPositioned(it => layout.Value = it.GlobalCenter.ToVector2())
+                                                    .OnGloballyPositioned(it => layout.Value = it.PositionInRoot())
                                             );
                                         });
                                     });
@@ -85,8 +85,8 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                 .Background(Color.red.ToSystemColor())
                                 .Float()
                                 .Position(
-                                    left: parentCoordinatesValue.GlobalToLocal(layout.Value.Value.ToOffset()).X.Dp(),
-                                    top: parentCoordinatesValue.GlobalToLocal(layout.Value.Value.ToOffset()).Y.Dp()
+                                    left: parentCoordinatesValue.RootToLocal(layout.Value.Value).X.Dp(),
+                                    top: parentCoordinatesValue.RootToLocal(layout.Value.Value).Y.Dp()
                                 )
                         );
                     }

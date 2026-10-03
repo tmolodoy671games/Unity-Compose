@@ -10,10 +10,10 @@ namespace UnityCompose;
 
 internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositionedModifierImpl>
 {
-    private readonly Action<LayoutCoordinates> _onGloballyPositioned;
+    private readonly Action<ILayoutCoordinates> _onGloballyPositioned;
     private readonly ReferenceKey _key;
 
-    public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
+    public OnGloballyPositionedModifierImpl(Action<ILayoutCoordinates> onGloballyPositioned)
     {
         _key = new ReferenceKey(this);
         _onGloballyPositioned = onGloballyPositioned;
@@ -26,12 +26,12 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
     )
     {
         if (element.UserData().ContainsKey(_key)) return;
-        var previousCoordinates = Optional.Empty<LayoutCoordinates>();
+        var previousCoordinates = Optional.Empty<ILayoutCoordinates>();
         var callback = () =>
         {
             var newCoordinates = element.LayoutCoordinates();
             if (previousCoordinates.Equals(newCoordinates)) return;
-            previousCoordinates = newCoordinates;
+            previousCoordinates = newCoordinates.ToOptional();
             _onGloballyPositioned(newCoordinates);
         };
         var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);

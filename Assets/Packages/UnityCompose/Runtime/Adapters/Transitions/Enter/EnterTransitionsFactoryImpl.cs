@@ -16,7 +16,7 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
         return new ScaleInEnterTransitionImpl(animationSpec, initialScale);
     }
 
-    public IEnterTransition SlideIn(AnimationSpec animationSpec, Func<FloatSize, Offset> initialOffset)
+    public IEnterTransition SlideIn(AnimationSpec animationSpec, Func<Size, Offset> initialOffset)
     {
         return new SlideInEnterTransitionImpl(animationSpec, initialOffset);
     }
@@ -61,7 +61,7 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
         AnimationSpec animationSpec,
         Alignment expandFrom,
         bool clip,
-        Func<FloatSize, FloatSize> initialSize
+        Func<Size, Size> initialSize
     )
     {
         return new ExpandEnterTransitionImpl(animationSpec, expandFrom, clip, initialSize);

@@ -35,6 +35,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .DropShadow(
                                 shape: RoundedCornerShape(16.Dp()),
                                 shadow: Shadow(
+                                    spread: 0.Dp(),
                                     color: Color.LerpUnclamped(new Color(), Color.black, shadowProgress).ToSystemColor(),
                                     radius: 32.Dp() * shadowProgress
                                 )

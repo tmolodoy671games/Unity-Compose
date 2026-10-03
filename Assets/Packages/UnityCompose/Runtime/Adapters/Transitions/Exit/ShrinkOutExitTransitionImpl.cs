@@ -8,7 +8,7 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
 public class ShrinkOutExitTransitionImpl : IExitTransition
 {
-    private readonly Func<FloatSize, FloatSize> _targetSize;
+    private readonly Func<Size, Size> _targetSize;
     private readonly AnimationSpec _animationSpec;
     private readonly Alignment _shrinkTowards;
     private readonly bool _clip;
@@ -17,7 +17,7 @@ public class ShrinkOutExitTransitionImpl : IExitTransition
         AnimationSpec animationSpec,
         Alignment shrinkTowards,
         bool clip,
-        Func<FloatSize, FloatSize> targetSize
+        Func<Size, Size> targetSize
     )
     {
         _targetSize = targetSize;
@@ -85,7 +85,7 @@ public class ShrinkOutExitTransitionImpl : IExitTransition
         var childSize = child.LayoutCoordinates().Size;
         var targetSize = _targetSize(childSize);
         var initialSize = childSize;
-        var size = FloatSize.LerpUnclamped(initialSize, targetSize, progress);
+        var size = Size.LerpUnclamped(initialSize, targetSize, progress);
         element.style.maxWidth = size.Width;
         element.style.maxHeight = size.Height;
     }

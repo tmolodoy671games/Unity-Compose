@@ -32,11 +32,12 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Background(Color.gray.ToSystemColor())
                             .DropShadow(
                                 shape: RoundedCornerShape(0.Dp()),
-                                shadow: new Shadow(
-                                    Radius: AnimateFloatAsState(32 * hasShadow.Value.ToInt(), tween).Value.Dp(),
-                                    Color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
+                                shadow: Shadow(
+                                    radius: AnimateFloatAsState(32 * hasShadow.Value.ToInt(), tween).Value.Dp(),
+                                    spread: 0.Dp(),
+                                    color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
                                         .ToSystemColor(),
-                                    Offset: new Offset()
+                                    offset: new Offset()
                                 )
                             )
                     );

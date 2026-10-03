@@ -6,10 +6,10 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
 internal sealed class SlideOutExitTransitionImpl : IExitTransition
 {
-    private readonly Func<FloatSize, Offset> _targetOffset;
+    private readonly Func<Size, Offset> _targetOffset;
     private readonly AnimationSpec _animationSpec;
 
-    public SlideOutExitTransitionImpl(AnimationSpec animationSpec, Func<FloatSize, Offset> targetOffset)
+    public SlideOutExitTransitionImpl(AnimationSpec animationSpec, Func<Size, Offset> targetOffset)
     {
         _targetOffset = targetOffset;
         _animationSpec = animationSpec;

@@ -30,9 +30,8 @@ internal class TransitionContent : VisualElement
 
     private void SyncParentSize()
     {
-        var parentLayout = parent.LayoutCoordinates();
-        parent.style.width = contentRect.width + parentLayout.PaddingLeft + parentLayout.PaddingRight;
-        parent.style.height = contentRect.height + parentLayout.PaddingTop + parentLayout.PaddingBottom;
+        parent.style.width = contentRect.width;
+        parent.style.height = contentRect.height;
         style.position = Position.Absolute;
     }
 }

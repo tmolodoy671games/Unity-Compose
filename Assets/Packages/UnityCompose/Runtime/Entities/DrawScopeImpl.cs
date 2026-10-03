@@ -13,7 +13,7 @@ namespace UnityCompose;
 internal class DrawScopeImpl : IDrawScope
 {
     private readonly MeshGenerationContext _context;
-    private FloatSize _size;
+    private Size _size;
 
     public DrawScopeImpl(MeshGenerationContext context)
     {
@@ -22,7 +22,7 @@ internal class DrawScopeImpl : IDrawScope
 
     public object DrawContext => _context;
     public Offset Center => _context.visualElement.contentRect.center.ToOffset();
-    public FloatSize Size => _context.visualElement.contentRect.size.ToFloatSize();
+    public Size Size => _context.visualElement.contentRect.size.ToSize();
 
     public void DrawLine(
         Color color,
@@ -51,7 +51,7 @@ internal class DrawScopeImpl : IDrawScope
     public void DrawRect(
         Color color,
         Offset topLeft,
-        Optional<FloatSize> size,
+        Optional<Size> size,
         float alpha,
         DrawStyle style
     )
@@ -87,7 +87,7 @@ internal class DrawScopeImpl : IDrawScope
     public void DrawRoundRect(
         Color color,
         Offset topLeft,
-        Optional<FloatSize> size,
+        Optional<Size> size,
         float cornerRadius,
         float alpha,
         DrawStyle style
@@ -203,14 +203,14 @@ internal class DrawScopeImpl : IDrawScope
     public void DrawOval(
         Color color,
         Offset topLeft,
-        Optional<FloatSize> size,
+        Optional<Size> size,
         float alpha,
         DrawStyle style
     )
     {
         var painter = _context.painter2D;
         var resolvedSize = size.GetOrDefault(
-            new FloatSize(
+            new Size(
                 Size.Width - topLeft.X,
                 Size.Height - topLeft.Y
             )
@@ -255,7 +255,7 @@ internal class DrawScopeImpl : IDrawScope
         float sweepAngle,
         bool useCenter,
         Offset topLeft,
-        Optional<FloatSize> size,
+        Optional<Size> size,
         float alpha,
         DrawStyle style
     )
@@ -263,7 +263,7 @@ internal class DrawScopeImpl : IDrawScope
         var painter = _context.painter2D;
 
         var resolvedSize = size.GetOrDefault(
-            new FloatSize(
+            new Size(
                 Size.Width - topLeft.X,
                 Size.Height - topLeft.Y
             )

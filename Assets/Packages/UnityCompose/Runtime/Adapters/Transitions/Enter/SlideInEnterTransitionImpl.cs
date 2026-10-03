@@ -6,12 +6,12 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
 internal class SlideInEnterTransitionImpl : IEnterTransition
 {
-    private readonly Func<FloatSize, Offset> _initialOffset;
+    private readonly Func<Size, Offset> _initialOffset;
     private readonly AnimationSpec _animationSpec;
 
     public SlideInEnterTransitionImpl(
         AnimationSpec animationSpec,
-        Func<FloatSize, Offset> initialOffset
+        Func<Size, Offset> initialOffset
     )
     {
         _initialOffset = initialOffset;

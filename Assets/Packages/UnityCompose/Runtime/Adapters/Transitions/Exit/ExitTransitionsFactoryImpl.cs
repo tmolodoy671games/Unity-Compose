@@ -16,7 +16,7 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
         return new ScaleOutExitTransitionImpl(animationSpec, targetScale);
     }
 
-    public IExitTransition SlideOut(AnimationSpec animationSpec, Func<FloatSize, Offset> targetOffset)
+    public IExitTransition SlideOut(AnimationSpec animationSpec, Func<Size, Offset> targetOffset)
     {
         return new SlideOutExitTransitionImpl(animationSpec, targetOffset);
     }
@@ -58,7 +58,7 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
         AnimationSpec animationSpec,
         Alignment shrinkTowards,
         bool clip,
-        Func<FloatSize, FloatSize> targetSize
+        Func<Size, Size> targetSize
     )
     {
         return new ShrinkOutExitTransitionImpl(animationSpec, shrinkTowards, clip, targetSize);

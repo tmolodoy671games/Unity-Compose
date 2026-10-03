@@ -35,7 +35,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
 
                 StartCoroutine(
                     PerformanceUtils.MoveRandomlyCoroutine(
-                        root.layout.size.ToFloatSize(),
+                        root.layout.size.ToSize(),
                         it =>
                         {
                             childElement.style.left = it.X;

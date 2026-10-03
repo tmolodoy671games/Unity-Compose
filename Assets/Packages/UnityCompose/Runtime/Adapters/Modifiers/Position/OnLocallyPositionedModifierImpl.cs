@@ -10,10 +10,10 @@ namespace UnityCompose;
 
 internal class OnLocallyPositionedModifierImpl : UnityModifier<OnLocallyPositionedModifierImpl>
 {
-    private readonly Action<LayoutCoordinates> _onLocallyPositioned;
+    private readonly Action<ILayoutCoordinates> _onLocallyPositioned;
     private readonly EventCallback<GeometryChangedEvent>? _callback;
 
-    public OnLocallyPositionedModifierImpl(Action<LayoutCoordinates> onLocallyPositioned)
+    public OnLocallyPositionedModifierImpl(Action<ILayoutCoordinates> onLocallyPositioned)
     {
         _onLocallyPositioned = onLocallyPositioned;
         _callback = OnGeometryChanged;

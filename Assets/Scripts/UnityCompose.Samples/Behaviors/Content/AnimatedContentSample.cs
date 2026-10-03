@@ -30,7 +30,8 @@ namespace UnityCompose.Samples.Behaviors.Content
             SideEffect(targetState, () => increment.Value++);
             ReusableComposeNode(
                 nodeFactory: () => new UnityReusableComposeNode(new AnimatedContent()),
-                content: () => { }
+                content: () => { },
+                modifier: modifier
             );
         }
     }
