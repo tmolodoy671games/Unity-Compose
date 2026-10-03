@@ -1,5 +1,7 @@
-﻿using Compose.Net;
+﻿using System;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 using UnityEngine.UIElements;
 
@@ -7,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class VerticalAlignModifierImpl : BaseUnityModifier<VerticalAlignModifierImpl>
+internal class VerticalAlignModifierImpl : UnityModifier<VerticalAlignModifierImpl>
 {
     private readonly Alignment.Vertical _align;
 
@@ -16,7 +18,11 @@ internal class VerticalAlignModifierImpl : BaseUnityModifier<VerticalAlignModifi
         _align = align;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         switch (element.parent.NotNull().style.flexDirection.value)
         {
@@ -27,7 +33,11 @@ internal class VerticalAlignModifierImpl : BaseUnityModifier<VerticalAlignModifi
         }
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         switch (element.parent.NotNull().style.flexDirection.value)
         {
@@ -38,8 +48,6 @@ internal class VerticalAlignModifierImpl : BaseUnityModifier<VerticalAlignModifi
         }
     }
 
-    protected override bool Equals(VerticalAlignModifierImpl other)
-    {
-        return _align == other._align;
-    }
+    protected override bool Equals(VerticalAlignModifierImpl other) => _align == other._align;
+    public override int GetHashCode() => HashCode.Combine(_align);
 }

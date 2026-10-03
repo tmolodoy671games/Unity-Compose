@@ -1,13 +1,15 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BorderModifierImpl : BaseUnityModifier<BorderModifierImpl>
+internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>
 {
     private readonly Dp _borderWidth;
     private readonly Color _borderColor;
@@ -18,7 +20,11 @@ internal class BorderModifierImpl : BaseUnityModifier<BorderModifierImpl>
         _borderColor = borderColor;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.borderBottomWidth = _borderWidth.Value;
         element.style.borderTopWidth = _borderWidth.Value;
@@ -31,7 +37,11 @@ internal class BorderModifierImpl : BaseUnityModifier<BorderModifierImpl>
         element.style.borderRightColor = _borderColor;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.borderBottomWidth = _borderWidth.Value;
         element.style.borderTopWidth = _borderWidth.Value;
@@ -49,4 +59,6 @@ internal class BorderModifierImpl : BaseUnityModifier<BorderModifierImpl>
         return _borderWidth == other._borderWidth &&
                _borderColor == other._borderColor;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_borderWidth, _borderColor);
 }

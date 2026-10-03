@@ -1,9 +1,11 @@
-﻿using Compose.Net;
+﻿using System;
+using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Implementations;
 
-internal class TestTagModifierImpl : BaseUnityModifier<TestTagModifierImpl>
+internal class TestTagModifierImpl : UnityModifier<TestTagModifierImpl>
 {
     private readonly string _tag;
 
@@ -12,18 +14,24 @@ internal class TestTagModifierImpl : BaseUnityModifier<TestTagModifierImpl>
         _tag = tag;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.name = _tag;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.name = "";
     }
 
-    protected override bool Equals(TestTagModifierImpl other)
-    {
-        return _tag == other._tag;
-    }
+    protected override bool Equals(TestTagModifierImpl other) => _tag == other._tag;
+    public override int GetHashCode() => HashCode.Combine(_tag);
 }

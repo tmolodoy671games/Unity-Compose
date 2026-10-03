@@ -1,11 +1,13 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OffsetModifierImpl : BaseUnityModifier<OffsetModifierImpl>
+internal class OffsetModifierImpl : UnityModifier<OffsetModifierImpl>
 {
     private readonly Dp _x;
     private readonly Dp _y;
@@ -16,12 +18,20 @@ internal class OffsetModifierImpl : BaseUnityModifier<OffsetModifierImpl>
         _y = y;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.translate = new Translate(_x.ToLength(), _y.ToLength());
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.translate = StyleKeyword.Null;
     }
@@ -31,8 +41,6 @@ internal class OffsetModifierImpl : BaseUnityModifier<OffsetModifierImpl>
         return _x.Equals(other._x) && _y.Equals(other._y);
     }
 
-    public override string ToString()
-    {
-        return $"Offset({_x}, {_y})";
-    }
+    public override int GetHashCode() => HashCode.Combine(_x, _y);
+    public override string ToString() => $"Offset({_x}, {_y})";
 }

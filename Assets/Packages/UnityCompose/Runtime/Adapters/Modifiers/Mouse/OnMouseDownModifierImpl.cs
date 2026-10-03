@@ -1,10 +1,11 @@
 ﻿using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseDownModifierImpl : BaseUnityModifier<OnMouseDownModifierImpl>
+internal class OnMouseDownModifierImpl : UnityModifier<OnMouseDownModifierImpl>
 {
     private readonly Action? _parameterlessOnMouseDown;
     private readonly Action<PointerClickInfo>? _onMouseDown;
@@ -25,13 +26,21 @@ internal class OnMouseDownModifierImpl : BaseUnityModifier<OnMouseDownModifierIm
         _callback = OnMouseDown;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -43,6 +52,8 @@ internal class OnMouseDownModifierImpl : BaseUnityModifier<OnMouseDownModifierIm
                _parameterlessOnMouseDown == other._parameterlessOnMouseDown &&
                _button == other._button;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_onMouseDown, _parameterlessOnMouseDown, _button);
 
     private void OnMouseDown(MouseDownEvent evt)
     {

@@ -2,16 +2,17 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerLeaveModifierImpl : BaseUnityModifier<OnPointerLeaveModifierImpl>
+internal class OnPointerLeaveModifierImpl : UnityModifier<OnPointerLeaveModifierImpl>
 {
     private readonly Action<PointerMoveInfo>? _onPointerLeave;
     private readonly Action? _parameterlessOnPointerLeave;
     private readonly EventCallback<PointerLeaveEvent> _callback;
-    private readonly int  _pointerId;
+    private readonly int _pointerId;
 
     public OnPointerLeaveModifierImpl(Action<PointerMoveInfo> onPointerLeave, int pointerId)
     {
@@ -20,21 +21,28 @@ internal class OnPointerLeaveModifierImpl : BaseUnityModifier<OnPointerLeaveModi
         _pointerId = pointerId;
     }
 
-    public OnPointerLeaveModifierImpl(Action onPointerLeave,int pointerId)
+    public OnPointerLeaveModifierImpl(Action onPointerLeave, int pointerId)
     {
         _parameterlessOnPointerLeave = onPointerLeave;
         _callback = OnPointerLeave;
         _pointerId = pointerId;
     }
 
-
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -44,6 +52,11 @@ internal class OnPointerLeaveModifierImpl : BaseUnityModifier<OnPointerLeaveModi
     {
         return _onPointerLeave == other._onPointerLeave &&
                _parameterlessOnPointerLeave == other._parameterlessOnPointerLeave;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerLeave, _parameterlessOnPointerLeave);
     }
 
     private void OnPointerLeave(PointerLeaveEvent evt)

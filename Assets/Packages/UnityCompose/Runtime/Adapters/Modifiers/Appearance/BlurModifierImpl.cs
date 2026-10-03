@@ -1,13 +1,16 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BlurModifierImpl : BaseUnityModifier<BlurModifierImpl>
+internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>
 {
     private readonly float _strength;
 
@@ -16,7 +19,11 @@ internal class BlurModifierImpl : BaseUnityModifier<BlurModifierImpl>
         _strength = strength;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
         filter.AddParameter(new FilterParameter(_strength));
@@ -26,7 +33,11 @@ internal class BlurModifierImpl : BaseUnityModifier<BlurModifierImpl>
         element.style.filter = element.style.filter.value.ToList();
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
         filter.AddParameter(new FilterParameter(_strength));
@@ -36,8 +47,6 @@ internal class BlurModifierImpl : BaseUnityModifier<BlurModifierImpl>
         element.style.filter = element.style.filter.value.ToList();
     }
 
-    protected override bool Equals(BlurModifierImpl other)
-    {
-        return _strength.AlmostEquals(other._strength);
-    }
+    protected override bool Equals(BlurModifierImpl other) => _strength.AlmostEquals(other._strength);
+    public override int GetHashCode() => HashCode.Combine(_strength);
 }

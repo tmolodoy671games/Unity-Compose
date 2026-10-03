@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnLocallyPositionedModifierImpl : BaseUnityModifier<OnLocallyPositionedModifierImpl>
+internal class OnLocallyPositionedModifierImpl : UnityModifier<OnLocallyPositionedModifierImpl>
 {
     private readonly Action<LayoutCoordinates> _onLocallyPositioned;
     private readonly EventCallback<GeometryChangedEvent>? _callback;
@@ -19,12 +19,20 @@ internal class OnLocallyPositionedModifierImpl : BaseUnityModifier<OnLocallyPosi
         _callback = OnGeometryChanged;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.UnregisterCallback(_callback);
     }
@@ -33,6 +41,8 @@ internal class OnLocallyPositionedModifierImpl : BaseUnityModifier<OnLocallyPosi
     {
         return _onLocallyPositioned == other._onLocallyPositioned;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_onLocallyPositioned);
 
     private void OnGeometryChanged(GeometryChangedEvent evt)
     {

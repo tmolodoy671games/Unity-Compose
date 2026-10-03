@@ -1,14 +1,16 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using System.Threading;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierImpl>
+internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<VerticalScrollModifierImpl>
 {
     private readonly IScrollState _state;
     private readonly float _scrollMultiplier;
@@ -32,32 +34,34 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
         _onGeometryChanged = OnGeometryChanged;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        VisualElement contentContainer,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var contentContainer = unityNode.SetupContentContainer();
         contentContainer.RegisterCallback(_onGeometryChanged);
         contentContainer.style.translate = new Vector2(0, _state.Value);
-        var element = node.VisualElement();
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[this] = true;
         element.style.overflow = Overflow.Hidden;
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        VisualElement contentContainer,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var element = node.VisualElement();
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
         element.UserData().Remove(this);
         element.style.overflow = Overflow.Visible;
         element.style.width = StyleKeyword.Null;
-        
-        var contentContainer = unityNode.SetupContentContainer();
         contentContainer.UnregisterCallback(_onGeometryChanged);
-        unityNode.RemoveContentContainer();
     }
 
     protected override bool Equals(VerticalScrollModifierImpl other)
@@ -65,6 +69,11 @@ internal class VerticalScrollModifierImpl : BaseModifier<VerticalScrollModifierI
         return _reverseScrolling == other._reverseScrolling &&
                _interactionSource == other._interactionSource &&
                _callback == other._callback;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_state, _scrollMultiplier, _reverseScrolling, _interactionSource);
     }
 
     private void OnWheelEvent(WheelEvent evt)

@@ -1,11 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class RotateModifierImpl : BaseUnityModifier<RotateModifierImpl>
+internal class RotateModifierImpl : UnityModifier<RotateModifierImpl>
 {
     private readonly float _degrees;
 
@@ -14,7 +17,11 @@ internal class RotateModifierImpl : BaseUnityModifier<RotateModifierImpl>
         _degrees = degrees;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value + _degrees);
         if (newRotate.value.angle.value == 0f)
@@ -22,17 +29,18 @@ internal class RotateModifierImpl : BaseUnityModifier<RotateModifierImpl>
         element.style.rotate = newRotate;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value - _degrees);
         if (newRotate.value.angle.value == 0f)
             newRotate = StyleKeyword.Null;
         element.style.rotate = newRotate;
-        
     }
 
-    protected override bool Equals(RotateModifierImpl other)
-    {
-        return _degrees.AlmostEquals(other._degrees);
-    }
+    protected override bool Equals(RotateModifierImpl other) => _degrees.AlmostEquals(other._degrees);
+    public override int GetHashCode() => HashCode.Combine(_degrees);
 }

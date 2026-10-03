@@ -1,14 +1,16 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using System.Threading;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModifierImpl>
+internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<HorizontalScrollModifierImpl>
 {
     private readonly IScrollState _state;
     private readonly float _scrollMultiplier;
@@ -32,39 +34,48 @@ internal class HorizontalScrollModifierImpl : BaseModifier<HorizontalScrollModif
         _onGeometryChanged = OnGeometryChanged;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        VisualElement contentContainer,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var contentContainer = unityNode.SetupContentContainer();
         contentContainer.style.flexDirection = FlexDirection.Row;
         contentContainer.RegisterCallback(_onGeometryChanged);
         contentContainer.style.translate = new Vector2(_state.Value, 0);
-        var element = node.VisualElement();
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[this] = true;
         element.style.overflow = Overflow.Hidden;
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        VisualElement contentContainer,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var element = unityNode.VisualElement;
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
         element.UserData().Remove(this);
         element.style.overflow = Overflow.Visible;
         element.style.height = StyleKeyword.Null;
-        var contentContainer = unityNode.SetupContentContainer();
-        contentContainer.RegisterCallback(_onGeometryChanged);
-        unityNode.RemoveContentContainer();
+        contentContainer.UnregisterCallback(_onGeometryChanged);
     }
 
     protected override bool Equals(HorizontalScrollModifierImpl other)
     {
         return _reverseScrolling == other._reverseScrolling &&
+               _scrollMultiplier.AlmostEquals(other._scrollMultiplier) &&
                _interactionSource == other._interactionSource &&
                _callback == other._callback;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_state, _reverseScrolling, _scrollMultiplier, _interactionSource);
     }
 
     private void OnWheelEvent(WheelEvent evt)

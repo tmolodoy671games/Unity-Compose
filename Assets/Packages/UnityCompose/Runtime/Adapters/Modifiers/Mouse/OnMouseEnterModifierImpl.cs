@@ -1,10 +1,11 @@
 ﻿using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseEnterModifierImpl : BaseUnityModifier<OnMouseEnterModifierImpl>
+internal class OnMouseEnterModifierImpl : UnityModifier<OnMouseEnterModifierImpl>
 {
     private readonly Action? _parameterlessOnMouseEnter;
     private readonly Action<PointerMoveInfo>? _onMouseEnter;
@@ -22,16 +23,29 @@ internal class OnMouseEnterModifierImpl : BaseUnityModifier<OnMouseEnterModifier
         _callback = OnMouseEnterEvent;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onMouseEnter, _parameterlessOnMouseEnter);
     }
 
     protected override bool Equals(OnMouseEnterModifierImpl other)

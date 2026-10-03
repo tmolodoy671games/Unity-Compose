@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
+internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
 {
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
@@ -26,9 +28,12 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
         _right = right;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.paddingTop = _top.Value.ToLength();
@@ -50,9 +55,12 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
         }
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.paddingTop = StyleKeyword.Null;
@@ -81,4 +89,6 @@ internal class PaddingModifierImpl : BaseModifier<PaddingModifierImpl>
                _left.Equals(other._left) &&
                _right.Equals(other._right);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
 }

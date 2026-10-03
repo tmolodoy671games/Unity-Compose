@@ -1,11 +1,13 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class TransformOriginModifierImpl : BaseUnityModifier<TransformOriginModifierImpl>
+internal class TransformOriginModifierImpl : UnityModifier<TransformOriginModifierImpl>
 {
     private readonly Dp _x;
     private readonly Dp _y;
@@ -16,18 +18,24 @@ internal class TransformOriginModifierImpl : BaseUnityModifier<TransformOriginMo
         _y = y;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.transformOrigin = new TransformOrigin(_x.ToLength(), _y.ToLength());
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.transformOrigin = StyleKeyword.Null;
     }
 
-    protected override bool Equals(TransformOriginModifierImpl other)
-    {
-        return _x == other._x && _y == other._y;
-    }
+    protected override bool Equals(TransformOriginModifierImpl other) => _x == other._x && _y == other._y;
+    public override int GetHashCode() => HashCode.Combine(_x, _y);
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseUpModifierImpl : BaseUnityModifier<OnMouseUpModifierImpl>
+internal class OnMouseUpModifierImpl : UnityModifier<OnMouseUpModifierImpl>
 {
     private readonly Action<PointerClickInfo>? _onMouseUp;
     private readonly Action? _parameterlessOnMouseUp;
@@ -25,22 +26,34 @@ internal class OnMouseUpModifierImpl : BaseUnityModifier<OnMouseUpModifierImpl>
         _callback = OnMouseUp;
     }
 
-
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
     }
 
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onMouseUp, _parameterlessOnMouseUp, _button);
+    }
+
     protected override bool Equals(OnMouseUpModifierImpl other)
     {
-        return _onMouseUp == other._onMouseUp && 
+        return _onMouseUp == other._onMouseUp &&
                _parameterlessOnMouseUp == other._parameterlessOnMouseUp;
     }
 

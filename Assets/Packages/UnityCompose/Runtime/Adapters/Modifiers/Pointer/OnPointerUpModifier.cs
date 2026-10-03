@@ -2,11 +2,12 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerUpModifierImpl : BaseUnityModifier<OnPointerUpModifierImpl>
+internal class OnPointerUpModifierImpl : UnityModifier<OnPointerUpModifierImpl>
 {
     private readonly Action<PointerClickInfo>? _onPointerUp;
     private readonly Action? _parameterlessOnPointerUp;
@@ -28,13 +29,21 @@ internal class OnPointerUpModifierImpl : BaseUnityModifier<OnPointerUpModifierIm
     }
 
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -44,6 +53,11 @@ internal class OnPointerUpModifierImpl : BaseUnityModifier<OnPointerUpModifierIm
     {
         return _onPointerUp == other._onPointerUp &&
                _parameterlessOnPointerUp == other._parameterlessOnPointerUp;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerUp, _button, _parameterlessOnPointerUp);
     }
 
     private void OnPointerUp(PointerUpEvent evt)

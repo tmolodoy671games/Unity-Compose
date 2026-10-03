@@ -1,14 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Compose.Net;
-using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DropShadowModifierImpl : BaseModifier<DropShadowModifierImpl>
+internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>
 {
     private readonly RoundedCornerShape _shape;
     private readonly Compose.Net.Shadow _shadow;
@@ -19,21 +19,38 @@ internal class DropShadowModifierImpl : BaseModifier<DropShadowModifierImpl>
         _shadow = shadow;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var shadow = unityNode.SetupShadow();
+        var shadow = node.SetupShadow();
         Init(shadow, _shape, _shadow);
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        node.CastTo<UnityReusableComposeNode>().RemoveShadow();
+        foreach (var newModifier in newModifiers)
+        {
+            if (newModifier is DropShadowModifierImpl)
+                return;
+        }
+        node.RemoveShadow();
     }
 
     protected override bool Equals(DropShadowModifierImpl other)
     {
         return _shadow.Equals(other._shadow) && _shape.Equals(other._shape);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_shape, _shadow);
     }
 
     private static void Init(

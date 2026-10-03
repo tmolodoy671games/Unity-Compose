@@ -2,11 +2,12 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerCancelModifierImpl : BaseUnityModifier<OnPointerCancelModifierImpl>
+internal class OnPointerCancelModifierImpl : UnityModifier<OnPointerCancelModifierImpl>
 {
     private readonly Action<PointerClickInfo>? _onPointerCancel;
     private readonly Action? _parameterlessOnPointerCancel;
@@ -27,13 +28,21 @@ internal class OnPointerCancelModifierImpl : BaseUnityModifier<OnPointerCancelMo
         _callback = OnPointerCancel;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -43,6 +52,11 @@ internal class OnPointerCancelModifierImpl : BaseUnityModifier<OnPointerCancelMo
     {
         return _onPointerCancel == other._onPointerCancel &&
                _parameterlessOnPointerCancel == other._parameterlessOnPointerCancel;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerCancel, _parameterlessOnPointerCancel, _button);
     }
 
     private void OnPointerCancel(PointerCancelEvent evt)

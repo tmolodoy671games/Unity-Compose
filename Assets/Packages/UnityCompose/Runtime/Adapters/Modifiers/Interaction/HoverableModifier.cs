@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
@@ -7,12 +8,12 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class HoverableModiferImpl : BaseUnityModifier<HoverableModiferImpl>
+internal class HoverableModiferImpl : UnityModifier<HoverableModiferImpl>
 {
     private readonly IMutableInteractionSource _interactionSource;
     private readonly EventCallback<PointerEnterEvent> _pointerEnterCallback;
     private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback;
-    
+
     public HoverableModiferImpl(IMutableInteractionSource interactionSource)
     {
         _interactionSource = interactionSource;
@@ -20,18 +21,31 @@ internal class HoverableModiferImpl : BaseUnityModifier<HoverableModiferImpl>
         _pointerLeaveCallback = OnPointerLeave;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_pointerEnterCallback);
         element.RegisterCallback(_pointerLeaveCallback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_pointerEnterCallback);
         element.UnregisterCallback(_pointerLeaveCallback);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_interactionSource);
     }
 
     protected override bool Equals(HoverableModiferImpl other)

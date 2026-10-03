@@ -1,13 +1,15 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BackgroundColorModifierImpl : BaseUnityModifier<BackgroundColorModifierImpl>
+internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifierImpl>
 {
     private readonly Color _backgroundColor;
     private readonly Optional<RoundedCornerShape> _shape;
@@ -21,7 +23,11 @@ internal class BackgroundColorModifierImpl : BaseUnityModifier<BackgroundColorMo
         _shape = shape;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.backgroundColor = _backgroundColor;
         if (_shape.HasValue)
@@ -34,7 +40,11 @@ internal class BackgroundColorModifierImpl : BaseUnityModifier<BackgroundColorMo
         }
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.backgroundColor = StyleKeyword.Null;
         if (_shape.HasValue)
@@ -51,4 +61,6 @@ internal class BackgroundColorModifierImpl : BaseUnityModifier<BackgroundColorMo
         return _backgroundColor == other._backgroundColor &&
                _shape.Equals(other._shape);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_shape, _backgroundColor);
 }

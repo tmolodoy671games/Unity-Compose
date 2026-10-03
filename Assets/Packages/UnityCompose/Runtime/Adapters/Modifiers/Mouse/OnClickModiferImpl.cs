@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnClickModiferImpl : BaseUnityModifier<OnClickModiferImpl>
+internal class OnClickModiferImpl : UnityModifier<OnClickModiferImpl>
 {
     private readonly Action<PointerClickInfo>? _onClick;
     private readonly Action? _parameterlessOnClick;
@@ -30,13 +30,21 @@ internal class OnClickModiferImpl : BaseUnityModifier<OnClickModiferImpl>
         _callback = OnClickCallback;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -63,4 +71,6 @@ internal class OnClickModiferImpl : BaseUnityModifier<OnClickModiferImpl>
                _parameterlessOnClick == other._parameterlessOnClick &&
                _allowedButton == other._allowedButton;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_onClick, _parameterlessOnClick, _allowedButton);
 }

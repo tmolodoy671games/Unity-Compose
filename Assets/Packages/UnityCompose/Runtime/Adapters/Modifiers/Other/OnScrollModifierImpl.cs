@@ -2,12 +2,14 @@
 
 using System;
 using Compose.Net;
+using NUnit.Framework;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnScrollModifierImpl : BaseUnityModifier<OnScrollModifierImpl>
+internal class OnScrollModifierImpl : UnityModifier<OnScrollModifierImpl>
 {
     private readonly Action<Offset>? _onScroll;
     private readonly Action<float>? _onOnVerticalScroll;
@@ -26,13 +28,21 @@ internal class OnScrollModifierImpl : BaseUnityModifier<OnScrollModifierImpl>
         _callback = OnScroll;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -41,6 +51,11 @@ internal class OnScrollModifierImpl : BaseUnityModifier<OnScrollModifierImpl>
     protected override bool Equals(OnScrollModifierImpl other)
     {
         return _callback == other._callback;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onScroll, _onOnVerticalScroll, _onOnHorizontalScroll);
     }
 
     private void OnScroll(WheelEvent evt)

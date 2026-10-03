@@ -2,11 +2,12 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerMoveModifierImpl : BaseUnityModifier<OnPointerMoveModifierImpl>
+internal class OnPointerMoveModifierImpl : UnityModifier<OnPointerMoveModifierImpl>
 {
     private readonly Action<PointerMoveInfo>? _onPointerMove;
     private readonly Action? _parameterlessOnPointerMove;
@@ -27,13 +28,21 @@ internal class OnPointerMoveModifierImpl : BaseUnityModifier<OnPointerMoveModifi
         _pointerId = pointerId;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -43,6 +52,11 @@ internal class OnPointerMoveModifierImpl : BaseUnityModifier<OnPointerMoveModifi
     {
         return _onPointerMove == other._onPointerMove &&
                _parameterlessOnPointerMove == other._parameterlessOnPointerMove;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerMove, _parameterlessOnPointerMove);
     }
 
     private void OnPointerMove(PointerMoveEvent evt)

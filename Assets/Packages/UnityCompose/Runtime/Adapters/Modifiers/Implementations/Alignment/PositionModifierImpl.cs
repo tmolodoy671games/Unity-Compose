@@ -1,12 +1,14 @@
-﻿using Compose.Net;
+﻿using System;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
 namespace UnityCompose;
 
-internal class PositionModifierImpl : BaseUnityModifier<PositionModifierImpl>
+internal class PositionModifierImpl : UnityModifier<PositionModifierImpl>
 {
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
@@ -26,7 +28,11 @@ internal class PositionModifierImpl : BaseUnityModifier<PositionModifierImpl>
         _right = right;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.position = Position.Absolute;
         if (_top.HasValue)
@@ -39,7 +45,11 @@ internal class PositionModifierImpl : BaseUnityModifier<PositionModifierImpl>
             element.style.right = _right.Value.Value;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (_top.HasValue)
             element.style.top = StyleKeyword.Null;
@@ -58,4 +68,6 @@ internal class PositionModifierImpl : BaseUnityModifier<PositionModifierImpl>
                _left.Equals(other._left) &&
                _right.Equals(other._right);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
 }

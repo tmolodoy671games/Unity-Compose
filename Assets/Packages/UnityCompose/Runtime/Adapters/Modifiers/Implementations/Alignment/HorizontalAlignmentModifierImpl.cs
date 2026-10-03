@@ -1,5 +1,7 @@
-﻿using Compose.Net;
+﻿using System;
+using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 using UnityEngine.UIElements;
 
@@ -7,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class HorizontalAlignModifierImpl : BaseUnityModifier<HorizontalAlignModifierImpl>
+internal class HorizontalAlignModifierImpl : UnityModifier<HorizontalAlignModifierImpl>
 {
     private readonly Alignment.Horizontal _align;
 
@@ -16,7 +18,11 @@ internal class HorizontalAlignModifierImpl : BaseUnityModifier<HorizontalAlignMo
         _align = align;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         switch (element.parent.NotNull().style.flexDirection.value)
         {
@@ -27,7 +33,11 @@ internal class HorizontalAlignModifierImpl : BaseUnityModifier<HorizontalAlignMo
         }
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         switch (element.parent.NotNull().style.flexDirection.value)
         {
@@ -38,8 +48,6 @@ internal class HorizontalAlignModifierImpl : BaseUnityModifier<HorizontalAlignMo
         }
     }
 
-    protected override bool Equals(HorizontalAlignModifierImpl other)
-    {
-        return _align == other._align;
-    }
+    protected override bool Equals(HorizontalAlignModifierImpl other) => _align == other._align;
+    public override int GetHashCode() => HashCode.Combine(_align);
 }

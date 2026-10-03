@@ -2,12 +2,13 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerEnterModifierImpl : BaseUnityModifier<OnPointerEnterModifierImpl>
+internal class OnPointerEnterModifierImpl : UnityModifier<OnPointerEnterModifierImpl>
 {
     private readonly Action? _parameterlessOnPointerEnter;
     private readonly Action<PointerMoveInfo>? _onPointerEnter;
@@ -28,13 +29,21 @@ internal class OnPointerEnterModifierImpl : BaseUnityModifier<OnPointerEnterModi
         _pointerId = pointerId;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -44,6 +53,11 @@ internal class OnPointerEnterModifierImpl : BaseUnityModifier<OnPointerEnterModi
     {
         return _onPointerEnter == other._onPointerEnter &&
                _parameterlessOnPointerEnter == other._parameterlessOnPointerEnter;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerEnter, _parameterlessOnPointerEnter);
     }
 
     private void OnPointerEnterEvent(PointerEnterEvent evt)

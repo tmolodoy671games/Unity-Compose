@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class SizeModifierImpl : BaseUnityModifier<SizeModifierImpl>
+internal class SizeModifierImpl : UnityModifier<SizeModifierImpl>
 {
     private readonly Optional<Dp> _width;
     private readonly Optional<Dp> _height;
@@ -17,7 +19,11 @@ internal class SizeModifierImpl : BaseUnityModifier<SizeModifierImpl>
         _height = height;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (_width.HasValue)
             element.style.width = _width.Value.ToLength();
@@ -25,7 +31,11 @@ internal class SizeModifierImpl : BaseUnityModifier<SizeModifierImpl>
             element.style.height = _height.Value.ToLength();
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (_width.HasValue)
             element.style.width = StyleKeyword.Null;
@@ -37,4 +47,6 @@ internal class SizeModifierImpl : BaseUnityModifier<SizeModifierImpl>
     {
         return _width.Equals(other._width) && _height.Equals(other._height);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_width, _height);
 }

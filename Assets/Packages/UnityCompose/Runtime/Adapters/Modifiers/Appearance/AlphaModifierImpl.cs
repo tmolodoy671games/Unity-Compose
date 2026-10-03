@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine.UIElements;
+using HashCode = System.HashCode;
 
 namespace UnityCompose;
 
-internal class AlphaModifierImpl : BaseUnityModifier<AlphaModifierImpl>
+internal class AlphaModifierImpl : UnityModifier<AlphaModifierImpl>
 {
     private readonly float _alpha;
 
@@ -15,12 +17,20 @@ internal class AlphaModifierImpl : BaseUnityModifier<AlphaModifierImpl>
         _alpha = alpha;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.opacity = _alpha;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.opacity = StyleKeyword.Null;
     }
@@ -29,4 +39,6 @@ internal class AlphaModifierImpl : BaseUnityModifier<AlphaModifierImpl>
     {
         return _alpha.AlmostEquals(other._alpha);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_alpha);
 }

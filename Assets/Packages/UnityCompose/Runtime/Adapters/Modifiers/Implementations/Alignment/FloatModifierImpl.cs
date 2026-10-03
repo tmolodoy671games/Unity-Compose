@@ -1,11 +1,12 @@
 ﻿// ReSharper disable CheckNamespace
 
+using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-
-internal class FloatModifierImpl : BaseUnityModifier<FloatModifierImpl>
+internal class FloatModifierImpl : UnityModifier<FloatModifierImpl>
 {
     public static readonly FloatModifierImpl Instance = new();
 
@@ -13,23 +14,26 @@ internal class FloatModifierImpl : BaseUnityModifier<FloatModifierImpl>
     {
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.position = Position.Absolute;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.position = StyleKeyword.Null;
     }
 
-    protected override bool Equals(FloatModifierImpl other)
-    {
-        return true;
-    }
+    protected override bool Equals(FloatModifierImpl other) => true;
+    public override int GetHashCode() => 1;
 
-    public override string ToString()
-    {
-        return "Float";
-    }
+    public override string ToString() => "Float";
 }

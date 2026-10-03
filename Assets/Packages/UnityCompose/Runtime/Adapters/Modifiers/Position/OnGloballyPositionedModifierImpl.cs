@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnGloballyPositionedModifierImpl : BaseUnityModifier<OnGloballyPositionedModifierImpl>
+internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositionedModifierImpl>
 {
     private readonly Action<LayoutCoordinates> _onGloballyPositioned;
 
@@ -17,7 +17,11 @@ internal class OnGloballyPositionedModifierImpl : BaseUnityModifier<OnGloballyPo
         _onGloballyPositioned = onGloballyPositioned;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (element.UserData().ContainsKey(_onGloballyPositioned)) return;
         var previousCoordinates = Optional.Empty<LayoutCoordinates>();
@@ -33,7 +37,11 @@ internal class OnGloballyPositionedModifierImpl : BaseUnityModifier<OnGloballyPo
         element.UserData()[_onGloballyPositioned] = onGloballyPositionedCallback;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.UserData().GetOrDefault(_onGloballyPositioned, null)?.CastTo<IVisualElementScheduledItem>().Pause();
     }
@@ -42,4 +50,6 @@ internal class OnGloballyPositionedModifierImpl : BaseUnityModifier<OnGloballyPo
     {
         return _onGloballyPositioned == other._onGloballyPositioned;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_onGloballyPositioned);
 }

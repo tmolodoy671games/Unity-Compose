@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
+using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class WeightModifierImpl : BaseUnityModifier<WeightModifierImpl>
+internal class WeightModifierImpl : UnityModifier<WeightModifierImpl>
 {
     private readonly float _weight;
 
@@ -15,18 +17,24 @@ internal class WeightModifierImpl : BaseUnityModifier<WeightModifierImpl>
         _weight = weight;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.flexGrow = _weight;
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.flexGrow = StyleKeyword.Null;
     }
 
-    protected override bool Equals(WeightModifierImpl other)
-    {
-        return _weight.AlmostEquals(other._weight);
-    }
+    protected override bool Equals(WeightModifierImpl other) => _weight.AlmostEquals(other._weight);
+    public override int GetHashCode() => HashCode.Combine(_weight);
 }

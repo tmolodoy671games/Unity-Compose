@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
+internal class MarginModifierImpl : UnityModifier<MarginModifierImpl>
 {
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
@@ -26,9 +28,12 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
         _right = right;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.marginTop = _top.Value.ToLength();
@@ -50,9 +55,12 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
         }
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
-        var element = node.VisualElement();
         if (_top.HasValue)
         {
             element.style.marginTop = StyleKeyword.Null;
@@ -81,4 +89,6 @@ internal class MarginModifierImpl : BaseModifier<MarginModifierImpl>
                _left.Equals(other._left) &&
                _right.Equals(other._right);
     }
+
+    public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
 }

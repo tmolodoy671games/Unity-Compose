@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
@@ -7,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ClickableModifierImpl : BaseUnityModifier<ClickableModifierImpl>
+internal class ClickableModifierImpl : UnityModifier<ClickableModifierImpl>
 {
     private readonly IMutableInteractionSource _interactionSource;
     private readonly EventCallback<PointerDownEvent> _pointerDownCallback;
@@ -24,7 +25,11 @@ internal class ClickableModifierImpl : BaseUnityModifier<ClickableModifierImpl>
         _pointerLeaveCallback = OnPointerLeave;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_pointerDownCallback);
@@ -33,7 +38,11 @@ internal class ClickableModifierImpl : BaseUnityModifier<ClickableModifierImpl>
         element.RegisterCallback(_pointerLeaveCallback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_pointerDownCallback);
@@ -45,6 +54,11 @@ internal class ClickableModifierImpl : BaseUnityModifier<ClickableModifierImpl>
     protected override bool Equals(ClickableModifierImpl other)
     {
         return _interactionSource == other._interactionSource;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_interactionSource);
     }
 
     private void OnPointerDown(PointerDownEvent evt)

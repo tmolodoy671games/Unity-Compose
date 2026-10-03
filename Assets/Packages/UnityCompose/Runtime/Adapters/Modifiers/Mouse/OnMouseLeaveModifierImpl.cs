@@ -1,10 +1,12 @@
 ﻿using System;
 using Compose.Net;
+using NUnit.Framework;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseLeaveModifierImpl : BaseUnityModifier<OnMouseLeaveModifierImpl>
+internal class OnMouseLeaveModifierImpl : UnityModifier<OnMouseLeaveModifierImpl>
 {
     private readonly Action<PointerMoveInfo>? _onMouseLeave;
     private readonly Action? _parameterlessOnMouseLeave;
@@ -22,14 +24,21 @@ internal class OnMouseLeaveModifierImpl : BaseUnityModifier<OnMouseLeaveModifier
         _callback = OnMouseLeave;
     }
 
-
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -40,6 +49,8 @@ internal class OnMouseLeaveModifierImpl : BaseUnityModifier<OnMouseLeaveModifier
         return _onMouseLeave == other._onMouseLeave &&
                _parameterlessOnMouseLeave == other._parameterlessOnMouseLeave;
     }
+
+    public override int GetHashCode() => HashCode.Combine(_onMouseLeave, _parameterlessOnMouseLeave);
 
     private void OnMouseLeave(MouseLeaveEvent evt)
     {

@@ -1,13 +1,15 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class SizeInModifierImpl : BaseUnityModifier<SizeInModifierImpl>
+internal class SizeInModifierImpl : UnityModifier<SizeInModifierImpl>
 {
     private readonly Optional<Dp> _minWidth;
     private readonly Optional<Dp> _maxWidth;
@@ -27,7 +29,11 @@ internal class SizeInModifierImpl : BaseUnityModifier<SizeInModifierImpl>
         _maxHeight = maxHeight;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (_minWidth.HasValue)
             element.style.minWidth = _minWidth.Value.ToLength();
@@ -39,7 +45,11 @@ internal class SizeInModifierImpl : BaseUnityModifier<SizeInModifierImpl>
             element.style.maxHeight = _maxHeight.Value.ToLength();
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         if (_minWidth.HasValue)
             element.style.minWidth = StyleKeyword.Null;
@@ -57,5 +67,10 @@ internal class SizeInModifierImpl : BaseUnityModifier<SizeInModifierImpl>
                _maxWidth.Equals(other._maxWidth) &&
                _minHeight.Equals(other._minHeight) &&
                _maxHeight.Equals(other._maxHeight);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_minWidth, _maxWidth, _minHeight, _maxHeight);
     }
 }

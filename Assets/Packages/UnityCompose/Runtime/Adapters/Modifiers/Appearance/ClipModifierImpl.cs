@@ -1,12 +1,14 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ClipModifierImpl : BaseUnityModifier<ClipModifierImpl>
+internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>
 {
     private readonly Optional<RoundedCornerShape> _shape;
 
@@ -15,7 +17,11 @@ internal class ClipModifierImpl : BaseUnityModifier<ClipModifierImpl>
         _shape = shape;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.overflow = Overflow.Hidden;
         if (!_shape.HasValue)
@@ -27,7 +33,11 @@ internal class ClipModifierImpl : BaseUnityModifier<ClipModifierImpl>
         element.style.borderBottomRightRadius = shapeValue.BottomRight.ToLength();
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.style.overflow = StyleKeyword.Null;
         if (!_shape.HasValue)
@@ -38,8 +48,6 @@ internal class ClipModifierImpl : BaseUnityModifier<ClipModifierImpl>
         element.style.borderBottomRightRadius = StyleKeyword.Null;
     }
 
-    protected override bool Equals(ClipModifierImpl other)
-    {
-        return _shape.Equals(other._shape);
-    }
+    public override int GetHashCode() => HashCode.Combine(_shape);
+    protected override bool Equals(ClipModifierImpl other) => _shape.Equals(other._shape);
 }

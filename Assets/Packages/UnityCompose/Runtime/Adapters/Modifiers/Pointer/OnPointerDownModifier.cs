@@ -2,11 +2,12 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerDownModifierImpl : BaseUnityModifier<OnPointerDownModifierImpl>
+internal class OnPointerDownModifierImpl : UnityModifier<OnPointerDownModifierImpl>
 {
     private readonly Action? _parameterlessOnPointerDown;
     private readonly Action<PointerClickInfo>? _onPointerDown;
@@ -27,13 +28,21 @@ internal class OnPointerDownModifierImpl : BaseUnityModifier<OnPointerDownModifi
         _callback = OnPointerDown;
     }
 
-    public override void Apply(VisualElement element)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Increment();
         element.RegisterCallback(_callback);
     }
 
-    public override void Revert(VisualElement element)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
@@ -44,6 +53,11 @@ internal class OnPointerDownModifierImpl : BaseUnityModifier<OnPointerDownModifi
         return _onPointerDown == other._onPointerDown &&
                _parameterlessOnPointerDown == other._parameterlessOnPointerDown &&
                _button == other._button;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_onPointerDown, _parameterlessOnPointerDown, _button);
     }
 
     private void OnPointerDown(PointerDownEvent it)

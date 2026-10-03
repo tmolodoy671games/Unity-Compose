@@ -2,11 +2,12 @@
 
 using System;
 using Compose.Net;
+using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class CustomModifierImpl : BaseModifier<CustomModifierImpl>
+internal class CustomModifierImpl : UnityModifier<CustomModifierImpl>
 {
     private readonly Action<IReusableComposeNode> _apply;
     private readonly Action<IReusableComposeNode> _revert;
@@ -17,18 +18,24 @@ internal class CustomModifierImpl : BaseModifier<CustomModifierImpl>
         _revert = revert;
     }
 
-    public override void Apply(IReusableComposeNode node)
+    protected override void Apply(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         _apply(node);
     }
 
-    public override void Revert(IReusableComposeNode node)
+    protected override void Revert(
+        UnityReusableComposeNode node,
+        VisualElement element,
+        IStableList<IModifier> newModifiers
+    )
     {
         _revert(node);
     }
 
-    protected override bool Equals(CustomModifierImpl other)
-    {
-        return _apply == other._apply && _revert == other._revert;
-    }
+    protected override bool Equals(CustomModifierImpl other) => _apply == other._apply && _revert == other._revert;
+    public override int GetHashCode() => HashCode.Combine(_apply, _revert);
 }
