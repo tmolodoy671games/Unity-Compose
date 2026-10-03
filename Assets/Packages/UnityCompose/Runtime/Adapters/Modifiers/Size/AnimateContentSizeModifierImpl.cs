@@ -19,9 +19,11 @@ internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSize
 
     private readonly AnimationSpec _animationSpec;
     private readonly EventCallback<GeometryChangedEvent> _callback;
+    private readonly ReferenceKey _key;
 
     public AnimateContentSizeModifierImpl(AnimationSpec animationSpec)
     {
+        _key = new ReferenceKey(this);
         _animationSpec = animationSpec;
         _callback = OnGeometryChanged;
     }
@@ -73,13 +75,13 @@ internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSize
                            + content.parent.resolvedStyle.paddingTop
                            + content.parent.resolvedStyle.paddingBottom;
         var targetSize = new Vector2(targetWidth, targetHeight);
-        var previousRecord = content.UserData().GetOrNull(this)?.CastToOrNull<AnimationRecord>();
+        var previousRecord = content.UserData().GetOrNull(_key)?.CastToOrNull<AnimationRecord>();
         if (previousRecord != null && previousRecord.TargetSize == targetSize)
             return;
         previousRecord?.Animation.Stop();
         var initialWidth = content.parent.resolvedStyle.width;
         var initialHeight = content.parent.resolvedStyle.height;
-        content.UserData()[this] = new AnimationRecord(
+        content.UserData()[_key] = new AnimationRecord(
             TargetSize: targetSize,
             Animation: content.parent.experimental.animation.Start(
                 0,

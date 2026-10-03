@@ -12,6 +12,7 @@ public class ShrinkVerticallyExitTransitionImpl : IExitTransition
     private readonly AnimationSpec _animationSpec;
     private readonly Alignment.Vertical _shrinkTowards;
     private readonly bool _clip;
+    private readonly ReferenceKey _key;
 
     public ShrinkVerticallyExitTransitionImpl(
         AnimationSpec animationSpec,
@@ -20,6 +21,7 @@ public class ShrinkVerticallyExitTransitionImpl : IExitTransition
         Func<float, float> targetHeight
     )
     {
+        _key = new ReferenceKey(this);
         _targetHeight = targetHeight;
         _animationSpec = animationSpec;
         _shrinkTowards = shrinkTowards;
@@ -32,7 +34,7 @@ public class ShrinkVerticallyExitTransitionImpl : IExitTransition
         var element = node.VisualElement();
         var child = element.GetOrNull(0);
         element.style.overflow = Overflow.Hidden;
-        element.UserData()[this] = progress;
+        element.UserData()[_key] = progress;
         if (child == null)
         {
             element.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChanged);
@@ -46,7 +48,7 @@ public class ShrinkVerticallyExitTransitionImpl : IExitTransition
     {
         var element = node.VisualElement();
         element.style.maxHeight = StyleKeyword.None;
-        element.UserData().Remove(this);
+        element.UserData().Remove(_key);
     }
 
     public TimeSpan TotalDuration => _animationSpec.TotalDuration;
@@ -75,7 +77,7 @@ public class ShrinkVerticallyExitTransitionImpl : IExitTransition
         var child = element.GetOrNull(0);
         if (child == null)
             return;
-        var progress = element.UserData().GetOrNull(this) as float? ?? 0f;
+        var progress = element.UserData().GetOrNull(_key) as float? ?? 0f;
         UpdateParentSize(element, progress);
     }
 

@@ -13,6 +13,7 @@ internal class ExpandVerticallyEnterTransitionImpl : IEnterTransition
     private readonly AnimationSpec _animationSpec;
     private readonly Alignment.Vertical _expandFrom;
     private readonly bool _clip;
+    private readonly ReferenceKey _key;
 
     public ExpandVerticallyEnterTransitionImpl(
         AnimationSpec animationSpec,
@@ -21,6 +22,7 @@ internal class ExpandVerticallyEnterTransitionImpl : IEnterTransition
         Func<float, float> initialHeight
     )
     {
+        _key = new ReferenceKey(this);
         _expandFrom = expandFrom;
         _clip = clip;
         _initialHeight = initialHeight;
@@ -32,7 +34,7 @@ internal class ExpandVerticallyEnterTransitionImpl : IEnterTransition
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
         var child = element.GetOrNull(0);
-        element.UserData()[this] = progress;
+        element.UserData()[_key] = progress;
         if (child == null)
         {
             element.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChanged);
@@ -46,7 +48,7 @@ internal class ExpandVerticallyEnterTransitionImpl : IEnterTransition
     {
         var element = node.VisualElement();
         element.style.maxHeight = StyleKeyword.Null;
-        element.UserData().Remove(this);
+        element.UserData().Remove(_key);
     }
 
     public TimeSpan TotalDuration => _animationSpec.TotalDuration;
@@ -75,7 +77,7 @@ internal class ExpandVerticallyEnterTransitionImpl : IEnterTransition
         var child = element.GetOrNull(0);
         if (child == null)
             return;
-        var progress = element.UserData().GetOrNull(this) as float? ?? 0f;
+        var progress = element.UserData().GetOrNull(_key) as float? ?? 0f;
         UpdateParentSize(element, progress);
     }
 

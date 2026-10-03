@@ -11,9 +11,11 @@ namespace UnityCompose;
 internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositionedModifierImpl>
 {
     private readonly Action<LayoutCoordinates> _onGloballyPositioned;
+    private readonly ReferenceKey _key;
 
     public OnGloballyPositionedModifierImpl(Action<LayoutCoordinates> onGloballyPositioned)
     {
+        _key = new ReferenceKey(this);
         _onGloballyPositioned = onGloballyPositioned;
     }
 
@@ -23,7 +25,7 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
         IStableList<IModifier> newModifiers
     )
     {
-        if (element.UserData().ContainsKey(_onGloballyPositioned)) return;
+        if (element.UserData().ContainsKey(_key)) return;
         var previousCoordinates = Optional.Empty<LayoutCoordinates>();
         var callback = () =>
         {
@@ -34,7 +36,7 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
         };
         var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
         callback();
-        element.UserData()[_onGloballyPositioned] = onGloballyPositionedCallback;
+        element.UserData()[_key] = onGloballyPositionedCallback;
     }
 
     protected override void Revert(
@@ -43,7 +45,7 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
         IStableList<IModifier> newModifiers
     )
     {
-        element.UserData().GetOrDefault(_onGloballyPositioned, null)?.CastTo<IVisualElementScheduledItem>().Pause();
+        element.UserData().GetOrDefault(_key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
     }
 
     protected override bool Equals(OnGloballyPositionedModifierImpl other)

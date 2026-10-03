@@ -32,10 +32,10 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         color: Color.white.ToSystemColor(),
                         fontSize: 62.Sp(),
                         modifier: Modifier
-                            .Padding(horizontal: 20.Dp(), vertical: 12.Dp())
+                            .Padding(top: 16.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Background(Color.blue.ToSystemColor())
-                            .Margin(top: 16.Dp())
+                            .Padding(horizontal: 20.Dp(), vertical: 12.Dp())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
                     );
                 }

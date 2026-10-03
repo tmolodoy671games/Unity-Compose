@@ -18,6 +18,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
     private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
+    private readonly ReferenceKey _key;
 
     public VerticalScrollModifierImpl(
         IScrollState state,
@@ -26,6 +27,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         IMutableInteractionSource? interactionSource
     )
     {
+        _key = new ReferenceKey(this);
         _state = state;
         _scrollMultiplier = scrollMultiplier;
         _reverseScrolling = reverseScrolling;
@@ -45,7 +47,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         contentContainer.style.translate = new Vector2(0, _state.Value);
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
-        element.UserData()[this] = true;
+        element.UserData()[_key] = true;
         element.style.overflow = Overflow.Hidden;
     }
 
@@ -58,7 +60,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
     {
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
-        element.UserData().Remove(this);
+        element.UserData().Remove(_key);
         element.style.overflow = Overflow.Visible;
         element.style.width = StyleKeyword.Null;
         contentContainer.UnregisterCallback(_onGeometryChanged);
@@ -79,7 +81,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
     private void OnWheelEvent(WheelEvent evt)
     {
         var element = evt.VisualElement();
-        if (!element.UserData().ContainsKey(this))
+        if (!element.UserData().ContainsKey(_key))
             return;
         _state.ViewportSize = element.contentRect.height;
         var offset = -evt.delta.y;

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>
+internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>, IAppearanceModifier
 {
     private readonly Optional<RoundedCornerShape> _shape;
 

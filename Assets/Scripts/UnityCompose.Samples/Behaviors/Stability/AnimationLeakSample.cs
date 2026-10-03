@@ -51,13 +51,13 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         color: Color.white.ToSystemColor(),
                         fontSize: 32.Sp(),
                         modifier: Modifier
+                            .Padding(top: 32.Dp())
                             .Background(Color.blue.ToSystemColor())
                             .Padding(
                                 horizontal: 32.Dp() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Dp(),
                                 vertical: 16.Dp()
                             )
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .Margin(top: 32.Dp())
                             .OnClick(() => showMovingSquare.Value = !showMovingSquare.Value)
                             .OnMouseEnter(() => isHovered.Value = true)
                             .OnMouseLeave(() => isHovered.Value = false)

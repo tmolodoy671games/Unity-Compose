@@ -18,6 +18,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
     private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
+    private readonly ReferenceKey _key;
 
     public HorizontalScrollModifierImpl(
         IScrollState state,
@@ -26,6 +27,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IMutableInteractionSource? interactionSource
     )
     {
+        _key = new ReferenceKey(this);
         _state = state;
         _scrollMultiplier = scrollMultiplier;
         _reverseScrolling = reverseScrolling;
@@ -46,7 +48,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         contentContainer.style.translate = new Vector2(_state.Value, 0);
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
-        element.UserData()[this] = true;
+        element.UserData()[_key] = true;
         element.style.overflow = Overflow.Hidden;
     }
 
@@ -59,7 +61,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     {
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
-        element.UserData().Remove(this);
+        element.UserData().Remove(_key);
         element.style.overflow = Overflow.Visible;
         element.style.height = StyleKeyword.Null;
         contentContainer.UnregisterCallback(_onGeometryChanged);
@@ -81,7 +83,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     private void OnWheelEvent(WheelEvent evt)
     {
         var element = evt.VisualElement();
-        if (!element.UserData().ContainsKey(this))
+        if (!element.UserData().ContainsKey(_key))
             return;
         _state.ViewportSize = element.contentRect.width;
         var offset = -evt.delta.y;

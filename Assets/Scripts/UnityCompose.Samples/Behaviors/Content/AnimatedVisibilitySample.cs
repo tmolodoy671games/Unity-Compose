@@ -39,8 +39,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                             "Text",
                             fontSize: 64.Sp(),
                             modifier: Modifier
+                                .Padding(16.Dp())
                                 .Background(Color.lightBlue.ToSystemColor())
-                                .Margin(16.Dp())
                         )
                     );
                 }

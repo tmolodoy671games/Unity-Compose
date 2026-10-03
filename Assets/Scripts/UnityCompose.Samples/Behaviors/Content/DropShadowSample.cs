@@ -28,7 +28,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 content: () =>
                 {
                     var hasShadow = Remember(() => MutableStateOf(true));
-                    var tween = Tween(1_000);
+                    var tween = Tween(5_000);
                     Spacer(
                         Modifier
                             .Size(100.Dp())
@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                 shape: RoundedCornerShape(0.Dp()),
                                 shadow: new Shadow(
                                     Radius: AnimateFloatAsState(64 * hasShadow.Value.ToInt(), tween).Value.Dp(),
-                                    Color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color()).Value
+                                    Color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
                                         .ToSystemColor(),
                                     Offset: new Offset()
                                 )
@@ -48,10 +48,17 @@ namespace UnityCompose.Samples.Behaviors.Content
                         fontSize: 32.Sp(),
                         color: Color.white.ToSystemColor(),
                         modifier: Modifier
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
                             .Background(Color.royalBlue.ToSystemColor())
                             .Padding(16.Dp())
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
+                            .Padding(top: 16.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .Margin(top: 16.Dp())
                             .OnClick(() => hasShadow.Value = !hasShadow.Value)
                     );
                 }

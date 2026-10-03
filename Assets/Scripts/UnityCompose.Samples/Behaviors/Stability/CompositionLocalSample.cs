@@ -42,20 +42,14 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         color: Color.white.ToSystemColor(),
                         fontSize: 32.Sp(),
                         modifier: Modifier
+                            .Padding(top: 80.Dp())
                             .Background(Color.blue.ToSystemColor())
                             .Padding(all: 32.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
-                            .Margin(top: 80.Dp())
                     );
                 }
             );
-        }
-
-        [Composable]
-        private static void OtherSampleReader(bool firstValue, bool secondValue)
-        {
-            Debug.Log($"{Time.frameCount}: {firstValue} vs {secondValue}");
         }
 
         [Composable]

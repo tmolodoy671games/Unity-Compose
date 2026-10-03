@@ -62,11 +62,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         text: $"Clicked {secondCount.Value} times",
                                         textAlign: TextAlign.MiddleCenter,
                                         modifier: Modifier
+                                            .Padding(top: 16.Dp())
                                             .FillMaxWidth()
                                             .Background(Color.green.ToSystemColor())
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
-                                            .Margin(top: 16.Dp())
                                             .OnClick(() => secondCount.Value++)
                                             .TestTag("second-button")
                                     );
@@ -74,11 +74,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         text: "Switch",
                                         textAlign: TextAlign.MiddleCenter,
                                         modifier: Modifier
+                                            .Padding(top: 16.Dp())
                                             .FillMaxWidth()
                                             .Background(Color.blue.ToSystemColor())
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
-                                            .Margin(top: 16.Dp())
                                             .OnClick(() => showFirst.Value = !showFirst.Value)
                                             .TestTag("switch-button")
                                     );

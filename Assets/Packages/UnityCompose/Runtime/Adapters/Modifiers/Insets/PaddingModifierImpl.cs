@@ -1,19 +1,28 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using System.Runtime.CompilerServices;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
 internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
 {
+    private enum PaddingType
+    {
+        Padding,
+        Margin,
+    }
+
     private readonly Optional<Dp> _top;
     private readonly Optional<Dp> _bottom;
     private readonly Optional<Dp> _left;
     private readonly Optional<Dp> _right;
+    private readonly ReferenceKey _key;
 
     public PaddingModifierImpl(
         Optional<Dp> top,
@@ -22,6 +31,7 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         Optional<Dp> right
     )
     {
+        _key = new ReferenceKey(this);
         _top = top;
         _bottom = bottom;
         _left = left;
@@ -34,25 +44,20 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
+        var paddingType = GetPaddingType(this, newModifiers);
+        element.UserData()[_key] = paddingType;
+
         if (_top.HasValue)
-        {
-            element.style.paddingTop = _top.Value.ToLength();
-        }
+            AddTop(element, paddingType, _top.Value.Value);
 
         if (_bottom.HasValue)
-        {
-            element.style.paddingBottom = _bottom.Value.ToLength();
-        }
+            AddBottom(element, paddingType, _bottom.Value.Value);
 
         if (_left.HasValue)
-        {
-            element.style.paddingLeft = _left.Value.ToLength();
-        }
+            AddLeft(element, paddingType, _left.Value.Value);
 
         if (_right.HasValue)
-        {
-            element.style.paddingRight = _right.Value.ToLength();
-        }
+            AddRight(element, paddingType, _right.Value.Value);
     }
 
     protected override void Revert(
@@ -61,25 +66,74 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
+        var paddingType =
+            element.UserData().GetOrNull(_key) as PaddingType?
+            ?? PaddingType.Padding;
+
         if (_top.HasValue)
-        {
-            element.style.paddingTop = StyleKeyword.Null;
-        }
+            AddTop(element, paddingType, -_top.Value.Value);
 
         if (_bottom.HasValue)
-        {
-            element.style.paddingBottom = StyleKeyword.Null;
-        }
+            AddBottom(element, paddingType, -_bottom.Value.Value);
 
         if (_left.HasValue)
-        {
-            element.style.paddingLeft = StyleKeyword.Null;
-        }
+            AddLeft(element, paddingType, -_left.Value.Value);
 
         if (_right.HasValue)
-        {
-            element.style.paddingRight = StyleKeyword.Null;
-        }
+            AddRight(element, paddingType, -_right.Value.Value);
+    }
+
+    private static void AddTop(
+        VisualElement element,
+        PaddingType paddingType,
+        float value
+    )
+    {
+        if (paddingType == PaddingType.Padding)
+            element.style.paddingTop = element.style.paddingTop.value.value + value;
+        else
+            element.style.marginTop = element.style.marginTop.value.value + value;
+    }
+
+    private static void AddBottom(
+        VisualElement element,
+        PaddingType paddingType,
+        float value)
+    {
+        if (paddingType == PaddingType.Padding)
+            element.style.paddingBottom = element.style.paddingBottom.value.value + value;
+        else
+            element.style.marginBottom = element.style.marginBottom.value.value + value;
+    }
+
+    private static void AddLeft(
+        VisualElement element,
+        PaddingType paddingType,
+        float value)
+    {
+        if (paddingType == PaddingType.Padding)
+            element.style.paddingLeft = element.style.paddingLeft.value.value + value;
+        else
+            element.style.marginLeft = element.style.marginLeft.value.value + value;
+    }
+
+    private static void AddRight(
+        VisualElement element,
+        PaddingType paddingType,
+        float value)
+    {
+        if (paddingType == PaddingType.Padding)
+            element.style.paddingRight = element.style.paddingRight.value.value + value;
+        else
+            element.style.marginRight = element.style.marginRight.value.value + value;
+    }
+
+    protected override bool Equals(IStableList<IModifier> modifiers, PaddingModifierImpl other,
+        IStableList<IModifier> otherModifiers)
+    {
+        var type = GetPaddingType(this, modifiers);
+        var otherType = GetPaddingType(other, otherModifiers);
+        return type == otherType && Equals(other);
     }
 
     protected override bool Equals(PaddingModifierImpl other)
@@ -91,4 +145,51 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
     }
 
     public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
+
+    private static PaddingType GetPaddingType(PaddingModifierImpl modifier, IStableList<IModifier> newModifiers)
+    {
+        var index = -1;
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            if (newModifiers[i] == modifier)
+            {
+                index = i;
+                break;
+            }
+        }
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            if (i >= index)
+                return PaddingType.Margin;
+            if (newModifiers[i] is not IAppearanceModifier)
+                continue;
+            return PaddingType.Padding;
+        }
+
+        return PaddingType.Margin;
+    }
+}
+
+internal class ReferenceKey
+{
+    private readonly object? _reference;
+
+    public ReferenceKey(object? reference)
+    {
+        _reference = reference;
+    }
+
+    public override int GetHashCode()
+    {
+        return RuntimeHelpers.GetHashCode(_reference);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+            return false;
+        if (obj.GetType() != GetType())
+            return false;
+        return ReferenceEquals(_reference, obj.CastTo<ReferenceKey>()._reference);
+    }
 }

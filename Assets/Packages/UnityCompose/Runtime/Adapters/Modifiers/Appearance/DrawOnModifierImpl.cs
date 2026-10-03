@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DrawOnModifierImpl : BaseModifier<DrawOnModifierImpl>
+internal class DrawOnModifierImpl : BaseModifier<DrawOnModifierImpl>, IAppearanceModifier
 {
     private readonly Action<IDrawScope> _onDraw;
     private readonly Action<MeshGenerationContext> _generateVisualContent;

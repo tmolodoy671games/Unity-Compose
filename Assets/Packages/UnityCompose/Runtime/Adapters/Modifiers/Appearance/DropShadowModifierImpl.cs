@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>
+internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>, IAppearanceModifier
 {
     private readonly RoundedCornerShape _shape;
     private readonly Compose.Net.Shadow _shadow;

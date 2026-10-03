@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
 using Compose.Net;
+using SharpExtensions;
 using StableCollections;
 using UnityEngine.UIElements;
 
@@ -44,4 +45,8 @@ public abstract class UnityModifier<T> : BaseModifier<T> where T : UnityModifier
         VisualElement element,
         IStableList<IModifier> newModifiers
     );
+}
+
+public interface IAppearanceModifier : IModifier
+{
 }

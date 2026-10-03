@@ -42,6 +42,11 @@ namespace UnityCompose
             }
         }
 
+        private void OnDestroy()
+        {
+            _instance = null;
+        }
+
         private void Update()
         {
             _invalidator.Tick();

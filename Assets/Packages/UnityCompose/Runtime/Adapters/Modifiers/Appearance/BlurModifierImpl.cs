@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>
+internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>, IAppearanceModifier
 {
     private readonly float _strength;
 

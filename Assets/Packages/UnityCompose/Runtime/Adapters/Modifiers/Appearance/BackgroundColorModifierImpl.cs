@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifierImpl>
+internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifierImpl>, IAppearanceModifier
 {
     private readonly Color _backgroundColor;
     private readonly Optional<RoundedCornerShape> _shape;

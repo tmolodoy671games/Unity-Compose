@@ -8,7 +8,7 @@ using HashCode = System.HashCode;
 
 namespace UnityCompose;
 
-internal class AlphaModifierImpl : UnityModifier<AlphaModifierImpl>
+internal class AlphaModifierImpl : UnityModifier<AlphaModifierImpl>, IAppearanceModifier
 {
     private readonly float _alpha;
 

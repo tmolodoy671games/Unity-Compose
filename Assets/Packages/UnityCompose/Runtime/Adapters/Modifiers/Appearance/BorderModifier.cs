@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>
+internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>, IAppearanceModifier
 {
     private readonly Dp _borderWidth;
     private readonly Color _borderColor;

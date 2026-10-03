@@ -19,10 +19,10 @@ public static partial class UnityComposeFunctions
             key: key,
             effect: () =>
             {
-                var coroutineInstance = ComposeInvalidatorHolder.Instance.StartCoroutine(coroutine());
+                var coroutineInstance = ComposeInvalidatorHolder.Instance?.StartCoroutine(coroutine());
                 return OnDispose(() =>
                 {
-                    ComposeInvalidatorHolder.Instance.StopCoroutine(coroutineInstance);
+                    ComposeInvalidatorHolder.Instance?.StopCoroutine(coroutineInstance);
                 });
             }
         );
