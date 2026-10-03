@@ -10,7 +10,7 @@ using UnityEngine.UIElements.Experimental;
 
 namespace UnityCompose;
 
-internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSizeModifierImpl>
+internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSizeModifierImpl>, IAppearanceModifier
 {
     private record AnimationRecord(
         ValueAnimation<float> Animation,

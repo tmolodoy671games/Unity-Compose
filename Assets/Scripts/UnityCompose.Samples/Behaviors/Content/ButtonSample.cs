@@ -40,6 +40,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                 )
                             )
                             .ClickIndication(interactionSource)
+                            .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value)
                     );
                 }
             );

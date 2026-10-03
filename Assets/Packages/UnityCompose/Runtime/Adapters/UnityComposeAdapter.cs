@@ -20,7 +20,7 @@ public class UnityComposeAdapter : IComposeAdapter
     }
 
     public IDisposable StartTimeCoroutine(IEnumerable<TimeSpan?> coroutine) =>
-        ComposeInvalidatorHolder.StartCoroutine(coroutine);
+        ComposeInvalidatorHolder.StartCoroutineAsDisposable(coroutine);
 
     public int Framerate()
     {

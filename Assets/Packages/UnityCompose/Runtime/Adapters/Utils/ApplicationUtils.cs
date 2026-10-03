@@ -18,4 +18,13 @@ internal static class ApplicationUtils
 #endif
         }
     }
+    
+#if UNITY_EDITOR
+    public static bool IsQuitting =>
+        EditorApplication.isPlayingOrWillChangePlaymode &&
+        !EditorApplication.isPlaying;
+#else
+    public static bool IsQuitting =>
+        Application.isPlaying && !Application.isPlaying;
+#endif
 }

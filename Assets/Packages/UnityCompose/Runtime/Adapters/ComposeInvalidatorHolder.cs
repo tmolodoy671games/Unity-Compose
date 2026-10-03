@@ -5,27 +5,31 @@ using Compose.Net;
 using SharpExtensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // ReSharper disable ArrangeNamespaceBody
 // ReSharper disable CheckNamespace
 
 namespace UnityCompose
 {
+    [DefaultExecutionOrder(-1_000)]
     internal class ComposeInvalidatorHolder : MonoBehaviour
     {
         private static ComposeInvalidatorHolder? _instance;
         private readonly ComposeInvalidator _invalidator = new();
+        private static bool _destroyed = false;
 
-        public static ComposeInvalidatorHolder Instance
+        private static ComposeInvalidatorHolder? Instance
         {
             get
             {
+                if (!ApplicationUtils.IsPlaying || _destroyed)
+                    return null;
                 if (!_instance)
                 {
-                    _instance = GameObject.Find("Coroutine Runner")?.GetComponent<ComposeInvalidatorHolder>() ??
+                    _instance = FindAnyObjectByType<ComposeInvalidatorHolder>() ??
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
-                    if (ApplicationUtils.IsPlaying)
-                        DontDestroyOnLoad(_instance);
+                    DontDestroyOnLoad(_instance);
                 }
 
                 return _instance;
@@ -38,13 +42,21 @@ namespace UnityCompose
             {
                 if (!ApplicationUtils.IsPlaying)
                     return null;
-                return Instance._invalidator;
+                return Instance?._invalidator;
             }
+        }
+
+        private void Awake()
+        {
+            _destroyed = false;
+            _instance = this;
+            DontDestroyOnLoad(this);
         }
 
         private void OnDestroy()
         {
             _instance = null;
+            _destroyed = true;
         }
 
         private void Update()
@@ -52,14 +64,26 @@ namespace UnityCompose
             _invalidator.Tick();
         }
 
-        public static IDisposable StartCoroutine(IEnumerable<TimeSpan?> coroutine)
+        public static IDisposable StartCoroutineAsDisposable(IEnumerable<TimeSpan?>? coroutine)
         {
+            if (Instance == null || coroutine == null)
+                return new CustomDisposable(() => { });
             var coroutineHandle = Instance.StartCoroutine(CoroutineAdapter(coroutine));
-            return new CustomDisposable(() => Instance.StopCoroutine(coroutineHandle));
+            return new CustomDisposable(() => Instance?.StopCoroutine(coroutineHandle));
         }
 
-        private static IEnumerator CoroutineAdapter(IEnumerable<TimeSpan?> coroutine)
+        public static IDisposable StartCoroutineAsDisposable(IEnumerator? coroutine)
         {
+            if (Instance == null || coroutine == null)
+                return new CustomDisposable(() => { });
+            var coroutineInstance = Instance.StartCoroutine(coroutine);
+            return new CustomDisposable(() => Instance?.StopCoroutine(coroutineInstance));
+        }
+
+        private static IEnumerator CoroutineAdapter(IEnumerable<TimeSpan?>? coroutine)
+        {
+            if (coroutine == null)
+                yield break;
             foreach (var step in coroutine)
             {
                 if (step == null)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Compose.Net;
+﻿using Compose.Net;
 using SharpExtensions;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -36,7 +33,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .DropShadow(
                                 shape: RoundedCornerShape(0.Dp()),
                                 shadow: new Shadow(
-                                    Radius: AnimateFloatAsState(64 * hasShadow.Value.ToInt(), tween).Value.Dp(),
+                                    Radius: AnimateFloatAsState(32 * hasShadow.Value.ToInt(), tween).Value.Dp(),
                                     Color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
                                         .ToSystemColor(),
                                     Offset: new Offset()

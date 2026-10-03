@@ -26,9 +26,7 @@ internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        var newScale = element.style.scale.value.value.ToVector2() + new Vector2(_scaleX, _scaleY);
-        var newScaleValue = newScale == Vector2.zero ? StyleKeyword.Null : new StyleScale(newScale);
-        element.style.scale = newScaleValue;
+        element.style.scale = new Vector2(_scaleX, _scaleY);
     }
 
     protected override void Revert(
@@ -37,9 +35,7 @@ internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        var newScale = element.style.scale.value.value.ToVector2() - new Vector2(_scaleX, _scaleY);
-        var newScaleValue = newScale == Vector2.zero ? StyleKeyword.Null : new StyleScale(newScale);
-        element.style.scale = newScaleValue;
+        element.style.scale = StyleKeyword.Null;
     }
 
     protected override bool Equals(ScaleModifierImpl other)
@@ -49,4 +45,12 @@ internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
     }
 
     public override int GetHashCode() => HashCode.Combine(_scaleX, _scaleY);
+
+    private static Vector2 GetScale(VisualElement element)
+    {
+        var scaleValue = element.style.scale;
+        return scaleValue == StyleKeyword.Null || scaleValue == StyleKeyword.None
+            ? Vector2.one
+            : scaleValue.value.value.ToVector2();
+    }
 }

@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 namespace UnityCompose;
 
 [ExecuteAlways]
+[DefaultExecutionOrder(-1)]
 public abstract partial class ComposeUI : MonoBehaviour
 {
     [Composable]
@@ -30,7 +31,7 @@ public abstract partial class ComposeUI : MonoBehaviour
         _composeView?.SetContent(ApplicationUtils.IsPlaying ? Content : Preview);
     }
     
-    private void OnDisable()
+    private void OnDestroy()
     {
         _composeView?.Dispose();
         _composeView = null;

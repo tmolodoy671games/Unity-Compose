@@ -90,9 +90,9 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
     )
     {
         if (paddingType == PaddingType.Padding)
-            element.style.paddingTop = element.style.paddingTop.value.value + value;
+            element.style.paddingTop = NullIfNeed(element.style.paddingTop.value.value + value);
         else
-            element.style.marginTop = element.style.marginTop.value.value + value;
+            element.style.marginTop = NullIfNeed(element.style.marginTop.value.value + value);
     }
 
     private static void AddBottom(
@@ -101,9 +101,9 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         float value)
     {
         if (paddingType == PaddingType.Padding)
-            element.style.paddingBottom = element.style.paddingBottom.value.value + value;
+            element.style.paddingBottom = NullIfNeed(element.style.paddingBottom.value.value + value);
         else
-            element.style.marginBottom = element.style.marginBottom.value.value + value;
+            element.style.marginBottom = NullIfNeed(element.style.marginBottom.value.value + value);
     }
 
     private static void AddLeft(
@@ -112,9 +112,9 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         float value)
     {
         if (paddingType == PaddingType.Padding)
-            element.style.paddingLeft = element.style.paddingLeft.value.value + value;
+            element.style.paddingLeft = NullIfNeed(element.style.paddingLeft.value.value + value);
         else
-            element.style.marginLeft = element.style.marginLeft.value.value + value;
+            element.style.marginLeft = NullIfNeed(element.style.marginLeft.value.value + value);
     }
 
     private static void AddRight(
@@ -123,9 +123,9 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         float value)
     {
         if (paddingType == PaddingType.Padding)
-            element.style.paddingRight = element.style.paddingRight.value.value + value;
+            element.style.paddingRight = NullIfNeed(element.style.paddingRight.value.value + value);
         else
-            element.style.marginRight = element.style.marginRight.value.value + value;
+            element.style.marginRight = NullIfNeed(element.style.marginRight.value.value + value);
     }
 
     protected override bool Equals(IStableList<IModifier> modifiers, PaddingModifierImpl other,
@@ -145,6 +145,11 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
     }
 
     public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
+
+    private static StyleLength NullIfNeed(float value)
+    {
+        return value.AlmostEquals(0f) ? StyleKeyword.Null : value;
+    }
 
     private static PaddingType GetPaddingType(PaddingModifierImpl modifier, IStableList<IModifier> newModifiers)
     {

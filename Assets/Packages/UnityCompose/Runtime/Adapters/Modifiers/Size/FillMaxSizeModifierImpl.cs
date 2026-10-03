@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class FillMaxSizeModifierImpl : UnityModifier<FillMaxSizeModifierImpl>
+internal class FillMaxSizeModifierImpl : UnityModifier<FillMaxSizeModifierImpl>, IAppearanceModifier
 {
     private readonly float _widthFraction;
     private readonly float _heightFraction;

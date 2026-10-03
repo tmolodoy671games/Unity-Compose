@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class SizeInModifierImpl : UnityModifier<SizeInModifierImpl>
+internal class SizeInModifierImpl : UnityModifier<SizeInModifierImpl>, IAppearanceModifier
 {
     private readonly Optional<Dp> _minWidth;
     private readonly Optional<Dp> _maxWidth;
