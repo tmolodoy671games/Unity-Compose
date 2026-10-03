@@ -8,7 +8,7 @@ internal class ReusableNodeFactoryImpl : IReusableNodeFactory
     public IRowNodeFactory Row { get; } = new RowNodeFactoryImpl();
     public IBoxNodeFactory Box { get; } = new BoxNodeFactoryImpl();
     public ISpacerNodeFactory Spacer { get; } = new SpacerNodeFactoryImpl();
-    public IImageNodeFactory Image { get; }
+    public IImageNodeFactory Image { get; } = new ImageNodeFactoryImpl();
     public ITextNodeFactory Text { get; } = new TextNodeFactoryImpl();
     public IAnimatedVisibilityNodeFactory AnimatedVisibility { get; } = new AnimatedVisibilityNodeFactoryImpl();
 }
