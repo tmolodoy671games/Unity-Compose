@@ -43,9 +43,10 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IStableList<IModifier> newModifiers
     )
     {
-        contentContainer.style.flexDirection = FlexDirection.Row;
         contentContainer.RegisterCallback(_onGeometryChanged);
-        contentContainer.style.translate = new Vector2(_state.Value, 0);
+        contentContainer.style.translate = new Vector2(-_state.Value, 0);
+        contentContainer.style.flexShrink = 0;
+        contentContainer.style.flexDirection = FlexDirection.Row;
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[_key] = true;
@@ -63,7 +64,8 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         element.PickingMode().Decrement();
         element.UserData().Remove(_key);
         element.style.overflow = Overflow.Visible;
-        element.style.height = StyleKeyword.Null;
+        contentContainer.style.translate = StyleKeyword.Null;
+        contentContainer.style.flexShrink = StyleKeyword.Null;
         contentContainer.UnregisterCallback(_onGeometryChanged);
     }
 
@@ -83,14 +85,15 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     private void OnWheelEvent(WheelEvent evt)
     {
         var element = evt.VisualElement();
-        if (!element.UserData().ContainsKey(_key))
-            return;
+        // if (!element.UserData().ContainsKey(_key))
+        //     return;
+        evt.StopPropagation();
         _state.ViewportSize = element.contentRect.width;
-        var offset = -evt.delta.y;
+        var offset = -evt.delta.x;
         if (offset.AlmostEquals(0f))
             return;
         var multiplier = _reverseScrolling ? -1 : 1;
-        offset *= multiplier * _scrollMultiplier;
+        offset *= -multiplier * _scrollMultiplier;
         _state.ScrollBy(offset);
         _interactionSource?.Emit(new IScrollInteraction.Scroll(offset));
     }
@@ -99,10 +102,5 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     {
         var element = evt.VisualElement();
         _state.ContentSize = element.contentRect.width;
-        element.style.position = Position.Absolute;
-        if (element.parent == null)
-            return;
-        if (element.parent.style.height == StyleKeyword.Null)
-            element.parent.style.height = element.resolvedStyle.height;
     }
 }

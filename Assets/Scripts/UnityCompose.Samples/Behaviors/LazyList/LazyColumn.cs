@@ -1,5 +1,6 @@
 ﻿using System;
 using Compose.Net;
+using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors.LazyList;
 
@@ -25,9 +26,7 @@ public static partial class LazyColumnFunctions
         var mutableState = state as IMutableLazyListState;
         if (mutableState == null)
             return;
-        Column(
-            verticalArrangement: verticalArrangement,
-            horizontalAlignment: horizontalAlignment,
+        Box(
             modifier: modifier.OrEmpty()
                 .VerticalScroll(state),
             content: () =>
@@ -38,14 +37,27 @@ public static partial class LazyColumnFunctions
                     mutableState.Clear();
                     content(scope);
                 });
-                foreach (var item in mutableState.Items)
-                {
-                    Box(
-                        modifier: Modifier.FillMaxWidth()
-                            .OnGloballyPositioned(it => mutableState.SyncPosition(item.Index, it)),
-                        content: item.Content
-                    );
-                }
+                Column(
+                    verticalArrangement: verticalArrangement,
+                    horizontalAlignment: horizontalAlignment,
+                    modifier: Modifier
+                        .OnGloballyPositioned(it => mutableState.ContentSize = it.Size.Height),
+                    content: () =>
+                    {
+                        foreach (var item in mutableState.Items)
+                        {
+                            Box(
+                                modifier: Modifier.FillMaxWidth()
+                                    .OnGloballyPositioned(it =>
+                                    {
+                                        Debug.Log(it.PositionInParent());
+                                        mutableState.SyncPosition(item.Index, it.PositionInParent().Y);
+                                    }),
+                                content: item.Content
+                            );
+                        }
+                    }
+                );
             }
         );
     }

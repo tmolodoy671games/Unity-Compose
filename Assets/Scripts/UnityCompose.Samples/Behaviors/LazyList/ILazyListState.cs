@@ -11,13 +11,13 @@ public interface ILazyListState : IScrollState
     void ScrollToItem(int index, float scrollOffset = 0);
 }
 
-internal partial interface IMutableLazyListState : ILazyListState
+internal interface IMutableLazyListState : ILazyListState
 {
     IStableList<LazyListItem> Items { get; }
 
     void AddItem(object? key, ComposableContent content);
     void Clear();
-    void SyncPosition(int index, ILayoutCoordinates layout);
+    void SyncPosition(int index, float offset);
 }
 
 internal readonly record struct LazyListItem(
@@ -26,16 +26,47 @@ internal readonly record struct LazyListItem(
     ComposableContent Content
 );
 
-internal partial class LazyListStateImpl : IMutableLazyListState
+internal class LazyListStateImpl : IMutableLazyListState
 {
-    public float Value { get; }
-    public float ViewportSize { get; set; }
-    public float ContentSize { get; set; }
-    public IStableList<LazyListItem> Items { get; }
+    private readonly IMutableStateList<LazyListItem> _items = MutableStateListOf<LazyListItem>();
+    private readonly IMutableStableList<float> _offsets = MutableStateListOf<float>();
+    private readonly IMutableState<float> _value = MutableStateOf(0f);
+    private float _viewportSize;
+    private float _contentSize;
+
+    public float Value => _value.Value;
+
+    public float ViewportSize
+    {
+        get => _viewportSize;
+        set
+        {
+            if (_viewportSize.AlmostEquals(value))
+                return;
+            _viewportSize = value;
+            _value.Value = Clamp(_value.Value);
+        }
+    }
+
+    public float ContentSize
+    {
+        get => _contentSize;
+        set
+        {
+            if (_contentSize.AlmostEquals(value))
+                return;
+            _contentSize = value;
+            _value.Value = Clamp(_value.Value);
+        }
+    }
+
+    public IStableList<LazyListItem> Items => _items;
+
+    private float MaxValue => _contentSize > _viewportSize ? _contentSize - _viewportSize : 0f;
 
     public void ScrollTo(float value)
     {
-        throw new System.NotImplementedException();
+        _value.Value = Clamp(value);
     }
 
     public Task AnimateScrollTo(
@@ -44,26 +75,38 @@ internal partial class LazyListStateImpl : IMutableLazyListState
         Optional<AnimationSpec> animationSpec
     )
     {
-        throw new System.NotImplementedException();
+        ScrollTo(value);
+        return Task.CompletedTask;
     }
 
     public void ScrollToItem(int index, float scrollOffset)
     {
-        throw new System.NotImplementedException();
+        var itemOffset = _offsets.GetOrDefault(index, float.NaN);
+        if (float.IsNaN(itemOffset))
+            return;
+        itemOffset += scrollOffset;
+        ScrollTo(itemOffset);
     }
 
     public void AddItem(object? key, ComposableContent content)
     {
-        throw new System.NotImplementedException();
+        _items.Add(new LazyListItem(_items.Count, key, content));
+        _offsets.Add(float.NaN);
     }
 
     public void Clear()
     {
-        throw new System.NotImplementedException();
+        _items.Clear();
+        _offsets.Clear();
     }
 
-    public void SyncPosition(int index, ILayoutCoordinates layout)
+    public void SyncPosition(int index, float offset)
     {
-        throw new System.NotImplementedException();
+        _offsets[index] = offset;
+    }
+
+    private float Clamp(float value)
+    {
+        return value.Clamp(0, MaxValue);
     }
 }

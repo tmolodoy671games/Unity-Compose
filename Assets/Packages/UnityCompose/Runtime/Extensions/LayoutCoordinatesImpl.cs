@@ -96,6 +96,14 @@ internal sealed class LayoutCoordinatesImpl : ILayoutCoordinates
 
     private VisualElement GetRoot()
     {
-        return _element.panel.visualTree;
+        return _element.panel?.visualTree ?? FindRoot();
+    }
+
+    private VisualElement FindRoot()
+    {
+        var current = _element;
+        while (current.parent != null)
+            current = current.parent;
+        return current;
     }
 }

@@ -23,7 +23,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var scrollState = RememberScrollState();
                     Column(
                         modifier: Modifier
-                            .Width(700.Dp())
+                            .Height(700.Dp())
                             .Background(Color.white.ToSystemColor())
                             .VerticalScroll(scrollState),
                         content: () =>
