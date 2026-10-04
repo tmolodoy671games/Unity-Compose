@@ -4,7 +4,7 @@
 
 namespace UnityCompose.Samples.Behaviors.Content
 {
-    public partial class AnimatedSizeSample : ComposeUI
+    public partial class AnimateContentSizeSample : ComposeUI
     {
         [Composable]
         protected override void Content() => Layout();

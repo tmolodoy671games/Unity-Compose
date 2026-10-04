@@ -10,7 +10,7 @@ using UnityEngine.UIElements.Experimental;
 
 namespace UnityCompose;
 
-internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSizeModifierImpl>, IAppearanceModifier
+internal class AnimateContentSizeModifierImpl : ContentContainerUnityModifier<AnimateContentSizeModifierImpl>, IAppearanceModifier
 {
     private record AnimationRecord(
         ValueAnimation<float> Animation,
@@ -31,21 +31,21 @@ internal class AnimateContentSizeModifierImpl : UnityModifier<AnimateContentSize
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
+        VisualElement contentContainer,
         IStableList<IModifier> newModifiers
     )
     {
-        var contentContainer = node.CastTo<UnityReusableComposeNode>().SetupContentContainer();
         contentContainer.RegisterCallback(_callback);
     }
 
     protected override void Revert(
         UnityReusableComposeNode node,
         VisualElement element,
+        VisualElement contentContainer,
         IStableList<IModifier> newModifiers
     )
     {
         var unityNode = node.CastTo<UnityReusableComposeNode>();
-        var contentContainer = unityNode.SetupContentContainer();
         contentContainer.UnregisterCallback(_callback);
         unityNode.RemoveContentContainer();
     }
