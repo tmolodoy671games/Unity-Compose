@@ -1,4 +1,5 @@
-﻿using Compose.Net;
+﻿using System.Threading;
+using Compose.Net;
 using static UnityCompose.Samples.Behaviors.LazyList.LazyColumnFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -36,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     $"Bla {it}",
                                     fontSize: 64.Sp(),
                                     modifier: Modifier
-                                        .OnClick(() => state.ScrollToItem(it))
+                                        .OnClick(() => state.AnimateScrollToItem(it, CancellationToken.None))
                                 );
                             });
                         }

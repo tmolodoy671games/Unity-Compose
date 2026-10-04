@@ -7,6 +7,9 @@ namespace UnityCompose.Samples.Behaviors.Content
 {
     internal partial class ButtonSample : ComposeUI
     {
+        [SerializeField] private Texture2D texture = null!;
+        [SerializeField] private Material material = null!;
+
         [Composable]
         protected override void Content() => Layout();
 
@@ -14,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors.Content
         protected override void Preview() => Layout();
 
         [Composable]
-        private static void Layout()
+        private void Layout()
         {
             Column(
                 verticalArrangement: Arrangement.Center,
@@ -26,8 +29,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var interactionSource = Remember(MutableInteractionSource);
                     var isHovered = interactionSource.CollectIsHoveredAsState().Value;
                     var shadowProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
-                    Spacer(
-                        Modifier
+                    Box(
+                        modifier: Modifier
                             .Height(200.Dp())
                             .Width(600.Dp())
                             .Background(Color.forestGreen.ToSystemColor())
@@ -36,12 +39,18 @@ namespace UnityCompose.Samples.Behaviors.Content
                                 shape: RoundedCornerShape(16.Dp()),
                                 shadow: Shadow(
                                     spread: 0.Dp(),
-                                    color: Color.LerpUnclamped(new Color(), Color.black, shadowProgress).ToSystemColor(),
+                                    color: Color.LerpUnclamped(new Color(), Color.black, shadowProgress)
+                                        .ToSystemColor(),
                                     radius: 32.Dp() * shadowProgress
                                 )
                             )
                             .ClickIndication(interactionSource)
                             .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value)
+                            .Blur(1),
+                        content: () =>
+                        {
+                            Text("Click me", fontSize: 80.Sp());
+                        }
                     );
                 }
             );

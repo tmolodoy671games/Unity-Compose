@@ -73,7 +73,6 @@ internal class LazyListStateImpl : IMutableLazyListState
 
     public void ScrollTo(float value)
     {
-        // Debug.Log($"{value} vs {Clamp(value)}: {MaxValue}");
         _value.Value = Clamp(value);
     }
 

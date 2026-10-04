@@ -25,7 +25,7 @@ internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>, I
         IStableList<IModifier> newModifiers
     )
     {
-        var shadow = node.SetupShadow();
+        var shadow = node.SetupDrawBehind();
         Init(shadow, _shape, _shadow);
     }
 
@@ -40,7 +40,7 @@ internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>, I
             if (newModifier is DropShadowModifierImpl)
                 return;
         }
-        node.RemoveShadow();
+        node.RemoveDrawBehind();
     }
 
     protected override bool Equals(DropShadowModifierImpl other)

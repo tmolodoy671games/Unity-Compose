@@ -1,5 +1,4 @@
-﻿using System;
-using Compose.Net;
+﻿using Compose.Net;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Implementations;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
@@ -18,9 +17,4 @@ internal class ModifiersFactoryImpl : IModifiersFactory
     public IPositionModifiersFactory Position { get; } = new  PositionModifiersFactoryImpl();
     
     public IModifier TestTag(string tag) => new TestTagModifierImpl(tag);
-
-    public IModifier Custom(object? key, Action<IReusableComposeNode> apply, Action<IReusableComposeNode> revert)
-    {
-        return new CustomModifierImpl(apply, revert);
-    }
 }

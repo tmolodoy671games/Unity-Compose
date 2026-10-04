@@ -8,12 +8,12 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAppearanceModifier
+internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifierImpl>, IAppearanceModifier
 {
     private readonly Action<IDrawScope> _onDraw;
     private readonly Action<MeshGenerationContext> _generateVisualContent;
 
-    public DrawOnModifierImpl(Action<IDrawScope> onDraw)
+    public DrawBehindModifierImpl(Action<IDrawScope> onDraw)
     {
         _onDraw = onDraw;
         _generateVisualContent = GenerateVisualContent;
@@ -39,7 +39,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
         drawOn.generateVisualContent -= _generateVisualContent;
     }
 
-    protected override bool Equals(DrawOnModifierImpl other)
+    protected override bool Equals(DrawBehindModifierImpl other)
     {
         return _onDraw.Equals(other._onDraw) &&
                _generateVisualContent.Equals(other._generateVisualContent);

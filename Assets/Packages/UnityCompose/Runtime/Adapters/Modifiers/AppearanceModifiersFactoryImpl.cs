@@ -30,8 +30,23 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
         return new DropShadowModifierImpl(shape, shadow);
     }
 
+    public IModifier DrawBehind(Action<IDrawScope> onDraw)
+    {
+        return new DrawBehindModifierImpl(onDraw);
+    }
+
+    public IModifier DrawBehind<T>(Action<IDrawScope<T>> onDraw)
+    {
+        return DrawBehind(it => onDraw((IDrawScope<T>)it));
+    }
+
     public IModifier DrawOn(Action<IDrawScope> onDraw)
     {
         return new DrawOnModifierImpl(onDraw);
+    }
+
+    public IModifier DrawOn<T>(Action<IDrawScope<T>> onDraw)
+    {
+        return DrawOn(it => onDraw((IDrawScope<T>)it));
     }
 }

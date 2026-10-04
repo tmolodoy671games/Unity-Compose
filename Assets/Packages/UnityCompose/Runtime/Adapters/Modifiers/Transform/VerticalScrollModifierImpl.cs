@@ -17,7 +17,8 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
     private readonly bool _reverseScrolling;
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
-    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
+    private readonly EventCallback<GeometryChangedEvent> _onElementGeometryChanged;
+    private readonly EventCallback<GeometryChangedEvent> _onContentContainerGeometryChanged;
     private readonly ReferenceKey _key;
 
     public VerticalScrollModifierImpl(
@@ -33,7 +34,8 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         _reverseScrolling = reverseScrolling;
         _interactionSource = interactionSource;
         _callback = OnWheelEvent;
-        _onGeometryChanged = OnGeometryChanged;
+        _onContentContainerGeometryChanged = OnContainerGeometryChanged;
+        _onElementGeometryChanged = OnElementGeometryChanged;
     }
 
     protected override void Apply(
@@ -43,9 +45,10 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         IStableList<IModifier> newModifiers
     )
     {
-        contentContainer.RegisterCallback(_onGeometryChanged);
+        contentContainer.RegisterCallback(_onContentContainerGeometryChanged);
         contentContainer.style.translate = new Vector2(0, -_state.Value);
         contentContainer.style.flexShrink = 0;
+        element.RegisterCallback(_onElementGeometryChanged);
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[_key] = true;
@@ -59,13 +62,14 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         IStableList<IModifier> newModifiers
     )
     {
+        element.UnregisterCallback(_onElementGeometryChanged);
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
         element.UserData().Remove(_key);
         element.style.overflow = Overflow.Visible;
         contentContainer.style.translate = StyleKeyword.Null;
         contentContainer.style.flexShrink = StyleKeyword.Null;
-        contentContainer.UnregisterCallback(_onGeometryChanged);
+        contentContainer.UnregisterCallback(_onContentContainerGeometryChanged);
     }
 
     protected override bool Equals(VerticalScrollModifierImpl other)
@@ -83,11 +87,7 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
 
     private void OnWheelEvent(WheelEvent evt)
     {
-        var element = evt.VisualElement();
         evt.StopPropagation();
-        // if (!element.UserData().ContainsKey(_key))
-        //     return;
-        _state.ViewportSize = element.contentRect.height;
         var offset = -evt.delta.y;
         if (offset.AlmostEquals(0f))
             return;
@@ -97,7 +97,13 @@ internal class VerticalScrollModifierImpl : ContentContainerUnityModifier<Vertic
         _interactionSource?.Emit(new IScrollInteraction.Scroll(offset));
     }
 
-    private void OnGeometryChanged(GeometryChangedEvent evt)
+    private void OnElementGeometryChanged(GeometryChangedEvent evt)
+    {
+        var element = evt.VisualElement();
+        _state.ViewportSize = element.contentRect.height;
+    }
+
+    private void OnContainerGeometryChanged(GeometryChangedEvent evt)
     {
         var element = evt.VisualElement();
         _state.ContentSize = element.contentRect.height;

@@ -144,7 +144,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _root = null;
     }
 
-    public VisualElement SetupShadow()
+    public VisualElement SetupDrawBehind()
     {
         if (_shadow != null)
             return _shadow;
@@ -155,7 +155,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
         return _shadow;
     }
 
-    public void RemoveShadow()
+    public void RemoveDrawBehind()
     {
         if (_shadow == null)
             return;

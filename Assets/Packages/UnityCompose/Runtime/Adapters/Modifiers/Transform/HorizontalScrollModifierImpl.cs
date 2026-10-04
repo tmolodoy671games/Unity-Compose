@@ -17,6 +17,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     private readonly bool _reverseScrolling;
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
+    private readonly EventCallback<GeometryChangedEvent> _onElementGeometryChanged;
     private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
     private readonly ReferenceKey _key;
 
@@ -34,6 +35,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         _interactionSource = interactionSource;
         _callback = OnWheelEvent;
         _onGeometryChanged = OnGeometryChanged;
+        _onElementGeometryChanged = OnElementGeometryChanged;
     }
 
     protected override void Apply(
@@ -49,6 +51,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         contentContainer.style.flexDirection = FlexDirection.Row;
         element.style.overflow = Overflow.Hidden;
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
+        element.RegisterCallback(_onElementGeometryChanged);
         element.PickingMode().Increment();
         element.UserData()[_key] = true;
     }
@@ -68,6 +71,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         element.PickingMode().Decrement();
         element.UserData().Remove(_key);
         element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
+        element.UnregisterCallback(_onElementGeometryChanged);
         element.style.overflow = Overflow.Visible;
     }
 
@@ -86,18 +90,20 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
 
     private void OnWheelEvent(WheelEvent evt)
     {
-        var element = evt.VisualElement();
-        // if (!element.UserData().ContainsKey(_key))
-        //     return;
         evt.StopPropagation();
-        _state.ViewportSize = element.contentRect.width;
-        var offset = -evt.delta.x;
+        var offset = -evt.delta.x - evt.delta.y;
         if (offset.AlmostEquals(0f))
             return;
         var multiplier = _reverseScrolling ? -1 : 1;
         offset *= -multiplier * _scrollMultiplier;
         _state.ScrollBy(offset);
         _interactionSource?.Emit(new IScrollInteraction.Scroll(offset));
+    }
+
+    private void OnElementGeometryChanged(GeometryChangedEvent evt)
+    {
+        var element = evt.VisualElement();
+        _state.ViewportSize = element.contentRect.width;
     }
 
     private void OnGeometryChanged(GeometryChangedEvent evt)

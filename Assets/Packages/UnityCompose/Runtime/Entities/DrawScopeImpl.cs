@@ -10,7 +10,7 @@ using Color = System.Drawing.Color;
 
 namespace UnityCompose;
 
-internal class DrawScopeImpl : IDrawScope
+internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
 {
     private readonly MeshGenerationContext _context;
     private Size _size;
@@ -20,9 +20,10 @@ internal class DrawScopeImpl : IDrawScope
         _context = context;
     }
 
-    public object DrawContext => _context;
+    public MeshGenerationContext Context => _context;
     public Offset Center => _context.visualElement.contentRect.center.ToOffset();
     public Size Size => _context.visualElement.contentRect.size.ToSize();
+    public ILayoutCoordinates Coordinates => _context.visualElement.LayoutCoordinates();
 
     public void DrawLine(
         Color color,
