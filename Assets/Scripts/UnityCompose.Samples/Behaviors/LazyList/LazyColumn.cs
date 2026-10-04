@@ -42,14 +42,14 @@ public static partial class LazyColumnFunctions
                     horizontalAlignment: horizontalAlignment,
                     content: () =>
                     {
-                        foreach (var item in mutableState.Items)
+                        for (var i = 0; i < mutableState.Items.Count; i++)
                         {
+                            var item = mutableState.Items[i];
                             Box(
                                 modifier: Modifier.FillMaxWidth()
-                                    .OnGloballyPositioned(it =>
-                                    {
-                                        mutableState.SyncPosition(item.Index, it.PositionInParent().Y);
-                                    }),
+                                    .OnPlaced(it =>
+                                        mutableState.SyncPosition(item.Index, it.PositionInParent().Y)
+                                    ),
                                 content: item.Content
                             );
                         }

@@ -8,15 +8,15 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositionedModifierImpl>
+internal class OnLayoutRectChangedModifierImpl : UnityModifier<OnLayoutRectChangedModifierImpl>
 {
-    private readonly Action<ILayoutCoordinates> _onGloballyPositioned;
+    private readonly Action<RelativeLayoutBounds> _onLayoutRectChanged;
     private readonly ReferenceKey _key;
 
-    public OnGloballyPositionedModifierImpl(Action<ILayoutCoordinates> onGloballyPositioned)
+    public OnLayoutRectChangedModifierImpl(Action<RelativeLayoutBounds> onLayoutRectChanged)
     {
         _key = new ReferenceKey(this);
-        _onGloballyPositioned = onGloballyPositioned;
+        _onLayoutRectChanged = onLayoutRectChanged;
     }
 
     protected override void Apply(
@@ -32,7 +32,7 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
             var newRect = newCoordinates.ToRelativeLayoutBounds();
             if (previousRect.Equals(newRect)) return;
             previousRect = newRect.ToOptional();
-            _onGloballyPositioned(newCoordinates);
+            _onLayoutRectChanged(newRect);
         };
         var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
         callback();
@@ -49,10 +49,10 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
         element.UserData().Remove(_key);
     }
 
-    protected override bool Equals(OnGloballyPositionedModifierImpl other)
+    protected override bool Equals(OnLayoutRectChangedModifierImpl other)
     {
-        return _onGloballyPositioned == other._onGloballyPositioned;
+        return _onLayoutRectChanged == other._onLayoutRectChanged;
     }
 
-    public override int GetHashCode() => HashCode.Combine(_onGloballyPositioned);
+    public override int GetHashCode() => HashCode.Combine(_onLayoutRectChanged);
 }

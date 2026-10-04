@@ -10,8 +10,18 @@ internal class PositionModifiersFactoryImpl : IPositionModifiersFactory
         return new OnGloballyPositionedModifierImpl(onGloballyPositioned);
     }
 
-    public IModifier OnLocallyPositioned(Action<ILayoutCoordinates> onLocallyPositioned)
+    public IModifier OnPlaced(Action<ILayoutCoordinates> onPlaced)
     {
-        return new OnLocallyPositionedModifierImpl(onLocallyPositioned);
+        return new OnPlacedModifierImpl(onPlaced);
+    }
+
+    public IModifier OnSizeChanged(Action<Size> onSizeChanged)
+    {
+        return new OnSizeChangedImpl(onSizeChanged);
+    }
+
+    public IModifier OnLayoutRectChanged(Action<RelativeLayoutBounds> callback)
+    {
+        return new OnLayoutRectChangedModifierImpl(callback);
     }
 }

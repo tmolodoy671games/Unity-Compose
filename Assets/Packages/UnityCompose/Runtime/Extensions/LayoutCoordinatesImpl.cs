@@ -36,11 +36,14 @@ internal sealed class LayoutCoordinatesImpl : ILayoutCoordinates
         Offset relativeToSource
     )
     {
-        var sourceVector = relativeToSource.ToVector2();
         var sourceElement = GetElement(sourceCoordinates);
-        sourceVector = sourceElement.LocalToWorld(sourceVector);
-        sourceVector = _element.WorldToLocal(sourceVector);
-        return sourceVector.ToOffset();
+
+        var point = sourceElement.ChangeCoordinatesTo(
+            _element,
+            relativeToSource.ToVector2()
+        );
+
+        return point.ToOffset();
     }
 
     public Offset ScreenToLocal(

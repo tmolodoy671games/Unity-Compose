@@ -36,11 +36,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     $"Bla {it}",
                                     fontSize: 64.Sp(),
                                     modifier: Modifier
-                                        .OnClick(() =>
-                                        {
-                                            Debug.Log("OnClick");
-                                            state.ScrollToItem(it);
-                                        })
+                                        .OnClick(() => state.ScrollToItem(it))
                                 );
                             });
                         }
