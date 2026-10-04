@@ -9,6 +9,13 @@ namespace UnityCompose.Samples.Behaviors.LazyList;
 public interface ILazyListState : IScrollState
 {
     void ScrollToItem(int index, float scrollOffset = 0);
+
+    Task AnimateScrollToItem(
+        int index,
+        CancellationToken token,
+        float scrollOffset = 0,
+        Optional<AnimationSpec> animationSpec = default
+    );
 }
 
 internal interface IMutableLazyListState : ILazyListState
@@ -66,6 +73,7 @@ internal class LazyListStateImpl : IMutableLazyListState
 
     public void ScrollTo(float value)
     {
+        // Debug.Log($"{value} vs {Clamp(value)}: {MaxValue}");
         _value.Value = Clamp(value);
     }
 
@@ -75,8 +83,28 @@ internal class LazyListStateImpl : IMutableLazyListState
         Optional<AnimationSpec> animationSpec
     )
     {
-        ScrollTo(value);
-        return Task.CompletedTask;
+        return Animate(
+            typeConverter: Mathf.LerpUnclamped,
+            initialValue: _value.Value,
+            targetValue: Clamp(value),
+            token: token,
+            animationSpec: animationSpec,
+            block: ScrollTo
+        );
+    }
+
+    public Task AnimateScrollToItem(
+        int index,
+        CancellationToken token,
+        float scrollOffset = 0,
+        Optional<AnimationSpec> animationSpec = default
+    )
+    {
+        var itemOffset = _offsets.GetOrDefault(index, float.NaN);
+        if (float.IsNaN(itemOffset))
+            return Task.CompletedTask;
+        itemOffset += scrollOffset;
+        return AnimateScrollTo(itemOffset, token, animationSpec);
     }
 
     public void ScrollToItem(int index, float scrollOffset)

@@ -1,4 +1,5 @@
-﻿using Compose.Net;
+﻿using System.Threading;
+using Compose.Net;
 using static UnityCompose.Samples.Behaviors.LazyList.LazyColumnFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
@@ -30,13 +31,13 @@ namespace UnityCompose.Samples.Behaviors.Content
                         content: scope =>
                         {
                             // Scroll
-                            scope.Items(100, it =>
+                            scope.Items(10, it =>
                             {
                                 Text(
                                     $"Bla {it}",
                                     fontSize: 64.Sp(),
                                     modifier: Modifier
-                                        .OnClick(() => state.ScrollToItem(it))
+                                        .OnClick(() => state.AnimateScrollToItem(it, CancellationToken.None))
                                 );
                             });
                         }
