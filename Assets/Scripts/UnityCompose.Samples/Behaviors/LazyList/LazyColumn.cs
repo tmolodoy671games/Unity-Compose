@@ -26,35 +26,72 @@ public static partial class LazyColumnFunctions
         var mutableState = state as IMutableLazyListState;
         if (mutableState == null)
             return;
-        Box(
+        var scope = Remember(mutableState, () => new LazyListScopeImpl(mutableState));
+        SideEffect(content, () =>
+        {
+            mutableState.Clear();
+            content(scope);
+        });
+        Column(
+            verticalArrangement: verticalArrangement,
+            horizontalAlignment: horizontalAlignment,
             modifier: modifier.OrEmpty()
                 .VerticalScroll(state),
             content: () =>
             {
-                var scope = Remember(mutableState, () => new LazyListScopeImpl(mutableState));
-                SideEffect(content, () =>
+                for (var i = 0; i < mutableState.Items.Count; i++)
                 {
-                    mutableState.Clear();
-                    content(scope);
-                });
-                Column(
-                    verticalArrangement: verticalArrangement,
-                    horizontalAlignment: horizontalAlignment,
-                    content: () =>
-                    {
-                        for (var i = 0; i < mutableState.Items.Count; i++)
-                        {
-                            var item = mutableState.Items[i];
-                            Box(
-                                modifier: Modifier.FillMaxWidth()
-                                    .OnPlaced(it =>
-                                        mutableState.SyncPosition(item.Index, it.PositionInParent().Y)
-                                    ),
-                                content: item.Content
-                            );
-                        }
-                    }
-                );
+                    var item = mutableState.Items[i];
+                    Box(
+                        modifier: Modifier.FillMaxWidth()
+                            .OnPlaced(it =>
+                                mutableState.SyncPosition(item.Index, it.PositionInParent().Y)
+                            ),
+                        content: item.Content
+                    );
+                }
+            }
+        );
+    }
+
+    [Composable]
+    public static void LazyRow(
+        Action<ILazyListScope> content,
+        ILazyListState? state = null,
+        IModifier? modifier = null,
+        Alignment.Vertical? verticalAlignment = null,
+        Arrangement.Horizontal? horizontalArrangement = null,
+        bool userScrollEnabled = true
+    )
+    {
+        state ??= RememberLazyListState();
+        var mutableState = state as IMutableLazyListState;
+        if (mutableState == null)
+            return;
+        var scope = Remember(mutableState, () => new LazyListScopeImpl(mutableState));
+        SideEffect(content, () =>
+        {
+            mutableState.Clear();
+            content(scope);
+        });
+        Row(
+            verticalAlignment: verticalAlignment,
+            horizontalArrangement: horizontalArrangement,
+            modifier: modifier.OrEmpty()
+                .HorizontalScroll(state),
+            content: () =>
+            {
+                for (var i = 0; i < mutableState.Items.Count; i++)
+                {
+                    var item = mutableState.Items[i];
+                    Box(
+                        modifier: Modifier.FillMaxWidth()
+                            .OnPlaced(it =>
+                                mutableState.SyncPosition(item.Index, it.PositionInParent().X)
+                            ),
+                        content: item.Content
+                    );
+                }
             }
         );
     }

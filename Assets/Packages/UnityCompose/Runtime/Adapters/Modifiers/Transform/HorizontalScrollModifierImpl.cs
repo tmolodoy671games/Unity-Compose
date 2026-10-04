@@ -47,10 +47,10 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         contentContainer.style.translate = new Vector2(-_state.Value, 0);
         contentContainer.style.flexShrink = 0;
         contentContainer.style.flexDirection = FlexDirection.Row;
+        element.style.overflow = Overflow.Hidden;
         element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
         element.UserData()[_key] = true;
-        element.style.overflow = Overflow.Hidden;
     }
 
     protected override void Revert(
@@ -60,13 +60,15 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IStableList<IModifier> newModifiers
     )
     {
-        element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
-        element.PickingMode().Decrement();
-        element.UserData().Remove(_key);
-        element.style.overflow = Overflow.Visible;
-        contentContainer.style.translate = StyleKeyword.Null;
         contentContainer.style.flexShrink = StyleKeyword.Null;
         contentContainer.UnregisterCallback(_onGeometryChanged);
+        contentContainer.style.translate = StyleKeyword.Null;
+        contentContainer.style.flexDirection = StyleKeyword.Null;
+        
+        element.PickingMode().Decrement();
+        element.UserData().Remove(_key);
+        element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
+        element.style.overflow = Overflow.Visible;
     }
 
     protected override bool Equals(HorizontalScrollModifierImpl other)
