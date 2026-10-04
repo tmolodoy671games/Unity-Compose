@@ -27,18 +27,26 @@ namespace UnityCompose.Samples.Behaviors.Content
         )
         {
             var increment = Remember(() => MutableStateOf(0));
-            SideEffect(targetState, () => increment.Value++);
-            ReusableComposeNode(
-                nodeFactory: () => new UnityReusableComposeNode(new AnimatedContent()),
-                content: () => { },
-                modifier: modifier
+            var lastValues = Remember(() => MutableStableListOf<T>(targetState));
+            SideEffect(targetState, () =>
+            {
+                increment.Value++;
+                lastValues.Add(targetState);
+            });
+            // TODO
+            Box(
+                modifier: modifier,
+                content: () => { }
             );
         }
     }
 
-    internal class AnimatedContent : VisualElement
-    {
-    }
+    internal readonly record struct ValueEntry<T>(
+        T Value,
+        bool IsEntering,
+        bool IsExiting,
+        bool IsIdle
+    );
 
     public readonly record struct ContentTransform(
         IEnterTransition Enter,
