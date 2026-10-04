@@ -40,8 +40,6 @@ public static partial class LazyColumnFunctions
                 Column(
                     verticalArrangement: verticalArrangement,
                     horizontalAlignment: horizontalAlignment,
-                    modifier: Modifier
-                        .OnGloballyPositioned(it => mutableState.ContentSize = it.Size.Height),
                     content: () =>
                     {
                         foreach (var item in mutableState.Items)
@@ -50,7 +48,6 @@ public static partial class LazyColumnFunctions
                                 modifier: Modifier.FillMaxWidth()
                                     .OnGloballyPositioned(it =>
                                     {
-                                        Debug.Log(it.PositionInParent());
                                         mutableState.SyncPosition(item.Index, it.PositionInParent().Y);
                                     }),
                                 content: item.Content
