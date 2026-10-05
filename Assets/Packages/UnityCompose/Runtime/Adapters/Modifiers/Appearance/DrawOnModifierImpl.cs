@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using System.Runtime.CompilerServices;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
@@ -28,6 +29,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
     )
     {
         drawOn.generateVisualContent += _generateVisualContent;
+        drawOn.MarkDirtyRepaint();
     }
 
     protected override void Revert(
@@ -38,6 +40,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
     )
     {
         drawOn.generateVisualContent -= _generateVisualContent;
+        drawOn.MarkDirtyRepaint();
     }
 
     protected override bool Equals(DrawOnModifierImpl other)

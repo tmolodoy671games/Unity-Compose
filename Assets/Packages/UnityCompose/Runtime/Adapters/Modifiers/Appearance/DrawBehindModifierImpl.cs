@@ -27,6 +27,7 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
     )
     {
         drawOn.generateVisualContent += _generateVisualContent;
+        drawOn.MarkDirtyRepaint();
     }
 
     protected override void Revert(
@@ -37,6 +38,7 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
     )
     {
         drawOn.generateVisualContent -= _generateVisualContent;
+        drawOn.MarkDirtyRepaint();
     }
 
     protected override bool Equals(DrawBehindModifierImpl other)

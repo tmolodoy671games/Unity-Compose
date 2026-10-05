@@ -1,15 +1,16 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Drawing;
 using Compose.Net;
 using UnityEngine.UIElements;
+using Color = System.Drawing.Color;
 
 namespace UnityCompose;
 
 public static class Brush
 {
     public static IBrush SolidColor(Color color) => new SolidColorBrushImpl(color);
+    public static IBrush LinearGradient(Color color) => new SolidColorBrushImpl(color);
 }
 
 internal record SolidColorBrushImpl(Color Color) : IBrush

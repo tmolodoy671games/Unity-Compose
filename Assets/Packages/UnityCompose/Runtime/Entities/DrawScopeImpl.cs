@@ -14,12 +14,14 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
 {
     private readonly MeshGenerationContext _context;
     private readonly IPathDrawer _drawer;
+    private readonly Action<Texture2D> _consumeTexture2D;
     private Size _size;
 
     public DrawScopeImpl(MeshGenerationContext context)
     {
         _context = context;
         _drawer = new PathDrawerImpl(_context.painter2D);
+        _consumeTexture2D = it => _context.painter2D.fillTexture = it;
     }
 
     public MeshGenerationContext Context => _context;
@@ -628,7 +630,6 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
 
     #region DrawImage
 
-    
     public void DrawImage(
         IImageBitmap image,
         Offset topLeft = new(),
@@ -638,66 +639,16 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     )
     {
         var drawSize = size.GetOrDefault(image.Size);
-
-        var rect = new Rect(
-            topLeft.X,
-            topLeft.Y,
-            drawSize.Width,
-            drawSize.Height
+        image.Apply(_consumeTexture2D);
+        DrawRectImpl(
+            topLeft: topLeft,
+            size: drawSize,
+            style: style
         );
-
-        Action<Texture> target = texture => DrawTexture(texture, rect, alpha);
-        image.Apply(target);
-    }
-    
-    private void DrawTexture(Texture texture, Rect rect, float alpha)
-    {
-        var mesh = _context.Allocate(
-            vertexCount: 4,
-            indexCount: 6,
-            texture: texture
-        );
-
-        var tint = new UnityEngine.Color(1f, 1f, 1f, alpha);
-
-        mesh.SetNextVertex(new Vertex
-        {
-            position = new Vector3(rect.xMin, rect.yMin, Vertex.nearZ),
-            tint = tint,
-            uv = new Vector2(0f, 1f)
-        });
-
-        mesh.SetNextVertex(new Vertex
-        {
-            position = new Vector3(rect.xMax, rect.yMin, Vertex.nearZ),
-            tint = tint,
-            uv = new Vector2(1f, 1f)
-        });
-
-        mesh.SetNextVertex(new Vertex
-        {
-            position = new Vector3(rect.xMax, rect.yMax, Vertex.nearZ),
-            tint = tint,
-            uv = new Vector2(1f, 0f)
-        });
-
-        mesh.SetNextVertex(new Vertex
-        {
-            position = new Vector3(rect.xMin, rect.yMax, Vertex.nearZ),
-            tint = tint,
-            uv = new Vector2(0f, 0f)
-        });
-
-        mesh.SetNextIndex(0);
-        mesh.SetNextIndex(1);
-        mesh.SetNextIndex(2);
-        mesh.SetNextIndex(2);
-        mesh.SetNextIndex(3);
-        mesh.SetNextIndex(0);
     }
 
     #endregion
-    
+
     private void Draw(DrawStyle? style)
     {
         var painter = _context.painter2D;

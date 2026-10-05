@@ -30,6 +30,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var interactionSource = Remember(MutableInteractionSource);
                     var hovered = interactionSource.CollectIsHoveredAsState().Value;
                     var shadowProgress = AnimateFloatAsState(hovered.ToInt()).Value;
+                    var pressed = interactionSource.CollectIsPressedAsState().Value;
                     Box(
                         alignment: Alignment.Center,
                         modifier: Modifier
@@ -46,13 +47,23 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     radius: 32.Dp() * shadowProgress
                                 )
                             )
-                            .Hoverable(interactionSource)
                             .ClickIndication(interactionSource)
-                            .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value),
+                            .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value)
+                            .DrawOn(it =>
+                            {
+                                var size = new Size(200, 200);
+                                it.DrawImage(
+                                    image: ImageBitmap.ImageResource(texture),
+                                    alpha: 0.5f,
+                                    topLeft: it.Size.ToOffset() / 2 - size.ToOffset() / 2,
+                                    size: size
+                                );
+                            })
+                        ,
                         content: () =>
                         {
                             Text(
-                                text: "Click me",
+                                text: pressed ? "Clicked" : "Click me",
                                 color: Color.white.ToSystemColor(),
                                 fontSize: 80.Sp()
                             );
@@ -88,8 +99,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                 var pressOpacity = 0.8f * AnimateFloatAsState(pressed.ToInt(), pressAnimationSpec).Value;
 
                 return Modifier
-                    .Hoverable(interactionSource, enabled: enabled)
-                    .Clickable(interactionSource, enabled: enabled)
+                    .Hoverable(interactionSource)
+                    .Clickable(interactionSource)
                     .DrawOn(it =>
                     {
                         var size = it.Size * hoveredScale;
