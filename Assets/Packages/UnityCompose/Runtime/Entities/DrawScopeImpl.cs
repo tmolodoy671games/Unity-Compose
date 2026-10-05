@@ -13,17 +13,23 @@ namespace UnityCompose;
 internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
 {
     private readonly MeshGenerationContext _context;
+    private readonly IPathDrawer _drawer;
     private Size _size;
 
     public DrawScopeImpl(MeshGenerationContext context)
     {
         _context = context;
+        _drawer = new PathDrawerImpl(_context.painter2D);
     }
 
     public MeshGenerationContext Context => _context;
+
+
     public Offset Center => _context.visualElement.contentRect.center.ToOffset();
     public Size Size => _context.visualElement.contentRect.size.ToSize();
     public ILayoutCoordinates Coordinates => _context.visualElement.LayoutCoordinates();
+
+    #region DrawLine
 
     public void DrawLine(
         Color color,
@@ -35,36 +41,98 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     )
     {
         var painter = _context.painter2D;
-
-        painter.lineWidth = strokeWidth;
-        painter.lineCap = strokeCap.ToUnityLineCap();
-
         var c = color.ToUnityColor();
         c.a *= alpha;
         painter.strokeColor = c;
+        DrawLineImpl(
+            start: start,
+            end: end,
+            strokeWidth: strokeWidth,
+            strokeCap: strokeCap
+        );
+    }
 
+    public void DrawLine(
+        IBrush brush,
+        Offset start,
+        Offset end,
+        float strokeWidth = 1,
+        StrokeCap strokeCap = StrokeCap.Butt,
+        float alpha = 1
+    )
+    {
+        var painter = _context.painter2D;
+        brush.Apply(painter, alpha, DrawStyle.Stroke(strokeWidth));
+        DrawLineImpl(
+            start: start,
+            end: end,
+            strokeWidth: strokeWidth,
+            strokeCap: strokeCap
+        );
+    }
+
+    private void DrawLineImpl(
+        Offset start,
+        Offset end,
+        float strokeWidth,
+        StrokeCap strokeCap
+    )
+    {
+        var painter = _context.painter2D;
+
+        painter.lineWidth = strokeWidth;
+        painter.lineCap = strokeCap.ToUnityLineCap();
         painter.BeginPath();
         painter.MoveTo(start.ToVector2());
         painter.LineTo(end.ToVector2());
         painter.Stroke();
     }
 
+    #endregion
+
+    #region DrawRect
+
     public void DrawRect(
         Color color,
         Offset topLeft,
         Optional<Size> size,
         float alpha,
-        DrawStyle style
+        DrawStyle? style
+    )
+    {
+        ApplyColor(color, alpha, style ?? DrawStyle.Fill);
+        DrawRectImpl(
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
+
+    public void DrawRect(
+        IBrush brush,
+        Offset topLeft = new(),
+        Optional<Size> size = new(),
+        float alpha = 1,
+        DrawStyle? style = null
     )
     {
         var painter = _context.painter2D;
+        brush.Apply(painter, alpha, style ?? DrawStyle.Fill);
+        DrawRectImpl(
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
 
-        var c = color.ToUnityColor();
-        c.a *= alpha;
-        painter.fillColor = c;
-        painter.strokeColor = c;
+    private void DrawRectImpl(
+        Offset topLeft = new(),
+        Optional<Size> size = new(),
+        DrawStyle? style = null
+    )
+    {
+        var painter = _context.painter2D;
         var resolvedSize = size.GetOrDefault(Size);
-
         var rect = new Rect(
             topLeft.X,
             topLeft.Y,
@@ -79,11 +147,12 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         painter.LineTo(new Vector2(rect.xMin, rect.yMax));
         painter.ClosePath();
 
-        if (style == DrawStyle.Fill)
-            painter.Fill();
-        else
-            painter.Stroke();
+        Draw(style ?? DrawStyle.Fill);
     }
+
+    #endregion
+
+    #region DrawRoundRect
 
     public void DrawRoundRect(
         Color color,
@@ -91,7 +160,41 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         Optional<Size> size,
         float cornerRadius,
         float alpha,
-        DrawStyle style
+        DrawStyle? style
+    )
+    {
+        ApplyColor(color, alpha, style ?? DrawStyle.Fill);
+        DrawRoundRectImpl(
+            topLeft: topLeft,
+            size: size,
+            cornerRadius: cornerRadius,
+            style: style
+        );
+    }
+
+    public void DrawRoundRect(
+        IBrush brush,
+        Offset topLeft,
+        Optional<Size> size,
+        float cornerRadius,
+        float alpha,
+        DrawStyle? style
+    )
+    {
+        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        DrawRoundRectImpl(
+            topLeft: topLeft,
+            size: size,
+            cornerRadius: cornerRadius,
+            style: style
+        );
+    }
+
+    private void DrawRoundRectImpl(
+        Offset topLeft,
+        Optional<Size> size,
+        float cornerRadius,
+        DrawStyle? style
     )
     {
         var painter = _context.painter2D;
@@ -108,10 +211,6 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             0f,
             Mathf.Min(width, height) / 2f
         );
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
-
         painter.BeginPath();
 
         // Top-left
@@ -150,63 +249,96 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         );
 
         painter.ClosePath();
-
-        switch (style)
-        {
-            case DrawStyle.Fill:
-                painter.fillColor = c;
-                painter.Fill();
-                break;
-
-            case DrawStyle.Stroke:
-                painter.strokeColor = c;
-                painter.Stroke();
-                break;
-        }
+        Draw(style ?? DrawStyle.Fill);
     }
+
+    #endregion
+
+    #region DrawCircle
 
     public void DrawCircle(
         Color color,
         Optional<float> radius,
         Optional<Offset> center,
         float alpha,
-        DrawStyle style
+        DrawStyle? style
+    )
+    {
+        ApplyColor(color, alpha, style);
+        DrawCircleImpl(radius, center, style);
+    }
+
+    public void DrawCircle(
+        IBrush brush,
+        Optional<float> radius,
+        Optional<Offset> center,
+        float alpha,
+        DrawStyle? style
+    )
+    {
+        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        DrawCircleImpl(radius, center, style);
+    }
+
+    private void DrawCircleImpl(
+        Optional<float> radius,
+        Optional<Offset> center,
+        DrawStyle? style
     )
     {
         var painter = _context.painter2D;
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
-
         painter.BeginPath();
-
         painter.Arc(
             center.GetOrDefault(Center).ToVector2(),
             radius.GetOrDefault(Size.MinDimension / 2),
             0f,
             360f
         );
-
         painter.ClosePath();
 
-        if (style == DrawStyle.Fill)
-        {
-            painter.fillColor = c;
-            painter.Fill();
-        }
-        else
-        {
-            painter.strokeColor = c;
-            painter.Stroke();
-        }
+        Draw(style ?? DrawStyle.Fill);
     }
+
+    #endregion
+
+    #region DrawOval
 
     public void DrawOval(
         Color color,
         Offset topLeft,
         Optional<Size> size,
         float alpha,
-        DrawStyle style
+        DrawStyle? style
+    )
+    {
+        ApplyColor(color, alpha, style);
+        DrawOvalImpl(
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
+
+    public void DrawOval(
+        IBrush brush,
+        Offset topLeft,
+        Optional<Size> size,
+        float alpha,
+        DrawStyle? style
+    )
+    {
+        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        DrawOvalImpl(
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
+
+    private void DrawOvalImpl(
+        Offset topLeft,
+        Optional<Size> size,
+        DrawStyle? style
     )
     {
         var painter = _context.painter2D;
@@ -216,9 +348,6 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
                 Size.Height - topLeft.Y
             )
         );
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
 
         var rect = new Rect(
             topLeft.X,
@@ -238,17 +367,12 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
 
         painter.ClosePath();
 
-        if (style == DrawStyle.Fill)
-        {
-            painter.fillColor = c;
-            painter.Fill();
-        }
-        else
-        {
-            painter.strokeColor = c;
-            painter.Stroke();
-        }
+        Draw(style);
     }
+
+    #endregion
+
+    #region DrawArc
 
     public void DrawArc(
         Color color,
@@ -258,7 +382,49 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         Offset topLeft,
         Optional<Size> size,
         float alpha,
-        DrawStyle style
+        DrawStyle? style
+    )
+    {
+        ApplyColor(color, alpha, style);
+        DrawArcImpl(
+            startAngle: startAngle,
+            sweepAngle: sweepAngle,
+            useCenter: useCenter,
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
+
+    public void DrawArc(
+        IBrush brush,
+        float startAngle,
+        float sweepAngle,
+        bool useCenter,
+        Offset topLeft,
+        Optional<Size> size,
+        float alpha,
+        DrawStyle? style
+    )
+    {
+        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        DrawArcImpl(
+            startAngle: startAngle,
+            sweepAngle: sweepAngle,
+            useCenter: useCenter,
+            topLeft: topLeft,
+            size: size,
+            style: style
+        );
+    }
+
+    private void DrawArcImpl(
+        float startAngle,
+        float sweepAngle,
+        bool useCenter,
+        Offset topLeft,
+        Optional<Size> size,
+        DrawStyle? style
     )
     {
         var painter = _context.painter2D;
@@ -269,9 +435,6 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
                 Size.Height - topLeft.Y
             )
         );
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
 
         var rect = new Rect(
             topLeft.X,
@@ -298,40 +461,42 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         if (useCenter)
             painter.ClosePath();
 
-        if (style == DrawStyle.Fill)
-        {
-            painter.fillColor = c;
-            painter.Fill();
-        }
-        else
-        {
-            painter.strokeColor = c;
-            painter.Stroke();
-        }
+        Draw(style);
     }
 
-    public void DrawPath(IPath path, Color color, float alpha, DrawStyle style)
+    #endregion
+
+    #region DrawPath
+
+    public void DrawPath(IPath path, Color color, float alpha, DrawStyle? style)
     {
-        var painter = _context.painter2D;
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
-
-        var adapter = new PathDrawerImpl(painter);
-
-        path.Apply(adapter);
-
-        if (style == DrawStyle.Fill)
-        {
-            painter.fillColor = c;
-            painter.Fill();
-        }
-        else
-        {
-            painter.strokeColor = c;
-            painter.Stroke();
-        }
+        ApplyColor(color, alpha, style);
+        DrawPathImpl(path, style);
     }
+
+    public void DrawPath(
+        IPath path,
+        IBrush brush,
+        float alpha = 1,
+        DrawStyle? style = null
+    )
+    {
+        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        DrawPathImpl(path, style);
+    }
+
+    private void DrawPathImpl(
+        IPath path,
+        DrawStyle? style
+    )
+    {
+        path.Apply(_drawer);
+        Draw(style);
+    }
+
+    #endregion
+
+    #region DrawPoints
 
     public void DrawPoints(
         IStableList<Offset> points,
@@ -342,15 +507,48 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         float alpha
     )
     {
+        var style = pointMode switch
+        {
+            PointMode.Individual => DrawStyle.Stroke(strokeWidth),
+            PointMode.Lines => DrawStyle.Stroke(strokeWidth),
+            PointMode.Polygon => DrawStyle.Fill,
+            _ => throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null)
+        };
+        ApplyColor(color, alpha, style);
+        DrawPointsImpl(points, pointMode, strokeWidth, strokeCap);
+    }
+
+    public void DrawPoints(
+        IStableList<Offset> points,
+        PointMode pointMode,
+        IBrush brush,
+        float strokeWidth,
+        StrokeCap strokeCap,
+        float alpha
+    )
+    {
+        var style = pointMode switch
+        {
+            PointMode.Individual => DrawStyle.Stroke(strokeWidth),
+            PointMode.Lines => DrawStyle.Stroke(strokeWidth),
+            PointMode.Polygon => DrawStyle.Fill,
+            _ => throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null)
+        };
+        brush.Apply(_context.painter2D, alpha, style);
+        DrawPointsImpl(points, pointMode, strokeWidth, strokeCap);
+    }
+
+    private void DrawPointsImpl(
+        IStableList<Offset> points,
+        PointMode pointMode,
+        float strokeWidth,
+        StrokeCap strokeCap
+    )
+    {
         if (points.Count == 0)
             return;
 
         var painter = _context.painter2D;
-
-        var c = color.ToUnityColor();
-        c.a *= alpha;
-
-        painter.strokeColor = c;
         painter.lineWidth = strokeWidth;
         painter.lineCap = strokeCap.ToUnityLineCap();
 
@@ -391,6 +589,10 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         }
     }
 
+    #endregion
+
+    #region DrawPointLines
+
     private static void DrawPointLines(
         Painter2D painter,
         IStableList<Offset> points
@@ -420,6 +622,115 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             painter.LineTo(points[i].ToVector2());
 
         painter.Stroke();
+    }
+
+    #endregion
+
+    #region DrawImage
+
+    
+    public void DrawImage(
+        IImageBitmap image,
+        Offset topLeft = new(),
+        float alpha = 1,
+        Optional<Size> size = new(),
+        DrawStyle? style = null
+    )
+    {
+        var drawSize = size.GetOrDefault(image.Size);
+
+        var rect = new Rect(
+            topLeft.X,
+            topLeft.Y,
+            drawSize.Width,
+            drawSize.Height
+        );
+
+        Action<Texture> target = texture => DrawTexture(texture, rect, alpha);
+        image.Apply(target);
+    }
+    
+    private void DrawTexture(Texture texture, Rect rect, float alpha)
+    {
+        var mesh = _context.Allocate(
+            vertexCount: 4,
+            indexCount: 6,
+            texture: texture
+        );
+
+        var tint = new UnityEngine.Color(1f, 1f, 1f, alpha);
+
+        mesh.SetNextVertex(new Vertex
+        {
+            position = new Vector3(rect.xMin, rect.yMin, Vertex.nearZ),
+            tint = tint,
+            uv = new Vector2(0f, 1f)
+        });
+
+        mesh.SetNextVertex(new Vertex
+        {
+            position = new Vector3(rect.xMax, rect.yMin, Vertex.nearZ),
+            tint = tint,
+            uv = new Vector2(1f, 1f)
+        });
+
+        mesh.SetNextVertex(new Vertex
+        {
+            position = new Vector3(rect.xMax, rect.yMax, Vertex.nearZ),
+            tint = tint,
+            uv = new Vector2(1f, 0f)
+        });
+
+        mesh.SetNextVertex(new Vertex
+        {
+            position = new Vector3(rect.xMin, rect.yMax, Vertex.nearZ),
+            tint = tint,
+            uv = new Vector2(0f, 0f)
+        });
+
+        mesh.SetNextIndex(0);
+        mesh.SetNextIndex(1);
+        mesh.SetNextIndex(2);
+        mesh.SetNextIndex(2);
+        mesh.SetNextIndex(3);
+        mesh.SetNextIndex(0);
+    }
+
+    #endregion
+    
+    private void Draw(DrawStyle? style)
+    {
+        var painter = _context.painter2D;
+        switch (style ?? DrawStyle.Fill)
+        {
+            case DrawStyle.FillStyle:
+                painter.Fill();
+                break;
+            case DrawStyle.StrokeStyle stroke:
+                painter.lineWidth = stroke.Width;
+                painter.Stroke();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(style));
+        }
+    }
+
+    private void ApplyColor(Color color, float alpha, DrawStyle? style)
+    {
+        color = color.WithAlpha(alpha);
+        var painter = _context.painter2D;
+        switch (style ?? DrawStyle.Fill)
+        {
+            case DrawStyle.FillStyle:
+                painter.fillColor = color.ToUnityColor();
+                break;
+            case DrawStyle.StrokeStyle stroke:
+                painter.lineWidth = stroke.Width;
+                painter.fillColor = color.ToUnityColor();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(style));
+        }
     }
 }
 

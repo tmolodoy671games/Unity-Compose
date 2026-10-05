@@ -14,23 +14,9 @@ internal class ImageNodeFactoryImpl : IImageNodeFactory
         return new UnityReusableComposeNode(new Image());
     }
 
-    public void Apply(IReusableComposeNode node, object image, ScaleMode scaleMode)
+    public void Apply(IReusableComposeNode node, ScaleMode scaleMode)
     {
         var element = node.VisualElement().CastTo<Image>();
-        switch (image)
-        {
-            case Sprite sprite:
-                element.sprite = sprite;
-                element.image = null;
-                break;
-            case Texture texture:
-                element.sprite = null;
-                element.image = texture; 
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(image), image, "Passing unknown type to Image");
-        }
-
         element.scaleMode = scaleMode.ToUnityScaleMode();
     }
 }

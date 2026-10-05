@@ -1,5 +1,6 @@
 ﻿using Compose.Net;
 using SharpExtensions;
+using UnityEngine.UIElements;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -27,8 +28,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                 content: () =>
                 {
                     var interactionSource = Remember(MutableInteractionSource);
-                    var isHovered = interactionSource.CollectIsHoveredAsState().Value;
-                    var shadowProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
+                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
+                    var shadowProgress = AnimateFloatAsState(hovered.ToInt()).Value;
                     Box(
                         alignment: Alignment.Center,
                         modifier: Modifier
@@ -45,9 +46,9 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     radius: 32.Dp() * shadowProgress
                                 )
                             )
+                            .Hoverable(interactionSource)
                             .ClickIndication(interactionSource)
-                            .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value)
-                            .Blur(1),
+                            .Scale(AnimateFloatAsState(1 + 0.05f * shadowProgress).Value),
                         content: () =>
                         {
                             Text(
