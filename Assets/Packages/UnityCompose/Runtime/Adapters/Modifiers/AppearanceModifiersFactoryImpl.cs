@@ -45,13 +45,23 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
         return DrawBehind(it => onDraw((IDrawScope<T>)it));
     }
 
-    public IModifier DrawOn(Action<IDrawScope> onDraw)
+    public IModifier Draw(Action<IDrawScope> onDraw)
+    {
+        return new DrawModifierImpl(onDraw);
+    }
+
+    public IModifier Draw<T>(Action<IDrawScope<T>> onDraw)
+    {
+        return Draw(it => onDraw((IDrawScope<T>)it));
+    }
+
+    public IModifier DrawOnTop(Action<IDrawScope> onDraw)
     {
         return new DrawOnModifierImpl(onDraw);
     }
 
-    public IModifier DrawOn<T>(Action<IDrawScope<T>> onDraw)
+    public IModifier DrawOnTop<T>(Action<IDrawScope<T>> onDraw)
     {
-        return DrawOn(it => onDraw((IDrawScope<T>)it));
+        return DrawOnTop(it => onDraw((IDrawScope<T>)it));
     }
 }

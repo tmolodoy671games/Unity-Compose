@@ -28,7 +28,16 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
         IStableList<IModifier> newModifiers
     )
     {
-        drawOn.generateVisualContent += _generateVisualContent;
+        var index = 0;
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            var newModifier = newModifiers[i];
+            if (ReferenceEquals(newModifier, this))
+                break;
+            if (newModifier is DrawOnModifierImpl)
+                index++;
+        }
+        drawOn.GenerateVisualContent().Insert(index, _generateVisualContent);
         drawOn.MarkDirtyRepaint();
     }
 
@@ -39,7 +48,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
         IStableList<IModifier> newModifiers
     )
     {
-        drawOn.generateVisualContent -= _generateVisualContent;
+        drawOn.GenerateVisualContent().Remove(_generateVisualContent);
         drawOn.MarkDirtyRepaint();
     }
 

@@ -1,19 +1,21 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using System.Runtime.CompilerServices;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifierImpl>, IAppearanceModifier
+internal class DrawModifierImpl : UnityModifier<DrawModifierImpl>, IAppearanceModifier
 {
     private readonly Action<IDrawScope> _onDraw;
     private readonly Action<MeshGenerationContext> _generateVisualContent;
 
-    public DrawBehindModifierImpl(Action<IDrawScope> onDraw)
+    public DrawModifierImpl(Action<IDrawScope> onDraw)
     {
         _onDraw = onDraw;
         _generateVisualContent = GenerateVisualContent;
@@ -22,7 +24,6 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
-        VisualElement drawBehind,
         IStableList<IModifier> newModifiers
     )
     {
@@ -32,7 +33,7 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
             var newModifier = newModifiers[i];
             if (ReferenceEquals(newModifier, this))
                 break;
-            if (newModifier is DrawBehindModifierImpl)
+            if (newModifier is DrawModifierImpl)
                 index++;
         }
         element.GenerateVisualContent().Insert(index, _generateVisualContent);
@@ -42,7 +43,6 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
     protected override void Revert(
         UnityReusableComposeNode node,
         VisualElement element,
-        VisualElement drawBehind,
         IStableList<IModifier> newModifiers
     )
     {
@@ -50,7 +50,7 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
         element.MarkDirtyRepaint();
     }
 
-    protected override bool Equals(DrawBehindModifierImpl other)
+    protected override bool Equals(DrawModifierImpl other)
     {
         return _onDraw == other._onDraw;
     }
