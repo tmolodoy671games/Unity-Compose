@@ -30,6 +30,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var isHovered = interactionSource.CollectIsHoveredAsState().Value;
                     var shadowProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
                     Box(
+                        alignment: Alignment.Center,
                         modifier: Modifier
                             .Height(200.Dp())
                             .Width(600.Dp())
@@ -49,7 +50,11 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Blur(1),
                         content: () =>
                         {
-                            Text("Click me", fontSize: 80.Sp());
+                            Text(
+                                text: "Click me",
+                                color: Color.white.ToSystemColor(),
+                                fontSize: 80.Sp()
+                            );
                         }
                     );
                 }
