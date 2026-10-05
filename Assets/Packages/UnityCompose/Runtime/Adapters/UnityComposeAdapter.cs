@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Compose.Net;
 using SharpExtensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Nodes;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions;
@@ -36,4 +37,5 @@ public class UnityComposeAdapter : IComposeAdapter
     public IComposeLogger Logger { get; } = new ComposeLoggerImpl();
     public IEnterTransitionsFactory EnterTransitionsFactory { get; } = new EnterTransitionsFactoryImpl();
     public IExitTransitionsFactory ExitTransitionsFactory { get; } = new ExitTransitionsFactoryImpl();
+    public IBrushFactory BrushFactory { get; } = new BrushFactoryImpl();
 }

@@ -2,9 +2,11 @@
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Color = System.Drawing.Color;
+using Rect = Compose.Net.Rect;
 
 // ReSharper disable CheckNamespace
 
@@ -63,8 +65,19 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         float alpha = 1
     )
     {
-        var painter = _context.painter2D;
-        brush.Apply(painter, alpha, DrawStyle.Stroke(strokeWidth));
+        var min = new Offset(
+            X: Math.Min(start.X, end.X),
+            Y: Math.Min(start.Y, end.Y)
+        );
+        var max = new Offset(
+            X: Math.Max(start.X, end.X),
+            Y: Math.Max(start.Y, end.Y)
+        );
+        var contentRect = new Rect(
+            Offset: min,
+            Size: (max - min).ToSize()
+        );
+        brush.Apply(_context, contentRect, alpha, DrawStyle.Stroke(strokeWidth));
         DrawLineImpl(
             start: start,
             end: end,
@@ -118,8 +131,11 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style = null
     )
     {
-        var painter = _context.painter2D;
-        brush.Apply(painter, alpha, style ?? DrawStyle.Fill);
+        var contentRect = new Rect(
+            Offset: topLeft,
+            Size: size.GetOrDefault(Size)
+        );
+        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
         DrawRectImpl(
             topLeft: topLeft,
             size: size,
@@ -135,7 +151,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     {
         var painter = _context.painter2D;
         var resolvedSize = size.GetOrDefault(Size);
-        var rect = new Rect(
+        var rect = new UnityEngine.Rect(
             topLeft.X,
             topLeft.Y,
             resolvedSize.Width,
@@ -183,7 +199,11 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        var contentRect = new Rect(
+            Offset: topLeft,
+            Size: size.GetOrDefault(Size)
+        );
+        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
         DrawRoundRectImpl(
             topLeft: topLeft,
             size: size,
@@ -278,7 +298,13 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        var resolvedRadius = radius.GetOrDefault(Size.MinDimension / 2);
+        var resolvedCenter = center.GetOrDefault(Center);
+        var contentRect = new Rect(
+            Offset: resolvedCenter - new Offset(resolvedRadius, resolvedRadius),
+            Size: new Size(resolvedRadius, resolvedRadius)
+        );
+        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
         DrawCircleImpl(radius, center, style);
     }
 
@@ -329,7 +355,11 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        var contentRect = new Rect(
+            Offset: topLeft,
+            Size: size.GetOrDefault(Size)
+        );
+        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
         DrawOvalImpl(
             topLeft: topLeft,
             size: size,
@@ -351,7 +381,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             )
         );
 
-        var rect = new Rect(
+        var rect = new UnityEngine.Rect(
             topLeft.X,
             topLeft.Y,
             resolvedSize.Width,
@@ -409,7 +439,11 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        var contentRect = new Rect(
+            Offset: topLeft,
+            Size: size.GetOrDefault(Size)
+        );
+        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
         DrawArcImpl(
             startAngle: startAngle,
             sweepAngle: sweepAngle,
@@ -438,7 +472,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             )
         );
 
-        var rect = new Rect(
+        var rect = new UnityEngine.Rect(
             topLeft.X,
             topLeft.Y,
             resolvedSize.Width,
@@ -483,7 +517,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style = null
     )
     {
-        brush.Apply(_context.painter2D, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(_context, new Rect(), alpha, style ?? DrawStyle.Fill);
         DrawPathImpl(path, style);
     }
 
@@ -536,7 +570,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             PointMode.Polygon => DrawStyle.Fill,
             _ => throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null)
         };
-        brush.Apply(_context.painter2D, alpha, style);
+        brush.Apply(_context, new Rect(), alpha, style);
         DrawPointsImpl(points, pointMode, strokeWidth, strokeCap);
     }
 
