@@ -15,6 +15,7 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
     private readonly IScrollState _state;
     private readonly float _scrollMultiplier;
     private readonly bool _reverseScrolling;
+    private readonly bool _userScrollEnabled;
     private readonly IMutableInteractionSource? _interactionSource;
     private readonly EventCallback<WheelEvent> _callback;
     private readonly EventCallback<GeometryChangedEvent> _onElementGeometryChanged;
@@ -25,11 +26,13 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IScrollState state,
         float scrollMultiplier,
         bool reverseScrolling,
+        bool userScrollEnabled,
         IMutableInteractionSource? interactionSource
     )
     {
         _key = new ReferenceKey(this);
         _state = state;
+        _userScrollEnabled = userScrollEnabled;
         _scrollMultiplier = scrollMultiplier;
         _reverseScrolling = reverseScrolling;
         _interactionSource = interactionSource;
@@ -50,7 +53,8 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         contentContainer.style.flexShrink = 0;
         contentContainer.style.flexDirection = FlexDirection.Row;
         element.style.overflow = Overflow.Hidden;
-        element.RegisterCallback(_callback, TrickleDown.TrickleDown);
+        if (_userScrollEnabled)
+            element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.RegisterCallback(_onElementGeometryChanged);
         element.PickingMode().Increment();
         element.UserData()[_key] = true;
@@ -67,10 +71,11 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         contentContainer.UnregisterCallback(_onGeometryChanged);
         contentContainer.style.translate = StyleKeyword.Null;
         contentContainer.style.flexDirection = StyleKeyword.Null;
-        
+
         element.PickingMode().Decrement();
         element.UserData().Remove(_key);
-        element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
+        if (_userScrollEnabled)
+            element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.UnregisterCallback(_onElementGeometryChanged);
         element.style.overflow = Overflow.Visible;
     }

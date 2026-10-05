@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Compose.Net;
-using static UnityCompose.Samples.Behaviors.LazyList.LazyColumnFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
 

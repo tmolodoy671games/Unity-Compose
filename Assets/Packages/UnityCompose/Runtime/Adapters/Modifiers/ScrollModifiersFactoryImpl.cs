@@ -24,19 +24,23 @@ internal class ScrollModifiersFactoryImpl : IScrollModifiersFactory
         IScrollState state,
         float scrollMultiplier,
         bool reverseScrolling,
+        bool userScrollEnabled,
         IMutableInteractionSource? interactionSource
     )
     {
-        return new VerticalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, interactionSource);
+        return new VerticalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, userScrollEnabled,
+            interactionSource);
     }
 
     public IModifier HorizontalScroll(
         IScrollState state,
         float scrollMultiplier,
         bool reverseScrolling,
+        bool userScrollEnabled,
         IMutableInteractionSource? interactionSource
     )
     {
-        return new HorizontalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, interactionSource);
+        return new HorizontalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, userScrollEnabled,
+            interactionSource);
     }
 }
