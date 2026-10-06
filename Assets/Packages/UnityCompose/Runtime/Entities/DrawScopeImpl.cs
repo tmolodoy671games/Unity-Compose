@@ -718,6 +718,20 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     }
 }
 
+public static partial class VisualElementExtensions
+{
+    internal static IDrawScope DrawScope(this MeshGenerationContext context)
+    {
+        const string key = "UnityCompose_DrawScope";
+        var visualElement = context.visualElement;
+        if (visualElement.UserData().TryGet(key, out var cached))
+            return (IDrawScope)cached.NotNull();
+        var scope = new DrawScopeImpl(context);
+        visualElement.UserData()[key] = scope;
+        return scope;
+    }
+}
+
 public static class StrokeCapExtensions
 {
     public static LineCap ToUnityLineCap(this StrokeCap cap) =>

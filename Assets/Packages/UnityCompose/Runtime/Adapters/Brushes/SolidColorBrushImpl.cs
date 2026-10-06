@@ -16,7 +16,7 @@ internal record SolidColorBrushImpl(Color Color) : IBrush
                 ApplyToPainter(painter2D, style);
                 break;
             case UnityReusableComposeNode node:
-                node.VisualElement.style.backgroundColor = color.ToUnityColor();
+                ApplyToVisualElement(node.VisualElement(), style);
                 break;
         }
     }
@@ -26,7 +26,7 @@ internal record SolidColorBrushImpl(Color Color) : IBrush
         switch (target)
         {
             case UnityReusableComposeNode node:
-                node.VisualElement.style.backgroundColor = StyleKeyword.Null;
+                RevertToVisualElement(node.VisualElement(), style);
                 break;
         }
     }
@@ -44,6 +44,33 @@ internal record SolidColorBrushImpl(Color Color) : IBrush
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(style));
+        }
+    }
+
+    private void ApplyToVisualElement(VisualElement element, DrawStyle style)
+    {
+        if (style == DrawStyle.Fill)
+            element.style.backgroundColor = Color.ToUnityColor();
+        else if (style is DrawStyle.FillStyle)
+        {
+            element.style.borderTopColor = Color.ToUnityColor();
+            element.style.borderBottomColor = Color.ToUnityColor();
+            element.style.borderLeftColor = Color.ToUnityColor();
+            element.style.borderRightColor = Color.ToUnityColor();
+        }
+    }
+
+    private void RevertToVisualElement(VisualElement element, DrawStyle style)
+    {
+        
+        if (style == DrawStyle.Fill)
+            element.style.backgroundColor = StyleKeyword.Null;
+        else if (style is DrawStyle.FillStyle)
+        {
+            element.style.borderTopColor = StyleKeyword.Null;
+            element.style.borderBottomColor = StyleKeyword.Null;
+            element.style.borderLeftColor = StyleKeyword.Null;
+            element.style.borderRightColor = StyleKeyword.Null;
         }
     }
 }

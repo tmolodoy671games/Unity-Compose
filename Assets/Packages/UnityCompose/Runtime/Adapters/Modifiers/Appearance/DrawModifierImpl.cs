@@ -62,7 +62,7 @@ internal class DrawModifierImpl : UnityModifier<DrawModifierImpl>, IAppearanceMo
 
     private void GenerateVisualContent(MeshGenerationContext context)
     {
-        IDrawScope scope = new DrawScopeImpl(context);
+        IDrawScope scope = context.DrawScope();
         _onDraw(scope);
     }
 }

@@ -62,7 +62,7 @@ internal class DrawBehindModifierImpl : DrawBehindUnityModifier<DrawBehindModifi
 
     private void GenerateVisualContent(MeshGenerationContext context)
     {
-        IDrawScope scope = new DrawScopeImpl(context);
+        IDrawScope scope = context.DrawScope();
         _onDraw(scope);
     }
 }

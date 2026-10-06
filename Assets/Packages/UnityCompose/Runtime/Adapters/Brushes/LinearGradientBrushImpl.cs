@@ -23,19 +23,7 @@ internal record LinearGradientBrushImpl(
         switch (target)
         {
             case MeshGenerationContext context:
-                switch (style)
-                {
-                    case DrawStyle.FillStyle:
-                        context.painter2D.fillGradient = Create(contentRect, alpha);
-                        break;
-                    case DrawStyle.StrokeStyle strokeStyle:
-                        context.painter2D.lineWidth = strokeStyle.Width;
-                        context.painter2D.strokeFillGradient = Create(contentRect, alpha);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(style));
-                }
-
+                ApplyToContext(context, contentRect, alpha, style);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -45,6 +33,22 @@ internal record LinearGradientBrushImpl(
     public void Revert(object target, Rect contentRect, float alpha, DrawStyle style)
     {
         throw new InvalidOperationException();
+    }
+
+    private void ApplyToContext(MeshGenerationContext context, Rect contentRect, float alpha, DrawStyle style)
+    {
+        switch (style)
+        {
+            case DrawStyle.FillStyle:
+                context.painter2D.fillGradient = Create(contentRect, alpha);
+                break;
+            case DrawStyle.StrokeStyle strokeStyle:
+                context.painter2D.lineWidth = strokeStyle.Width;
+                context.painter2D.strokeFillGradient = Create(contentRect, alpha);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(style));
+        }
     }
 
     private FillGradient Create(Rect contentRect, float alpha)
@@ -87,6 +91,15 @@ internal record LinearGradientBrushImpl(
                 _ => throw new ArgumentOutOfRangeException()
             },
             gradientType = GradientType.Linear
-        };;
+        };
+        ;
+    }
+
+    private void GenerateVisualContent(MeshGenerationContext context)
+    {
+        var scope = context.DrawScope();
+        scope.DrawRoundRect(
+            brush: this
+        );
     }
 }

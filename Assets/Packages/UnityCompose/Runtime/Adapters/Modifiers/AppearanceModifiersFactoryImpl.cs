@@ -10,11 +10,6 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
     public IModifier Alpha(float alpha) => new AlphaModifierImpl(alpha);
     public IModifier Blur(float strength) => new BlurModifierImpl(strength);
 
-    public IModifier Border(Dp borderWidth, Color borderColor)
-    {
-        return new BorderModifierImpl(borderWidth, borderColor.ToUnityColor());
-    }
-
     public IModifier Clip(Optional<Shape> shape)
     {
         return new ClipModifierImpl(shape);
@@ -68,5 +63,10 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
     public IModifier DrawOnTop<T>(Action<IDrawScope<T>> onDraw)
     {
         return DrawOnTop(it => onDraw((IDrawScope<T>)it));
+    }
+
+    public IModifier Border(Dp width, IBrush brush, Shape shape)
+    {
+        return new BorderModifierImpl(width, brush, shape);
     }
 }
