@@ -15,27 +15,27 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
         return new BorderModifierImpl(borderWidth, borderColor.ToUnityColor());
     }
 
-    public IModifier Clip(Optional<RoundedCornerShape> shape)
+    public IModifier Clip(Optional<Shape> shape)
     {
         return new ClipModifierImpl(shape);
     }
 
-    public IModifier Background(Color color)
+    public IModifier Background(Color color, Optional<Shape> shape)
     {
-        return new BackgroundColorModifierImpl(color.ToUnityColor(), default);
+        return new BackgroundColorModifierImpl(color.ToUnityColor(), shape);
     }
 
-    public IModifier Background(IBrush brush, Optional<RoundedCornerShape> shape)
+    public IModifier Background(IBrush brush, Optional<Shape> shape)
     {
         return new BackgroundBrushModifierImpl(brush, shape);
     }
 
-    public IModifier DropShadow(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    public IModifier DropShadow(Shape shape, Compose.Net.Shadow shadow)
     {
         return new DropShadowModifierImpl(shape, shadow);
     }
 
-    public IModifier InnerShadow(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    public IModifier InnerShadow(Shape shape, Compose.Net.Shadow shadow)
     {
         return new InnerShadowModifierImpl(shape, shadow);
     }

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ClickableModifierImpl : UnityModifier<ClickableModifierImpl>
+internal class PressableModifierImpl : UnityModifier<PressableModifierImpl>
 {
     private readonly IMutableInteractionSource _interactionSource;
     private readonly EventCallback<PointerDownEvent> _pointerDownCallback;
@@ -16,7 +16,7 @@ internal class ClickableModifierImpl : UnityModifier<ClickableModifierImpl>
     private readonly EventCallback<PointerCancelEvent> _pointerCancelCallback;
     private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback;
 
-    public ClickableModifierImpl(IMutableInteractionSource interactionSource)
+    public PressableModifierImpl(IMutableInteractionSource interactionSource)
     {
         _interactionSource = interactionSource;
         _pointerDownCallback = OnPointerDown;
@@ -51,7 +51,7 @@ internal class ClickableModifierImpl : UnityModifier<ClickableModifierImpl>
         element.UnregisterCallback(_pointerLeaveCallback);
     }
 
-    protected override bool Equals(ClickableModifierImpl other)
+    protected override bool Equals(PressableModifierImpl other)
     {
         return _interactionSource == other._interactionSource;
     }

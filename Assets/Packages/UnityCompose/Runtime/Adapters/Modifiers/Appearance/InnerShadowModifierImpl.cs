@@ -11,10 +11,10 @@ namespace UnityCompose;
 
 internal class InnerShadowModifierImpl : ForegroundShadowUnityModifier<InnerShadowModifierImpl>, IAppearanceModifier
 {
-    private readonly RoundedCornerShape _shape;
+    private readonly Shape _shape;
     private readonly Compose.Net.Shadow _shadow;
 
-    public InnerShadowModifierImpl(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    public InnerShadowModifierImpl(Shape shape, Compose.Net.Shadow shadow)
     {
         _shape = shape;
         _shadow = shadow;
@@ -54,7 +54,7 @@ internal class InnerShadowModifierImpl : ForegroundShadowUnityModifier<InnerShad
 
     private static void Init(
         VisualElement shadowElement,
-        RoundedCornerShape shape,
+        Shape shape,
         Compose.Net.Shadow shadow
     )
     {

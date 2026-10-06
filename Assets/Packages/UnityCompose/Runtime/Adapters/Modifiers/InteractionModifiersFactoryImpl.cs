@@ -4,9 +4,9 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
 
 internal class InteractionModifiersFactoryImpl : IInteractionModifiersFactory
 {
-    public IModifier Clickable(IMutableInteractionSource interactionSource)
+    public IModifier Pressable(IMutableInteractionSource interactionSource)
     {
-        return new ClickableModifierImpl(interactionSource);
+        return new PressableModifierImpl(interactionSource);
     }
 
     public IModifier Hoverable(IMutableInteractionSource interactionSource)

@@ -13,11 +13,11 @@ namespace UnityCompose;
 internal class BackgroundBrushModifierImpl : UnityModifier<BackgroundBrushModifierImpl>, IAppearanceModifier
 {
     private readonly IBrush _brush;
-    private readonly Optional<RoundedCornerShape> _shape;
+    private readonly Optional<Shape> _shape;
 
     public BackgroundBrushModifierImpl(
         IBrush brush,
-        Optional<RoundedCornerShape> shape
+        Optional<Shape> shape
     )
     {
         _brush = brush;

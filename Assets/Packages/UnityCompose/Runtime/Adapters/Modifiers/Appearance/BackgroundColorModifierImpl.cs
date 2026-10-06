@@ -12,11 +12,11 @@ namespace UnityCompose;
 internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifierImpl>, IAppearanceModifier
 {
     private readonly Color _backgroundColor;
-    private readonly Optional<RoundedCornerShape> _shape;
+    private readonly Optional<Shape> _shape;
 
     public BackgroundColorModifierImpl(
         Color backgroundColor,
-        Optional<RoundedCornerShape> shape
+        Optional<Shape> shape
     )
     {
         _backgroundColor = backgroundColor;

@@ -10,9 +10,9 @@ namespace UnityCompose;
 
 internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>, IAppearanceModifier
 {
-    private readonly Optional<RoundedCornerShape> _shape;
+    private readonly Optional<Shape> _shape;
 
-    public ClipModifierImpl(Optional<RoundedCornerShape> shape)
+    public ClipModifierImpl(Optional<Shape> shape)
     {
         _shape = shape;
     }
