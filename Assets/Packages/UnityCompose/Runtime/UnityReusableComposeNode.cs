@@ -98,7 +98,11 @@ public class UnityReusableComposeNode : IReusableComposeNode
             {
                 width = new Length(100, LengthUnit.Percent),
                 height = new Length(100, LengthUnit.Percent),
-                position = Position.Absolute
+                position = Position.Absolute,
+                top = 0,
+                bottom = 0,
+                left = 0,
+                right = 0,
             }
         };
         _drawOn = _drawOnInstance;
@@ -117,7 +121,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _drawOn = null;
     }
 
-    VisualElement SetupRoot()
+    public VisualElement SetupRoot()
     {
         if (_root != null)
             return _root;
@@ -170,7 +174,20 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_contentContainer != null)
             return _contentContainer;
-        _contentContainerInstance ??= new ContentContainer { pickingMode = PickingMode.Ignore };
+        _contentContainerInstance ??= new ContentContainer
+        {
+            pickingMode = PickingMode.Ignore,
+            style =
+            {
+                width = new Length(100, LengthUnit.Percent),
+                height = new Length(100, LengthUnit.Percent),
+                position = Position.Absolute,
+                top = 0,
+                bottom = 0,
+                left = 0,
+                right = 0,
+            }
+        };
         _contentContainer = _contentContainerInstance;
         var children = VisualElement.Children().ToImmutableStableList();
         foreach (var child in children)

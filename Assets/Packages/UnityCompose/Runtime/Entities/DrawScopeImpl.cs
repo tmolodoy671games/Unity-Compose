@@ -29,9 +29,8 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     public MeshGenerationContext Context => _context;
 
 
-    public Offset Center => _context.visualElement.contentRect.center.ToOffset();
-    public Size Size => _context.visualElement.contentRect.size.ToSize();
-    public ILayoutCoordinates Coordinates => _context.visualElement.LayoutCoordinates();
+    public Offset Center => _context.visualElement.layout.center.ToOffset();
+    public Size Size => _context.visualElement.layout.size.ToSize();
 
     #region DrawLine
 

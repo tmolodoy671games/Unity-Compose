@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 namespace UnityCompose
 {
+    [ExecuteAlways]
     [DefaultExecutionOrder(-1_000)]
     internal class ComposeInvalidatorHolder : MonoBehaviour
     {
@@ -23,13 +24,14 @@ namespace UnityCompose
         {
             get
             {
-                if (!ApplicationUtils.IsPlaying || _destroyed)
+                if ( _destroyed)
                     return null;
                 if (!_instance)
                 {
                     _instance = FindAnyObjectByType<ComposeInvalidatorHolder>() ??
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
                     DontDestroyOnLoad(_instance);
+                    _instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
                 }
 
                 return _instance;
