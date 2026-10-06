@@ -672,7 +672,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     )
     {
         var drawSize = size.GetOrDefault(image.Size);
-        image.Apply(_consumeTexture2D);
+        image.Apply(_context);
         DrawRectImpl(
             topLeft: topLeft,
             size: drawSize,

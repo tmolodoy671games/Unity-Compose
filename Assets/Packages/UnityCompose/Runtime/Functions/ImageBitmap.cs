@@ -2,6 +2,7 @@
 
 using System;
 using Compose.Net;
+using SharpExtensions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,8 +29,9 @@ internal record TextureImageBitmapImpl(
             case Image image:
                 image.image = Texture;
                 break;
-            case Action<Texture> action:
-                action(Texture);
+            case MeshGenerationContext context:
+                if (Texture is Texture2D texture2D)
+                    context.painter2D.fillTexture = texture2D;
                 break;
             default:
                 throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
@@ -50,8 +52,8 @@ internal record Texture2DImageBitmapImpl(
             case Image image:
                 image.image = Texture;
                 break;
-            case Action<Texture2D> action:
-                action(Texture);
+            case MeshGenerationContext context:
+                context.painter2D.fillTexture = Texture;
                 break;
             default:
                 throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
@@ -72,6 +74,9 @@ internal record SpriteImageBitmapImpl(
             case Image image:
                 image.sprite = Sprite;
                 break;
+            case MeshGenerationContext context:
+                context.painter2D.fillTexture = Sprite.texture;
+                break;
             default:
                 throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
         }
@@ -91,6 +96,8 @@ internal record VectorImageBitmapImpl(
             case Image image:
                 image.vectorImage = VectorImage;
                 break;
+            case MeshGenerationContext:
+                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
             default:
                 throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
         }
