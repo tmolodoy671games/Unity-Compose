@@ -16,7 +16,7 @@ internal static class ComposableMethodRewriter
     {
         return assembly.MainModule.Types
             .SelectMany(it => it.Methods)
-            .Any(it => it.IsComposable());
+            .Any(it => it.IsRecompiled());
     }
 
     public static IStableList<DiagnosticMessage> Patch(AssemblyDefinition assembly)
@@ -24,6 +24,7 @@ internal static class ComposableMethodRewriter
         var messages = MutableStableListOf<DiagnosticMessage>();
         if (!CanPatch(assembly))
             return messages;
+        
         foreach (var type in assembly.MainModule.Types)
         {
             // Patching methods
@@ -41,7 +42,7 @@ internal static class ComposableMethodRewriter
                     continue;
                 originalMethod.CopyBodyFrom(recompiledMethod);
             }
-            
+
             // Checking
             var composableMethods = type.Methods
                 .Where(method => method.IsComposable())

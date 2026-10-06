@@ -299,14 +299,15 @@ public class UnityReusableComposeNode : IReusableComposeNode
     private int DrawOnIndex()
     {
         var index = VisualElement.childCount;
-        if (_foregroundShadow != null)
-            index--;
         return index;
     }
 
     private int ForegroundShadowIndex()
     {
-        return VisualElement.childCount;
+        var index = VisualElement.childCount;
+        if (_drawOn != null)
+            index--;
+        return index;
     }
 }
 
