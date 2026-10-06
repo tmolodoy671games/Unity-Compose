@@ -10,8 +10,8 @@ public interface IDrawOnModifier : IModifier
 {
 }
 
-public abstract class DrawOnUnityModifier<T> : UnityModifier<T>,
-    IDrawOnModifier where T : DrawOnUnityModifier<T>
+public abstract class DrawOnTopUnityModifier<T> : UnityModifier<T>,
+    IDrawOnModifier where T : DrawOnTopUnityModifier<T>
 {
     protected sealed override void Apply(
         UnityReusableComposeNode node,
@@ -22,7 +22,7 @@ public abstract class DrawOnUnityModifier<T> : UnityModifier<T>,
         Apply(
             node: node,
             element: element,
-            drawOn: node.SetupDrawOn(),
+            drawOn: node.SetupDrawOnTop(),
             newModifiers: newModifiers
         );
     }
@@ -36,7 +36,7 @@ public abstract class DrawOnUnityModifier<T> : UnityModifier<T>,
         Revert(
             node: node,
             element: element,
-            drawOn: node.SetupDrawOn(),
+            drawOn: node.SetupDrawOnTop(),
             newModifiers: newModifiers
         );
         foreach (var newModifier in newModifiers)
@@ -44,7 +44,7 @@ public abstract class DrawOnUnityModifier<T> : UnityModifier<T>,
             if (newModifier is IDrawOnModifier)
                 return;
         }
-        node.RemoveDrawOn();
+        node.RemoveDrawOnTop();
     }
 
     protected abstract void Apply(

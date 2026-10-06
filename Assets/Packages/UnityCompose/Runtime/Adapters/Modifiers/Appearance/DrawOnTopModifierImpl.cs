@@ -10,12 +10,12 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAppearanceModifier
+internal class DrawOnTopModifierImpl : DrawOnTopUnityModifier<DrawOnTopModifierImpl>, IAppearanceModifier
 {
     private readonly Action<IDrawScope> _onDraw;
     private readonly Action<MeshGenerationContext> _generateVisualContent;
 
-    public DrawOnModifierImpl(Action<IDrawScope> onDraw)
+    public DrawOnTopModifierImpl(Action<IDrawScope> onDraw)
     {
         _onDraw = onDraw;
         _generateVisualContent = GenerateVisualContent;
@@ -34,7 +34,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
             var newModifier = newModifiers[i];
             if (ReferenceEquals(newModifier, this))
                 break;
-            if (newModifier is DrawOnModifierImpl)
+            if (newModifier is DrawOnTopModifierImpl)
                 index++;
         }
         drawOn.GenerateVisualContent().Insert(index, _generateVisualContent);
@@ -52,7 +52,7 @@ internal class DrawOnModifierImpl : DrawOnUnityModifier<DrawOnModifierImpl>, IAp
         drawOn.MarkDirtyRepaint();
     }
 
-    protected override bool Equals(DrawOnModifierImpl other)
+    protected override bool Equals(DrawOnTopModifierImpl other)
     {
         return _onDraw == other._onDraw;
     }

@@ -35,6 +35,11 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
         return new DropShadowModifierImpl(shape, shadow);
     }
 
+    public IModifier InnerShadow(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    {
+        return new InnerShadowModifierImpl(shape, shadow);
+    }
+
     public IModifier DrawBehind(Action<IDrawScope> onDraw)
     {
         return new DrawBehindModifierImpl(onDraw);
@@ -57,7 +62,7 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
 
     public IModifier DrawOnTop(Action<IDrawScope> onDraw)
     {
-        return new DrawOnModifierImpl(onDraw);
+        return new DrawOnTopModifierImpl(onDraw);
     }
 
     public IModifier DrawOnTop<T>(Action<IDrawScope<T>> onDraw)

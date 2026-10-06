@@ -9,12 +9,12 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadowModifierImpl>, IAppearanceModifier
+internal class InnerShadowModifierImpl : ForegroundShadowUnityModifier<InnerShadowModifierImpl>, IAppearanceModifier
 {
     private readonly RoundedCornerShape _shape;
     private readonly Compose.Net.Shadow _shadow;
 
-    public DropShadowModifierImpl(RoundedCornerShape shape, Compose.Net.Shadow shadow)
+    public InnerShadowModifierImpl(RoundedCornerShape shape, Compose.Net.Shadow shadow)
     {
         _shape = shape;
         _shadow = shadow;
@@ -27,6 +27,7 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         IStableList<IModifier> newModifiers
     )
     {
+        element.style.overflow = Overflow.Hidden;
         Init(drawBehind, _shape, _shadow);
     }
 
@@ -37,10 +38,11 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         IStableList<IModifier> newModifiers
     )
     {
+        element.style.overflow = StyleKeyword.Null;
         Revert(drawBehind);
     }
 
-    protected override bool Equals(DropShadowModifierImpl other)
+    protected override bool Equals(InnerShadowModifierImpl other)
     {
         return _shadow.Equals(other._shadow) && _shape.Equals(other._shape);
     }
@@ -60,13 +62,25 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         shadowElement.style.borderTopRightRadius = shape.TopRight.ToLength();
         shadowElement.style.borderBottomLeftRadius = shape.BottomLeft.ToLength();
         shadowElement.style.borderBottomRightRadius = shape.BottomRight.ToLength();
-        shadowElement.style.backgroundColor = shadow.Color.ToUnityColor();
-        shadowElement.style.translate = shadow.Offset.ToVector2();
+        
+        shadowElement.style.borderTopColor = shadow.Color.ToUnityColor();
+        shadowElement.style.borderBottomColor = shadow.Color.ToUnityColor();
+        shadowElement.style.borderLeftColor = shadow.Color.ToUnityColor();
+        shadowElement.style.borderRightColor = shadow.Color.ToUnityColor();
 
-        shadowElement.style.top = (-shadow.Spread).ToLength();
-        shadowElement.style.bottom = (-shadow.Spread).ToLength();
-        shadowElement.style.left = (-shadow.Spread).ToLength();
-        shadowElement.style.right = (-shadow.Spread).ToLength();
+        var borderWidth = shadow.Spread * 2;
+        shadowElement.style.borderTopWidth = borderWidth.Value;
+        shadowElement.style.borderBottomWidth = borderWidth.Value;
+        shadowElement.style.borderLeftWidth = borderWidth.Value;
+        shadowElement.style.borderRightWidth = borderWidth.Value;
+
+        var offsetWidth = (-borderWidth / 2).ToLength();
+        shadowElement.style.top = offsetWidth;
+        shadowElement.style.bottom = offsetWidth;
+        shadowElement.style.left = offsetWidth;
+        shadowElement.style.right = offsetWidth;
+        
+        shadowElement.style.translate = shadow.Offset.ToVector2();
 
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
@@ -81,13 +95,18 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         shadowElement.style.borderTopRightRadius = StyleKeyword.Null;
         shadowElement.style.borderBottomLeftRadius = StyleKeyword.Null;
         shadowElement.style.borderBottomRightRadius = StyleKeyword.Null;
-        shadowElement.style.backgroundColor = StyleKeyword.Null;
+        
+        shadowElement.style.borderTopColor = StyleKeyword.Null;
+        shadowElement.style.borderBottomColor = StyleKeyword.Null;
+        shadowElement.style.borderLeftColor = StyleKeyword.Null;
+        shadowElement.style.borderRightColor = StyleKeyword.Null;
+        
+        shadowElement.style.borderTopWidth = StyleKeyword.Null;
+        shadowElement.style.borderBottomWidth = StyleKeyword.Null;
+        shadowElement.style.borderLeftWidth = StyleKeyword.Null;
+        shadowElement.style.borderRightWidth = StyleKeyword.Null;
+        
         shadowElement.style.translate = StyleKeyword.Null;
-
-        shadowElement.style.top = 0;
-        shadowElement.style.bottom = 0;
-        shadowElement.style.left = 0;
-        shadowElement.style.right = 0;
 
         shadowElement.style.filter = shadowElement.style.filter.value
             .Where(it => it.type != FilterFunctionType.Blur)
