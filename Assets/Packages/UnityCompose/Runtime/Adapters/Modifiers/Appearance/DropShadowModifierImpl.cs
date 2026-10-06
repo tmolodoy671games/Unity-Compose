@@ -60,14 +60,18 @@ internal class DropShadowModifierImpl : UnityModifier<DropShadowModifierImpl>, I
     )
     {
         shadowElement.style.position = Position.Absolute;
-        shadowElement.style.width = new Length(100, LengthUnit.Percent);
-        shadowElement.style.height = new Length(100, LengthUnit.Percent);
         shadowElement.style.borderTopLeftRadius = shape.TopLeft.ToLength();
         shadowElement.style.borderTopRightRadius = shape.TopRight.ToLength();
         shadowElement.style.borderBottomLeftRadius = shape.BottomLeft.ToLength();
         shadowElement.style.borderBottomRightRadius = shape.BottomRight.ToLength();
         shadowElement.style.backgroundColor = shadow.Color.ToUnityColor();
         shadowElement.style.translate = shadow.Offset.ToVector2();
+        
+        shadowElement.style.top = (-shadow.Spread).ToLength();
+        shadowElement.style.bottom = (-shadow.Spread).ToLength();
+        shadowElement.style.left = (-shadow.Spread).ToLength();
+        shadowElement.style.right = (-shadow.Spread).ToLength();
+        
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
         shadowElement.style.filter = new List<FilterFunction> { blur };
