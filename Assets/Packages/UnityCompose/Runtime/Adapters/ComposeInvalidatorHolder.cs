@@ -14,7 +14,7 @@ namespace UnityCompose
 {
     [ExecuteAlways]
     [DefaultExecutionOrder(-1_000)]
-    internal class ComposeInvalidatorHolder : MonoBehaviour
+    public class ComposeInvalidatorHolder : MonoBehaviour
     {
         private static ComposeInvalidatorHolder? _instance;
         private readonly ComposeInvalidator _invalidator = new();
@@ -24,14 +24,17 @@ namespace UnityCompose
         {
             get
             {
-                if ( _destroyed)
+                if (_destroyed)
                     return null;
                 if (!_instance)
                 {
                     _instance = FindAnyObjectByType<ComposeInvalidatorHolder>() ??
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
-                    DontDestroyOnLoad(_instance);
-                    _instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
+                    if (ApplicationUtils.IsPlaying)
+                        DontDestroyOnLoad(_instance);
+                    Debug.Log("Instance");
+                    _instance.gameObject.hideFlags = HideFlags.None;
+                    // _instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
                 }
 
                 return _instance;
@@ -42,17 +45,19 @@ namespace UnityCompose
         {
             get
             {
-                if (!ApplicationUtils.IsPlaying)
-                    return null;
+                // if (!ApplicationUtils.IsPlaying)
+                //     return null;
                 return Instance?._invalidator;
             }
         }
 
         private void Awake()
         {
+            Debug.Log("Awake");
             _destroyed = false;
             _instance = this;
-            DontDestroyOnLoad(this);
+            if (ApplicationUtils.IsPlaying)
+                DontDestroyOnLoad(this);
         }
 
         private void OnDestroy()
@@ -63,6 +68,7 @@ namespace UnityCompose
 
         private void Update()
         {
+            Debug.Log("Tick");
             _invalidator.Tick();
         }
 
