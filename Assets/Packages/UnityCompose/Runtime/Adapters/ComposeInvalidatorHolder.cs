@@ -32,28 +32,17 @@ namespace UnityCompose
                                 new GameObject("Coroutine Runner").AddComponent<ComposeInvalidatorHolder>();
                     if (ApplicationUtils.IsPlaying)
                         DontDestroyOnLoad(_instance);
-                    Debug.Log("Instance");
-                    _instance.gameObject.hideFlags = HideFlags.None;
-                    // _instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
+                    _instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
                 }
 
                 return _instance;
             }
         }
 
-        public static ComposeInvalidator? ComposeInvalidator
-        {
-            get
-            {
-                // if (!ApplicationUtils.IsPlaying)
-                //     return null;
-                return Instance?._invalidator;
-            }
-        }
+        public static ComposeInvalidator? ComposeInvalidator => Instance?._invalidator;
 
         private void Awake()
         {
-            Debug.Log("Awake");
             _destroyed = false;
             _instance = this;
             if (ApplicationUtils.IsPlaying)
@@ -68,7 +57,6 @@ namespace UnityCompose
 
         private void Update()
         {
-            Debug.Log("Tick");
             _invalidator.Tick();
         }
 
