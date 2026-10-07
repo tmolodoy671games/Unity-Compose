@@ -70,6 +70,6 @@ internal class PointerModifiersFactoryImpl : IPointerModifiersFactory
 
     public IModifier PointerInput<T>(T key, Func<IPointerInputScope, Task> body)
     {
-        throw new NotImplementedException(); // BRUH
+        return new PointerInputModifierImpl<T>(key, body);
     }
 }

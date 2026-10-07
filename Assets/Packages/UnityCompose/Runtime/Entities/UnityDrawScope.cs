@@ -14,7 +14,7 @@ namespace UnityCompose;
 
 internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
 {
-    private readonly MeshGenerationContext _context;
+    private MeshGenerationContext _context;
     private readonly IPathDrawer _drawer;
     private readonly Action<Texture2D> _consumeTexture2D;
     private Size _size;
@@ -28,6 +28,10 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
 
     public MeshGenerationContext Context => _context;
 
+    public void Update(MeshGenerationContext context)
+    {
+        _context = context;
+    }
 
     public Offset Center
     {
@@ -812,7 +816,12 @@ public static partial class VisualElementExtensions
         const string key = "UnityCompose_DrawScope";
         var visualElement = context.visualElement;
         if (visualElement.UserData().TryGet(key, out var cached))
-            return (IDrawScope)cached.NotNull();
+        {
+            var cachedResult = (UnityDrawScope)cached.NotNull();
+            cachedResult.Update(context);
+            return cachedResult;
+        }
+
         var scope = new UnityDrawScope(context);
         visualElement.UserData()[key] = scope;
         return scope;

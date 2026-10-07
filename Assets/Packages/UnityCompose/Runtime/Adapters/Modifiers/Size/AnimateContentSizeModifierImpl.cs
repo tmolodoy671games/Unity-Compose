@@ -19,7 +19,7 @@ internal record AnimateContentSizeModifierImpl(
         Vector2 TargetSize
     );
 
-    private readonly EventCallback<GeometryChangedEvent> _callback;
+    private readonly EventCallback<GeometryChangedEvent> _callback = null!;
 
     public AnimateContentSizeModifierImpl(
         AnimationSpec AnimationSpec,
