@@ -1,11 +1,10 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
-using UnityEngine;
 using UnityEngine.UIElements;
+using TimeUtils = UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils.TimeUtils;
 
 namespace UnityCompose;
 
@@ -28,6 +27,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
 
     private Shadow? _backgroundShadow;
     private Shadow? _backgroundShadowInstance;
+    private IVisualElementScheduledItem? _syncBackgroundShadow;
 
     private Shadow? _foregroundShadow;
     private Shadow? _foregroundShadowInstance;
@@ -237,6 +237,9 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _backgroundShadow = _backgroundShadowInstance;
         SetupRoot();
         _root.NotNull().Insert(0, _backgroundShadow);
+        _syncBackgroundShadow?.Pause();
+        _syncBackgroundShadow = VisualElement.schedule.Execute(SyncBackgroundShadowStyle)
+            .Every(TimeUtils.Frametime);
         return _backgroundShadow;
     }
 
@@ -244,6 +247,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_backgroundShadow == null)
             return;
+        _syncBackgroundShadow?.Pause();
         SetupRoot();
         _root.NotNull().Remove(_backgroundShadow);
         if (_root.NotNull().childCount == 1)
@@ -299,6 +303,14 @@ public class UnityReusableComposeNode : IReusableComposeNode
         if (_drawOn != null)
             index--;
         return index;
+    }
+
+    private void SyncBackgroundShadowStyle()
+    {
+        if (_backgroundShadow == null)
+            return;
+        _backgroundShadow.style.scale = VisualElement.style.scale;
+        _backgroundShadow.style.rotate = VisualElement.style.rotate;
     }
 }
 

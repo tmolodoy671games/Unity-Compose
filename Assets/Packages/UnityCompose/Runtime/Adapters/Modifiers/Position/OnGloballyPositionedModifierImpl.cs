@@ -5,6 +5,7 @@ using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityEngine.UIElements;
+using TimeUtils = UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils.TimeUtils;
 
 namespace UnityCompose;
 
@@ -27,7 +28,7 @@ internal record OnGloballyPositionedModifierImpl(
             previousRect = newRect.ToOptional();
             OnGloballyPositioned(newCoordinates);
         };
-        var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
+        var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(TimeUtils.Frametime);
         callback();
         element.UserData()[new ReferenceKey(this)] = onGloballyPositionedCallback;
     }
