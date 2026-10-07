@@ -35,6 +35,7 @@ internal class AnimateContentSizeModifierImpl : ContentContainerUnityModifier<An
         IStableList<IModifier> newModifiers
     )
     {
+        Debug.Log("Apply()");
         contentContainer.RegisterCallback(_callback);
     }
 
