@@ -8,18 +8,28 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class HoverableModiferImpl : UnityModifier<HoverableModiferImpl>
+internal record HoverableModiferImpl(
+    IMutableInteractionSource InteractionSource
+) : UnityModifier
 {
-    private readonly IMutableInteractionSource _interactionSource;
-    private readonly EventCallback<PointerEnterEvent> _pointerEnterCallback;
-    private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback;
-
-    public HoverableModiferImpl(IMutableInteractionSource interactionSource)
+    private readonly EventCallback<PointerEnterEvent> _pointerEnterCallback = evt =>
     {
-        _interactionSource = interactionSource;
-        _pointerEnterCallback = OnPointerEnter;
-        _pointerLeaveCallback = OnPointerLeave;
-    }
+        var visualElement = evt.VisualElement();
+        var enterInteraction = new IHoverInteraction.Enter();
+        visualElement.EnterInteractions().Add(enterInteraction);
+        InteractionSource.Emit(enterInteraction);
+    };
+
+    private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback = evt =>
+    {
+        var visualElement = evt.VisualElement();
+        var enterInteractions = visualElement.EnterInteractions();
+        if (enterInteractions.IsEmpty())
+            return;
+        var enterInteraction = enterInteractions[enterInteractions.LastIndex];
+        enterInteractions.RemoveAt(enterInteractions.LastIndex);
+        InteractionSource.Emit(new IHoverInteraction.Exit(enterInteraction));
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -41,35 +51,6 @@ internal class HoverableModiferImpl : UnityModifier<HoverableModiferImpl>
         element.PickingMode().Decrement();
         element.UnregisterCallback(_pointerEnterCallback);
         element.UnregisterCallback(_pointerLeaveCallback);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_interactionSource);
-    }
-
-    protected override bool Equals(HoverableModiferImpl other)
-    {
-        return _interactionSource == other._interactionSource;
-    }
-
-    private void OnPointerEnter(PointerEnterEvent evt)
-    {
-        var visualElement = evt.VisualElement();
-        var enterInteraction = new IHoverInteraction.Enter();
-        visualElement.EnterInteractions().Add(enterInteraction);
-        _interactionSource.Emit(enterInteraction);
-    }
-
-    private void OnPointerLeave(PointerLeaveEvent evt)
-    {
-        var visualElement = evt.VisualElement();
-        var enterInteractions = visualElement.EnterInteractions();
-        if (enterInteractions.IsEmpty())
-            return;
-        var enterInteraction = enterInteractions[enterInteractions.LastIndex];
-        enterInteractions.RemoveAt(enterInteractions.LastIndex);
-        _interactionSource.Emit(new IHoverInteraction.Exit(enterInteraction));
     }
 }
 

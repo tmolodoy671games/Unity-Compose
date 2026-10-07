@@ -8,22 +8,50 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class PressableModifierImpl : UnityModifier<PressableModifierImpl>
+internal record PressableModifierImpl(
+    IMutableInteractionSource InteractionSource
+) : UnityModifier
 {
-    private readonly IMutableInteractionSource _interactionSource;
-    private readonly EventCallback<PointerDownEvent> _pointerDownCallback;
-    private readonly EventCallback<PointerUpEvent> _pointerUpCallback;
-    private readonly EventCallback<PointerCancelEvent> _pointerCancelCallback;
-    private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback;
-
-    public PressableModifierImpl(IMutableInteractionSource interactionSource)
+    private readonly EventCallback<PointerDownEvent> _pointerDownCallback = evt =>
     {
-        _interactionSource = interactionSource;
-        _pointerDownCallback = OnPointerDown;
-        _pointerUpCallback = OnPointerUp;
-        _pointerCancelCallback = OnPointerCancel;
-        _pointerLeaveCallback = OnPointerLeave;
-    }
+        if (evt.button != 0)
+            return;
+        var pressInteraction = new IPressInteraction.Press(evt.localPosition.ToVector2().ToOffset());
+        evt.VisualElement().PressInteractions().Add(pressInteraction);
+        InteractionSource.Emit(pressInteraction);
+    };
+
+    private readonly EventCallback<PointerUpEvent> _pointerUpCallback = evt =>
+    {
+        if (evt.button != 0)
+            return;
+        var pressInteractions = evt.VisualElement().PressInteractions();
+        if (pressInteractions.IsEmpty())
+            return;
+        var pressInteraction = pressInteractions[0];
+        pressInteractions.RemoveAt(0);
+        InteractionSource.Emit(new IPressInteraction.Release(pressInteraction));
+    };
+
+    private readonly EventCallback<PointerCancelEvent> _pointerCancelCallback = evt =>
+    {
+        var pressInteractions = evt.VisualElement().PressInteractions();
+        if (pressInteractions.IsEmpty())
+            return;
+        var pressInteraction = pressInteractions[0];
+        pressInteractions.RemoveAt(0);
+        InteractionSource.Emit(new IPressInteraction.Cancel(pressInteraction));
+    };
+
+    private readonly EventCallback<PointerLeaveEvent> _pointerLeaveCallback = evt =>
+    {
+        var pressInteractions = evt.VisualElement().PressInteractions();
+        if (pressInteractions.IsEmpty())
+            return;
+        var pressInteraction = pressInteractions[0];
+        pressInteractions.RemoveAt(0);
+        InteractionSource.Emit(new IPressInteraction.Cancel(pressInteraction));
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -49,57 +77,6 @@ internal class PressableModifierImpl : UnityModifier<PressableModifierImpl>
         element.UnregisterCallback(_pointerUpCallback);
         element.UnregisterCallback(_pointerCancelCallback);
         element.UnregisterCallback(_pointerLeaveCallback);
-    }
-
-    protected override bool Equals(PressableModifierImpl other)
-    {
-        return _interactionSource == other._interactionSource;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_interactionSource);
-    }
-
-    private void OnPointerDown(PointerDownEvent evt)
-    {
-        if (evt.button != 0)
-            return;
-        var pressInteraction = new IPressInteraction.Press(evt.localPosition.ToVector2().ToOffset());
-        evt.VisualElement().PressInteractions().Add(pressInteraction);
-        _interactionSource.Emit(pressInteraction);
-    }
-
-    private void OnPointerUp(PointerUpEvent evt)
-    {
-        if (evt.button != 0)
-            return;
-        var pressInteractions = evt.VisualElement().PressInteractions();
-        if (pressInteractions.IsEmpty())
-            return;
-        var pressInteraction = pressInteractions[0];
-        pressInteractions.RemoveAt(0);
-        _interactionSource.Emit(new IPressInteraction.Release(pressInteraction));
-    }
-
-    private void OnPointerCancel(PointerCancelEvent evt)
-    {
-        var pressInteractions = evt.VisualElement().PressInteractions();
-        if (pressInteractions.IsEmpty())
-            return;
-        var pressInteraction = pressInteractions[0];
-        pressInteractions.RemoveAt(0);
-        _interactionSource.Emit(new IPressInteraction.Cancel(pressInteraction));
-    }
-
-    private void OnPointerLeave(PointerLeaveEvent evt)
-    {
-        var pressInteractions = evt.VisualElement().PressInteractions();
-        if (pressInteractions.IsEmpty())
-            return;
-        var pressInteraction = pressInteractions[0];
-        pressInteractions.RemoveAt(0);
-        _interactionSource.Emit(new IPressInteraction.Cancel(pressInteraction));
     }
 }
 
