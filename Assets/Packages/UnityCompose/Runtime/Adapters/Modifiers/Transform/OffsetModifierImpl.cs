@@ -19,7 +19,7 @@ internal record OffsetModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.translate = new Translate(X.ToLength(), Y.ToLength());
+        element.style.translate = element.style.translate.Add(new Translate(X.ToLength(), Y.ToLength()));
     }
 
     protected override void Revert(
@@ -29,6 +29,6 @@ internal record OffsetModifierImpl(
     )
     {
         var style = element.style;
-        style.translate = style.translate.CompareAndSetNull(new Translate(X.ToLength(), Y.ToLength()));
+        style.translate = style.translate.Subtract(new Translate(X.ToLength(), Y.ToLength()));
     }
 }

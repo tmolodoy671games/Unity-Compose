@@ -25,13 +25,13 @@ internal record PositionModifierImpl(
         var style = element.style;
         style.position = Position.Absolute;
         if (Top.HasValue)
-            style.top = Top.Value.Value;
+            style.top = style.top.Add(Top.Value.Value);
         if (Bottom.HasValue)
-            style.bottom = Bottom.Value.Value;
+            style.bottom = style.bottom.Add(Bottom.Value.Value);
         if (Left.HasValue)
-            style.left = Left.Value.Value;
+            style.left = style.left.Add(Left.Value.Value);
         if (Right.HasValue)
-            style.right = Right.Value.Value;
+            style.right = style.right.Add(Right.Value.Value);
     }
 
     protected override void Revert(
@@ -42,12 +42,12 @@ internal record PositionModifierImpl(
     {
         var style = element.style;
         if (Top.HasValue)
-            style.top = style.top.CompareAndSetNull(Top.Value.Value);
+            style.top = style.top.Add(-Top.Value.Value);
         if (Bottom.HasValue)
-            style.bottom = style.top.CompareAndSetNull(Bottom.Value.Value);
+            style.bottom = style.top.Add(-Bottom.Value.Value);
         if (Left.HasValue)
-            style.left = style.top.CompareAndSetNull(Left.Value.Value);
+            style.left = style.top.Add(-Left.Value.Value);
         if (Right.HasValue)
-            style.right = style.top.CompareAndSetNull(Right.Value.Value);
+            style.right = style.top.Add(-Right.Value.Value);
     }
 }

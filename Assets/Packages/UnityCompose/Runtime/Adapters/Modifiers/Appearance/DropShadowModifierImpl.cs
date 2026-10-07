@@ -48,12 +48,12 @@ internal record DropShadowModifierImpl(
         style.borderBottomLeftRadius = shape.BottomLeft.ToLength();
         style.borderBottomRightRadius = shape.BottomRight.ToLength();
         style.backgroundColor = shadow.Color.ToUnityColor();
-        style.translate = shadow.Offset.ToVector2();
+        style.translate = style.translate.Add(shadow.Offset.ToVector2());
 
-        style.top = (-shadow.Spread).ToLength();
-        style.bottom = (-shadow.Spread).ToLength();
-        style.left = (-shadow.Spread).ToLength();
-        style.right = (-shadow.Spread).ToLength();
+        style.top = style.top.Subtract(shadow.Spread.ToLength());
+        style.bottom = style.bottom.Subtract(shadow.Spread.ToLength());
+        style.left = style.left.Subtract(shadow.Spread.ToLength());
+        style.right = style.right.Subtract(shadow.Spread.ToLength());
 
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
@@ -72,12 +72,12 @@ internal record DropShadowModifierImpl(
         style.borderBottomLeftRadius = style.borderBottomLeftRadius.CompareAndSetNull(shape.BottomLeft.ToLength());
         style.borderBottomRightRadius = style.borderBottomRightRadius.CompareAndSetNull(shape.BottomRight.ToLength());
         style.backgroundColor = style.backgroundColor.CompareAndSetNull(shadow.Color.ToUnityColor());
-        style.translate = style.translate.CompareAndSetNull(shadow.Offset.ToVector2());
+        style.translate = style.translate.Subtract(shadow.Offset.ToVector2());
 
-        style.top = style.top.CompareAndSetNull((-shadow.Spread).ToLength());
-        style.bottom = style.bottom.CompareAndSetNull((-shadow.Spread).ToLength());
-        style.left = style.left.CompareAndSetNull((-shadow.Spread).ToLength());
-        style.right = style.right.CompareAndSetNull((-shadow.Spread).ToLength());
+        style.top = style.top.Add(shadow.Spread.ToLength());
+        style.bottom = style.bottom.Add(shadow.Spread.ToLength());
+        style.left = style.left.Add(shadow.Spread.ToLength());
+        style.right = style.right.Add(shadow.Spread.ToLength());
 
         var filter = new FilterFunction(FilterFunctionType.Blur);
         filter.AddParameter(new FilterParameter(shadow.Radius.Value));
