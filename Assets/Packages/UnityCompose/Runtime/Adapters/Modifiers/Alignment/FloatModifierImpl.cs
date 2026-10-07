@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class FloatModifierImpl : UnityModifier<FloatModifierImpl>
+internal record FloatModifierImpl : UnityModifier
 {
     public static readonly FloatModifierImpl Instance = new();
 
@@ -32,9 +32,4 @@ internal class FloatModifierImpl : UnityModifier<FloatModifierImpl>
     {
         element.style.position = element.style.position.CompareAndSetNull(Position.Absolute);
     }
-
-    protected override bool Equals(FloatModifierImpl other) => true;
-    public override int GetHashCode() => 1;
-
-    public override string ToString() => "Float";
 }

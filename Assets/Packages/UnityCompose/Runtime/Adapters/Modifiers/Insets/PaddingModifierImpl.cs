@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
+internal record PaddingModifierImpl : UnityModifier, IModifier
 {
     private enum PaddingType
     {
@@ -128,17 +128,23 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
             element.style.marginRight = NullIfNeed(element.style.marginRight.value.value + value);
     }
 
-    protected override bool Equals(IStableList<IModifier> modifiers, PaddingModifierImpl other,
-        IStableList<IModifier> otherModifiers)
+    bool IModifier.Equals(
+        IStableList<IModifier> modifiers,
+        IModifier other,
+        IStableList<IModifier> otherModifiers
+    )
     {
+        if (other is not PaddingModifierImpl paddingOther)
+            return false;
         var type = GetPaddingType(this, modifiers);
-        var otherType = GetPaddingType(other, otherModifiers);
+        var otherType = GetPaddingType(paddingOther, otherModifiers);
         return type == otherType && Equals(other);
     }
 
-    protected override bool Equals(PaddingModifierImpl other)
+    public virtual bool Equals(PaddingModifierImpl? other)
     {
-        return _top.Equals(other._top) &&
+        return other != null &&
+               _top.Equals(other._top) &&
                _bottom.Equals(other._bottom) &&
                _left.Equals(other._left) &&
                _right.Equals(other._right);
@@ -156,12 +162,13 @@ internal class PaddingModifierImpl : UnityModifier<PaddingModifierImpl>
         var index = -1;
         for (var i = 0; i < newModifiers.Count; i++)
         {
-            if (newModifiers[i] == modifier)
+            if (ReferenceEquals(newModifiers[i], modifier))
             {
                 index = i;
                 break;
             }
         }
+
         for (var i = 0; i < newModifiers.Count; i++)
         {
             if (i >= index)

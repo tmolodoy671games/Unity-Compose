@@ -29,8 +29,35 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
     public MeshGenerationContext Context => _context;
 
 
-    public Offset Center => _context.visualElement.layout.center.ToOffset();
-    public Size Size => _context.visualElement.layout.size.ToSize();
+    public Offset Center
+    {
+        get
+        {
+            try
+            {
+                return _context.visualElement.layout.center.ToOffset();
+            }
+            catch (NullReferenceException)
+            {
+                return Offset.Zero;
+            }
+        }
+    }
+
+    public Size Size
+    {
+        get
+        {
+            try
+            {
+                return _context.visualElement.layout.size.ToSize();
+            }
+            catch (NullReferenceException)
+            {
+                return new Size();
+            }
+        }
+    }
 
     #region DrawLine
 
