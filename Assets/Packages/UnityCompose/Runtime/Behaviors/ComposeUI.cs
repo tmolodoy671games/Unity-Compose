@@ -12,6 +12,8 @@ namespace UnityCompose;
 [DefaultExecutionOrder(-1)]
 public abstract partial class ComposeUI : MonoBehaviour
 {
+    private bool _isInitialized;
+
     [Composable]
     protected abstract void Content();
 
@@ -28,8 +30,8 @@ public abstract partial class ComposeUI : MonoBehaviour
         EnablePanelRenderer();
         EnableUiDocument();
     }
-    
-    private void OnDestroy()
+
+    private void OnDisable()
     {
         _composeView?.Dispose();
         _composeView = null;
@@ -40,19 +42,19 @@ public abstract partial class ComposeUI : MonoBehaviour
         var renderer = GetComponent<PanelRenderer>();
         if (!renderer) return;
 
-        renderer.RegisterUIReloadCallback(OnUIReload);
+        if (!_isInitialized)
+            renderer.RegisterUIReloadCallback(OnUIReload);
+        _isInitialized = true;
     }
 
     private void OnUIReload(
         PanelRenderer renderer,
         VisualElement root,
-        int version)
+        int version
+    )
     {
         _composeView = root.Q<ComposeView>();
-        _composeView?.SetContent(
-            ApplicationUtils.IsPlaying
-                ? Content
-                : Preview);
+        _composeView?.SetContent(ApplicationUtils.IsPlaying ? Content : Preview);
     }
 
     private void EnableUiDocument()

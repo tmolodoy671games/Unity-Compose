@@ -25,16 +25,21 @@ internal class PointerInputModifierImpl<T> : IModifier
     {
         var source = new CancellationTokenSource();
         var token = source.Token;
-        node.VisualElement().UserData()[new ReferenceKey(this)] = source;
+        node.VisualElement().UserData()[new ReferenceKey(this)] = new CustomDisposable(() =>
+        {
+            source.Cancel();
+            source.Dispose();
+        });
         _body(new PointerInputScopeImpl(node.VisualElement(), token));
     }
 
     public void Revert(IReusableComposeNode node, IStableList<IModifier> newModifiers)
     {
-        var source = node.VisualElement().UserData().GetOrNull(new ReferenceKey(this))
-            ?.CastToOrNull<CancellationTokenSource>();
-        source?.Cancel();
+        var key = new ReferenceKey(this);
+        var source = node.VisualElement().UserData().GetOrNull(key)
+            ?.CastToOrNull<IDisposable>();
         source?.Dispose();
+        node.VisualElement().UserData().Remove(key);
     }
 
     public override bool Equals(object? obj)

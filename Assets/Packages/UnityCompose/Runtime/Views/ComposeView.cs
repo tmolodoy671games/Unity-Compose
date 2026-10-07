@@ -15,6 +15,7 @@ public partial class ComposeView : VisualElement, IDisposable
     private ComposableContent? _content;
     private readonly IReusableComposeNode _rootNode;
     private readonly IComposer _composer = IComposer.Create();
+    private bool _isDisposed;
 
     public ComposeView()
     {
@@ -24,8 +25,9 @@ public partial class ComposeView : VisualElement, IDisposable
 
     public void SetContent(ComposableContent content)
     {
-        if (_content == content)
+        if (_content == content && !_isDisposed)
             return;
+        _isDisposed = false;
         _content = content;
         Clear();
         Bootstrap(
@@ -42,6 +44,9 @@ public partial class ComposeView : VisualElement, IDisposable
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         _composer.Dispose();
         Clear();
     }

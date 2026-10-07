@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
@@ -38,6 +39,15 @@ public class UnityReusableComposeNode : IReusableComposeNode
 
     private VisualElement ContentContainer => _contentContainer ?? VisualElement;
     public VisualElement Root => _root ?? VisualElement;
+
+    public void Dispose()
+    {
+        foreach (var entry in VisualElement.UserData().Values)
+        {
+            if (entry is IDisposable disposable and not IReusableComposeNode)
+                disposable.Dispose();
+        }
+    }
 
     internal UnityReusableComposeNode(VisualElement visualElement, bool isRoot)
     {
