@@ -4,45 +4,34 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class SizeInModifierImpl : UnityModifier<SizeInModifierImpl>, IAppearanceModifier
+internal record SizeInModifierImpl(
+    Optional<Dp> MinWidth,
+    Optional<Dp> MaxWidth,
+    Optional<Dp> MinHeight,
+    Optional<Dp> MaxHeight
+) : UnityModifier, IAppearanceModifier
 {
-    private readonly Optional<Dp> _minWidth;
-    private readonly Optional<Dp> _maxWidth;
-    private readonly Optional<Dp> _minHeight;
-    private readonly Optional<Dp> _maxHeight;
-
-    public SizeInModifierImpl(
-        Optional<Dp> minWidth,
-        Optional<Dp> maxWidth,
-        Optional<Dp> minHeight,
-        Optional<Dp> maxHeight
-    )
-    {
-        _minWidth = minWidth;
-        _maxWidth = maxWidth;
-        _minHeight = minHeight;
-        _maxHeight = maxHeight;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        if (_minWidth.HasValue)
-            element.style.minWidth = _minWidth.Value.ToLength();
-        if (_maxWidth.HasValue)
-            element.style.maxWidth = _maxWidth.Value.ToLength();
-        if (_minHeight.HasValue)
-            element.style.minHeight = _minHeight.Value.ToLength();
-        if (_maxHeight.HasValue)
-            element.style.maxHeight = _maxHeight.Value.ToLength();
+        var style = element.style;
+        if (MinWidth.HasValue)
+            style.minWidth = MinWidth.Value.ToLength();
+        if (MaxWidth.HasValue)
+            style.maxWidth = MaxWidth.Value.ToLength();
+        if (MinHeight.HasValue)
+            style.minHeight = MinHeight.Value.ToLength();
+        if (MaxHeight.HasValue)
+            style.maxHeight = MaxHeight.Value.ToLength();
     }
 
     protected override void Revert(
@@ -51,26 +40,14 @@ internal class SizeInModifierImpl : UnityModifier<SizeInModifierImpl>, IAppearan
         IStableList<IModifier> newModifiers
     )
     {
-        if (_minWidth.HasValue)
-            element.style.minWidth = StyleKeyword.Null;
-        if (_maxWidth.HasValue)
-            element.style.maxWidth = StyleKeyword.Null;
-        if (_minHeight.HasValue)
-            element.style.minHeight = StyleKeyword.Null;
-        if (_maxHeight.HasValue)
-            element.style.maxHeight = StyleKeyword.Null;
-    }
-
-    protected override bool Equals(SizeInModifierImpl other)
-    {
-        return _minWidth.Equals(other._minWidth) &&
-               _maxWidth.Equals(other._maxWidth) &&
-               _minHeight.Equals(other._minHeight) &&
-               _maxHeight.Equals(other._maxHeight);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_minWidth, _maxWidth, _minHeight, _maxHeight);
+        var style = element.style;
+        if (MinWidth.HasValue)
+            style.minWidth = style.minWidth.CompareAndSetNull(MinWidth.Value.ToLength());
+        if (MaxWidth.HasValue)
+            style.maxWidth = style.maxWidth.CompareAndSetNull(MaxWidth.Value.ToLength());
+        if (MinHeight.HasValue)
+            style.minHeight = style.minHeight.CompareAndSetNull(MinHeight.Value.ToLength());
+        if (MaxHeight.HasValue)
+            style.maxHeight = style.maxHeight.CompareAndSetNull(MaxHeight.Value.ToLength());
     }
 }

@@ -4,31 +4,27 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class SizeModifierImpl : UnityModifier<SizeModifierImpl>, IAppearanceModifier
+internal record SizeModifierImpl(
+    Optional<Dp> Width,
+    Optional<Dp> Height
+) : UnityModifier, IAppearanceModifier
 {
-    private readonly Optional<Dp> _width;
-    private readonly Optional<Dp> _height;
-
-    public SizeModifierImpl(Optional<Dp> width, Optional<Dp> height)
-    {
-        _width = width;
-        _height = height;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        if (_width.HasValue)
-            element.style.width = _width.Value.ToLength();
-        if (_height.HasValue)
-            element.style.height = _height.Value.ToLength();
+        var style = element.style;
+        if (Width.HasValue)
+            style.width = Width.Value.ToLength();
+        if (Height.HasValue)
+            style.height = Height.Value.ToLength();
     }
 
     protected override void Revert(
@@ -37,16 +33,10 @@ internal class SizeModifierImpl : UnityModifier<SizeModifierImpl>, IAppearanceMo
         IStableList<IModifier> newModifiers
     )
     {
-        if (_width.HasValue)
-            element.style.width = StyleKeyword.Null;
-        if (_height.HasValue)
-            element.style.height = StyleKeyword.Null;
+        var style = element.style;
+        if (Width.HasValue)
+            style.width = style.width.CompareAndSetNull(Width.Value.ToLength());
+        if (Height.HasValue)
+            style.height = style.height.CompareAndSetNull(Height.Value.ToLength());
     }
-
-    protected override bool Equals(SizeModifierImpl other)
-    {
-        return _width.Equals(other._width) && _height.Equals(other._height);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_width, _height);
 }

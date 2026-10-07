@@ -8,17 +8,10 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnLayoutRectChangedModifierImpl : UnityModifier<OnLayoutRectChangedModifierImpl>
+internal record OnLayoutRectChangedModifierImpl(
+    Action<RelativeLayoutBounds> OnLayoutRectChanged
+) : UnityModifier
 {
-    private readonly Action<RelativeLayoutBounds> _onLayoutRectChanged;
-    private readonly ReferenceKey _key;
-
-    public OnLayoutRectChangedModifierImpl(Action<RelativeLayoutBounds> onLayoutRectChanged)
-    {
-        _key = new ReferenceKey(this);
-        _onLayoutRectChanged = onLayoutRectChanged;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
@@ -32,11 +25,11 @@ internal class OnLayoutRectChangedModifierImpl : UnityModifier<OnLayoutRectChang
             var newRect = newCoordinates.ToRelativeLayoutBounds();
             if (previousRect.Equals(newRect)) return;
             previousRect = newRect.ToOptional();
-            _onLayoutRectChanged(newRect);
+            OnLayoutRectChanged(newRect);
         };
         var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
         callback();
-        element.UserData()[_key] = onGloballyPositionedCallback;
+        element.UserData()[new ReferenceKey(this)] = onGloballyPositionedCallback;
     }
 
     protected override void Revert(
@@ -45,14 +38,8 @@ internal class OnLayoutRectChangedModifierImpl : UnityModifier<OnLayoutRectChang
         IStableList<IModifier> newModifiers
     )
     {
-        element.UserData().GetOrDefault(_key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
-        element.UserData().Remove(_key);
+        var key = new ReferenceKey(this);
+        element.UserData().GetOrDefault(key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
+        element.UserData().Remove(key);
     }
-
-    protected override bool Equals(OnLayoutRectChangedModifierImpl other)
-    {
-        return _onLayoutRectChanged == other._onLayoutRectChanged;
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_onLayoutRectChanged);
 }

@@ -22,6 +22,6 @@ internal class SizeModifiersFactoryImpl : ISizeModifiersFactory
 
     public IModifier AnimateContentSize(AnimationSpec animationSpec)
     {
-        return new AnimateContentSizeModifierImpl(animationSpec);
+        return new AnimateContentSizeModifierImpl(animationSpec, 0);
     }
 }

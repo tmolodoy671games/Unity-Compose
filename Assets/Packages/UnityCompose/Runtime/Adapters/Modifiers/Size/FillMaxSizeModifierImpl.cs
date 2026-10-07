@@ -4,31 +4,27 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class FillMaxSizeModifierImpl : UnityModifier<FillMaxSizeModifierImpl>, IAppearanceModifier
+internal record FillMaxSizeModifierImpl(
+    float WidthFraction,
+    float HeightFraction
+) : UnityModifier, IAppearanceModifier
 {
-    private readonly float _widthFraction;
-    private readonly float _heightFraction;
-
-    public FillMaxSizeModifierImpl(float widthFraction, float heightFraction)
-    {
-        _widthFraction = widthFraction;
-        _heightFraction = heightFraction;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        if (_widthFraction > 0)
-            element.style.width = new Length(_widthFraction * 100, LengthUnit.Percent);
-        if (_heightFraction > 0)
-            element.style.height = new Length(_heightFraction * 100, LengthUnit.Percent);
+        var style = element.style;
+        if (WidthFraction > 0)
+            style.width = new Length(WidthFraction * 100, LengthUnit.Percent);
+        if (HeightFraction > 0)
+            style.height = new Length(HeightFraction * 100, LengthUnit.Percent);
     }
 
     protected override void Revert(
@@ -37,17 +33,10 @@ internal class FillMaxSizeModifierImpl : UnityModifier<FillMaxSizeModifierImpl>,
         IStableList<IModifier> newModifiers
     )
     {
-        if (_widthFraction > 0)
-            element.style.width = StyleKeyword.Null;
-        if (_heightFraction > 0)
-            element.style.height = StyleKeyword.Null;
+        var style = element.style;
+        if (WidthFraction > 0)
+            style.width = style.width.CompareAndSetNull(new Length(WidthFraction * 100, LengthUnit.Percent));
+        if (HeightFraction > 0)
+            style.height = style.height.CompareAndSetNull(new Length(HeightFraction * 100, LengthUnit.Percent));
     }
-
-    protected override bool Equals(FillMaxSizeModifierImpl other)
-    {
-        return _widthFraction.AlmostEquals(other._widthFraction) &&
-               _heightFraction.AlmostEquals(other._heightFraction);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_widthFraction, _heightFraction);
 }

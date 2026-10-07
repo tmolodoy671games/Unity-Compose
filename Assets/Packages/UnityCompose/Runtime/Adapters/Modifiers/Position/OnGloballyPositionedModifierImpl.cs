@@ -8,17 +8,10 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositionedModifierImpl>
+internal record OnGloballyPositionedModifierImpl(
+    Action<ILayoutCoordinates> OnGloballyPositioned
+) : UnityModifier
 {
-    private readonly Action<ILayoutCoordinates> _onGloballyPositioned;
-    private readonly ReferenceKey _key;
-
-    public OnGloballyPositionedModifierImpl(Action<ILayoutCoordinates> onGloballyPositioned)
-    {
-        _key = new ReferenceKey(this);
-        _onGloballyPositioned = onGloballyPositioned;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
@@ -32,11 +25,11 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
             var newRect = newCoordinates.ToRelativeLayoutBounds();
             if (previousRect.Equals(newRect)) return;
             previousRect = newRect.ToOptional();
-            _onGloballyPositioned(newCoordinates);
+            OnGloballyPositioned(newCoordinates);
         };
         var onGloballyPositionedCallback = element.schedule.Execute(callback).Every(0);
         callback();
-        element.UserData()[_key] = onGloballyPositionedCallback;
+        element.UserData()[new ReferenceKey(this)] = onGloballyPositionedCallback;
     }
 
     protected override void Revert(
@@ -45,14 +38,8 @@ internal class OnGloballyPositionedModifierImpl : UnityModifier<OnGloballyPositi
         IStableList<IModifier> newModifiers
     )
     {
-        element.UserData().GetOrDefault(_key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
-        element.UserData().Remove(_key);
+        var key = new ReferenceKey(this);
+        element.UserData().GetOrDefault(key, null)?.CastTo<IVisualElementScheduledItem>().Pause();
+        element.UserData().Remove(key);
     }
-
-    protected override bool Equals(OnGloballyPositionedModifierImpl other)
-    {
-        return _onGloballyPositioned == other._onGloballyPositioned;
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_onGloballyPositioned);
 }

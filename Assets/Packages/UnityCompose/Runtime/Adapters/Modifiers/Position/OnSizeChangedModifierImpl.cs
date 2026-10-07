@@ -8,16 +8,11 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnSizeChangedImpl : UnityModifier<OnSizeChangedImpl>
+internal record OnSizeChangedImpl(
+    Action<Size> OnSizeChanged
+) : UnityModifier
 {
-    private readonly Action<Size> _onSizeChanged;
-    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
-
-    public OnSizeChangedImpl(Action<Size> onSizeChanged)
-    {
-        _onSizeChanged = onSizeChanged;
-        _onGeometryChanged = OnGeometryChanged();
-    }
+    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged = OnGeometryChanged(OnSizeChanged);
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -37,10 +32,7 @@ internal class OnSizeChangedImpl : UnityModifier<OnSizeChangedImpl>
         element.UnregisterCallback(_onGeometryChanged);
     }
 
-    protected override bool Equals(OnSizeChangedImpl other) => _onSizeChanged == other._onSizeChanged;
-    public override int GetHashCode() => _onSizeChanged.GetHashCode();
-
-    private EventCallback<GeometryChangedEvent> OnGeometryChanged()
+    private static EventCallback<GeometryChangedEvent> OnGeometryChanged(Action<Size> onSizeChanged)
     {
         var previousSize = Optional.Empty<Size>();
         return it =>
@@ -50,7 +42,7 @@ internal class OnSizeChangedImpl : UnityModifier<OnSizeChangedImpl>
             if (previousSize.Equals(newSize))
                 return;
             previousSize = newSize;
-            _onSizeChanged(newSize);
+            onSizeChanged(newSize);
         };
     }
 }

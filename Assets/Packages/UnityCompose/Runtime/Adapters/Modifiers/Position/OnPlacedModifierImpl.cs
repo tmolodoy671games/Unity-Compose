@@ -8,16 +8,11 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPlacedModifierImpl : UnityModifier<OnPlacedModifierImpl>
+internal record OnPlacedModifierImpl(
+    Action<ILayoutCoordinates> OnPlaced
+) : UnityModifier
 {
-    private readonly Action<ILayoutCoordinates> _onPlaced;
-    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
-
-    public OnPlacedModifierImpl(Action<ILayoutCoordinates> onPlaced)
-    {
-        _onPlaced = onPlaced;
-        _onGeometryChanged = OnGeometryChanged();
-    }
+    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged = OnGeometryChanged(OnPlaced);
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -37,10 +32,7 @@ internal class OnPlacedModifierImpl : UnityModifier<OnPlacedModifierImpl>
         element.UnregisterCallback(_onGeometryChanged);
     }
 
-    protected override bool Equals(OnPlacedModifierImpl other) => _onPlaced == other._onPlaced;
-    public override int GetHashCode() => _onPlaced.GetHashCode();
-
-    private EventCallback<GeometryChangedEvent> OnGeometryChanged()
+    private static EventCallback<GeometryChangedEvent> OnGeometryChanged(Action<ILayoutCoordinates> onPlaced)
     {
         var previousBounds = Optional.Empty<RelativeLayoutBounds>();
         return it =>
@@ -50,7 +42,7 @@ internal class OnPlacedModifierImpl : UnityModifier<OnPlacedModifierImpl>
             if (previousBounds.Equals(newBounds))
                 return;
             previousBounds = newBounds;
-            _onPlaced(coordinates);
+            onPlaced(coordinates);
         };
     }
 }
