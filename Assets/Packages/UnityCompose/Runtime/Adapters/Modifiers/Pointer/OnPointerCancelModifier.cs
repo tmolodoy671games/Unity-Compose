@@ -7,26 +7,26 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerCancelModifierImpl : UnityModifier<OnPointerCancelModifierImpl>
+internal record OnPointerCancelModifierImpl(
+    Action<PointerClickInfo>? OnPointerCancel,
+    Action? ParameterlessOnPointerCancel,
+    int Button
+) : UnityModifier
 {
-    private readonly Action<PointerClickInfo>? _onPointerCancel;
-    private readonly Action? _parameterlessOnPointerCancel;
-    private readonly EventCallback<PointerCancelEvent> _callback;
-    private readonly int _button;
-
-    public OnPointerCancelModifierImpl(Action<PointerClickInfo> onPointerCancel, int button)
+    private readonly EventCallback<PointerCancelEvent> _callback = evt =>
     {
-        _onPointerCancel = onPointerCancel;
-        _button = button;
-        _callback = OnPointerCancel;
-    }
-
-    public OnPointerCancelModifierImpl(Action onPointerCancel, int button)
-    {
-        _parameterlessOnPointerCancel = onPointerCancel;
-        _button = button;
-        _callback = OnPointerCancel;
-    }
+        if (Button >= 0 && evt.button != Button)
+            return;
+        OnPointerCancel?.Invoke(
+            new PointerClickInfo(
+                Button: evt.button,
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
+            )
+        );
+        ParameterlessOnPointerCancel?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -46,31 +46,5 @@ internal class OnPointerCancelModifierImpl : UnityModifier<OnPointerCancelModifi
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnPointerCancelModifierImpl other)
-    {
-        return _onPointerCancel == other._onPointerCancel &&
-               _parameterlessOnPointerCancel == other._parameterlessOnPointerCancel;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onPointerCancel, _parameterlessOnPointerCancel, _button);
-    }
-
-    private void OnPointerCancel(PointerCancelEvent evt)
-    {
-        if (_button >= 0 && evt.button != _button)
-            return;
-        _onPointerCancel?.Invoke(
-            new PointerClickInfo(
-                Button: evt.button,
-                Position: evt.position.ToVector2().ToOffset(),
-                LocalPosition: evt.localPosition.ToVector2().ToOffset()
-            )
-        );
-        _parameterlessOnPointerCancel?.Invoke();
-        evt.StopPropagation();
     }
 }

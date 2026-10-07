@@ -1,5 +1,5 @@
 ﻿using Compose.Net;
-using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Implementations;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Other;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
 

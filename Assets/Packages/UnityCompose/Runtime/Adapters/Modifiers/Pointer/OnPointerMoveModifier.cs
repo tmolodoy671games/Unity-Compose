@@ -7,26 +7,25 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerMoveModifierImpl : UnityModifier<OnPointerMoveModifierImpl>
+internal record OnPointerMoveModifierImpl(
+    Action<PointerMoveInfo>? OnPointerMove,
+    Action? ParameterlessOnPointerMove,
+    int PointerId
+) : UnityModifier
 {
-    private readonly Action<PointerMoveInfo>? _onPointerMove;
-    private readonly Action? _parameterlessOnPointerMove;
-    private readonly EventCallback<PointerMoveEvent> _callback;
-    private readonly int _pointerId;
-
-    public OnPointerMoveModifierImpl(Action<PointerMoveInfo> onPointerMove, int pointerId)
+    private readonly EventCallback<PointerMoveEvent> _callback = evt =>
     {
-        _onPointerMove = onPointerMove;
-        _callback = OnPointerMove;
-        _pointerId = pointerId;
-    }
-
-    public OnPointerMoveModifierImpl(Action onPointerMove, int pointerId)
-    {
-        _parameterlessOnPointerMove = onPointerMove;
-        _callback = OnPointerMove;
-        _pointerId = pointerId;
-    }
+        if (PointerId >= 0 && PointerId != evt.pointerId)
+            return;
+        OnPointerMove?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
+            )
+        );
+        ParameterlessOnPointerMove?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -46,30 +45,5 @@ internal class OnPointerMoveModifierImpl : UnityModifier<OnPointerMoveModifierIm
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnPointerMoveModifierImpl other)
-    {
-        return _onPointerMove == other._onPointerMove &&
-               _parameterlessOnPointerMove == other._parameterlessOnPointerMove;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onPointerMove, _parameterlessOnPointerMove);
-    }
-
-    private void OnPointerMove(PointerMoveEvent evt)
-    {
-        if (_pointerId >= 0 && _pointerId != evt.pointerId)
-            return;
-        _onPointerMove?.Invoke(
-            new PointerMoveInfo(
-                Position: evt.position.ToVector2().ToOffset(),
-                LocalPosition: evt.localPosition.ToVector2().ToOffset()
-            )
-        );
-        _parameterlessOnPointerMove?.Invoke();
-        evt.StopPropagation();
     }
 }

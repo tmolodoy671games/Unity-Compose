@@ -3,16 +3,12 @@ using Compose.Net;
 using StableCollections;
 using UnityEngine.UIElements;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Implementations;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Other;
 
-internal class TestTagModifierImpl : UnityModifier<TestTagModifierImpl>
+internal record TestTagModifierImpl(
+    string Tag
+) : UnityModifier
 {
-    private readonly string _tag;
-
-    public TestTagModifierImpl(string tag)
-    {
-        _tag = tag;
-    }
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -20,7 +16,7 @@ internal class TestTagModifierImpl : UnityModifier<TestTagModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.name = _tag;
+        element.name = Tag;
     }
 
     protected override void Revert(
@@ -29,9 +25,6 @@ internal class TestTagModifierImpl : UnityModifier<TestTagModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.name = "";
+        element.name = element.name == Tag ? null : Tag;
     }
-
-    protected override bool Equals(TestTagModifierImpl other) => _tag == other._tag;
-    public override int GetHashCode() => HashCode.Combine(_tag);
 }

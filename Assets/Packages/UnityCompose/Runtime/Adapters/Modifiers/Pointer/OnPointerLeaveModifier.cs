@@ -7,26 +7,25 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnPointerLeaveModifierImpl : UnityModifier<OnPointerLeaveModifierImpl>
+internal record OnPointerLeaveModifierImpl(
+    Action<PointerMoveInfo>? OnPointerLeave,
+    Action? ParameterlessOnPointerLeave,
+    int PointerId
+) : UnityModifier
 {
-    private readonly Action<PointerMoveInfo>? _onPointerLeave;
-    private readonly Action? _parameterlessOnPointerLeave;
-    private readonly EventCallback<PointerLeaveEvent> _callback;
-    private readonly int _pointerId;
-
-    public OnPointerLeaveModifierImpl(Action<PointerMoveInfo> onPointerLeave, int pointerId)
+    private readonly EventCallback<PointerLeaveEvent> _callback = evt =>
     {
-        _onPointerLeave = onPointerLeave;
-        _callback = OnPointerLeave;
-        _pointerId = pointerId;
-    }
-
-    public OnPointerLeaveModifierImpl(Action onPointerLeave, int pointerId)
-    {
-        _parameterlessOnPointerLeave = onPointerLeave;
-        _callback = OnPointerLeave;
-        _pointerId = pointerId;
-    }
+        if (PointerId >= 0 && PointerId != evt.pointerId)
+            return;
+        OnPointerLeave?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.position.ToVector2().ToOffset(),
+                LocalPosition: evt.localPosition.ToVector2().ToOffset()
+            )
+        );
+        ParameterlessOnPointerLeave?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -46,30 +45,5 @@ internal class OnPointerLeaveModifierImpl : UnityModifier<OnPointerLeaveModifier
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnPointerLeaveModifierImpl other)
-    {
-        return _onPointerLeave == other._onPointerLeave &&
-               _parameterlessOnPointerLeave == other._parameterlessOnPointerLeave;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onPointerLeave, _parameterlessOnPointerLeave);
-    }
-
-    private void OnPointerLeave(PointerLeaveEvent evt)
-    {
-        if (_pointerId >= 0 && _pointerId != evt.pointerId)
-            return;
-        _onPointerLeave?.Invoke(
-            new PointerMoveInfo(
-                Position: evt.position.ToVector2().ToOffset(),
-                LocalPosition: evt.localPosition.ToVector2().ToOffset()
-            )
-        );
-        _parameterlessOnPointerLeave?.Invoke();
-        evt.StopPropagation();
     }
 }

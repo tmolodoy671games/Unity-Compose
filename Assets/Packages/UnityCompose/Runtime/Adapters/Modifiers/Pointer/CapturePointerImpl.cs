@@ -7,27 +7,19 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class CapturePointerModifierImpl : UnityModifier<CapturePointerModifierImpl>
+internal record CapturePointerModifierImpl(
+    int PointerId
+) : UnityModifier
 {
-    private readonly int _pointerId;
-
-    public CapturePointerModifierImpl(int pointerId)
-    {
-        _pointerId = pointerId;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
-    ) => element.CapturePointer(_pointerId);
+    ) => element.CapturePointer(PointerId);
 
     protected override void Revert(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
-    ) => element.ReleasePointer(_pointerId);
-
-    protected override bool Equals(CapturePointerModifierImpl other) => _pointerId == other._pointerId;
-    public override int GetHashCode() => HashCode.Combine(_pointerId);
+    ) => element.ReleasePointer(PointerId);
 }
