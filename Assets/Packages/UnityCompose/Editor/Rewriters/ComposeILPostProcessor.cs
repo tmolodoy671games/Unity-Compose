@@ -1,6 +1,8 @@
 ﻿#if UNITY_EDITOR
 using System.IO;
 using System.Linq;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Packages.UnityCompose.Editor.Extensions;
 using Unity.CompilationPipeline.Common.ILPostProcessing;
 using UnityEditor;
@@ -23,12 +25,20 @@ internal class ComposeILPostProcessor : ILPostProcessor
         var messages = ComposableMethodRewriter.Patch(assembly);
         
         using var peStream = new MemoryStream();
-        assembly.Write(peStream);
+        using var pdbStream = new MemoryStream();
+
+        assembly.Write(peStream, new WriterParameters
+        {
+            WriteSymbols = true,
+            SymbolStream = pdbStream,
+            SymbolWriterProvider = new PortablePdbWriterProvider()
+        });
+
         assembly.Dispose();
-        
+
         var inMemoryAssembly = new InMemoryAssembly(
             peStream.ToArray(),
-            compiledAssembly.InMemoryAssembly.PdbData
+            pdbStream.ToArray()
         );
         
         return new ILPostProcessResult(inMemoryAssembly, messages.ToList());

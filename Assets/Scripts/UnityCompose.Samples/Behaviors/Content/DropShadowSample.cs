@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 content: () =>
                 {
                     var hasShadow = Remember(() => MutableStateOf(true));
-                    var tween = Tween(5_000);
+                    var tween = Tween();
                     Spacer(
                         Modifier
                             .Size(100.Dp())
@@ -34,7 +34,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                 shape: RoundedCornerShape(0.Dp()),
                                 shadow: Shadow(
                                     radius: AnimateFloatAsState(32 * hasShadow.Value.ToInt(), tween).Value.Dp(),
-                                    spread: 0.Dp(),
+                                    spread: 10.Dp(),
                                     color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
                                         .ToSystemColor(),
                                     offset: new Offset()
