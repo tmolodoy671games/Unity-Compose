@@ -6,6 +6,7 @@ using System.Linq;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -20,11 +21,7 @@ internal record BlurModifierImpl(float Strength) : UnityModifier, IAppearanceMod
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
         filter.AddParameter(new FilterParameter(Strength));
-        
-        if (element.style.filter.value == null)
-            element.style.filter = new List<FilterFunction>();
-        element.style.filter.value.Add(filter);
-        element.style.filter = element.style.filter.value.ToList();
+        element.style.AddFilter(filter);
     }
 
     protected override void Revert(
@@ -35,10 +32,6 @@ internal record BlurModifierImpl(float Strength) : UnityModifier, IAppearanceMod
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
         filter.AddParameter(new FilterParameter(Strength));
-        
-        if (element.style.filter.value == null)
-            element.style.filter = new List<FilterFunction>();
-        element.style.filter.value.Remove(filter);
-        element.style.filter = element.style.filter.value.ToList();
+        element.style.RemoveFilter(filter);
     }
 }

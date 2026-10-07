@@ -25,15 +25,41 @@ public abstract partial class ComposeUI : MonoBehaviour
     [SuppressMessage("Compose.Net", "CN_COMPOSABLE_PARAMETER:Non composable argument passed to composable parameter")]
     private void OnEnable()
     {
-        var document = GetComponent<UIDocument>();
-        if (!document) return;
-        _composeView = document.rootVisualElement?.Q<ComposeView>();
-        _composeView?.SetContent(ApplicationUtils.IsPlaying ? Content : Preview);
+        EnablePanelRenderer();
+        EnableUiDocument();
     }
     
     private void OnDestroy()
     {
         _composeView?.Dispose();
         _composeView = null;
+    }
+
+    private void EnablePanelRenderer()
+    {
+        var renderer = GetComponent<PanelRenderer>();
+        if (!renderer) return;
+
+        renderer.RegisterUIReloadCallback(OnUIReload);
+    }
+
+    private void OnUIReload(
+        PanelRenderer renderer,
+        VisualElement root,
+        int version)
+    {
+        _composeView = root.Q<ComposeView>();
+        _composeView?.SetContent(
+            ApplicationUtils.IsPlaying
+                ? Content
+                : Preview);
+    }
+
+    private void EnableUiDocument()
+    {
+        var document = GetComponent<UIDocument>();
+        if (!document) return;
+        _composeView = document.rootVisualElement?.Q<ComposeView>();
+        _composeView?.SetContent(ApplicationUtils.IsPlaying ? Content : Preview);
     }
 }

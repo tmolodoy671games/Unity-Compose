@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
+public class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
 {
     private readonly VisualElement _element;
 
@@ -20,6 +20,7 @@ internal class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
 
     public Size Size => _element.contentRect.size.ToSize();
     public CancellationToken Token { get; }
+    public VisualElement Element => _element;
 
     public async Task<IPointerInputChange> AwaitPointerInputChange()
     {
@@ -27,19 +28,16 @@ internal class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
 
         EventCallback<PointerDownEvent> onDown = it =>
         {
-            Debug.Log($"Capture({it.pointerId})");
             _element.CapturePointer(it.pointerId);
             tcs.TrySetResult(PointerInputChange.Create(it));
         };
         EventCallback<PointerMoveEvent> onMove = it => tcs.TrySetResult(PointerInputChange.Create(it));
         EventCallback<PointerUpEvent> onUp = it =>
         {
-            Debug.Log("Release");
             _element.ReleasePointer(it.pointerId);
             tcs.TrySetResult(PointerInputChange.Create(it));
         };
         EventCallback<PointerCancelEvent> onCancel = it => tcs.TrySetResult(PointerInputChange.Create(it));
-        Debug.Log("Subscribe");
         _element.RegisterCallbackOnce(onDown);
         _element.RegisterCallbackOnce(onMove);
         _element.RegisterCallbackOnce(onUp);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Compose.Net;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
@@ -70,10 +71,7 @@ internal record InnerShadowModifierImpl(
 
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
-        if (style.filter.value == null)
-            style.filter = new List<FilterFunction>();
-        style.filter.value.Add(blur);
-        style.filter = style.filter.value.ToList();
+        style.AddFilter(blur);
     }
 
     private static void Revert(
@@ -109,9 +107,6 @@ internal record InnerShadowModifierImpl(
 
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
-        if (style.filter.value == null)
-            style.filter = new List<FilterFunction>();
-        style.filter.value.Remove(blur);
-        style.filter = style.filter.value.ToList();
+        style.RemoveFilter(blur);
     }
 }
