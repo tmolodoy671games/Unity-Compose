@@ -12,14 +12,14 @@ using Rect = Compose.Net.Rect;
 
 namespace UnityCompose;
 
-internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
+internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
 {
     private readonly MeshGenerationContext _context;
     private readonly IPathDrawer _drawer;
     private readonly Action<Texture2D> _consumeTexture2D;
     private Size _size;
 
-    public DrawScopeImpl(MeshGenerationContext context)
+    public UnityDrawScope(MeshGenerationContext context)
     {
         _context = context;
         _drawer = new PathDrawerImpl(_context.painter2D);
@@ -76,7 +76,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: min,
             Size: (max - min).ToSize()
         );
-        brush.Apply(_context, contentRect, alpha, DrawStyle.Stroke(strokeWidth));
+        brush.Apply(this, contentRect, alpha, Stroke(strokeWidth));
         DrawLineImpl(
             start: start,
             end: end,
@@ -114,7 +114,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        ApplyColor(color, alpha, style ?? DrawStyle.Fill);
+        ApplyColor(color, alpha, style ?? Fill);
         DrawRectImpl(
             topLeft: topLeft,
             size: size,
@@ -134,7 +134,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: topLeft,
             Size: size.GetOrDefault(Size)
         );
-        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
         DrawRectImpl(
             topLeft: topLeft,
             size: size,
@@ -164,7 +164,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         painter.LineTo(new Vector2(rect.xMin, rect.yMax));
         painter.ClosePath();
 
-        Draw(style ?? DrawStyle.Fill);
+        Draw(style ?? Fill);
     }
 
     #endregion
@@ -180,7 +180,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style
     )
     {
-        ApplyColor(color, alpha, style ?? DrawStyle.Fill);
+        ApplyColor(color, alpha, style ?? Fill);
         DrawRoundRectImpl(
             topLeft: topLeft,
             size: size,
@@ -202,7 +202,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: topLeft,
             Size: size.GetOrDefault(Size)
         );
-        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
         DrawRoundRectImpl(
             topLeft: topLeft,
             size: size,
@@ -270,7 +270,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         );
 
         painter.ClosePath();
-        Draw(style ?? DrawStyle.Fill);
+        Draw(style ?? Fill);
     }
 
     #endregion
@@ -303,7 +303,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: resolvedCenter - new Offset(resolvedRadius, resolvedRadius),
             Size: new Size(resolvedRadius, resolvedRadius)
         );
-        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
         DrawCircleImpl(radius, center, style);
     }
 
@@ -323,7 +323,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         );
         painter.ClosePath();
 
-        Draw(style ?? DrawStyle.Fill);
+        Draw(style ?? Fill);
     }
 
     #endregion
@@ -358,7 +358,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: topLeft,
             Size: size.GetOrDefault(Size)
         );
-        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
         DrawOvalImpl(
             topLeft: topLeft,
             size: size,
@@ -442,7 +442,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
             Offset: topLeft,
             Size: size.GetOrDefault(Size)
         );
-        brush.Apply(_context, contentRect, alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
         DrawArcImpl(
             startAngle: startAngle,
             sweepAngle: sweepAngle,
@@ -516,7 +516,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
         DrawStyle? style = null
     )
     {
-        brush.Apply(_context, new Rect(), alpha, style ?? DrawStyle.Fill);
+        brush.Apply(this, new Rect(), alpha, style ?? Fill);
         DrawPathImpl(path, style);
     }
 
@@ -544,9 +544,9 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     {
         var style = pointMode switch
         {
-            PointMode.Individual => DrawStyle.Stroke(strokeWidth),
-            PointMode.Lines => DrawStyle.Stroke(strokeWidth),
-            PointMode.Polygon => DrawStyle.Fill,
+            PointMode.Individual => Stroke(strokeWidth),
+            PointMode.Lines => Stroke(strokeWidth),
+            PointMode.Polygon => Fill,
             _ => throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null)
         };
         ApplyColor(color, alpha, style);
@@ -564,12 +564,12 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     {
         var style = pointMode switch
         {
-            PointMode.Individual => DrawStyle.Stroke(strokeWidth),
-            PointMode.Lines => DrawStyle.Stroke(strokeWidth),
-            PointMode.Polygon => DrawStyle.Fill,
+            PointMode.Individual => Stroke(strokeWidth),
+            PointMode.Lines => Stroke(strokeWidth),
+            PointMode.Polygon => Fill,
             _ => throw new ArgumentOutOfRangeException(nameof(pointMode), pointMode, null)
         };
-        brush.Apply(_context, new Rect(), alpha, style);
+        brush.Apply(this, new Rect(), alpha, style);
         DrawPointsImpl(points, pointMode, strokeWidth, strokeCap);
     }
 
@@ -672,7 +672,7 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     )
     {
         var drawSize = size.GetOrDefault(image.Size);
-        image.Apply(_context);
+        image.SetImage(this);
         DrawRectImpl(
             topLeft: topLeft,
             size: drawSize,
@@ -685,12 +685,12 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     private void Draw(DrawStyle? style)
     {
         var painter = _context.painter2D;
-        switch (style ?? DrawStyle.Fill)
+        switch (style ?? Fill)
         {
-            case DrawStyle.FillStyle:
+            case DrawStyle.Fill:
                 painter.Fill();
                 break;
-            case DrawStyle.StrokeStyle stroke:
+            case DrawStyle.Stroke stroke:
                 painter.lineWidth = stroke.Width;
                 painter.Stroke();
                 break;
@@ -703,12 +703,12 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
     {
         color = color.WithAlpha(alpha);
         var painter = _context.painter2D;
-        switch (style ?? DrawStyle.Fill)
+        switch (style ?? Fill)
         {
-            case DrawStyle.FillStyle:
+            case DrawStyle.Fill:
                 painter.fillColor = color.ToUnityColor();
                 break;
-            case DrawStyle.StrokeStyle stroke:
+            case DrawStyle.Stroke stroke:
                 painter.lineWidth = stroke.Width;
                 painter.fillColor = color.ToUnityColor();
                 break;
@@ -716,6 +716,11 @@ internal class DrawScopeImpl : IDrawScope<MeshGenerationContext>
                 throw new ArgumentOutOfRangeException(nameof(style));
         }
     }
+}
+
+public static partial class DrawScopeExtensions
+{
+    public static MeshGenerationContext Context(this IDrawScope scope) => scope.CastTo<UnityDrawScope>().Context;
 }
 
 public static partial class VisualElementExtensions
@@ -726,7 +731,7 @@ public static partial class VisualElementExtensions
         var visualElement = context.visualElement;
         if (visualElement.UserData().TryGet(key, out var cached))
             return (IDrawScope)cached.NotNull();
-        var scope = new DrawScopeImpl(context);
+        var scope = new UnityDrawScope(context);
         visualElement.UserData()[key] = scope;
         return scope;
     }

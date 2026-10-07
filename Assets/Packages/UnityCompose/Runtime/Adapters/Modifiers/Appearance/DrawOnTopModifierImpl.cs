@@ -69,7 +69,7 @@ internal class DrawOnTopModifierImpl : DrawOnTopUnityModifier<DrawOnTopModifierI
     }
 }
 
-public static class DrawScopeExtensions
+public static partial class DrawScopeExtensions
 {
     public static void DrawImageScreen(
         this IDrawScope scope,

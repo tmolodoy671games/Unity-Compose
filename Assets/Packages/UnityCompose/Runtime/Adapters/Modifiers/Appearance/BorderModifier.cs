@@ -29,6 +29,7 @@ internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>, IAppearan
         IStableList<IModifier> newModifiers
     )
     {
+        // BRUH
         element.style.borderBottomWidth = _borderWidth.Value;
         element.style.borderTopWidth = _borderWidth.Value;
         element.style.borderLeftWidth = _borderWidth.Value;
@@ -40,7 +41,7 @@ internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>, IAppearan
                 element.layout.height
             )
         );
-        _brush.Apply(element, rect, 1, DrawStyle.Stroke(_borderWidth.Value));
+        // _brush.Apply(element, rect, 1, DrawStyle.Stroke(_borderWidth.Value));
     }
 
     protected override void Revert(
@@ -49,6 +50,7 @@ internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>, IAppearan
         IStableList<IModifier> newModifiers
     )
     {
+        // BRUH
         element.style.borderBottomWidth = StyleKeyword.Null;
         element.style.borderTopWidth = StyleKeyword.Null;
         element.style.borderLeftWidth = StyleKeyword.Null;
@@ -60,7 +62,7 @@ internal class BorderModifierImpl : UnityModifier<BorderModifierImpl>, IAppearan
                 element.layout.height
             )
         );
-        _brush.Revert(element, rect, 1, DrawStyle.Stroke(_borderWidth.Value));
+        // _brush.Revert(element, rect, 1, DrawStyle.Stroke(_borderWidth.Value));
     }
 
     protected override bool Equals(BorderModifierImpl other)

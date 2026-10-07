@@ -18,33 +18,17 @@ internal record LinearGradientBrushImpl(
     TileMode TileMode
 ) : IBrush
 {
-    public void Apply(object target, Rect contentRect, float alpha, DrawStyle style)
+    public void Apply(IDrawScope drawScope, Rect rect, float alpha, DrawStyle style)
     {
-        switch (target)
-        {
-            case MeshGenerationContext context:
-                ApplyToContext(context, contentRect, alpha, style);
-                break;
-            default:
-                throw new InvalidOperationException();
-        }
-    }
-
-    public void Revert(object target, Rect contentRect, float alpha, DrawStyle style)
-    {
-        throw new InvalidOperationException();
-    }
-
-    private void ApplyToContext(MeshGenerationContext context, Rect contentRect, float alpha, DrawStyle style)
-    {
+        var context = drawScope.Context();
         switch (style)
         {
-            case DrawStyle.FillStyle:
-                context.painter2D.fillGradient = Create(contentRect, alpha);
+            case DrawStyle.Fill:
+                context.painter2D.fillGradient = Create(rect, alpha);
                 break;
-            case DrawStyle.StrokeStyle strokeStyle:
+            case DrawStyle.Stroke strokeStyle:
                 context.painter2D.lineWidth = strokeStyle.Width;
-                context.painter2D.strokeFillGradient = Create(contentRect, alpha);
+                context.painter2D.strokeFillGradient = Create(rect, alpha);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(style));
@@ -58,48 +42,36 @@ internal record LinearGradientBrushImpl(
             X: float.IsPositiveInfinity(End.X) ? contentRect.Size.Width : End.X,
             Y: float.IsPositiveInfinity(End.Y) ? contentRect.Size.Width : End.Y
         ) + contentRect.Offset;
-        var gradient = new Gradient
-        {
-            colorKeys = Colors
-                .Select((color, index) => new GradientColorKey(
-                    color.ToUnityColor(),
-                    Stops != null
-                        ? Stops[index]
-                        : (float)index / (Colors.Count - 1)
-                ))
-                .ToArray(),
+        return FillGradient.MakeLinearGradient(
+            gradient: new Gradient
+            {
+                colorKeys = Colors
+                    .Select((color, index) => new GradientColorKey(
+                        color.ToUnityColor(),
+                        Stops != null
+                            ? Stops[index]
+                            : (float)index / (Colors.Count - 1)
+                    ))
+                    .ToArray(),
 
-            alphaKeys = Colors
-                .Select((color, index) => new GradientAlphaKey(
-                    color.A * alpha / 255f,
-                    Stops != null
-                        ? Stops[index]
-                        : (float)index / (Colors.Count - 1)
-                ))
-                .ToArray()
-        };
-        return new FillGradient
-        {
-            gradient = gradient,
-            start = start.ToVector2(),
-            end = end.ToVector2(),
-            addressMode = TileMode switch
+                alphaKeys = Colors
+                    .Select((color, index) => new GradientAlphaKey(
+                        color.A * alpha / 255f,
+                        Stops != null
+                            ? Stops[index]
+                            : (float)index / (Colors.Count - 1)
+                    ))
+                    .ToArray()
+            },
+            start: start.ToVector2(),
+            end: end.ToVector2(),
+            addressMode: TileMode switch
             {
                 TileMode.Clamp => AddressMode.Clamp,
                 TileMode.Repeated => AddressMode.Wrap,
                 TileMode.Mirror => AddressMode.Mirror,
                 _ => throw new ArgumentOutOfRangeException()
-            },
-            gradientType = GradientType.Linear
-        };
-        ;
-    }
-
-    private void GenerateVisualContent(MeshGenerationContext context)
-    {
-        var scope = context.DrawScope();
-        scope.DrawRoundRect(
-            brush: this
+            }
         );
     }
 }

@@ -25,6 +25,12 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
         return new BackgroundBrushModifierImpl(brush, shape);
     }
 
+    public IModifier Paint(IPainter painter, float alpha)
+    {
+        // BRUH
+        throw new NotImplementedException();
+    }
+
     public IModifier DropShadow(Shape shape, Compose.Net.Shadow shadow)
     {
         return new DropShadowModifierImpl(shape, shadow);

@@ -19,6 +19,11 @@ internal class ImageNodeFactoryImpl : IImageNodeFactory
         var element = node.VisualElement().CastTo<Image>();
         element.scaleMode = scaleMode.ToUnityScaleMode();
     }
+
+    public void Apply(IReusableComposeNode node, IPainter painter, ScaleMode scaleMode)
+    {
+        painter.SetImage(node);
+    }
 }
 
 internal static class ScaleModeExtensions

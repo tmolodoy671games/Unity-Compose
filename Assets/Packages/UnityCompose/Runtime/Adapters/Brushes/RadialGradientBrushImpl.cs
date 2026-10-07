@@ -18,33 +18,21 @@ internal record RadialGradientBrushImpl(
     TileMode TileMode
 ) : IBrush
 {
-    public void Apply(object target, Rect contentRect, float alpha, DrawStyle style)
+    public void Apply(IDrawScope drawScope, Rect rect, float alpha, DrawStyle style)
     {
-        switch (target)
+        var context = drawScope.Context();
+        switch (style)
         {
-            case MeshGenerationContext context:
-                switch (style)
-                {
-                    case DrawStyle.FillStyle:
-                        context.painter2D.fillGradient = Create(contentRect, alpha);
-                        break;
-                    case DrawStyle.StrokeStyle strokeStyle:
-                        context.painter2D.lineWidth = strokeStyle.Width;
-                        context.painter2D.strokeFillGradient = Create(contentRect, alpha);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(style));
-                }
-
+            case DrawStyle.Fill:
+                context.painter2D.fillGradient = Create(rect, alpha);
+                break;
+            case DrawStyle.Stroke strokeStyle:
+                context.painter2D.lineWidth = strokeStyle.Width;
+                context.painter2D.strokeFillGradient = Create(rect, alpha);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new ArgumentOutOfRangeException(nameof(style));
         }
-    }
-
-    public void Revert(object target, Rect contentRect, float alpha, DrawStyle style)
-    {
-        throw new InvalidOperationException();
     }
 
     private FillGradient Create(Rect contentRect, float alpha)
@@ -58,36 +46,34 @@ internal record RadialGradientBrushImpl(
             Vector2.Distance(center, new Vector2(0, containerSize.y)),
             Vector2.Distance(center, new Vector2(containerSize.x, containerSize.y))
         );
-        var gradient = new Gradient
-        {
-            colorKeys = Colors
-                .Select((color, index) => new GradientColorKey(
-                        color.ToUnityColor(),
-                        Stops != null ? Stops[0] : index * 1f / Colors.Count
+        return FillGradient.MakeRadialGradient(
+            gradient: new Gradient
+            {
+                colorKeys = Colors
+                    .Select((color, index) => new GradientColorKey(
+                            color.ToUnityColor(),
+                            Stops != null ? Stops[0] : index * 1f / Colors.Count
+                        )
                     )
-                )
-                .ToArray(),
-            alphaKeys = Colors
-                .Select((color, index) => new GradientAlphaKey(
-                        color.A * alpha / 255f,
-                        Stops != null ? Stops[0] : index * 1f / Colors.Count
+                    .ToArray(),
+                alphaKeys = Colors
+                    .Select((color, index) => new GradientAlphaKey(
+                            color.A * alpha / 255f,
+                            Stops != null ? Stops[0] : index * 1f / Colors.Count
+                        )
                     )
-                )
-                .ToArray()
-        };
-        return new FillGradient
-        {
-            gradient = gradient,
-            center = center,
-            radius = float.IsPositiveInfinity(Radius) ? defaultRadius : Radius,
-            addressMode = TileMode switch
+                    .ToArray()
+            },
+            center: center,
+            focus: center,
+            radius: float.IsPositiveInfinity(Radius) ? defaultRadius : Radius,
+            addressMode: TileMode switch
             {
                 TileMode.Clamp => AddressMode.Clamp,
                 TileMode.Repeated => AddressMode.Wrap,
                 TileMode.Mirror => AddressMode.Mirror,
                 _ => throw new ArgumentOutOfRangeException()
-            },
-            gradientType = GradientType.Linear
-        };
+            }
+        );
     }
 }

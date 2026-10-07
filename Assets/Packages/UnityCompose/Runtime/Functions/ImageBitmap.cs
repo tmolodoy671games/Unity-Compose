@@ -22,20 +22,15 @@ internal record TextureImageBitmapImpl(
 {
     public Size Size => new(Texture.width, Texture.height);
 
-    public void Apply(object target)
+    public void SetImage(IReusableComposeNode imageNode)
     {
-        switch (target)
-        {
-            case Image image:
-                image.image = Texture;
-                break;
-            case MeshGenerationContext context:
-                if (Texture is Texture2D texture2D)
-                    context.painter2D.fillTexture = texture2D;
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
-        }
+        imageNode.VisualElement<Image>().image = Texture;
+    }
+
+    public void SetImage(IDrawScope drawScope)
+    {
+        if (Texture is Texture2D texture2D)
+            drawScope.Context().painter2D.fillTexture = texture2D;
     }
 }
 
@@ -45,19 +40,14 @@ internal record Texture2DImageBitmapImpl(
 {
     public Size Size => new(Texture.width, Texture.height);
 
-    public void Apply(object target)
+    public void SetImage(IReusableComposeNode imageNode)
     {
-        switch (target)
-        {
-            case Image image:
-                image.image = Texture;
-                break;
-            case MeshGenerationContext context:
-                context.painter2D.fillTexture = Texture;
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
-        }
+        imageNode.VisualElement<Image>().image = Texture;
+    }
+
+    public void SetImage(IDrawScope drawScope)
+    {
+        drawScope.Context().painter2D.fillTexture = Texture;
     }
 }
 
@@ -67,19 +57,14 @@ internal record SpriteImageBitmapImpl(
 {
     public Size Size => new(Sprite.rect.width, Sprite.rect.height);
 
-    public void Apply(object target)
+    public void SetImage(IReusableComposeNode imageNode)
     {
-        switch (target)
-        {
-            case Image image:
-                image.sprite = Sprite;
-                break;
-            case MeshGenerationContext context:
-                context.painter2D.fillTexture = Sprite.texture;
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
-        }
+        imageNode.VisualElement<Image>().sprite = Sprite;
+    }
+
+    public void SetImage(IDrawScope drawScope)
+    {
+        drawScope.Context().painter2D.fillTexture = Sprite.texture;
     }
 }
 
@@ -89,17 +74,12 @@ internal record VectorImageBitmapImpl(
 {
     public Size Size => new(VectorImage.width, VectorImage.height);
 
-    public void Apply(object target)
+    public void SetImage(IReusableComposeNode imageNode)
     {
-        switch (target)
-        {
-            case Image image:
-                image.vectorImage = VectorImage;
-                break;
-            case MeshGenerationContext:
-                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
-            default:
-                throw new InvalidOperationException($"Unsupported target type: {target.GetType().Name}!");
-        }
+        imageNode.VisualElement<Image>().vectorImage = VectorImage;
+    }
+
+    public void SetImage(IDrawScope drawScope)
+    {
     }
 }

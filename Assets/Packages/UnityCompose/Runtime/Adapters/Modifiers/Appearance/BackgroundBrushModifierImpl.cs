@@ -30,12 +30,7 @@ internal class BackgroundBrushModifierImpl : UnityModifier<BackgroundBrushModifi
         IStableList<IModifier> newModifiers
     )
     {
-        _brush.Apply(
-            element,
-            drawRect: new Rect(Offset.Zero, element.contentRect.size.ToSize()),
-            alpha: 1,
-            style: DrawStyle.Fill
-        );
+        // BRUH
         if (_shape.HasValue)
         {
             var shapeValue = _shape.Value;
@@ -52,6 +47,7 @@ internal class BackgroundBrushModifierImpl : UnityModifier<BackgroundBrushModifi
         IStableList<IModifier> newModifiers
     )
     {
+        // BRUH
         element.style.backgroundColor = StyleKeyword.Null;
         if (_shape.HasValue)
         {
