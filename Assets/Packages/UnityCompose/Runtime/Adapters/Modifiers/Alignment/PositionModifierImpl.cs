@@ -2,47 +2,36 @@
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
 namespace UnityCompose;
 
-internal class PositionModifierImpl : UnityModifier<PositionModifierImpl>
+internal record PositionModifierImpl(
+    Optional<Dp> Top,
+    Optional<Dp> Bottom,
+    Optional<Dp> Left,
+    Optional<Dp> Right
+) : UnityModifier
 {
-    private readonly Optional<Dp> _top;
-    private readonly Optional<Dp> _bottom;
-    private readonly Optional<Dp> _left;
-    private readonly Optional<Dp> _right;
-
-    public PositionModifierImpl(
-        Optional<Dp> top,
-        Optional<Dp> bottom,
-        Optional<Dp> left,
-        Optional<Dp> right
-    )
-    {
-        _top = top;
-        _bottom = bottom;
-        _left = left;
-        _right = right;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.position = Position.Absolute;
-        if (_top.HasValue)
-            element.style.top = _top.Value.Value;
-        if (_bottom.HasValue)
-            element.style.bottom = _bottom.Value.Value;
-        if (_left.HasValue)
-            element.style.left = _left.Value.Value;
-        if (_right.HasValue)
-            element.style.right = _right.Value.Value;
+        var style = element.style;
+        style.position = Position.Absolute;
+        if (Top.HasValue)
+            style.top = Top.Value.Value;
+        if (Bottom.HasValue)
+            style.bottom = Bottom.Value.Value;
+        if (Left.HasValue)
+            style.left = Left.Value.Value;
+        if (Right.HasValue)
+            style.right = Right.Value.Value;
     }
 
     protected override void Revert(
@@ -51,23 +40,14 @@ internal class PositionModifierImpl : UnityModifier<PositionModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        if (_top.HasValue)
-            element.style.top = StyleKeyword.Null;
-        if (_bottom.HasValue)
-            element.style.bottom = StyleKeyword.Null;
-        if (_left.HasValue)
-            element.style.left = StyleKeyword.Null;
-        if (_right.HasValue)
-            element.style.right = StyleKeyword.Null;
+        var style = element.style;
+        if (Top.HasValue)
+            style.top = style.top.CompareAndSetNull(Top.Value.Value);
+        if (Bottom.HasValue)
+            style.bottom = style.top.CompareAndSetNull(Bottom.Value.Value);
+        if (Left.HasValue)
+            style.left = style.top.CompareAndSetNull(Left.Value.Value);
+        if (Right.HasValue)
+            style.right = style.top.CompareAndSetNull(Right.Value.Value);
     }
-
-    protected override bool Equals(PositionModifierImpl other)
-    {
-        return _top.Equals(other._top) &&
-               _bottom.Equals(other._bottom) &&
-               _left.Equals(other._left) &&
-               _right.Equals(other._right);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_top, _bottom, _left, _right);
 }

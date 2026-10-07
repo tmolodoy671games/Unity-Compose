@@ -3,34 +3,26 @@ using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
 namespace UnityCompose;
 
-internal class HorizontalAlignModifierImpl : UnityModifier<HorizontalAlignModifierImpl>
+internal record HorizontalAlignModifierImpl(
+    Alignment.Horizontal Align
+) : UnityModifier
 {
-    private readonly Alignment.Horizontal _align;
-
-    public HorizontalAlignModifierImpl(Alignment.Horizontal align)
-    {
-        _align = align;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Column:
-            case FlexDirection.ColumnReverse:
-                element.style.alignSelf = _align.ToAlign();
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Column
+            or FlexDirection.ColumnReverse)) return;
+        element.style.alignSelf = Align.ToAlign();
     }
 
     protected override void Revert(
@@ -39,15 +31,8 @@ internal class HorizontalAlignModifierImpl : UnityModifier<HorizontalAlignModifi
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Column:
-            case FlexDirection.ColumnReverse:
-                element.style.alignSelf = StyleKeyword.Null;
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Column
+            or FlexDirection.ColumnReverse)) return;
+        element.style.alignSelf = element.style.alignSelf.CompareAndSetNull(Align.ToAlign());
     }
-
-    protected override bool Equals(HorizontalAlignModifierImpl other) => _align == other._align;
-    public override int GetHashCode() => HashCode.Combine(_align);
 }

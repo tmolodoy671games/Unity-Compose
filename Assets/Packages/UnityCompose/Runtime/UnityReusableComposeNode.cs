@@ -258,15 +258,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _contentContainerInstance ??= new ContentContainer
         {
             pickingMode = PickingMode.Ignore,
-            style =
-            {
-                width = new Length(100, LengthUnit.Percent),
-                height = new Length(100, LengthUnit.Percent),
-                // top = 0,
-                // bottom = 0,
-                // left = 0,
-                // right = 0,
-            }
         };
         _contentContainer = _contentContainerInstance;
         var children = VisualElement.Children().ToImmutableStableList();

@@ -9,28 +9,19 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class VerticalAlignModifierImpl : UnityModifier<VerticalAlignModifierImpl>
+internal record VerticalAlignModifierImpl(
+    Alignment.Vertical Align
+) : UnityModifier
 {
-    private readonly Alignment.Vertical _align;
-
-    public VerticalAlignModifierImpl(Alignment.Vertical align)
-    {
-        _align = align;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Row:
-            case FlexDirection.RowReverse:
-                element.style.alignSelf = _align.ToAlign();
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Row or FlexDirection.RowReverse))
+            return;
+        element.style.alignSelf = Align.ToAlign();
     }
 
     protected override void Revert(
@@ -39,15 +30,8 @@ internal class VerticalAlignModifierImpl : UnityModifier<VerticalAlignModifierIm
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Row:
-            case FlexDirection.RowReverse:
-                element.style.alignSelf = StyleKeyword.Null;
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Row or FlexDirection.RowReverse))
+            return;
+        element.style.alignSelf = StyleKeyword.Null;
     }
-
-    protected override bool Equals(VerticalAlignModifierImpl other) => _align == other._align;
-    public override int GetHashCode() => HashCode.Combine(_align);
 }

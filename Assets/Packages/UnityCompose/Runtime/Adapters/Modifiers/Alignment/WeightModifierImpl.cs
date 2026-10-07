@@ -4,26 +4,22 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class WeightModifierImpl : UnityModifier<WeightModifierImpl>
+internal record WeightModifierImpl(
+    float Weight
+) : UnityModifier
 {
-    private readonly float _weight;
-
-    public WeightModifierImpl(float weight)
-    {
-        _weight = weight;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.flexGrow = _weight;
+        element.style.flexGrow = Weight;
     }
 
     protected override void Revert(
@@ -32,9 +28,6 @@ internal class WeightModifierImpl : UnityModifier<WeightModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.flexGrow = StyleKeyword.Null;
+        element.style.flexGrow = element.style.flexGrow.CompareAndSetNull(Weight);
     }
-
-    protected override bool Equals(WeightModifierImpl other) => _weight.AlmostEquals(other._weight);
-    public override int GetHashCode() => HashCode.Combine(_weight);
 }

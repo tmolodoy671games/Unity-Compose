@@ -1,36 +1,27 @@
-﻿using System;
-using Compose.Net;
+﻿using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 // ReSharper disable CheckNamespace
 
 namespace UnityCompose;
 
-internal class AlignModifierImpl : UnityModifier<AlignModifierImpl>
+internal record AlignModifierImpl(
+    Alignment Align
+) : UnityModifier
 {
-    private readonly Alignment _align;
-
-    public AlignModifierImpl(Alignment align)
-    {
-        _align = align;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Row:
-            case FlexDirection.RowReverse:
-                element.style.alignSelf = _align.ToAlign();
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Row or FlexDirection.RowReverse))
+            return;
+        element.style.alignSelf = Align.ToAlign();
     }
 
     protected override void Revert(
@@ -39,15 +30,8 @@ internal class AlignModifierImpl : UnityModifier<AlignModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        switch (element.parent.NotNull().style.flexDirection.value)
-        {
-            case FlexDirection.Row:
-            case FlexDirection.RowReverse:
-                element.style.alignSelf = StyleKeyword.Null;
-                break;
-        }
+        if (element.parent.NotNull().style.flexDirection.value is not (FlexDirection.Row or FlexDirection.RowReverse))
+            return;
+        element.style.alignSelf = element.style.alignSelf.CompareAndSetNull(Align.ToAlign());
     }
-
-    protected override bool Equals(AlignModifierImpl other) => _align == other._align;
-    public override int GetHashCode() => HashCode.Combine(_align);
 }

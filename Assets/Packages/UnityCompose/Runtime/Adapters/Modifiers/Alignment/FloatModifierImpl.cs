@@ -2,6 +2,7 @@
 
 using Compose.Net;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
@@ -29,7 +30,7 @@ internal class FloatModifierImpl : UnityModifier<FloatModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.position = StyleKeyword.Null;
+        element.style.position = element.style.position.CompareAndSetNull(Position.Absolute);
     }
 
     protected override bool Equals(FloatModifierImpl other) => true;
