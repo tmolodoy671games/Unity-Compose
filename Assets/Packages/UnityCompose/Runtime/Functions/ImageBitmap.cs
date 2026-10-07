@@ -10,10 +10,29 @@ namespace UnityCompose;
 
 public static class ImageBitmap
 {
-    public static IImageBitmap ImageResource(Texture texture) => new TextureImageBitmapImpl(texture);
-    public static IImageBitmap ImageResource(Texture2D texture) => new Texture2DImageBitmapImpl(texture);
-    public static IImageBitmap ImageResource(Sprite sprite) => new SpriteImageBitmapImpl(sprite);
-    public static IImageBitmap ImageResource(VectorImage vectorImage) => new VectorImageBitmapImpl(vectorImage);
+    public static IImageBitmap ImageResource(Texture texture)
+    {
+        texture.NotNull();
+        return new TextureImageBitmapImpl(texture);
+    }
+
+    public static IImageBitmap ImageResource(Texture2D texture)
+    {
+        texture.NotNull();
+        return new Texture2DImageBitmapImpl(texture);
+    }
+
+    public static IImageBitmap ImageResource(Sprite sprite)
+    {
+        sprite.NotNull();
+        return new SpriteImageBitmapImpl(sprite);
+    }
+
+    public static IImageBitmap ImageResource(VectorImage vectorImage)
+    {
+        vectorImage.NotNull();
+        return new VectorImageBitmapImpl(vectorImage);
+    }
 }
 
 internal record TextureImageBitmapImpl(
@@ -40,15 +59,8 @@ internal record Texture2DImageBitmapImpl(
 {
     public Size Size => new(Texture.width, Texture.height);
 
-    public void SetImage(IReusableComposeNode imageNode)
-    {
-        imageNode.VisualElement<Image>().image = Texture;
-    }
-
-    public void SetImage(IDrawScope drawScope)
-    {
-        drawScope.Context().painter2D.fillTexture = Texture;
-    }
+    public void SetImage(IReusableComposeNode imageNode) => imageNode.VisualElement<Image>().image = Texture;
+    public void SetImage(IDrawScope drawScope) => drawScope.Context().painter2D.fillTexture = Texture;
 }
 
 internal record SpriteImageBitmapImpl(
@@ -57,15 +69,8 @@ internal record SpriteImageBitmapImpl(
 {
     public Size Size => new(Sprite.rect.width, Sprite.rect.height);
 
-    public void SetImage(IReusableComposeNode imageNode)
-    {
-        imageNode.VisualElement<Image>().sprite = Sprite;
-    }
-
-    public void SetImage(IDrawScope drawScope)
-    {
-        drawScope.Context().painter2D.fillTexture = Sprite.texture;
-    }
+    public void SetImage(IReusableComposeNode imageNode) => imageNode.VisualElement<Image>().sprite = Sprite;
+    public void SetImage(IDrawScope drawScope) => drawScope.Context().painter2D.fillTexture = Sprite.texture;
 }
 
 internal record VectorImageBitmapImpl(
@@ -74,10 +79,7 @@ internal record VectorImageBitmapImpl(
 {
     public Size Size => new(VectorImage.width, VectorImage.height);
 
-    public void SetImage(IReusableComposeNode imageNode)
-    {
-        imageNode.VisualElement<Image>().vectorImage = VectorImage;
-    }
+    public void SetImage(IReusableComposeNode imageNode) => imageNode.VisualElement<Image>().vectorImage = VectorImage;
 
     public void SetImage(IDrawScope drawScope)
     {

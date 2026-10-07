@@ -40,11 +40,11 @@ internal record RadialGradientBrushImpl(
         var containerSize = contentRect.Size.ToVector2();
         var center = (Center.GetOrDefault(containerSize.ToOffset() / 2) + contentRect.Offset).ToVector2();
 
-        var defaultRadius = Mathf.Max(
-            Vector2.Distance(center, new Vector2(0, 0)),
-            Vector2.Distance(center, new Vector2(containerSize.x, 0)),
-            Vector2.Distance(center, new Vector2(0, containerSize.y)),
-            Vector2.Distance(center, new Vector2(containerSize.x, containerSize.y))
+        var defaultRadius = Mathf.Min(
+            center.x.Absolute(),
+            (center.x - containerSize.x).Absolute(),
+            center.y.Absolute(),
+            (center.y - containerSize.y).Absolute()
         );
         return FillGradient.MakeRadialGradient(
             gradient: new Gradient
@@ -66,7 +66,7 @@ internal record RadialGradientBrushImpl(
             },
             center: center,
             focus: center,
-            radius: float.IsPositiveInfinity(Radius) ? defaultRadius : Radius,
+            radius: (float.IsPositiveInfinity(Radius) ? defaultRadius : Radius) * 2,
             addressMode: TileMode switch
             {
                 TileMode.Clamp => AddressMode.Clamp,

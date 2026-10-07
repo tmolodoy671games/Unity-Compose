@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Compose.Net;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
@@ -66,4 +67,9 @@ internal class PointerModifiersFactoryImpl : IPointerModifiersFactory
     }
 
     public IModifier CapturePointer(int pointerId) => new CapturePointerModifierImpl(pointerId);
+
+    public IModifier PointerInput<T>(T key, Func<IPointerInputScope, Task> body)
+    {
+        throw new NotImplementedException(); // BRUH
+    }
 }

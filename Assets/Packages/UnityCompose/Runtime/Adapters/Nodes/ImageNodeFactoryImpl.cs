@@ -11,12 +11,16 @@ internal class ImageNodeFactoryImpl : IImageNodeFactory
 {
     public IReusableComposeNode CreateNode()
     {
-        return new UnityReusableComposeNode(new Image());
+        return new UnityReusableComposeNode(new Image
+        {
+            name = null
+        });
     }
 
-    public void Apply(IReusableComposeNode node, ScaleMode scaleMode)
+    public void Apply(IReusableComposeNode node, IImageBitmap bitmap, ScaleMode scaleMode)
     {
         var element = node.VisualElement().CastTo<Image>();
+        bitmap.SetImage(node);
         element.scaleMode = scaleMode.ToUnityScaleMode();
     }
 

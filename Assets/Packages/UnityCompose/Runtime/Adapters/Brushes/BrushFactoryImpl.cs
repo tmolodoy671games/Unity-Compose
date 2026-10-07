@@ -7,6 +7,8 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
 
 internal class BrushFactoryImpl : IBrushFactory
 {
+    public IBrush SolidColor(Color color) => new SolidColorBrushImpl(color);
+
     public IBrush LinearGradient(
         IStableList<Color> colors,
         IStableList<float>? stops,

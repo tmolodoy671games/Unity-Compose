@@ -29,8 +29,7 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
 
     public IModifier Paint(IPainter painter, float alpha)
     {
-        // BRUH
-        throw new NotImplementedException();
+        return new PaintModifierImpl(painter, alpha);
     }
 
     public IModifier DropShadow(Shape shape, Compose.Net.Shadow shadow)

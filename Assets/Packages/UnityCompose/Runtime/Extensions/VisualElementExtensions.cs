@@ -31,12 +31,11 @@ public static partial class VisualElementExtensions
 
     public static ILayoutCoordinates LayoutCoordinates(this VisualElement visualElement)
     {
-        return new LayoutCoordinatesImpl(visualElement); // BRUH
-        // const string key = "UnityCompose_LayoutCoordinates";
-        // if (visualElement.UserData().GetOrNull(key) is ILayoutCoordinates existingCoordinates)
-        //     return existingCoordinates;
-        // var newCoordinates = new LayoutCoordinatesImpl(visualElement);
-        // visualElement.UserData()[key] = newCoordinates;
-        // return newCoordinates;
+        const string key = "UnityCompose_LayoutCoordinates";
+        if (visualElement.UserData().GetOrNull(key) is ILayoutCoordinates existingCoordinates)
+            return existingCoordinates;
+        var newCoordinates = new LayoutCoordinatesImpl(visualElement);
+        visualElement.UserData()[key] = newCoordinates;
+        return newCoordinates;
     }
 }

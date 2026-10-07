@@ -40,7 +40,7 @@ internal record LinearGradientBrushImpl(
         var start = Start + contentRect.Offset;
         var end = new Offset(
             X: float.IsPositiveInfinity(End.X) ? contentRect.Size.Width : End.X,
-            Y: float.IsPositiveInfinity(End.Y) ? contentRect.Size.Width : End.Y
+            Y: float.IsPositiveInfinity(End.Y) ? contentRect.Size.Height : End.Y
         ) + contentRect.Offset;
         return FillGradient.MakeLinearGradient(
             gradient: new Gradient
