@@ -8,22 +8,15 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class RotateModifierImpl : UnityModifier<RotateModifierImpl>
+internal record RotateModifierImpl(float Degrees) : UnityModifier
 {
-    private readonly float _degrees;
-
-    public RotateModifierImpl(float degrees)
-    {
-        _degrees = degrees;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value + _degrees);
+        StyleRotate newRotate = new Rotate(element.style.rotate.value.angle.value + Degrees);
         if (newRotate.value.angle.value == 0f)
             newRotate = StyleKeyword.Null;
         element.style.rotate = newRotate;
@@ -35,14 +28,9 @@ internal class RotateModifierImpl : UnityModifier<RotateModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        StyleRotate newRotate = ToNullIfNeeded(new Rotate(element.style.rotate.value.angle.value - _degrees));
-        if (newRotate.value.angle.value == 0f)
-            newRotate = StyleKeyword.Null;
+        StyleRotate newRotate = ToNullIfNeeded(new Rotate(element.style.rotate.value.angle.value - Degrees));
         element.style.rotate = newRotate;
     }
-
-    protected override bool Equals(RotateModifierImpl other) => _degrees.AlmostEquals(other._degrees);
-    public override int GetHashCode() => HashCode.Combine(_degrees);
 
     private static StyleRotate ToNullIfNeeded(Rotate rotate)
     {

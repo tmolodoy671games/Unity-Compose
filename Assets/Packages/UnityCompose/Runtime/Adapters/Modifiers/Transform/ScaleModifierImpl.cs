@@ -4,21 +4,17 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
+internal record ScaleModifierImpl(
+    float ScaleX,
+    float ScaleY
+) : UnityModifier
 {
-    private readonly float _scaleX;
-    private readonly float _scaleY;
-
-    public ScaleModifierImpl(float scaleX, float scaleY)
-    {
-        _scaleX = scaleX;
-        _scaleY = scaleY;
-    }
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -26,7 +22,7 @@ internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.scale = new Vector2(_scaleX, _scaleY);
+        element.style.scale = new Vector2(ScaleX, ScaleY);
     }
 
     protected override void Revert(
@@ -35,22 +31,7 @@ internal class ScaleModifierImpl : UnityModifier<ScaleModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.scale = StyleKeyword.Null;
+        element.style.scale = element.style.scale.CompareAndSetNull(new Vector2(ScaleX, ScaleY));
     }
-
-    protected override bool Equals(ScaleModifierImpl other)
-    {
-        return _scaleX.AlmostEquals(other._scaleX) &&
-               _scaleY.AlmostEquals(other._scaleY);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_scaleX, _scaleY);
-
-    private static Vector2 GetScale(VisualElement element)
-    {
-        var scaleValue = element.style.scale;
-        return scaleValue == StyleKeyword.Null || scaleValue == StyleKeyword.None
-            ? Vector2.one
-            : scaleValue.value.value.ToVector2();
-    }
+    
 }

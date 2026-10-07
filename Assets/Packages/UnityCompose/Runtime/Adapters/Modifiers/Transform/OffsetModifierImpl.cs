@@ -3,28 +3,23 @@
 using System;
 using Compose.Net;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OffsetModifierImpl : UnityModifier<OffsetModifierImpl>
+internal record OffsetModifierImpl(
+    Dp X,
+    Dp Y
+) : UnityModifier
 {
-    private readonly Dp _x;
-    private readonly Dp _y;
-
-    public OffsetModifierImpl(Dp x, Dp y)
-    {
-        _x = x;
-        _y = y;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.translate = new Translate(_x.ToLength(), _y.ToLength());
+        element.style.translate = new Translate(X.ToLength(), Y.ToLength());
     }
 
     protected override void Revert(
@@ -33,14 +28,7 @@ internal class OffsetModifierImpl : UnityModifier<OffsetModifierImpl>
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.translate = StyleKeyword.Null;
+        var style = element.style;
+        style.translate = style.translate.CompareAndSetNull(new Translate(X.ToLength(), Y.ToLength()));
     }
-
-    protected override bool Equals(OffsetModifierImpl other)
-    {
-        return _x.Equals(other._x) && _y.Equals(other._y);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_x, _y);
-    public override string ToString() => $"Offset({_x}, {_y})";
 }

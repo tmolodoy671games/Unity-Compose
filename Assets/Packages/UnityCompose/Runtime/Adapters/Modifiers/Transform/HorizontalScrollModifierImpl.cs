@@ -5,41 +5,43 @@ using System.Threading;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<HorizontalScrollModifierImpl>
+internal record HorizontalScrollModifierImpl(
+    IScrollState State,
+    float ScrollMultiplier,
+    bool ReverseScrolling,
+    bool UserScrollEnabled,
+    IMutableInteractionSource? InteractionSource
+) : ContentContainerUnityModifier
 {
-    private readonly IScrollState _state;
-    private readonly float _scrollMultiplier;
-    private readonly bool _reverseScrolling;
-    private readonly bool _userScrollEnabled;
-    private readonly IMutableInteractionSource? _interactionSource;
-    private readonly EventCallback<WheelEvent> _callback;
-    private readonly EventCallback<GeometryChangedEvent> _onElementGeometryChanged;
-    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged;
-    private readonly ReferenceKey _key;
-
-    public HorizontalScrollModifierImpl(
-        IScrollState state,
-        float scrollMultiplier,
-        bool reverseScrolling,
-        bool userScrollEnabled,
-        IMutableInteractionSource? interactionSource
-    )
+    private readonly EventCallback<WheelEvent> _callback = evt =>
     {
-        _key = new ReferenceKey(this);
-        _state = state;
-        _userScrollEnabled = userScrollEnabled;
-        _scrollMultiplier = scrollMultiplier;
-        _reverseScrolling = reverseScrolling;
-        _interactionSource = interactionSource;
-        _callback = OnWheelEvent;
-        _onGeometryChanged = OnGeometryChanged;
-        _onElementGeometryChanged = OnElementGeometryChanged;
-    }
+        evt.StopPropagation();
+        var offset = -evt.delta.x - evt.delta.y;
+        if (offset.AlmostEquals(0f))
+            return;
+        var multiplier = ReverseScrolling ? -1 : 1;
+        offset *= -multiplier * ScrollMultiplier;
+        State.ScrollBy(offset);
+        InteractionSource?.Emit(new IScrollInteraction.Scroll(offset));
+    };
+
+    private readonly EventCallback<GeometryChangedEvent> _onElementGeometryChanged = evt =>
+    {
+        var element = evt.VisualElement();
+        State.ViewportSize = element.contentRect.width;
+    };
+
+    private readonly EventCallback<GeometryChangedEvent> _onGeometryChanged = evt =>
+    {
+        var element = evt.VisualElement();
+        State.ContentSize = element.contentRect.width;
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -48,16 +50,18 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IStableList<IModifier> newModifiers
     )
     {
+        var containerStyle = contentContainer.style;
         contentContainer.RegisterCallback(_onGeometryChanged);
-        contentContainer.style.translate = new Vector2(-_state.Value, 0);
-        contentContainer.style.flexShrink = 0;
-        contentContainer.style.flexDirection = FlexDirection.Row;
-        element.style.overflow = Overflow.Hidden;
-        if (_userScrollEnabled)
-            element.RegisterCallback(_callback, TrickleDown.TrickleDown);
+        containerStyle.translate = new Vector2(-State.Value, 0);
+        containerStyle.flexShrink = 0;
+        containerStyle.flexDirection = FlexDirection.Row;
+        
+        var style = element.style;
+        style.overflow = Overflow.Hidden;
         element.RegisterCallback(_onElementGeometryChanged);
         element.PickingMode().Increment();
-        element.UserData()[_key] = true;
+        if (UserScrollEnabled)
+            element.RegisterCallback(_callback, TrickleDown.TrickleDown);
     }
 
     protected override void Revert(
@@ -67,53 +71,17 @@ internal class HorizontalScrollModifierImpl : ContentContainerUnityModifier<Hori
         IStableList<IModifier> newModifiers
     )
     {
-        contentContainer.style.flexShrink = StyleKeyword.Null;
+        var containerStyle = contentContainer.style;
         contentContainer.UnregisterCallback(_onGeometryChanged);
-        contentContainer.style.translate = StyleKeyword.Null;
-        contentContainer.style.flexDirection = StyleKeyword.Null;
+        containerStyle.translate = containerStyle.translate.CompareAndSetNull(new Vector2(-State.Value, 0));
+        containerStyle.flexShrink = containerStyle.flexShrink.CompareAndSetNull(0);
+        containerStyle.flexDirection = containerStyle.flexDirection.CompareAndSetNull(FlexDirection.Row);
 
-        element.PickingMode().Decrement();
-        element.UserData().Remove(_key);
-        if (_userScrollEnabled)
-            element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
+        var style = element.style;
+        style.overflow = style.overflow.CompareAndSetNull(Overflow.Hidden);
         element.UnregisterCallback(_onElementGeometryChanged);
-        element.style.overflow = Overflow.Visible;
-    }
-
-    protected override bool Equals(HorizontalScrollModifierImpl other)
-    {
-        return _reverseScrolling == other._reverseScrolling &&
-               _scrollMultiplier.AlmostEquals(other._scrollMultiplier) &&
-               _interactionSource == other._interactionSource &&
-               _callback == other._callback;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_state, _reverseScrolling, _scrollMultiplier, _interactionSource);
-    }
-
-    private void OnWheelEvent(WheelEvent evt)
-    {
-        evt.StopPropagation();
-        var offset = -evt.delta.x - evt.delta.y;
-        if (offset.AlmostEquals(0f))
-            return;
-        var multiplier = _reverseScrolling ? -1 : 1;
-        offset *= -multiplier * _scrollMultiplier;
-        _state.ScrollBy(offset);
-        _interactionSource?.Emit(new IScrollInteraction.Scroll(offset));
-    }
-
-    private void OnElementGeometryChanged(GeometryChangedEvent evt)
-    {
-        var element = evt.VisualElement();
-        _state.ViewportSize = element.contentRect.width;
-    }
-
-    private void OnGeometryChanged(GeometryChangedEvent evt)
-    {
-        var element = evt.VisualElement();
-        _state.ContentSize = element.contentRect.width;
+        element.PickingMode().Decrement();
+        if (UserScrollEnabled)
+            element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
     }
 }

@@ -3,28 +3,23 @@
 using System;
 using Compose.Net;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class TransformOriginModifierImpl : UnityModifier<TransformOriginModifierImpl>
+internal record TransformOriginModifierImpl(
+    Dp X,
+    Dp Y
+) : UnityModifier
 {
-    private readonly Dp _x;
-    private readonly Dp _y;
-
-    public TransformOriginModifierImpl(Dp x, Dp y)
-    {
-        _x = x;
-        _y = y;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.transformOrigin = new TransformOrigin(_x.ToLength(), _y.ToLength());
+        element.style.transformOrigin = new TransformOrigin(X.ToLength(), Y.ToLength());
     }
 
     protected override void Revert(
@@ -33,9 +28,8 @@ internal class TransformOriginModifierImpl : UnityModifier<TransformOriginModifi
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.transformOrigin = StyleKeyword.Null;
+        var style = element.style;
+        style.transformOrigin =
+            style.transformOrigin.CompareAndSetNull(new TransformOrigin(X.ToLength(), Y.ToLength()));
     }
-
-    protected override bool Equals(TransformOriginModifierImpl other) => _x == other._x && _y == other._y;
-    public override int GetHashCode() => HashCode.Combine(_x, _y);
 }
