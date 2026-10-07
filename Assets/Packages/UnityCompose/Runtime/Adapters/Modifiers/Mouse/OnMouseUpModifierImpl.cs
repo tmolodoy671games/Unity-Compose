@@ -5,26 +5,26 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseUpModifierImpl : UnityModifier<OnMouseUpModifierImpl>
+internal record OnMouseUpModifierImpl(
+    Action<PointerClickInfo>? OnMouseUp,
+    Action? ParameterlessOnMouseUp,
+    int Button
+) : UnityModifier
 {
-    private readonly Action<PointerClickInfo>? _onMouseUp;
-    private readonly Action? _parameterlessOnMouseUp;
-    private readonly EventCallback<MouseUpEvent> _callback;
-    private readonly int _button;
-
-    public OnMouseUpModifierImpl(Action<PointerClickInfo> onMouseUp, int button)
+    private readonly EventCallback<MouseUpEvent> _callback = evt =>
     {
-        _onMouseUp = onMouseUp;
-        _button = button;
-        _callback = OnMouseUp;
-    }
-
-    public OnMouseUpModifierImpl(Action onMouseUp, int button)
-    {
-        _parameterlessOnMouseUp = onMouseUp;
-        _button = button;
-        _callback = OnMouseUp;
-    }
+        if (Button >= 0 && evt.button != Button)
+            return;
+        OnMouseUp?.Invoke(
+            new PointerClickInfo(
+                Button: evt.button,
+                Position: evt.mousePosition.ToOffset(),
+                LocalPosition: evt.localMousePosition.ToOffset()
+            )
+        );
+        ParameterlessOnMouseUp?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -44,31 +44,5 @@ internal class OnMouseUpModifierImpl : UnityModifier<OnMouseUpModifierImpl>
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onMouseUp, _parameterlessOnMouseUp, _button);
-    }
-
-    protected override bool Equals(OnMouseUpModifierImpl other)
-    {
-        return _onMouseUp == other._onMouseUp &&
-               _parameterlessOnMouseUp == other._parameterlessOnMouseUp;
-    }
-
-    private void OnMouseUp(MouseUpEvent evt)
-    {
-        if (_button >= 0 && evt.button != _button)
-            return;
-        _onMouseUp?.Invoke(
-            new PointerClickInfo(
-                Button: evt.button,
-                Position: evt.mousePosition.ToOffset(),
-                LocalPosition: evt.localMousePosition.ToOffset()
-            )
-        );
-        _parameterlessOnMouseUp?.Invoke();
-        evt.StopPropagation();
     }
 }

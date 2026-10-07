@@ -7,17 +7,17 @@ internal class ScrollModifiersFactoryImpl : IScrollModifiersFactory
 {
     public IModifier OnScroll(Action<Offset> onScroll)
     {
-        return new OnScrollModifierImpl(onScroll: onScroll);
+        return new OnScrollModifierImpl(onScroll, null, null);
     }
 
     public IModifier OnVerticalScroll(Action<float> onVerticalScroll)
     {
-        return new OnScrollModifierImpl(onVerticalScroll: onVerticalScroll);
+        return new OnScrollModifierImpl(null, null, onVerticalScroll);
     }
 
     public IModifier OnHorizontalScroll(Action<float> onHorizontalScroll)
     {
-        return new OnScrollModifierImpl(onHorizontalScroll: onHorizontalScroll);
+        return new OnScrollModifierImpl(null, onHorizontalScroll, null);
     }
 
     public IModifier VerticalScroll(

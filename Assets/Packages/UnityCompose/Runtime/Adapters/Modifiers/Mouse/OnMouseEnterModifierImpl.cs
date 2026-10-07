@@ -5,23 +5,22 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseEnterModifierImpl : UnityModifier<OnMouseEnterModifierImpl>
+internal record OnMouseEnterModifierImpl(
+    Action<PointerMoveInfo>? OnMouseEnter,
+    Action? ParameterlessOnMouseEnter
+) : UnityModifier
 {
-    private readonly Action? _parameterlessOnMouseEnter;
-    private readonly Action<PointerMoveInfo>? _onMouseEnter;
-    private readonly EventCallback<MouseEnterEvent> _callback;
-
-    public OnMouseEnterModifierImpl(Action<PointerMoveInfo> onMouseEnter)
+    private readonly EventCallback<MouseEnterEvent> _callback = evt =>
     {
-        _onMouseEnter = onMouseEnter;
-        _callback = OnMouseEnterEvent;
-    }
-
-    public OnMouseEnterModifierImpl(Action onMouseEnter)
-    {
-        _parameterlessOnMouseEnter = onMouseEnter;
-        _callback = OnMouseEnterEvent;
-    }
+        OnMouseEnter?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.mousePosition.ToOffset(),
+                LocalPosition: evt.localMousePosition.ToOffset()
+            )
+        );
+        ParameterlessOnMouseEnter?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -41,28 +40,5 @@ internal class OnMouseEnterModifierImpl : UnityModifier<OnMouseEnterModifierImpl
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onMouseEnter, _parameterlessOnMouseEnter);
-    }
-
-    protected override bool Equals(OnMouseEnterModifierImpl other)
-    {
-        return _onMouseEnter == other._onMouseEnter &&
-               _parameterlessOnMouseEnter == other._parameterlessOnMouseEnter;
-    }
-
-    private void OnMouseEnterEvent(MouseEnterEvent evt)
-    {
-        _onMouseEnter?.Invoke(
-            new PointerMoveInfo(
-                Position: evt.mousePosition.ToOffset(),
-                LocalPosition: evt.localMousePosition.ToOffset()
-            )
-        );
-        _parameterlessOnMouseEnter?.Invoke();
-        evt.StopPropagation();
     }
 }

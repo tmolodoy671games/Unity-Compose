@@ -9,24 +9,20 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnScrollModifierImpl : UnityModifier<OnScrollModifierImpl>
+internal record OnScrollModifierImpl(
+    Action<Offset>? OnScroll,
+    Action<float>? OnOnHorizontalScroll,
+    Action<float>? OnOnVerticalScroll
+) : UnityModifier
 {
-    private readonly Action<Offset>? _onScroll;
-    private readonly Action<float>? _onOnVerticalScroll;
-    private readonly Action<float>? _onOnHorizontalScroll;
-    private readonly EventCallback<WheelEvent>? _callback;
-
-    public OnScrollModifierImpl(
-        Action<Offset>? onScroll = null,
-        Action<float>? onVerticalScroll = null,
-        Action<float>? onHorizontalScroll = null
-    )
+    private readonly EventCallback<WheelEvent>? _callback = evt =>
     {
-        _onScroll = onScroll;
-        _onOnVerticalScroll = onVerticalScroll;
-        _onOnHorizontalScroll = onHorizontalScroll;
-        _callback = OnScroll;
-    }
+        OnScroll?.Invoke(evt.delta.ToVector2().ToOffset());
+        if (evt.delta.x != 0)
+            OnOnHorizontalScroll?.Invoke(evt.delta.x);
+        if (evt.delta.y != 0)
+            OnOnVerticalScroll?.Invoke(evt.delta.y);
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -46,24 +42,5 @@ internal class OnScrollModifierImpl : UnityModifier<OnScrollModifierImpl>
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnScrollModifierImpl other)
-    {
-        return _callback == other._callback;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_onScroll, _onOnVerticalScroll, _onOnHorizontalScroll);
-    }
-
-    private void OnScroll(WheelEvent evt)
-    {
-        _onScroll?.Invoke(evt.delta.ToVector2().ToOffset());
-        if (evt.delta.x != 0)
-            _onOnHorizontalScroll?.Invoke(evt.delta.x);
-        if (evt.delta.y != 0)
-            _onOnVerticalScroll?.Invoke(evt.delta.y);
     }
 }

@@ -6,23 +6,22 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseLeaveModifierImpl : UnityModifier<OnMouseLeaveModifierImpl>
+internal record OnMouseLeaveModifierImpl(
+    Action<PointerMoveInfo>? OnMouseLeave,
+    Action? ParameterlessOnMouseLeave
+) : UnityModifier
 {
-    private readonly Action<PointerMoveInfo>? _onMouseLeave;
-    private readonly Action? _parameterlessOnMouseLeave;
-    private readonly EventCallback<MouseLeaveEvent> _callback;
-
-    public OnMouseLeaveModifierImpl(Action<PointerMoveInfo> onMouseLeave)
+    private readonly EventCallback<MouseLeaveEvent> _callback = evt =>
     {
-        _onMouseLeave = onMouseLeave;
-        _callback = OnMouseLeave;
-    }
-
-    public OnMouseLeaveModifierImpl(Action onMouseLeave)
-    {
-        _parameterlessOnMouseLeave = onMouseLeave;
-        _callback = OnMouseLeave;
-    }
+        OnMouseLeave?.Invoke(
+            new PointerMoveInfo(
+                Position: evt.mousePosition.ToOffset(),
+                LocalPosition: evt.localMousePosition.ToOffset()
+            )
+        );
+        ParameterlessOnMouseLeave?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -42,25 +41,5 @@ internal class OnMouseLeaveModifierImpl : UnityModifier<OnMouseLeaveModifierImpl
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnMouseLeaveModifierImpl other)
-    {
-        return _onMouseLeave == other._onMouseLeave &&
-               _parameterlessOnMouseLeave == other._parameterlessOnMouseLeave;
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_onMouseLeave, _parameterlessOnMouseLeave);
-
-    private void OnMouseLeave(MouseLeaveEvent evt)
-    {
-        _onMouseLeave?.Invoke(
-            new PointerMoveInfo(
-                Position: evt.mousePosition.ToOffset(),
-                LocalPosition: evt.localMousePosition.ToOffset()
-            )
-        );
-        _parameterlessOnMouseLeave?.Invoke();
-        evt.StopPropagation();
     }
 }

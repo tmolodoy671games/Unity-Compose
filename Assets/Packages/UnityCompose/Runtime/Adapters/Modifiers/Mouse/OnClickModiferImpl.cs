@@ -9,26 +9,26 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class OnClickModiferImpl : UnityModifier<OnClickModiferImpl>
+internal record OnClickModiferImpl(
+    Action<PointerClickInfo>? OnClick,
+    Action? ParameterlessOnClick,
+    int AllowedButton
+) : UnityModifier
 {
-    private readonly Action<PointerClickInfo>? _onClick;
-    private readonly Action? _parameterlessOnClick;
-    private readonly EventCallback<ClickEvent> _callback;
-    private readonly int _allowedButton;
-
-    public OnClickModiferImpl(Action<PointerClickInfo> onClick, int allowedButton = -1)
+    private readonly EventCallback<ClickEvent> _callback = it =>
     {
-        _onClick = onClick;
-        _allowedButton = allowedButton;
-        _callback = OnClickCallback;
-    }
-
-    public OnClickModiferImpl(Action onClick, int allowedButton = -1)
-    {
-        _parameterlessOnClick = onClick;
-        _allowedButton = allowedButton;
-        _callback = OnClickCallback;
-    }
+        if (AllowedButton >= 0 && it.button != AllowedButton)
+            return;
+        OnClick?.Invoke(
+            new PointerClickInfo(
+                Button: it.button,
+                Position: it.position.ToVector2().ToOffset(),
+                LocalPosition: it.localPosition.ToVector2().ToOffset()
+            )
+        );
+        ParameterlessOnClick?.Invoke();
+        it.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -49,28 +49,4 @@ internal class OnClickModiferImpl : UnityModifier<OnClickModiferImpl>
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
     }
-
-    private void OnClickCallback(ClickEvent it)
-    {
-        if (_allowedButton >= 0 && it.button != _allowedButton)
-            return;
-        _onClick?.Invoke(
-            new PointerClickInfo(
-                Button: it.button,
-                Position: it.position.ToVector2().ToOffset(),
-                LocalPosition: it.localPosition.ToVector2().ToOffset()
-            )
-        );
-        _parameterlessOnClick?.Invoke();
-        it.StopPropagation();
-    }
-
-    protected override bool Equals(OnClickModiferImpl other)
-    {
-        return _onClick == other._onClick &&
-               _parameterlessOnClick == other._parameterlessOnClick &&
-               _allowedButton == other._allowedButton;
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_onClick, _parameterlessOnClick, _allowedButton);
 }

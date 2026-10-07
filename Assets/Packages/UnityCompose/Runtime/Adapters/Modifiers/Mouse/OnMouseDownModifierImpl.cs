@@ -5,26 +5,26 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Mouse;
 
-internal class OnMouseDownModifierImpl : UnityModifier<OnMouseDownModifierImpl>
+internal record OnMouseDownModifierImpl(
+    Action<PointerClickInfo>? OnMouseDown,
+    Action? ParameterlessOnMouseDown,
+    int Button
+) : UnityModifier
 {
-    private readonly Action? _parameterlessOnMouseDown;
-    private readonly Action<PointerClickInfo>? _onMouseDown;
-    private readonly EventCallback<MouseDownEvent> _callback;
-    private readonly int _button;
-
-    public OnMouseDownModifierImpl(Action<PointerClickInfo> onMouseDown, int button)
+    private readonly EventCallback<MouseDownEvent> _callback = evt =>
     {
-        _onMouseDown = onMouseDown;
-        _button = button;
-        _callback = OnMouseDown;
-    }
-
-    public OnMouseDownModifierImpl(Action onMouseDown, int button)
-    {
-        _parameterlessOnMouseDown = onMouseDown;
-        _button = button;
-        _callback = OnMouseDown;
-    }
+        if (Button >= 0 && Button != evt.button)
+            return;
+        OnMouseDown?.Invoke(
+            new PointerClickInfo(
+                Button: evt.button,
+                Position: evt.mousePosition.ToOffset(),
+                LocalPosition: evt.localMousePosition.ToOffset()
+            )
+        );
+        ParameterlessOnMouseDown?.Invoke();
+        evt.StopPropagation();
+    };
 
     protected override void Apply(
         UnityReusableComposeNode node,
@@ -44,29 +44,5 @@ internal class OnMouseDownModifierImpl : UnityModifier<OnMouseDownModifierImpl>
     {
         element.PickingMode().Decrement();
         element.UnregisterCallback(_callback);
-    }
-
-    protected override bool Equals(OnMouseDownModifierImpl other)
-    {
-        return _onMouseDown == other._onMouseDown &&
-               _parameterlessOnMouseDown == other._parameterlessOnMouseDown &&
-               _button == other._button;
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_onMouseDown, _parameterlessOnMouseDown, _button);
-
-    private void OnMouseDown(MouseDownEvent evt)
-    {
-        if (_button >= 0 && _button != evt.button)
-            return;
-        _onMouseDown?.Invoke(
-            new PointerClickInfo(
-                Button: evt.button,
-                Position: evt.mousePosition.ToOffset(),
-                LocalPosition: evt.localMousePosition.ToOffset()
-            )
-        );
-        _parameterlessOnMouseDown?.Invoke();
-        evt.StopPropagation();
     }
 }
