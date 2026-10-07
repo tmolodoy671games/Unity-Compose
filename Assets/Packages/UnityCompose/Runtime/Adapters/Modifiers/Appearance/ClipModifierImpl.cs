@@ -4,19 +4,15 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>, IAppearanceModifier
+internal record ClipModifierImpl(
+    Optional<Shape> Shape
+) : UnityModifier, IAppearanceModifier
 {
-    private readonly Optional<Shape> _shape;
-
-    public ClipModifierImpl(Optional<Shape> shape)
-    {
-        _shape = shape;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
@@ -24,9 +20,9 @@ internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>, IAppearanceMo
     )
     {
         element.style.overflow = Overflow.Hidden;
-        if (!_shape.HasValue)
+        if (!Shape.HasValue)
             return;
-        var shapeValue = _shape.Value;
+        var shapeValue = Shape.Value;
         element.style.borderTopLeftRadius = shapeValue.TopLeft.ToLength();
         element.style.borderTopRightRadius = shapeValue.TopRight.ToLength();
         element.style.borderBottomLeftRadius = shapeValue.BottomLeft.ToLength();
@@ -40,14 +36,14 @@ internal class ClipModifierImpl : UnityModifier<ClipModifierImpl>, IAppearanceMo
     )
     {
         element.style.overflow = StyleKeyword.Null;
-        if (!_shape.HasValue)
+        if (!Shape.HasValue)
             return;
-        element.style.borderTopLeftRadius = StyleKeyword.Null;
-        element.style.borderTopRightRadius = StyleKeyword.Null;
-        element.style.borderBottomLeftRadius = StyleKeyword.Null;
-        element.style.borderBottomRightRadius = StyleKeyword.Null;
+        var shapeValue = Shape.Value;
+        var style = element.style;
+        style.borderTopLeftRadius = style.borderTopLeftRadius.CompareAndSetNull(shapeValue.TopLeft.ToLength());
+        style.borderTopRightRadius = style.borderTopRightRadius.CompareAndSetNull(shapeValue.TopRight.ToLength());
+        style.borderBottomLeftRadius = style.borderBottomLeftRadius.CompareAndSetNull(shapeValue.BottomLeft.ToLength());
+        style.borderBottomRightRadius =
+            style.borderBottomRightRadius.CompareAndSetNull(shapeValue.BottomRight.ToLength());
     }
-
-    public override int GetHashCode() => HashCode.Combine(_shape);
-    protected override bool Equals(ClipModifierImpl other) => _shape.Equals(other._shape);
 }

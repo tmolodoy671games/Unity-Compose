@@ -184,7 +184,7 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
         DrawRoundRectImpl(
             topLeft: topLeft,
             size: size,
-            cornerRadius: cornerRadius,
+            shape: RoundedCornerShape(cornerRadius.Dp()),
             style: style
         );
     }
@@ -206,7 +206,47 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
         DrawRoundRectImpl(
             topLeft: topLeft,
             size: size,
-            cornerRadius: cornerRadius,
+            shape: RoundedCornerShape(cornerRadius.Dp()),
+            style: style
+        );
+    }
+
+    public void DrawShape(
+        Color color,
+        Offset topLeft,
+        Optional<Size> size,
+        Optional<Shape> shape,
+        float alpha = 1,
+        DrawStyle? style = null
+    )
+    {
+        ApplyColor(color, alpha, style ?? Fill);
+        DrawRoundRectImpl(
+            topLeft: topLeft,
+            size: size,
+            shape: shape.GetOrDefault(RectangleShape),
+            style: style
+        );
+    }
+
+    public void DrawShape(
+        IBrush brush,
+        Offset topLeft,
+        Optional<Size> size,
+        Optional<Shape> shape,
+        float alpha = 1,
+        DrawStyle? style = null
+    )
+    {
+        var contentRect = new Rect(
+            Offset: topLeft,
+            Size: size.GetOrDefault(Size)
+        );
+        brush.Apply(this, contentRect, alpha, style ?? Fill);
+        DrawRoundRectImpl(
+            topLeft: topLeft,
+            size: size,
+            shape: shape.GetOrDefault(RectangleShape),
             style: style
         );
     }
@@ -214,7 +254,7 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
     private void DrawRoundRectImpl(
         Offset topLeft,
         Optional<Size> size,
-        float cornerRadius,
+        Shape shape,
         DrawStyle? style
     )
     {
@@ -227,46 +267,61 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
         var width = resolvedSize.Width;
         var height = resolvedSize.Height;
 
-        var radius = Mathf.Clamp(
-            cornerRadius,
-            0f,
-            Mathf.Min(width, height) / 2f
-        );
         painter.BeginPath();
 
         // Top-left
-        painter.MoveTo(new Vector2(x + radius, y));
+        var topLeftRadius = Mathf.Clamp(
+            shape.TopLeft.Value,
+            0f,
+            Mathf.Min(width, height) / 2f
+        );
+        painter.MoveTo(new Vector2(x + topLeftRadius, y));
 
         // Top-right
-        painter.LineTo(new Vector2(x + width - radius, y));
+        var topRightRadius = Mathf.Clamp(
+            shape.TopRight.Value,
+            0f,
+            Mathf.Min(width, height) / 2f
+        );
+        painter.LineTo(new Vector2(x + width - topRightRadius, y));
         painter.ArcTo(
             new Vector2(x + width, y),
-            new Vector2(x + width, y + radius),
-            radius
+            new Vector2(x + width, y + topRightRadius),
+            topRightRadius
         );
 
         // Bottom-right
-        painter.LineTo(new Vector2(x + width, y + height - radius));
+        var bottomRightRadius = Mathf.Clamp(
+            shape.TopRight.Value,
+            0f,
+            Mathf.Min(width, height) / 2f
+        );
+        painter.LineTo(new Vector2(x + width, y + height - bottomRightRadius));
         painter.ArcTo(
             new Vector2(x + width, y + height),
-            new Vector2(x + width - radius, y + height),
-            radius
+            new Vector2(x + width - bottomRightRadius, y + height),
+            bottomRightRadius
         );
 
         // Bottom-left
-        painter.LineTo(new Vector2(x + radius, y + height));
+        var bottomLeftRadius = Mathf.Clamp(
+            shape.TopRight.Value,
+            0f,
+            Mathf.Min(width, height) / 2f
+        );
+        painter.LineTo(new Vector2(x + bottomLeftRadius, y + height));
         painter.ArcTo(
             new Vector2(x, y + height),
-            new Vector2(x, y + height - radius),
-            radius
+            new Vector2(x, y + height - bottomLeftRadius),
+            bottomLeftRadius
         );
 
         // Top-left
-        painter.LineTo(new Vector2(x, y + radius));
+        painter.LineTo(new Vector2(x, y + topLeftRadius));
         painter.ArcTo(
             new Vector2(x, y),
-            new Vector2(x + radius, y),
-            radius
+            new Vector2(x + topLeftRadius, y),
+            topLeftRadius
         );
 
         painter.ClosePath();

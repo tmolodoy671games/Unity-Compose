@@ -6,12 +6,11 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IForegroundShadowModifier : IModifier
+public interface IForegroundShadowModifier : IAppearanceModifier
 {
 }
 
-public abstract class ForegroundShadowUnityModifier<T> : UnityModifier<T>,
-    IForegroundShadowModifier where T : ForegroundShadowUnityModifier<T>
+public abstract record ForegroundShadowUnityModifier : UnityModifier, IForegroundShadowModifier
 {
     protected sealed override void Apply(
         UnityReusableComposeNode node,

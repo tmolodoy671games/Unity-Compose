@@ -10,15 +10,8 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>, IAppearanceModifier
+internal record BlurModifierImpl(float Strength) : UnityModifier, IAppearanceModifier
 {
-    private readonly float _strength;
-
-    public BlurModifierImpl(float strength)
-    {
-        _strength = strength;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
@@ -26,7 +19,8 @@ internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>, IAppearanceMo
     )
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
-        filter.AddParameter(new FilterParameter(_strength));
+        filter.AddParameter(new FilterParameter(Strength));
+        
         if (element.style.filter.value == null)
             element.style.filter = new List<FilterFunction>();
         element.style.filter.value.Add(filter);
@@ -40,13 +34,11 @@ internal class BlurModifierImpl : UnityModifier<BlurModifierImpl>, IAppearanceMo
     )
     {
         var filter = new FilterFunction(FilterFunctionType.Blur);
-        filter.AddParameter(new FilterParameter(_strength));
+        filter.AddParameter(new FilterParameter(Strength));
+        
         if (element.style.filter.value == null)
             element.style.filter = new List<FilterFunction>();
         element.style.filter.value.Remove(filter);
         element.style.filter = element.style.filter.value.ToList();
     }
-
-    protected override bool Equals(BlurModifierImpl other) => _strength.AlmostEquals(other._strength);
-    public override int GetHashCode() => HashCode.Combine(_strength);
 }

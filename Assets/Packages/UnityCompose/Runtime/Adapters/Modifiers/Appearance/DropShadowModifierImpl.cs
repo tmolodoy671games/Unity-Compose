@@ -1,25 +1,19 @@
 ﻿// ReSharper disable CheckNamespace
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Compose.Net;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadowModifierImpl>, IAppearanceModifier
+internal record DropShadowModifierImpl(
+    Shape Shape,
+    Compose.Net.Shadow Shadow
+) : BackgroundShadowUnityModifier
 {
-    private readonly Shape _shape;
-    private readonly Compose.Net.Shadow _shadow;
-
-    public DropShadowModifierImpl(Shape shape, Compose.Net.Shadow shadow)
-    {
-        _shape = shape;
-        _shadow = shadow;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
@@ -27,7 +21,7 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         IStableList<IModifier> newModifiers
     )
     {
-        Init(drawBehind, _shape, _shadow);
+        Init(drawBehind, Shape, Shadow);
     }
 
     protected override void Revert(
@@ -37,17 +31,7 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         IStableList<IModifier> newModifiers
     )
     {
-        Revert(drawBehind);
-    }
-
-    protected override bool Equals(DropShadowModifierImpl other)
-    {
-        return _shadow.Equals(other._shadow) && _shape.Equals(other._shape);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_shape, _shadow);
+        Revert(drawBehind, Shape, Shadow);
     }
 
     private static void Init(
@@ -56,41 +40,52 @@ internal class DropShadowModifierImpl : BackgroundShadowUnityModifier<DropShadow
         Compose.Net.Shadow shadow
     )
     {
-        shadowElement.style.borderTopLeftRadius = shape.TopLeft.ToLength();
-        shadowElement.style.borderTopRightRadius = shape.TopRight.ToLength();
-        shadowElement.style.borderBottomLeftRadius = shape.BottomLeft.ToLength();
-        shadowElement.style.borderBottomRightRadius = shape.BottomRight.ToLength();
-        shadowElement.style.backgroundColor = shadow.Color.ToUnityColor();
-        shadowElement.style.translate = shadow.Offset.ToVector2();
+        var style = shadowElement.style;
+        style.borderTopLeftRadius = shape.TopLeft.ToLength();
+        style.borderTopRightRadius = shape.TopRight.ToLength();
+        style.borderBottomLeftRadius = shape.BottomLeft.ToLength();
+        style.borderBottomRightRadius = shape.BottomRight.ToLength();
+        style.backgroundColor = shadow.Color.ToUnityColor();
+        style.translate = shadow.Offset.ToVector2();
 
-        shadowElement.style.top = (-shadow.Spread).ToLength();
-        shadowElement.style.bottom = (-shadow.Spread).ToLength();
-        shadowElement.style.left = (-shadow.Spread).ToLength();
-        shadowElement.style.right = (-shadow.Spread).ToLength();
+        style.top = (-shadow.Spread).ToLength();
+        style.bottom = (-shadow.Spread).ToLength();
+        style.left = (-shadow.Spread).ToLength();
+        style.right = (-shadow.Spread).ToLength();
 
         var blur = new FilterFunction(FilterFunctionType.Blur);
         blur.AddParameter(new FilterParameter(shadow.Radius.Value));
-        shadowElement.style.filter = new List<FilterFunction> { blur };
+        if (style.filter.value == null)
+            style.filter = new List<FilterFunction>();
+        style.filter.value.Add(blur);
+        style.filter = style.filter.value.ToList();
     }
 
     private static void Revert(
-        VisualElement shadowElement
+        VisualElement shadowElement,
+        Shape shape,
+        Compose.Net.Shadow shadow
     )
     {
-        shadowElement.style.borderTopLeftRadius = StyleKeyword.Null;
-        shadowElement.style.borderTopRightRadius = StyleKeyword.Null;
-        shadowElement.style.borderBottomLeftRadius = StyleKeyword.Null;
-        shadowElement.style.borderBottomRightRadius = StyleKeyword.Null;
-        shadowElement.style.backgroundColor = StyleKeyword.Null;
-        shadowElement.style.translate = StyleKeyword.Null;
+        var style = shadowElement.style;
+        style.borderTopLeftRadius = style.borderTopLeftRadius.CompareAndSetNull(shape.TopLeft.ToLength());
+        style.borderTopRightRadius = style.borderTopRightRadius.CompareAndSetNull(shape.TopRight.ToLength());
+        style.borderBottomLeftRadius = style.borderBottomLeftRadius.CompareAndSetNull(shape.BottomLeft.ToLength());
+        style.borderBottomRightRadius = style.borderBottomRightRadius.CompareAndSetNull(shape.BottomRight.ToLength());
+        style.backgroundColor = style.backgroundColor.CompareAndSetNull(shadow.Color.ToUnityColor());
+        style.translate = style.translate.CompareAndSetNull(shadow.Offset.ToVector2());
 
-        shadowElement.style.top = 0;
-        shadowElement.style.bottom = 0;
-        shadowElement.style.left = 0;
-        shadowElement.style.right = 0;
+        style.top = style.top.CompareAndSetNull((-shadow.Spread).ToLength());
+        style.bottom = style.bottom.CompareAndSetNull((-shadow.Spread).ToLength());
+        style.left = style.left.CompareAndSetNull((-shadow.Spread).ToLength());
+        style.right = style.right.CompareAndSetNull((-shadow.Spread).ToLength());
 
-        shadowElement.style.filter = shadowElement.style.filter.value
-            .Where(it => it.type != FilterFunctionType.Blur)
-            .ToList();
+        var filter = new FilterFunction(FilterFunctionType.Blur);
+        filter.AddParameter(new FilterParameter(shadow.Radius.Value));
+
+        if (style.filter.value == null)
+            style.filter = new List<FilterFunction>();
+        style.filter.value.Remove(filter);
+        style.filter = style.filter.value.ToList();
     }
 }

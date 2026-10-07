@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IContentContainerUnityModifier : IModifier
+public interface IContentContainerUnityModifier : IAppearanceModifier
 {
 }
 

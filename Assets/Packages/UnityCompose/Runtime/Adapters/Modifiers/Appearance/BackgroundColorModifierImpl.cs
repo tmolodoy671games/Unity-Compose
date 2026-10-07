@@ -1,43 +1,40 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using System.Drawing;
 using Compose.Net;
-using SharpExtensions;
 using StableCollections;
-using UnityEngine;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifierImpl>, IAppearanceModifier
+internal record BackgroundColorShapeModifierImpl(
+    Color BackgroundColor,
+    Shape Shape
+) : DrawUnityModifier, IAppearanceModifier
 {
-    private readonly Color _backgroundColor;
-    private readonly Optional<Shape> _shape;
-
-    public BackgroundColorModifierImpl(
-        Color backgroundColor,
-        Optional<Shape> shape
-    )
+    protected override Action<MeshGenerationContext> GenerateVisualContent { get; } = it =>
     {
-        _backgroundColor = backgroundColor;
-        _shape = shape;
-    }
+        var drawScope = it.DrawScope();
+        drawScope.DrawShape(
+            color: BackgroundColor,
+            shape: Shape
+        );
+    };
+}
 
+internal record BackgroundColorModifierImpl(
+    Color BackgroundColor
+) : UnityModifier, IAppearanceModifier
+{
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.backgroundColor = _backgroundColor;
-        if (_shape.HasValue)
-        {
-            var shapeValue = _shape.Value;
-            element.style.borderTopLeftRadius = shapeValue.TopLeft.ToLength();
-            element.style.borderTopRightRadius = shapeValue.TopRight.ToLength();
-            element.style.borderBottomLeftRadius = shapeValue.BottomLeft.ToLength();
-            element.style.borderBottomRightRadius = shapeValue.BottomRight.ToLength();
-        }
+        element.style.backgroundColor = BackgroundColor.ToUnityColor();
     }
 
     protected override void Revert(
@@ -46,21 +43,7 @@ internal class BackgroundColorModifierImpl : UnityModifier<BackgroundColorModifi
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.backgroundColor = StyleKeyword.Null;
-        if (_shape.HasValue)
-        {
-            element.style.borderTopLeftRadius = StyleKeyword.Null;
-            element.style.borderTopRightRadius = StyleKeyword.Null;
-            element.style.borderBottomLeftRadius = StyleKeyword.Null;
-            element.style.borderBottomRightRadius = StyleKeyword.Null;
-        }
+        var style = element.style;
+        style.backgroundColor = style.backgroundColor.CompareAndSetNull(BackgroundColor.ToUnityColor());
     }
-
-    protected override bool Equals(BackgroundColorModifierImpl other)
-    {
-        return _backgroundColor == other._backgroundColor &&
-               _shape.Equals(other._shape);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_shape, _backgroundColor);
 }

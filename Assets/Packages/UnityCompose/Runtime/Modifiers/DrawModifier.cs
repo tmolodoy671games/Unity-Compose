@@ -1,17 +1,18 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using StableCollections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IBackgroundShadowModifier : IAppearanceModifier
+public interface IDrawModifier : IAppearanceModifier
 {
 }
 
-public abstract record BackgroundShadowUnityModifier : UnityModifier,
-    IBackgroundShadowModifier
+public abstract record DrawUnityModifier : UnityModifier, IDrawModifier
 {
     protected sealed override void Apply(
         UnityReusableComposeNode node,
@@ -19,10 +20,19 @@ public abstract record BackgroundShadowUnityModifier : UnityModifier,
         IStableList<IModifier> newModifiers
     )
     {
-        Apply(
+        var index = 0;
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            var newModifier = newModifiers[i];
+            if (ReferenceEquals(newModifier, this))
+                break;
+            if (newModifier is IDrawModifier)
+                index++;
+        }
+        element.GenerateVisualContent().Insert(index, GenerateVisualContent);
+        OnApply(
             node: node,
             element: element,
-            shadow: node.SetupBackgroundShadow(),
             newModifiers: newModifiers
         );
     }
@@ -33,31 +43,25 @@ public abstract record BackgroundShadowUnityModifier : UnityModifier,
         IStableList<IModifier> newModifiers
     )
     {
-        Revert(
+        element.GenerateVisualContent().Remove(GenerateVisualContent);
+        OnRevert(
             node: node,
             element: element,
-            shadow: node.SetupBackgroundShadow(),
             newModifiers: newModifiers
         );
-        foreach (var newModifier in newModifiers)
-        {
-            if (newModifier is IBackgroundShadowModifier)
-                return;
-        }
-        node.RemoveBackgroundShadow();
     }
-
-    protected abstract void Apply(
+    
+    protected abstract Action<MeshGenerationContext> GenerateVisualContent { get; }
+    
+    protected virtual void OnApply(
         UnityReusableComposeNode node,
         VisualElement element,
-        VisualElement shadow,
         IStableList<IModifier> newModifiers
-    );
+    ) {}
 
-    protected abstract void Revert(
+    protected virtual void OnRevert(
         UnityReusableComposeNode node,
         VisualElement element,
-        VisualElement shadow,
         IStableList<IModifier> newModifiers
-    );
+    ) {}
 }

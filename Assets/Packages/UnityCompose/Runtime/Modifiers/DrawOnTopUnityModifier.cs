@@ -1,17 +1,18 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IDrawOnModifier : IModifier
+public interface IDrawOnModifier : IAppearanceModifier
 {
 }
 
-public abstract class DrawOnTopUnityModifier<T> : UnityModifier<T>,
-    IDrawOnModifier where T : DrawOnTopUnityModifier<T>
+public abstract record DrawOnTopUnityModifier : UnityModifier,
+    IDrawOnModifier
 {
     protected sealed override void Apply(
         UnityReusableComposeNode node,
@@ -19,6 +20,17 @@ public abstract class DrawOnTopUnityModifier<T> : UnityModifier<T>,
         IStableList<IModifier> newModifiers
     )
     {
+        var index = 0;
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            var newModifier = newModifiers[i];
+            if (ReferenceEquals(newModifier, this))
+                break;
+            if (newModifier is IDrawModifier)
+                index++;
+        }
+        var drawOn = node.SetupDrawOnTop();
+        drawOn.GenerateVisualContent().Insert(index, GenerateVisualContent);
         Apply(
             node: node,
             element: element,
@@ -33,10 +45,12 @@ public abstract class DrawOnTopUnityModifier<T> : UnityModifier<T>,
         IStableList<IModifier> newModifiers
     )
     {
+        var drawOn = node.SetupDrawOnTop();
+        drawOn.GenerateVisualContent().Remove(GenerateVisualContent);
         Revert(
             node: node,
             element: element,
-            drawOn: node.SetupDrawOnTop(),
+            drawOn: drawOn,
             newModifiers: newModifiers
         );
         foreach (var newModifier in newModifiers)
@@ -46,18 +60,20 @@ public abstract class DrawOnTopUnityModifier<T> : UnityModifier<T>,
         }
         node.RemoveDrawOnTop();
     }
+    
+    protected abstract Action<MeshGenerationContext> GenerateVisualContent { get; }
 
-    protected abstract void Apply(
+    protected virtual void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         VisualElement drawOn,
         IStableList<IModifier> newModifiers
-    );
+    ) {}
 
-    protected abstract void Revert(
+    protected virtual void Revert(
         UnityReusableComposeNode node,
         VisualElement element,
         VisualElement drawOn,
         IStableList<IModifier> newModifiers
-    );
+    ) {}
 }

@@ -1,28 +1,43 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using Compose.Net;
 using StableCollections;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public interface IDrawBehindModifier : IModifier
+public interface IDrawBehindModifier : IAppearanceModifier
 {
 }
 
-public abstract class DrawBehindUnityModifier<T> : UnityModifier<T>,
-    IDrawBehindModifier where T : DrawBehindUnityModifier<T>
+public abstract record DrawBehindUnityModifier : UnityModifier,
+    IDrawBehindModifier
 {
+    protected abstract Action<MeshGenerationContext> GenerateVisualContent { get; }
+
     protected sealed override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        Apply(
+        var index = 0;
+        for (var i = 0; i < newModifiers.Count; i++)
+        {
+            var newModifier = newModifiers[i];
+            if (ReferenceEquals(newModifier, this))
+                break;
+            if (newModifier is IDrawBehindModifier)
+                index++;
+        }
+
+        var drawBehind = node.SetupDrawBehind();
+        drawBehind.GenerateVisualContent().Insert(index, GenerateVisualContent);
+        OnApply(
             node: node,
             element: element,
-            drawOn: node.SetupDrawBehind(),
+            drawOn: drawBehind,
             newModifiers: newModifiers
         );
     }
@@ -33,10 +48,12 @@ public abstract class DrawBehindUnityModifier<T> : UnityModifier<T>,
         IStableList<IModifier> newModifiers
     )
     {
-        Revert(
+        var drawBehind = node.SetupDrawBehind();
+        drawBehind.GenerateVisualContent().Remove(GenerateVisualContent);
+        OnRevert(
             node: node,
             element: element,
-            drawOn: node.SetupDrawBehind(),
+            drawOn: drawBehind,
             newModifiers: newModifiers
         );
         foreach (var newModifier in newModifiers)
@@ -44,20 +61,25 @@ public abstract class DrawBehindUnityModifier<T> : UnityModifier<T>,
             if (newModifier is IDrawBehindModifier)
                 return;
         }
+
         node.RemoveDrawBehind();
     }
 
-    protected abstract void Apply(
+    protected virtual void OnApply(
         UnityReusableComposeNode node,
         VisualElement element,
         VisualElement drawOn,
         IStableList<IModifier> newModifiers
-    );
+    )
+    {
+    }
 
-    protected abstract void Revert(
+    protected virtual void OnRevert(
         UnityReusableComposeNode node,
         VisualElement element,
         VisualElement drawOn,
         IStableList<IModifier> newModifiers
-    );
+    )
+    {
+    }
 }

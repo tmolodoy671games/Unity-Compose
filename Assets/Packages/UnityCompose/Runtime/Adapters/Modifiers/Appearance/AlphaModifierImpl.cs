@@ -3,27 +3,23 @@
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 using HashCode = System.HashCode;
 
 namespace UnityCompose;
 
-internal class AlphaModifierImpl : UnityModifier<AlphaModifierImpl>, IAppearanceModifier
+internal record AlphaModifierImpl(
+    float Alpha
+) : UnityModifier, IAppearanceModifier
 {
-    private readonly float _alpha;
-
-    public AlphaModifierImpl(float alpha)
-    {
-        _alpha = alpha;
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.opacity = _alpha;
+        element.style.opacity = Alpha;
     }
 
     protected override void Revert(
@@ -32,13 +28,6 @@ internal class AlphaModifierImpl : UnityModifier<AlphaModifierImpl>, IAppearance
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.opacity = StyleKeyword.Null;
+        element.style.opacity = element.style.opacity.CompareAndSetNull(Alpha);
     }
-
-    protected override bool Equals(AlphaModifierImpl other)
-    {
-        return _alpha.AlmostEquals(other._alpha);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(_alpha);
 }

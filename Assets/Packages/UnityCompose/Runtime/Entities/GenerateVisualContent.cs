@@ -12,15 +12,24 @@ internal class GenerateVisualContent
     private readonly IMutableStableList<Action<MeshGenerationContext>> _generateVisualContent =
         MutableStableListOf<Action<MeshGenerationContext>>();
 
+    private readonly VisualElement _element;
+
+    public GenerateVisualContent(VisualElement element)
+    {
+        _element = element;
+    }
+
     public void Insert(int index, Action<MeshGenerationContext> generateVisualContent)
     {
         index = Math.Min(index, _generateVisualContent.Count);
         _generateVisualContent.Insert(index, generateVisualContent);
+        _element.MarkDirtyRepaint();
     }
 
     public void Remove(Action<MeshGenerationContext> generateVisualContent)
     {
         _generateVisualContent.Remove(generateVisualContent);
+        _element.MarkDirtyRepaint();
     }
 
     internal void Invoke(MeshGenerationContext context)
@@ -37,7 +46,7 @@ public static partial class VisualElementExtensions
         const string key = "UnityCompose_GenerateVisualElement";
         if (visualElement.UserData().TryGet(key, out var cached))
             return (GenerateVisualContent)cached.NotNull();
-        var newInstance = new GenerateVisualContent();
+        var newInstance = new GenerateVisualContent(visualElement);
         visualElement.UserData()[key] = newInstance;
         visualElement.generateVisualContent = newInstance.Invoke;
         return newInstance;

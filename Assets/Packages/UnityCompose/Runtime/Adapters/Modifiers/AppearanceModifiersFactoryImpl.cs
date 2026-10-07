@@ -17,7 +17,9 @@ internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
 
     public IModifier Background(Color color, Optional<Shape> shape)
     {
-        return new BackgroundColorModifierImpl(color.ToUnityColor(), shape);
+        return shape.HasValue
+            ? new BackgroundColorShapeModifierImpl(color, shape.Value)
+            : new BackgroundColorModifierImpl(color);
     }
 
     public IModifier Background(IBrush brush, Optional<Shape> shape)
