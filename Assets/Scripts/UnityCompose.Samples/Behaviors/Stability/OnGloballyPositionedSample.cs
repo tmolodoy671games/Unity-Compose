@@ -38,7 +38,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         {
                             var transitionSpec = Tween(1_000);
                             Box(
-                                alignment: Alignment.Center,
+                                contentAlignment: Alignment.Center,
                                 modifier: Modifier
                                     .Size(40.Dp())
                                     .Background(Color.blue.ToSystemColor())

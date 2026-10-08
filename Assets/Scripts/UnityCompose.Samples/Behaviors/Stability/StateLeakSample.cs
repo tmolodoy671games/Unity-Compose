@@ -31,7 +31,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 content: () =>
                 {
                     Box(
-                        alignment: Alignment.Center,
+                        contentAlignment: Alignment.Center,
                         modifier: Modifier
                             .FillMaxSize(),
                         content: () =>

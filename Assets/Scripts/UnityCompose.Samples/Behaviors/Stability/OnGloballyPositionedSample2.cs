@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
         {
             var layoutCoordinates = Remember(() => MutableStateOf(Optional.Empty<ILayoutCoordinates>()));
             Box(
-                alignment: Alignment.Center,
+                contentAlignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize()
                     .OnGloballyPositioned(it => layoutCoordinates.Value = it.ToOptional()),

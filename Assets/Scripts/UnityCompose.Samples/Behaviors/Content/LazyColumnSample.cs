@@ -17,7 +17,7 @@ namespace UnityCompose.Samples.Behaviors.Content
         private static void Layout()
         {
             Box(
-                alignment: Alignment.Center,
+                contentAlignment: Alignment.Center,
                 modifier: Modifier.FillMaxSize(),
                 content: () =>
                 {

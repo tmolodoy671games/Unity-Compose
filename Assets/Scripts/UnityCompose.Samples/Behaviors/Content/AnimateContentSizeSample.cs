@@ -16,14 +16,14 @@ namespace UnityCompose.Samples.Behaviors.Content
         private static void Layout()
         {
             Box(
-                alignment: Alignment.Center,
+                contentAlignment: Alignment.Center,
                 modifier: Modifier
                     .FillMaxSize(),
                 content: () =>
                 {
                     var isSwitched = Remember(() => MutableStateOf(true));
                     Box(
-                        alignment: Alignment.Center,
+                        contentAlignment: Alignment.Center,
                         modifier: Modifier
                             .Clip(RoundedCornerShape(32.Dp()))
                             .Padding(16.Dp())

@@ -24,7 +24,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
         private static void Layout()
         {
             Box(
-                alignment: Alignment.Center,
+                contentAlignment: Alignment.Center,
                 modifier: Modifier
                     .TestTag("composition-local-sample")
                     .FillMaxSize(),
