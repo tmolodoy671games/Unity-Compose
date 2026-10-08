@@ -1,63 +1,105 @@
-﻿// ReSharper disable CheckNamespace
-
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Compose.Net;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UnityCompose;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Pointer.Input;
 
-public class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
+internal sealed class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
 {
     private readonly VisualElement _element;
+    private readonly Queue<IPointerInputChange> _pending = new();
+    private TaskCompletionSource<IPointerInputChange>? _waiter;
 
     public AwaitPointerEventScopeImpl(VisualElement element, CancellationToken token)
     {
         _element = element;
         Token = token;
+
+        _element.RegisterCallback<PointerDownEvent>(OnDown);
+        _element.RegisterCallback<PointerMoveEvent>(OnMove);
+        _element.RegisterCallback<PointerUpEvent>(OnUp);
+        _element.RegisterCallback<PointerCancelEvent>(OnCancel);
+        token.Register(Cancel);
     }
 
     public Size Size => _element.contentRect.size.ToSize();
     public CancellationToken Token { get; }
     public VisualElement Element => _element;
 
-    public async Task<IPointerInputChange> AwaitPointerInputChange()
+    public Task<IPointerInputChange> AwaitFirstDown()
     {
-        var tcs = new TaskCompletionSource<IPointerInputChange>(TaskCreationOptions.RunContinuationsAsynchronously);
+        return Wait(downOnly: true);
+    }
 
-        EventCallback<PointerDownEvent> onDown = it =>
-        {
-            _element.CapturePointer(it.pointerId);
-            tcs.TrySetResult(PointerInputChange.Create(it));
-        };
-        EventCallback<PointerMoveEvent> onMove = it => tcs.TrySetResult(PointerInputChange.Create(it));
-        EventCallback<PointerUpEvent> onUp = it =>
-        {
-            _element.ReleasePointer(it.pointerId);
-            tcs.TrySetResult(PointerInputChange.Create(it));
-        };
-        EventCallback<PointerCancelEvent> onCancel = it => tcs.TrySetResult(PointerInputChange.Create(it));
-        _element.RegisterCallbackOnce(onDown);
-        _element.RegisterCallbackOnce(onMove);
-        _element.RegisterCallbackOnce(onUp);
-        _element.RegisterCallbackOnce(onCancel);
+    public Task<IPointerInputChange> AwaitPointerInputChange()
+    {
+        return Wait(downOnly: false);
+    }
 
-        void Clear()
+    private async Task<IPointerInputChange> Wait(bool downOnly)
+    {
+        while (true)
         {
-            _element.UnregisterCallback(onDown);
-            _element.UnregisterCallback(onMove);
-            _element.UnregisterCallback(onUp);
-            _element.UnregisterCallback(onCancel);
+            var change = await Next();
+            if (!downOnly || !change.ChangedToUp())
+                return change;
+        }
+    }
+
+    private Task<IPointerInputChange> Next()
+    {
+        Token.ThrowIfCancellationRequested();
+        if (_pending.Count > 0)
+            return Task.FromResult(_pending.Dequeue());
+
+        _waiter = new TaskCompletionSource<IPointerInputChange>(TaskCreationOptions.RunContinuationsAsynchronously);
+        return _waiter.Task;
+    }
+
+    private void OnDown(PointerDownEvent evt)
+    {
+        _element.CapturePointer(evt.pointerId);
+        Push(PointerInputChange.Create(evt));
+    }
+
+    private void OnMove(PointerMoveEvent evt)
+    {
+        Push(PointerInputChange.Create(evt));
+    }
+
+    private void OnUp(PointerUpEvent evt)
+    {
+        _element.ReleasePointer(evt.pointerId);
+        Push(PointerInputChange.Create(evt));
+    }
+
+    private void OnCancel(PointerCancelEvent evt)
+    {
+        _element.ReleasePointer(evt.pointerId);
+        Push(PointerInputChange.Create(evt));
+    }
+
+    private void Push(IPointerInputChange change)
+    {
+        if (_waiter != null)
+        {
+            var waiter = _waiter;
+            _waiter = null;
+            waiter.TrySetResult(change);
+            return;
         }
 
-        Token.Register(() =>
-        {
-            Clear();
-            tcs.TrySetCanceled(Token);
-        });
-        var result = await tcs.Task;
-        Clear();
-        return result;
+        _pending.Enqueue(change);
+    }
+
+    private void Cancel()
+    {
+        _element.UnregisterCallback<PointerDownEvent>(OnDown);
+        _element.UnregisterCallback<PointerMoveEvent>(OnMove);
+        _element.UnregisterCallback<PointerUpEvent>(OnUp);
+        _element.UnregisterCallback<PointerCancelEvent>(OnCancel);
+        _waiter?.TrySetCanceled(Token);
     }
 }
