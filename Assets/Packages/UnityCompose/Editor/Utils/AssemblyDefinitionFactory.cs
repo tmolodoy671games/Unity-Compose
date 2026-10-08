@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using Mono.Cecil;
 using UnityEditor;
+using UnityEngine;
 
 namespace Packages.UnityCompose.Editor.Utils;
 
@@ -54,7 +55,7 @@ internal static class AssemblyDefinitionFactory
 
         // Packages / project assemblies which may be next to the target assembly.
         resolver.AddSearchDirectory(
-            Path.GetDirectoryName(typeof(EditorApplication).Assembly.Location)!);
+            Path.GetDirectoryName(typeof(EditorApplication).Assembly.GetLoadedAssemblyPath())!);
     }
 }
 #endif

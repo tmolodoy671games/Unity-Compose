@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
@@ -19,56 +20,111 @@ internal static class MethodDefinitionExtensions
         return method.HasCustomAttributes && method.CustomAttributes
             .Any(it => it.AttributeType.FullName == "Compose.Net.RecompiledComposableCode");
     }
-
-    public static void CopyBodyFrom(this MethodDefinition method, MethodDefinition source)
+    
+    public static void RetargetClosures(this TypeDefinition type, string generatedName, Document? document)
     {
-        // Настоящий документ оригинала (путь так, как его записал Unity).
-        // Берём ДО перезаписи тела, пока у метода ещё его собственные sequence points.
-        var originalDocument = method.DebugInformation.SequencePoints
-            .FirstOrDefault(it => !it.IsHidden)?.Document;
+        if (document == null)
+            return;
 
-        method.Body.LocalVarToken = source.Body.LocalVarToken;
-        method.Body.InitLocals = source.Body.InitLocals;
-        method.Body.MaxStackSize = source.Body.MaxStackSize;
-
-        method.Body.Instructions.Clear();
-        foreach (var instruction in source.Body.Instructions)
-            method.Body.Instructions.Add(instruction);
-
-        method.Body.ExceptionHandlers.Clear();
-        foreach (var handler in source.Body.ExceptionHandlers)
-            method.Body.ExceptionHandlers.Add(handler);
-
-        method.Body.Variables.Clear();
-        foreach (var variable in source.Body.Variables)
-            method.Body.Variables.Add(variable);
-
-        CopyDebugInformation(method, source, originalDocument);
-    }
-
-    private static void CopyDebugInformation(
-        MethodDefinition method,
-        MethodDefinition source,
-        Document? originalDocument)
-    {
-        var sourceDebug = source.DebugInformation;
-        var methodDebug = method.DebugInformation;
-
-        // Sequence points читаются из PDB по IL-offset'у, а инструкции у нас те же объекты,
-        // поэтому находим их по offset'у в теле источника.
-        var byOffset = new Dictionary<int, Instruction>();
-        foreach (var instruction in source.Body.Instructions)
-            byOffset[instruction.Offset] = instruction;
-
-        methodDebug.SequencePoints.Clear();
-        foreach (var point in sourceDebug.SequencePoints)
+        var token = "<" + generatedName + ">";
+        foreach (var method in type.Methods)
         {
-            if (!byOffset.TryGetValue(point.Offset, out var instruction))
+            if (method.Name.IndexOf(token, StringComparison.Ordinal) < 0)
+                continue;
+            if (!method.DebugInformation.HasSequencePoints)
                 continue;
 
-            // Документ сгенерированного файла заменяем документом оригинала:
-            // и "Library/Bee/..." пропадает, и путь тот же, что Unity пишет для обычного кода.
-            methodDebug.SequencePoints.Add(new SequencePoint(instruction, originalDocument ?? point.Document)
+            foreach (var point in method.DebugInformation.SequencePoints)
+                point.Document = document;
+        }
+
+        foreach (var nested in type.NestedTypes)
+            nested.RetargetClosures(generatedName, document);
+    }
+
+    public static void CopyBodyFrom(this MethodDefinition target, MethodDefinition source)
+    {
+        var originalDocument = target.DebugInformation.SequencePoints
+            .FirstOrDefault(it => it.Document != null)?.Document;
+
+        var body = target.Body;
+        var src = source.Body;
+        body.Instructions.Clear();
+        body.Variables.Clear();
+        body.ExceptionHandlers.Clear();
+        body.InitLocals = src.InitLocals;
+        body.MaxStackSize = src.MaxStackSize;
+
+        foreach (var variable in src.Variables)
+            body.Variables.Add(new VariableDefinition(target.Module.ImportReference(variable.VariableType)));
+
+        var map = new Dictionary<Instruction, Instruction>();
+        foreach (var instruction in src.Instructions)
+        {
+            var clone = Instruction.Create(OpCodes.Nop);
+            clone.OpCode = instruction.OpCode;
+            clone.Operand = instruction.Operand;
+            map.Add(instruction, clone);
+            body.Instructions.Add(clone);
+        }
+
+        foreach (var instruction in body.Instructions)
+        {
+            var branch = instruction.Operand as Instruction;
+            if (branch != null && map.TryGetValue(branch, out var to))
+            {
+                instruction.Operand = to;
+                continue;
+            }
+
+            var branches = instruction.Operand as Instruction[];
+            if (branches != null)
+            {
+                var remapped = new Instruction[branches.Length];
+                for (var i = 0; i < branches.Length; i++)
+                    remapped[i] = map[branches[i]];
+                instruction.Operand = remapped;
+                continue;
+            }
+
+            var variable = instruction.Operand as VariableDefinition;
+            if (variable != null)
+            {
+                instruction.Operand = body.Variables[variable.Index];
+                continue;
+            }
+
+            var parameter = instruction.Operand as ParameterDefinition;
+            if (parameter != null)
+                instruction.Operand = parameter.Index < 0 ? body.ThisParameter : target.Parameters[parameter.Index];
+        }
+
+        foreach (var handler in src.ExceptionHandlers)
+        {
+            body.ExceptionHandlers.Add(new ExceptionHandler(handler.HandlerType)
+            {
+                TryStart = handler.TryStart != null ? map[handler.TryStart] : null,
+                TryEnd = handler.TryEnd != null ? map[handler.TryEnd] : null,
+                HandlerStart = handler.HandlerStart != null ? map[handler.HandlerStart] : null,
+                HandlerEnd = handler.HandlerEnd != null ? map[handler.HandlerEnd] : null,
+                FilterStart = handler.FilterStart != null ? map[handler.FilterStart] : null,
+                CatchType = handler.CatchType != null ? target.Module.ImportReference(handler.CatchType) : null,
+            });
+        }
+
+        var debug = target.DebugInformation;
+        debug.SequencePoints.Clear();
+        if (originalDocument == null)
+            return;
+
+        foreach (var instruction in src.Instructions)
+        {
+            var point = source.DebugInformation.GetSequencePoint(instruction);
+            Instruction clone;
+            if (point == null || !map.TryGetValue(instruction, out clone))
+                continue;
+
+            debug.SequencePoints.Add(new SequencePoint(clone, originalDocument)
             {
                 StartLine = point.StartLine,
                 StartColumn = point.StartColumn,
@@ -76,9 +132,6 @@ internal static class MethodDefinitionExtensions
                 EndColumn = point.EndColumn,
             });
         }
-
-        // Имена и области видимости локальных переменных
-        methodDebug.Scope = sourceDebug.Scope;
     }
 }
 #endif

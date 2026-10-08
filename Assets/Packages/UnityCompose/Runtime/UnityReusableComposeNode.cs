@@ -14,6 +14,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
 {
     public readonly VisualElement VisualElement;
     private AnchorManager? _anchorManager;
+    private PointerCaptureState _captureState = PointerCaptureState.Empty;
 
     private ContentContainer? _contentContainerInstance;
     private ContentContainer? _contentContainer;
@@ -174,6 +175,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_root != null)
             return _root;
+        _captureState = PointerCaptureState.Create(VisualElement);
         _rootInstance ??= new Root { pickingMode = PickingMode.Ignore };
         _root = _rootInstance;
 
@@ -182,6 +184,8 @@ public class UnityReusableComposeNode : IReusableComposeNode
         parent.RemoveAt(indexInParent);
         _root.Add(VisualElement);
         parent.Insert(indexInParent, _root);
+        _captureState.Restore(VisualElement);
+        _captureState = PointerCaptureState.Empty;
         return _root;
     }
 
@@ -189,12 +193,15 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_root == null)
             return;
+        _captureState = PointerCaptureState.Create(VisualElement);
         var parent = _root.parent;
         var indexInParent = parent.IndexOf(_root);
         _root.Remove(VisualElement);
         parent.RemoveAt(indexInParent);
         parent.Insert(indexInParent, VisualElement);
         _root = null;
+        _captureState.Restore(VisualElement);
+        _captureState = PointerCaptureState.Empty;
     }
 
     public VisualElement SetupDrawBehind()
@@ -388,4 +395,51 @@ internal class Shadow : VisualElement
 
 internal class ContentContainer : VisualElement
 {
+}
+
+internal readonly record struct PointerCaptureState(
+    bool MouseCaptured,
+    bool Pointer0Captured,
+    bool Pointer1Captured,
+    bool Pointer2Captured,
+    bool Pointer3Captured,
+    bool Pointer4Captured
+)
+{
+    public static readonly PointerCaptureState Empty = new(
+        MouseCaptured: false,
+        Pointer0Captured: false,
+        Pointer1Captured: false,
+        Pointer2Captured: false,
+        Pointer3Captured: false,
+        Pointer4Captured: false
+    );
+
+    public static PointerCaptureState Create(VisualElement element)
+    {
+        return new PointerCaptureState(
+            MouseCaptured: element.HasMouseCapture(),
+            Pointer0Captured: element.HasPointerCapture(0),
+            Pointer1Captured: element.HasPointerCapture(1),
+            Pointer2Captured: element.HasPointerCapture(2),
+            Pointer3Captured: element.HasPointerCapture(3),
+            Pointer4Captured: element.HasPointerCapture(4)
+        );
+    }
+
+    public void Restore(VisualElement element)
+    {
+        if (MouseCaptured)
+            element.CaptureMouse();
+        if (Pointer0Captured)
+            element.CapturePointer(0);
+        if (Pointer1Captured)
+            element.CapturePointer(1);
+        if (Pointer2Captured)
+            element.CapturePointer(2);
+        if (Pointer3Captured)
+            element.CapturePointer(3);
+        if (Pointer4Captured)
+            element.CapturePointer(4);
+    }
 }

@@ -27,7 +27,6 @@ public partial class ComposeView : VisualElement, IDisposable
     {
         if (_content == content && !_isDisposed)
             return;
-        Debug.Log("SetContent");
         Dispose();
         _isDisposed = false;
         _content = content;
