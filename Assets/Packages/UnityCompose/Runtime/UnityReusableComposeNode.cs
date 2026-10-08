@@ -4,6 +4,7 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
 using UnityEngine.UIElements;
 using TimeUtils = UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils.TimeUtils;
 
@@ -29,6 +30,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     private Shadow? _backgroundShadow;
     private Shadow? _backgroundShadowInstance;
     private IVisualElementScheduledItem? _syncBackgroundShadow;
+    private Offset _backgroundShadowOffset;
 
     private Shadow? _foregroundShadow;
     private Shadow? _foregroundShadowInstance;
@@ -135,7 +137,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             VisualElement.Remove(_drawOn);
         _drawOn = null;
     }
-    
+
     public VisualElement SetupForegroundShadow()
     {
         if (_foregroundShadow != null)
@@ -253,6 +255,11 @@ public class UnityReusableComposeNode : IReusableComposeNode
         return _backgroundShadow;
     }
 
+    public void SyncBackgroundShadowOffset(Offset offset)
+    {
+        _backgroundShadowOffset = offset;
+    }
+
     public void RemoveBackgroundShadow()
     {
         if (_backgroundShadow == null)
@@ -321,6 +328,9 @@ public class UnityReusableComposeNode : IReusableComposeNode
             return;
         _backgroundShadow.style.scale = VisualElement.style.scale;
         _backgroundShadow.style.rotate = VisualElement.style.rotate;
+        _backgroundShadow.style.translate =
+            _backgroundShadowOffset.ToVector2() * VisualElement.style.scale.ToVector2() +
+            VisualElement.style.translate.ToVector2();
     }
 }
 

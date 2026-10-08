@@ -27,4 +27,9 @@ internal static class StyleTranslateExtensions
             result = StyleKeyword.Null;
         return result;
     }
+
+    public static Vector2 ToVector2(this StyleTranslate value)
+    {
+        return new Vector2(value.value.x.value, value.value.y.value);
+    }
 }

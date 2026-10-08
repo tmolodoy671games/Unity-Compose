@@ -35,7 +35,7 @@ public abstract record ForegroundShadowUnityModifier : UnityModifier, IForegroun
         Revert(
             node: node,
             element: element,
-            shadow: node.SetupBackgroundShadow(),
+            shadow: node.SetupForegroundShadow(),
             newModifiers: newModifiers
         );
         foreach (var newModifier in newModifiers)

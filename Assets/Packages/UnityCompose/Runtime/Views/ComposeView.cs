@@ -27,9 +27,9 @@ public partial class ComposeView : VisualElement, IDisposable
     {
         if (_content == content && !_isDisposed)
             return;
+        Dispose();
         _isDisposed = false;
         _content = content;
-        Clear();
         Bootstrap(
             adapter: UnityComposeAdapter.Instance,
             composer: _composer,

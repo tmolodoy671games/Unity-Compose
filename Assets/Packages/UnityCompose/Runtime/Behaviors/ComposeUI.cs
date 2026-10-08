@@ -12,8 +12,6 @@ namespace UnityCompose;
 [DefaultExecutionOrder(-1)]
 public abstract partial class ComposeUI : MonoBehaviour
 {
-    private bool _isInitialized;
-
     [Composable]
     protected abstract void Content();
 
@@ -35,16 +33,21 @@ public abstract partial class ComposeUI : MonoBehaviour
     {
         _composeView?.Dispose();
         _composeView = null;
+        DisablePanelRenderer();
     }
 
     private void EnablePanelRenderer()
     {
         var renderer = GetComponent<PanelRenderer>();
         if (!renderer) return;
+        renderer.RegisterUIReloadCallback(OnUIReload);
+    }
 
-        if (!_isInitialized)
-            renderer.RegisterUIReloadCallback(OnUIReload);
-        _isInitialized = true;
+    private void DisablePanelRenderer()
+    {
+        var renderer = GetComponent<PanelRenderer>();
+        if (!renderer) return;
+        renderer.UnregisterUIReloadCallback(OnUIReload);
     }
 
     private void OnUIReload(

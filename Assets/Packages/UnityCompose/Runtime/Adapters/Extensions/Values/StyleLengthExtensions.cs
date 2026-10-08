@@ -13,15 +13,15 @@ internal static class StyleLengthExtensions
     public static StyleLength Add(this StyleLength value, Length addition)
     {
         StyleLength result = value.value.value + addition.value;
-        if (result.value.value.AlmostEquals(0f))
-            result = StyleKeyword.Null;
+        // if (result.value.value.AlmostEquals(0f))
+        //     result = StyleKeyword.Null;
         return result;
     }
     public static StyleLength Subtract(this StyleLength value, Length addition)
     {
         StyleLength result = value.value.value - addition.value;
-        if (result.value.value.AlmostEquals(0f))
-            result = StyleKeyword.Null;
+        // if (result.value.value.AlmostEquals(0f))
+        //     result = StyleKeyword.Null;
         return result;
     }
     

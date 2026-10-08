@@ -24,6 +24,7 @@ internal record DropShadowModifierImpl(
     )
     {
         Init(drawBehind, Shape, Shadow);
+        node.SyncBackgroundShadowOffset(Shadow.Offset);
     }
 
     protected override void Revert(
