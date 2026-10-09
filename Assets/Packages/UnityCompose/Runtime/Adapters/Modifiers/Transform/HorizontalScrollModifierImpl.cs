@@ -13,6 +13,7 @@ namespace UnityCompose;
 
 internal record HorizontalScrollModifierImpl(
     IScrollState State,
+    bool Enabled,
     float ScrollMultiplier,
     bool ReverseScrolling,
     bool UserScrollEnabled,
@@ -50,6 +51,8 @@ internal record HorizontalScrollModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         var containerStyle = contentContainer.style;
         contentContainer.RegisterCallback(_onGeometryChanged);
         containerStyle.translate = new Vector2(-State.Value, 0);
@@ -71,6 +74,8 @@ internal record HorizontalScrollModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         var containerStyle = contentContainer.style;
         contentContainer.UnregisterCallback(_onGeometryChanged);
         containerStyle.translate = containerStyle.translate.CompareAndSetNull(new Vector2(-State.Value, 0));

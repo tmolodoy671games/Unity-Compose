@@ -8,29 +8,43 @@ internal class TransformModifiersFactoryImpl : ITransformModifiersFactory
     public IModifier Rotate(float degrees) => new RotateModifierImpl(degrees);
     public IModifier Scale(float scaleX, float scaleY) => new ScaleModifierImpl(scaleX, scaleY);
     public IModifier TransformOrigin(Dp originX, Dp originY) => new TransformOriginModifierImpl(originX, originY);
-    
-    
+
+
     public IModifier VerticalScroll(
         IScrollState state,
+        bool enabled,
         float scrollMultiplier,
         bool reverseScrolling,
         bool userScrollEnabled,
         IMutableInteractionSource? interactionSource
     )
     {
-        return new VerticalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, userScrollEnabled,
-            interactionSource);
+        return new VerticalScrollModifierImpl(
+            Enabled: enabled,
+            State: state,
+            ScrollMultiplier: scrollMultiplier,
+            ReverseScrolling: reverseScrolling,
+            UserScrollEnabled: userScrollEnabled,
+            InteractionSource: interactionSource
+        );
     }
 
     public IModifier HorizontalScroll(
         IScrollState state,
+        bool enabled,
         float scrollMultiplier,
         bool reverseScrolling,
         bool userScrollEnabled,
         IMutableInteractionSource? interactionSource
     )
     {
-        return new HorizontalScrollModifierImpl(state, scrollMultiplier, reverseScrolling, userScrollEnabled,
-            interactionSource);
+        return new HorizontalScrollModifierImpl(
+            Enabled: enabled,
+            State: state,
+            ScrollMultiplier: scrollMultiplier,
+            ReverseScrolling: reverseScrolling,
+            UserScrollEnabled: userScrollEnabled,
+            InteractionSource: interactionSource
+        );
     }
 }

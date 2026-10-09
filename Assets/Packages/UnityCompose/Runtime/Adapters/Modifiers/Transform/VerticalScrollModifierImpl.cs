@@ -12,6 +12,7 @@ namespace UnityCompose;
 
 internal record VerticalScrollModifierImpl(
     IScrollState State,
+    bool Enabled,
     float ScrollMultiplier,
     bool ReverseScrolling,
     bool UserScrollEnabled,
@@ -49,6 +50,8 @@ internal record VerticalScrollModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         contentContainer.RegisterCallback(_onContentContainerGeometryChanged);
         contentContainer.style.translate = new Vector2(0, -State.Value);
         contentContainer.style.flexShrink = 0;
@@ -66,6 +69,8 @@ internal record VerticalScrollModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         element.UnregisterCallback(_onElementGeometryChanged);
         if (UserScrollEnabled)
             element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
