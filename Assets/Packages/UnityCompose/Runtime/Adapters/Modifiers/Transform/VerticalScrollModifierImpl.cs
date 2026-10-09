@@ -59,7 +59,7 @@ internal record VerticalScrollModifierImpl(
         if (UserScrollEnabled)
             element.RegisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Increment();
-        element.style.overflow = Overflow.Hidden;
+        element.Clip().Increment();
     }
 
     protected override void Revert(
@@ -75,7 +75,7 @@ internal record VerticalScrollModifierImpl(
         if (UserScrollEnabled)
             element.UnregisterCallback(_callback, TrickleDown.TrickleDown);
         element.PickingMode().Decrement();
-        element.style.overflow = Overflow.Visible;
+        element.Clip().Decrement();
         contentContainer.style.translate = StyleKeyword.Null;
         contentContainer.style.flexShrink = StyleKeyword.Null;
         contentContainer.UnregisterCallback(_onContentContainerGeometryChanged);

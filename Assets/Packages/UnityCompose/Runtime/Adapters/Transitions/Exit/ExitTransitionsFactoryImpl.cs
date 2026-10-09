@@ -41,7 +41,7 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
         Func<float, float> targetWidth
     )
     {
-        return new ShrinkHorizontallyExitTransitionImpl(animationSpec, shrinkTowards, clip, targetWidth);
+        return new ShrinkHorizontallyExitTransitionImpl(animationSpec, clip, targetWidth);
     }
 
     public IExitTransition ShrinkVertically(
@@ -51,7 +51,7 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
         Func<float, float> targetHeight
     )
     {
-        return new ShrinkVerticallyExitTransitionImpl(animationSpec, shrinkTowards, clip, targetHeight);
+        return new ShrinkVerticallyExitTransitionImpl(animationSpec, clip, targetHeight);
     }
 
     public IExitTransition ShrinkOut(
@@ -61,6 +61,6 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
         Func<Size, Size> targetSize
     )
     {
-        return new ShrinkOutExitTransitionImpl(animationSpec, shrinkTowards, clip, targetSize);
+        return new ShrinkOutExitTransitionImpl(animationSpec, clip, targetSize);
     }
 }

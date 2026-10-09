@@ -20,19 +20,19 @@ internal class TransitionContent : VisualElement
 {
     public TransitionContent()
     {
-        RegisterCallback<AttachToPanelEvent>(_ =>
-        {
-            if (contentRect.height > 0 || contentRect.width > 0)
-                SyncParentSize();
-        });
-        RegisterCallback<GeometryChangedEvent>(_ => SyncParentSize());
+        // RegisterCallback<AttachToPanelEvent>(_ =>
+        // {
+        //     if (contentRect.height > 0 || contentRect.width > 0)
+        //         SyncParentSize();
+        // });
+        // RegisterCallback<GeometryChangedEvent>(_ => SyncParentSize());
     }
 
     private void SyncParentSize()
     {
-        parent.style.width = contentRect.width;
-        parent.style.height = contentRect.height;
-        style.position = Position.Absolute;
+        // parent.style.width = contentRect.width;
+        // parent.style.height = contentRect.height;
+        // style.position = Position.Absolute;
     }
 }
 

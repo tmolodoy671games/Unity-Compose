@@ -24,7 +24,8 @@ internal sealed class LayoutCoordinatesImpl : ILayoutCoordinates
 
             return new Size(
                 rect.width,
-                rect.height);
+                rect.height
+            );
         }
     }
 

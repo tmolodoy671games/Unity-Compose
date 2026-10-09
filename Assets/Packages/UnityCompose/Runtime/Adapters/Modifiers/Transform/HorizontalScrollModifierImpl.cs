@@ -60,7 +60,7 @@ internal record HorizontalScrollModifierImpl(
         containerStyle.flexDirection = FlexDirection.Row;
         
         var style = element.style;
-        style.overflow = Overflow.Hidden;
+        element.Clip().Increment();
         element.RegisterCallback(_onElementGeometryChanged);
         element.PickingMode().Increment();
         if (UserScrollEnabled)
@@ -83,7 +83,7 @@ internal record HorizontalScrollModifierImpl(
         containerStyle.flexDirection = containerStyle.flexDirection.CompareAndSetNull(FlexDirection.Row);
 
         var style = element.style;
-        style.overflow = style.overflow.CompareAndSetNull(Overflow.Hidden);
+        element.Clip().Decrement();
         element.UnregisterCallback(_onElementGeometryChanged);
         element.PickingMode().Decrement();
         if (UserScrollEnabled)

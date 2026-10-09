@@ -6,84 +6,37 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
-internal class ExpandHorizontallyEnterTransitionImpl : IEnterTransition
+internal record ExpandHorizontallyEnterTransitionImpl(
+    AnimationSpec AnimationSpec,
+    bool Clip,
+    Func<float, float> InitialWidth
+) : IEnterTransition
 {
-    private readonly Func<float, float> _initialWidth;
-    private readonly AnimationSpec _animationSpec;
-    private readonly bool _clip;
-    private readonly Alignment.Horizontal _expandFrom;
-    private readonly ReferenceKey _key;
-
-    public ExpandHorizontallyEnterTransitionImpl(
-        AnimationSpec animationSpec,
-        Alignment.Horizontal expandFrom,
-        bool clip,
-        Func<float, float> initialWidth
-    )
-    {
-        _key = new ReferenceKey(this);
-        _clip = clip;
-        _expandFrom = expandFrom;
-        _initialWidth = initialWidth;
-        _animationSpec = animationSpec;
-    }
-
     public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
-        var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var child = element.GetOrNull(0);
-        element.UserData()[_key] = progress;
-        if (child == null)
+        var progress = AnimationSpec.GetProgress(timeElapsed);
+        var width = element.layout.width;
+        if (width != 0 && !float.IsNaN(width))
         {
-            element.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChanged);
-            return;
+            progress = Mathf.LerpUnclamped(InitialWidth(width), width, progress);
+            progress /= width;
         }
 
-        UpdateParentSize(element, progress);
+        element.style.flexShrink = 0;
+        element.parent.style.maxWidth = ShrinkUtils.GetLength(progress);
+        if (Clip)
+            element.Clip().Increment();
     }
 
     public void Revert(IReusableComposeNode node)
     {
         var element = node.VisualElement();
+        element.style.flexShrink = StyleKeyword.Null;
         element.style.maxWidth = StyleKeyword.Null;
-        element.UserData().Remove(_key);
+        if (Clip)
+            element.Clip().Decrement();
     }
 
-    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
-
-    private bool Equals(ExpandHorizontallyEnterTransitionImpl other)
-    {
-        return _initialWidth.Equals(other._initialWidth) && _animationSpec.Equals(other._animationSpec);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((ExpandHorizontallyEnterTransitionImpl)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_initialWidth, _animationSpec);
-    }
-
-    private void OnGeometryChanged(GeometryChangedEvent evt)
-    {
-        var element = evt.VisualElement();
-        var progress = element.UserData().GetOrNull(_key) as float? ?? 0;
-        UpdateParentSize(element, progress);
-    }
-
-    private void UpdateParentSize(VisualElement element, float progress)
-    {
-        var child = element.GetOrNull(0);
-        if (child == null)
-            return;
-        var initialWidth = _initialWidth(child.contentRect.width);
-        var targetWidth = child.contentRect.width;
-        element.style.maxWidth = Mathf.LerpUnclamped(initialWidth, targetWidth, progress);
-    }
+    public TimeSpan TotalDuration => AnimationSpec.TotalDuration;
 }

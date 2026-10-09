@@ -44,7 +44,7 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
         Func<float, float> initialWidth
     )
     {
-        return new ExpandHorizontallyEnterTransitionImpl(animationSpec, expandFrom, clip, initialWidth);
+        return new ExpandHorizontallyEnterTransitionImpl(animationSpec, clip, initialWidth);
     }
 
     public IEnterTransition ExpandVertically(
@@ -54,7 +54,7 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
         Func<float, float> initialHeight
     )
     {
-        return new ExpandVerticallyEnterTransitionImpl(animationSpec, expandFrom, clip, initialHeight);
+        return new ExpandVerticallyEnterTransitionImpl(animationSpec, clip, initialHeight);
     }
 
     public IEnterTransition ExpandIn(
@@ -64,6 +64,6 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
         Func<Size, Size> initialSize
     )
     {
-        return new ExpandEnterTransitionImpl(animationSpec, expandFrom, clip, initialSize);
+        return new ExpandEnterTransitionImpl(animationSpec, clip, initialSize);
     }
 }

@@ -47,13 +47,12 @@ namespace UnityCompose.Samples.Behaviors.Content
                         visible: isVisible.Value,
                         enter: FadeIn(Tween(1_000)) + ExpandVertically(Tween(1_000)),
                         exit: FadeOut(Tween(1_000)) + ShrinkVertically(Tween(1_000)),
+                        modifier: Modifier
+                            .Padding(16.Dp())
+                            .Background(Color.LightBlue),
                         content: () => Text(
                             "Text",
-                            fontSize: 64.Sp(),
-                            modifier: Modifier
-                                .Padding(16.Dp())
-                                .Background(Color.LightBlue)
-                        )
+                            fontSize: 64.Sp())
                     );
                 }
             );

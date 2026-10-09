@@ -6,6 +6,7 @@ using UnityCompose.Packages.UnityCompose.Runtime.Adapters;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
+using PickingMode = UnityEngine.UIElements.PickingMode;
 
 // ReSharper disable CheckNamespace
 

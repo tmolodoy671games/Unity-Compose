@@ -1,93 +1,42 @@
 ﻿using System;
 using Compose.Net;
-using StableCollections;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
-public class ShrinkVerticallyExitTransitionImpl : IExitTransition
+internal record ShrinkVerticallyExitTransitionImpl(
+    AnimationSpec AnimationSpec,
+    bool Clip,
+    Func<float, float> TargetHeight
+) : IExitTransition
 {
-    private readonly Func<float, float> _targetHeight;
-    private readonly AnimationSpec _animationSpec;
-    private readonly Alignment.Vertical _shrinkTowards;
-    private readonly bool _clip;
-    private readonly ReferenceKey _key;
-
-    public ShrinkVerticallyExitTransitionImpl(
-        AnimationSpec animationSpec,
-        Alignment.Vertical shrinkTowards,
-        bool clip,
-        Func<float, float> targetHeight
-    )
-    {
-        _key = new ReferenceKey(this);
-        _targetHeight = targetHeight;
-        _animationSpec = animationSpec;
-        _shrinkTowards = shrinkTowards;
-        _clip = clip;
-    }
+    public TimeSpan TotalDuration => AnimationSpec.TotalDuration;
 
     public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
     {
-        var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var child = element.GetOrNull(0);
-        element.style.overflow = Overflow.Hidden;
-        element.UserData()[_key] = progress;
-        if (child == null)
+        var progress = AnimationSpec.GetProgress(timeElapsed);
+        var height = element.layout.height;
+        if (height != 0 && !float.IsNaN(height))
         {
-            element.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChanged);
-            return;
+            progress = Mathf.LerpUnclamped(height, TargetHeight(height), progress);
+            progress /= height;
         }
 
-        UpdateParentSize(element, progress);
+        element.style.flexShrink = 0;
+        element.parent.style.maxHeight = ShrinkUtils.GetLength(progress);
+        if (Clip)
+            element.Clip().Increment();
     }
 
     public void Revert(IReusableComposeNode node)
     {
         var element = node.VisualElement();
-        element.style.maxHeight = StyleKeyword.None;
-        element.UserData().Remove(_key);
-    }
-
-    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
-
-    private bool Equals(ShrinkVerticallyExitTransitionImpl other)
-    {
-        return _targetHeight.Equals(other._targetHeight) && _animationSpec.Equals(other._animationSpec);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((ShrinkVerticallyExitTransitionImpl)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_targetHeight, _animationSpec);
-    }
-
-    private void OnGeometryChanged(GeometryChangedEvent evt)
-    {
-        var element = evt.VisualElement();
-        var child = element.GetOrNull(0);
-        if (child == null)
-            return;
-        var progress = element.UserData().GetOrNull(_key) as float? ?? 0f;
-        UpdateParentSize(element, progress);
-    }
-
-    private void UpdateParentSize(VisualElement element, float progress)
-    {
-        var child = element.GetOrNull(0);
-        if (child == null)
-            return;
-        var targetHeight = _targetHeight(child.resolvedStyle.height);
-        var initialHeight = child.resolvedStyle.height;
-        element.style.maxHeight = Mathf.LerpUnclamped(initialHeight, targetHeight, progress);
+        element.style.flexShrink = StyleKeyword.Null;
+        element.style.maxHeight = StyleKeyword.Null;
+        if (Clip)
+            element.Clip().Decrement();
     }
 }

@@ -46,7 +46,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         IsRoot = isRoot;
         VisualElement = visualElement;
-        VisualElement.pickingMode = PickingMode.Ignore;
+        VisualElement.pickingMode = UnityEngine.UIElements.PickingMode.Ignore;
         visualElement.SetReusableComposeNode(this);
     }
 
@@ -109,7 +109,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             return _drawOn;
         _drawOnInstance ??= new DrawOn
         {
-            pickingMode = PickingMode.Ignore,
+            pickingMode = UnityEngine.UIElements.PickingMode.Ignore,
             style =
             {
                 position = Position.Absolute,
@@ -141,7 +141,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             return _foregroundShadow;
         _foregroundShadowInstance ??= new Shadow
         {
-            pickingMode = PickingMode.Ignore,
+            pickingMode = UnityEngine.UIElements.PickingMode.Ignore,
             style =
             {
                 position = Position.Absolute,
@@ -173,7 +173,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             return _drawBehind;
         _drawBehindInstance ??= new DrawBehind
         {
-            pickingMode = PickingMode.Ignore,
+            pickingMode = UnityEngine.UIElements.PickingMode.Ignore,
             style =
             {
                 position = Position.Absolute,
@@ -202,7 +202,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             return _contentContainer;
         _contentContainerInstance ??= new ContentContainer
         {
-            pickingMode = PickingMode.Ignore,
+            pickingMode = UnityEngine.UIElements.PickingMode.Ignore,
         };
         _contentContainer = _contentContainerInstance;
         var children = VisualElement.Children().ToImmutableStableList();
