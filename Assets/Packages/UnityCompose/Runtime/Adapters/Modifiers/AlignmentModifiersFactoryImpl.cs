@@ -26,7 +26,7 @@ internal class AlignmentModifiersFactoryImpl : IAlignmentModifiersFactory
     }
 
     public IModifier Weight(float weight) => new WeightModifierImpl(weight);
-    public IModifier Float() => FloatModifierImpl.Instance;
+    public IModifier Float(bool enabled) => new FloatModifierImpl(enabled);
     public IModifier Box()
     {
         throw new System.NotImplementedException();

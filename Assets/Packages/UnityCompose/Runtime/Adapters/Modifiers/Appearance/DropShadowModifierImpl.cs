@@ -23,6 +23,8 @@ internal record DropShadowModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (Shadow.Color.Alpha <= 0f)
+            return;
         Init(drawBehind, Shape, Shadow);
         node.SyncBackgroundShadowOffset(Shadow.Offset);
     }
@@ -34,6 +36,8 @@ internal record DropShadowModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (Shadow.Color.Alpha <= 0f)
+            return;
         Revert(drawBehind, Shape, Shadow);
     }
 

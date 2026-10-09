@@ -9,7 +9,8 @@ using UnityEngine.UIElements;
 namespace UnityCompose;
 
 internal record HoverableModiferImpl(
-    IMutableInteractionSource InteractionSource
+    IMutableInteractionSource InteractionSource,
+    bool Enabled
 ) : UnityModifier
 {
     private readonly EventCallback<PointerEnterEvent> _pointerEnterCallback = evt =>
@@ -37,6 +38,8 @@ internal record HoverableModiferImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         element.PickingMode().Increment();
         element.RegisterCallback(_pointerEnterCallback);
         element.RegisterCallback(_pointerLeaveCallback);
@@ -48,6 +51,8 @@ internal record HoverableModiferImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         element.PickingMode().Decrement();
         element.UnregisterCallback(_pointerEnterCallback);
         element.UnregisterCallback(_pointerLeaveCallback);

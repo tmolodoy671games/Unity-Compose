@@ -7,20 +7,16 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal record FloatModifierImpl : UnityModifier
+internal record FloatModifierImpl(bool Enabled) : UnityModifier
 {
-    public static readonly FloatModifierImpl Instance = new();
-
-    private FloatModifierImpl()
-    {
-    }
-
     protected override void Apply(
         UnityReusableComposeNode node,
         VisualElement element,
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         element.style.position = Position.Absolute;
     }
 
@@ -30,6 +26,8 @@ internal record FloatModifierImpl : UnityModifier
         IStableList<IModifier> newModifiers
     )
     {
+        if (!Enabled)
+            return;
         element.style.position = element.style.position.CompareAndSetNull(Position.Absolute);
     }
 }
