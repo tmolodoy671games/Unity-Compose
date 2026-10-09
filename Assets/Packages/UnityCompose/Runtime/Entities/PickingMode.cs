@@ -4,12 +4,12 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-public class ComposePickingMode
+public class PickingMode
 {
     private readonly VisualElement _element;
     private int _count;
 
-    internal ComposePickingMode(VisualElement element)
+    internal PickingMode(VisualElement element)
     {
         _element = element;
     }
@@ -17,7 +17,7 @@ public class ComposePickingMode
     public void Increment()
     {
         if (_count == 0)
-            _element.pickingMode = PickingMode.Position;
+            _element.pickingMode = UnityEngine.UIElements.PickingMode.Position;
         _count++;
     }
 
@@ -25,19 +25,19 @@ public class ComposePickingMode
     {
         _count--;
         if (_count == 0)
-            _element.pickingMode = PickingMode.Ignore;
+            _element.pickingMode = UnityEngine.UIElements.PickingMode.Ignore;
     }
 }
 
 public static partial class VisualElementExtensions
 {
-    public static ComposePickingMode PickingMode(this VisualElement element)
+    public static PickingMode PickingMode(this VisualElement element)
     {
         const string key = "UnityCompose.ComposePickingMode";
         var userData = element.UserData();
         if (userData.TryGet(key, out var cachedInstance))
-            return (ComposePickingMode)cachedInstance!;
-        var newInstance = new ComposePickingMode(element);
+            return (PickingMode)cachedInstance!;
+        var newInstance = new PickingMode(element);
         userData[key] = newInstance;
         return newInstance;
     }

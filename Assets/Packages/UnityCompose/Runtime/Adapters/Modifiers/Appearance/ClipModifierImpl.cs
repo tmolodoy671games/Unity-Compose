@@ -19,7 +19,7 @@ internal record ClipModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.overflow = Overflow.Hidden;
+        element.Clip().Increment();
         if (!Shape.HasValue)
             return;
         var shapeValue = Shape.Value;
@@ -35,7 +35,7 @@ internal record ClipModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
-        element.style.overflow = StyleKeyword.Null;
+        element.Clip().Decrement();
         if (!Shape.HasValue)
             return;
         var shapeValue = Shape.Value;
