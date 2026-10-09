@@ -79,9 +79,9 @@ namespace UnityCompose.Samples.Behaviors.Content
                                         .Clip(RoundedCornerShape(4.Dp()))
                                         .Clickable(() =>
                                             {
-                                                coroutineScope.Launch(async token =>
+                                                coroutineScope.Launch(async scope =>
                                                 {
-                                                    await pagerState.AnimateScrollToPage(page, token);
+                                                    await pagerState.AnimateScrollToPage(scope, page);
                                                 });
                                             }
                                         ),

@@ -14,8 +14,8 @@ public interface IPagerState
     void ScrollToPage(int page, float offsetFraction = 0f);
 
     Task AnimateScrollToPage(
+        ICoroutineScope scope,
         int page,
-        CancellationToken token,
         float offsetFraction = 0f,
         Optional<AnimationSpec> animationSpec = default
     );
@@ -67,9 +67,9 @@ internal class MutablePagerStateImpl(
     }
 
     public async Task AnimateScrollToPage(
+        ICoroutineScope scope,
         int page,
-        CancellationToken token,
-        float offsetFraction = 0,
+        float offsetFraction = 0f,
         Optional<AnimationSpec> animationSpec = default
     )
     {
@@ -87,13 +87,13 @@ internal class MutablePagerStateImpl(
         _pendingPage = -1;
         _animateScrollTokenSource.Cancel();
         _animateScrollTokenSource.Dispose();
-        _animateScrollTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
+        _animateScrollTokenSource = CancellationTokenSource.CreateLinkedTokenSource(scope.CancellationToken);
         await Animate(
+            scope: scope,
             typeConverter: Mathf.LerpUnclamped,
             initialValue: _value.Value,
             targetValue: newValue,
             animationSpec: animationSpec,
-            token: _animateScrollTokenSource.Token,
             block: it => _value.Value = it
         );
     }

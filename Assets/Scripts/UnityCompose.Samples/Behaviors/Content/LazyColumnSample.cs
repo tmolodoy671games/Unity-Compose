@@ -21,6 +21,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 modifier: Modifier.FillMaxSize(),
                 content: () =>
                 {
+                    var coroutineScope = RememberCoroutineScope();
                     var state = RememberLazyListState();
                     LazyColumn(
                         state: state,
@@ -36,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     $"Bla {it}",
                                     fontSize: 64.Sp(),
                                     modifier: Modifier
-                                        .Clickable(() => state.AnimateScrollToItem(it, CancellationToken.None))
+                                        .Clickable(() => state.AnimateScrollToItem(coroutineScope, it))
                                 );
                             });
                         }

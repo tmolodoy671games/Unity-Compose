@@ -58,40 +58,4 @@ public static class PerformanceUtils
             current = target;
         }
     }
-
-    public static async Task MoveRandomlyCoroutine(
-        Size parentSize,
-        Action<Offset> onValueChanged,
-        CancellationToken token
-    )
-    {
-        if (float.IsNaN(parentSize.Width) || float.IsNaN(parentSize.Height))
-            return;
-
-        var current = new Offset(
-            UnityRandom.Range(0f, parentSize.Width),
-            UnityRandom.Range(0f, parentSize.Height)
-        );
-
-        while (true)
-        {
-            await NextFrame(token);
-            var target = new Offset(
-                UnityRandom.Range(0f, parentSize.Width),
-                UnityRandom.Range(0f, parentSize.Height)
-            );
-            var interval = UnityEngine.Random.Range(1, 2f);
-            await Animate(
-                typeConverter: Offset.LerpUnclamped,
-                initialValue: current,
-                targetValue: target,
-                block: it => onValueChanged?.Invoke(it),
-                animationSpec: Tween(TimeSpan.FromSeconds(interval)),
-                token: token
-            );
-
-            onValueChanged?.Invoke(target);
-            current = target;
-        }
-    }
 }
