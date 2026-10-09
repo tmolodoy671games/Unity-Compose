@@ -400,7 +400,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.9999999
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -631,7 +631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &818423969
 Transform:
   m_ObjectHideFlags: 0
@@ -1175,7 +1175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1516889597
 Transform:
   m_ObjectHideFlags: 0

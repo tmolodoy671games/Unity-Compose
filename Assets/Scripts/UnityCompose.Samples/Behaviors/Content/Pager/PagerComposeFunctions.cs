@@ -33,109 +33,53 @@ internal static partial class PagerComposeFunctions
         IModifier? modifier = null
     )
     {
-        Pager(
-            nodeFactory: () => new UnityReusableComposeNode(new HorizontalPager()),
-            state: state,
-            content: pageContent,
-            orientation: Orientation.Horizontal,
-            contentPadding: contentPadding,
-            pageSize: pageSize ?? PageSize.Fill,
-            pageSpacing: pageSpacing,
-            reverseLayout: reverseLayout,
-            horizontalAlignment: Alignment.CenterHorizontally,
-            verticalAlignment: Alignment.CenterVertically,
-            modifier: modifier
-        );
-    }
-
-    [Composable]
-    private static void Pager(
-        Func<IReusableComposeNode> nodeFactory,
-        IPagerState state,
-        ComposableContent<int> content,
-        Orientation orientation,
-        bool reverseLayout,
-        PaddingValues contentPadding,
-        Dp pageSpacing,
-        PageSize pageSize,
-        Alignment.Horizontal horizontalAlignment,
-        Alignment.Vertical verticalAlignment,
-        IModifier? modifier
-    )
-    {
         var mutableState = state as IMutablePagerState;
+        pageSize ??= PageSize.Fill;
         if (mutableState == null)
             return;
-        mutableState.SyncContentPadding(orientation.ToPadding(reverseLayout, contentPadding));
-        var viewportSize = Remember(() => MutableStateOf(-1f));
-        ReusableComposeNode(
-            nodeFactory: nodeFactory,
+        mutableState.SyncContentPadding(contentPadding.Left.Value);
+        mutableState.SyncPageSpacing(pageSpacing.Value);
+        if (pageSize is PageSize.Fixed fixedPageSize)
+            mutableState.SyncPageSize(fixedPageSize.PageSize.Value);
+        var viewportSize = Remember(() => MutableStateOf(0f));
+        Box(
+            contentAlignment: Alignment.CenterLeft,
             modifier: modifier.OrEmpty()
-                .OnGloballyPositioned(it =>
+                .OnSizeChanged(it =>
                 {
-                    var newViewportSize = orientation switch
-                    {
-                        Orientation.Horizontal => it.Size.Width,
-                        Orientation.Vertical => it.Size.Height,
-                        _ => throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null)
-                    };
-                    mutableState.SyncViewportSize(newViewportSize);
-                    viewportSize.Value = newViewportSize;
+                    mutableState.SyncViewportSize(it.Width);
+                    if (pageSize == PageSize.Fill)
+                        mutableState.SyncPageSize(it.Width);
+                    viewportSize.Value = it.Width;
                 }),
             content: () =>
             {
-                ReusableComposeNode(
-                    nodeFactory: () => new UnityReusableComposeNode(new VisualElement()),
-                    initializer: it =>
-                    {
-                        var element = it.VisualElement();
-                        element.style.flexDirection = orientation.ToFlexDirection(reverseLayout);
-                        element.style.flexShrink = 0;
-                        switch (orientation)
-                        {
-                            case Orientation.Horizontal:
-                                element.style.alignItems = verticalAlignment.ToAlign();
-                                element.style.height = new Length(100, LengthUnit.Percent);
-                                break;
-                            case Orientation.Vertical:
-                                element.style.alignItems = horizontalAlignment.ToAlign();
-                                element.style.width = new Length(100, LengthUnit.Percent);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
-                        }
-                    },
+                Row(
                     modifier: Modifier
-                        .Float()
-                        .Offset(
-                            x: orientation == Orientation.Horizontal ? -mutableState.Value.Dp() : 0.Dp(),
-                            y: orientation == Orientation.Vertical ? -mutableState.Value.Dp() : 0.Dp()
+                        .Custom(
+                            apply: it =>
+                            {
+                                it.VisualElement().style.flexShrink = 0;
+                                mutableState.SubscribeToValueChange(value =>
+                                    it.VisualElement().style.translate = new Translate(-value, 0f));
+                            },
+                            revert: it => { }
                         )
+                        // .Offset(x: -mutableState.Value.Dp())
+                        .FillMaxHeight()
                         .Padding(contentPadding),
                     content: () =>
                     {
-                        var pageCount = state.PageCount;
+                        var pageCount = mutableState.PageCount;
                         for (var i = 0; i < pageCount; i++)
                         {
-                            var currentI = i;
-                            Box(
-                                contentAlignment: Alignment.Center,
-                                modifier: Modifier
-                                    .Then(PageSizeModifier(orientation, pageSize, viewportSize.Value))
-                                    .OnSizeChanged(it => mutableState.SyncSize(currentI, orientation switch
-                                    {
-                                        Orientation.Horizontal => it.Width,
-                                        Orientation.Vertical => it.Height,
-                                        _ => throw new ArgumentOutOfRangeException(nameof(orientation), orientation,
-                                            null)
-                                    }))
-                                    .Padding(
-                                        horizontal: orientation == Orientation.Horizontal
-                                            ? pageSpacing / 2
-                                            : 0.Dp(),
-                                        vertical: orientation == Orientation.Vertical ? pageSpacing / 2 : 0.Dp()
-                                    ),
-                                content: () => content(currentI)
+                            PagerPage(
+                                page: i,
+                                pageCount: pageCount,
+                                pageSpacing: pageSpacing,
+                                pageContent: pageContent,
+                                viewportSize: viewportSize.Value,
+                                pageSize: pageSize
                             );
                         }
                     }
@@ -144,28 +88,33 @@ internal static partial class PagerComposeFunctions
         );
     }
 
-    private static IModifier PageSizeModifier(Orientation orientation, PageSize pageSize, float viewportSize)
+    [Composable]
+    private static void PagerPage(
+        int page,
+        int pageCount,
+        ComposableContent<int> pageContent,
+        Dp pageSpacing,
+        PageSize pageSize,
+        float viewportSize,
+        IModifier? modifier = null
+    )
     {
-        switch (orientation)
-        {
-            case Orientation.Horizontal:
-                if (pageSize is PageSize.Fixed fixedPageSize)
-                    return Modifier
-                        .FillMaxHeight()
-                        .Width(fixedPageSize.PageSize);
-                return Modifier
-                    .FillMaxHeight()
-                    .Width(viewportSize.Dp());
-            case Orientation.Vertical:
-                if (pageSize is PageSize.Fixed fixedVerticalSize)
-                    return Modifier
-                        .FillMaxWidth()
-                        .Height(fixedVerticalSize.PageSize);
-                return Modifier
-                    .FillMaxWidth()
-                    .Height(viewportSize.Dp());
-            default:
-                throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
-        }
+        var leftPadding = page > 0 ? pageSpacing / 2 : 0.Dp();
+        var rightPadding = page < pageCount - 1 ? pageSpacing / 2 : 0.Dp();
+        Box(
+            contentAlignment: Alignment.Center,
+            modifier: modifier.OrEmpty()
+                .Padding(
+                    left: leftPadding,
+                    right: rightPadding
+                )
+                .FillMaxHeight()
+                .Then(
+                    pageSize is PageSize.Fixed fixedSize
+                        ? Modifier.Width(fixedSize.PageSize)
+                        : Modifier.Width(viewportSize.Dp() - leftPadding - rightPadding)
+                ),
+            content: () => pageContent(page)
+        );
     }
 }

@@ -23,10 +23,12 @@ public interface IPagerState
 
 internal interface IMutablePagerState : IPagerState
 {
+    void SubscribeToValueChange(Action<float> onValueChanged);
     float Value { get; }
-    void SyncSize(int page, float size);
+    void SyncPageSize(float size);
     void SyncViewportSize(float size);
     void SyncContentPadding(float padding);
+    void SyncPageSpacing(float pageSpacing);
 }
 
 internal class MutablePagerStateImpl(
@@ -34,20 +36,17 @@ internal class MutablePagerStateImpl(
     int initialPage
 ) : IMutablePagerState, IComposeDisposable
 {
-    private readonly IMutableStableList<float> _pageSizes = MutableStableListOf<float>().Also(it =>
-    {
-        var count = pageCount();
-        for (var i = 0; i < count; i++)
-            it.Add(-1);
-    });
+    private float _viewportSize = float.NaN;
+    private float _pageSize = float.NaN;
+    private float _padding = float.NaN;
+    private float _pageSpacing = float.NaN;
 
-    private float _viewportSize = -1;
-
-    private readonly IMutableState<float> _value = MutableStateOf<float>(0f);
+    private readonly IMutableState<float> _value = MutableStateOf(0f);
     private int _animationTarget = initialPage;
     private int _pendingPage = initialPage;
-    private float _padding = -1;
     private CancellationTokenSource _animateScrollTokenSource = new();
+    private bool _isDisposed;
+    private Action<float> _onValueChanged = _ => { };
 
     public int CurrentPage { get; private set; }
     public int PageCount => pageCount();
@@ -56,6 +55,7 @@ internal class MutablePagerStateImpl(
     {
         CurrentPage = page;
         var newValue = CalculateOffset(page);
+        Debug.Log(newValue);
         if (float.IsNaN(newValue))
         {
             _pendingPage = page;
@@ -64,6 +64,7 @@ internal class MutablePagerStateImpl(
 
         _pendingPage = -1;
         _value.Value = newValue;
+        _onValueChanged(newValue);
     }
 
     public async Task AnimateScrollToPage(
@@ -94,16 +95,24 @@ internal class MutablePagerStateImpl(
             initialValue: _value.Value,
             targetValue: newValue,
             animationSpec: animationSpec,
-            block: it => _value.Value = it
+            block: it =>
+            {
+                _value.Value = it;
+                _onValueChanged(it);
+            }
         );
+    }
+
+    public void SubscribeToValueChange(Action<float> onValueChanged)
+    {
+        _onValueChanged = onValueChanged;
     }
 
     public float Value => _value.Value;
 
-    public void SyncSize(int page, float size)
+    public void SyncPageSize(float size)
     {
-        EnsurePageSizes();
-        _pageSizes[page] = size;
+        _pageSize = size;
         ExecutePendingScroll();
     }
 
@@ -119,50 +128,32 @@ internal class MutablePagerStateImpl(
         ExecutePendingScroll();
     }
 
-    private void EnsurePageSizes()
+    public void SyncPageSpacing(float pageSpacing)
     {
-        var count = pageCount();
-        var pagesToAdd = (count - _pageSizes.Count).Clamp(0, int.MaxValue);
-        for (var i = 0; i < pagesToAdd; i++)
-            _pageSizes.Add(-1);
-        var pagesToRemove = (_pageSizes.Count - count).Clamp(0, int.MaxValue);
-        for (var i = 0; i < pagesToRemove; i++)
-            _pageSizes.RemoveAt(_pageSizes.LastIndex);
+        _pageSpacing = pageSpacing;
+        ExecutePendingScroll();
     }
 
     private float CalculateOffset(int page)
     {
-        EnsurePageSizes();
         var result = 0f;
-        for (var i = 0; i < page; i++)
-        {
-            var pageSize = _pageSizes[i];
-            if (Uninitialized(pageSize))
-            {
-                return float.NaN;
-            }
-
-            result += pageSize;
-        }
-
-        var currentPageSize = _pageSizes[page];
-        if (Uninitialized(currentPageSize))
-        {
+        if (Uninitialized(_pageSize))
             return float.NaN;
-        }
 
-        result += currentPageSize / 2;
+        result += _pageSize * (page.ToFloat() + 0.5f);
+        
+        if (Uninitialized(_pageSpacing))
+            return float.NaN;
+
+        result += _pageSpacing * (page).Clamp(0, int.MaxValue);
+        
         if (Uninitialized(_viewportSize))
-        {
             return float.NaN;
-        }
 
         result -= _viewportSize / 2;
 
         if (Uninitialized(_padding))
-        {
             return float.NaN;
-        }
 
         result += _padding;
 
@@ -181,11 +172,14 @@ internal class MutablePagerStateImpl(
 
     private static bool Uninitialized(float size)
     {
-        return size <= 0 || float.IsNaN(size);
+        return float.IsNaN(size);
     }
 
     public void Dispose()
     {
+        if (_isDisposed)
+            return;
+        _isDisposed = true;
         _animateScrollTokenSource.Cancel();
         _animateScrollTokenSource.Dispose();
     }

@@ -34,13 +34,14 @@ namespace UnityCompose.Samples.Behaviors.Content
                 modifier: Modifier.FillMaxSize(),
                 content: () =>
                 {
-                    var pagerState = RememberPagerState(() => 3);
+                    const int pageCount = 5;
+                    var pagerState = RememberPagerState(() => pageCount);
                     var coroutineScope = RememberCoroutineScope();
                     HorizontalPager(
                         state: pagerState,
-                        pageSize: new PageSize.Fixed(400.Dp()),
-                        contentPadding: PaddingValues(16.Dp()),
-                        pageSpacing: 60.Dp(),
+                        // pageSize: new PageSize.Fixed(400.Dp()),
+                        // contentPadding: PaddingValues(16.Dp()),
+                        // pageSpacing: 60.Dp(),
                         modifier: Modifier
                             .FillMaxWidth()
                             .Weight(1f),
@@ -55,6 +56,9 @@ namespace UnityCompose.Samples.Behaviors.Content
                                             0 => Color.RedColor,
                                             1 => Color.GreenColor,
                                             2 => Color.BlueColor,
+                                            3 => Color.Yellow,
+                                            4 => Color.Cyan,
+                                            5 => Color.Purple,
                                             _ => throw new ArgumentOutOfRangeException(nameof(it), it, null)
                                         }
                                     )
@@ -68,7 +72,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .FillMaxWidth(),
                         content: () =>
                         {
-                            for (var i = 0; i < 3; i++)
+                            for (var i = 0; i < pageCount; i++)
                             {
                                 var page = i;
                                 Box(
@@ -79,6 +83,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                         .Clip(RoundedCornerShape(4.Dp()))
                                         .Clickable(() =>
                                             {
+                                                // pagerState.ScrollToPage(page);
                                                 coroutineScope.Launch(async scope =>
                                                 {
                                                     await pagerState.AnimateScrollToPage(scope, page);
