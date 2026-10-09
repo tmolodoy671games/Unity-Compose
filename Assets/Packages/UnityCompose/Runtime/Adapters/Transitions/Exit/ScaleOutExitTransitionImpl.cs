@@ -16,13 +16,13 @@ internal class ScaleOutExitTransitionImpl : IExitTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         node.VisualElement().style.scale = Vector2.one * Mathf.LerpUnclamped(1, _targetScale, progress);
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         node.VisualElement().style.scale = StyleKeyword.None;
     }

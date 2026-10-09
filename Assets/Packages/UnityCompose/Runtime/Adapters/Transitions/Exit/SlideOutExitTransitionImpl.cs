@@ -15,7 +15,7 @@ internal sealed class SlideOutExitTransitionImpl : IExitTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var initialOffset = new Offset();
@@ -23,7 +23,7 @@ internal sealed class SlideOutExitTransitionImpl : IExitTransition
         node.VisualElement().style.translate = Offset.LerpUnclamped(initialOffset, targetOffset, progress).ToVector2();
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         node.VisualElement().style.translate = StyleKeyword.None;
     }

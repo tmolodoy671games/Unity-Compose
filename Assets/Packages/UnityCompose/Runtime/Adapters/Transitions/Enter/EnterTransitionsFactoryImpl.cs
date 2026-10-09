@@ -39,7 +39,6 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
 
     public IEnterTransition ExpandHorizontally(
         AnimationSpec animationSpec,
-        Alignment.Horizontal expandFrom,
         bool clip,
         Func<float, float> initialWidth
     )
@@ -49,7 +48,6 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
 
     public IEnterTransition ExpandVertically(
         AnimationSpec animationSpec,
-        Alignment.Vertical expandFrom,
         bool clip,
         Func<float, float> initialHeight
     )
@@ -59,7 +57,6 @@ internal class EnterTransitionsFactoryImpl : IEnterTransitionsFactory
 
     public IEnterTransition ExpandIn(
         AnimationSpec animationSpec,
-        Alignment expandFrom,
         bool clip,
         Func<Size, Size> initialSize
     )

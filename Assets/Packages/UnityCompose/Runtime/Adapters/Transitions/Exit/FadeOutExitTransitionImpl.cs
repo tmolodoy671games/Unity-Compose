@@ -5,45 +5,21 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Exit;
 
-internal class FadeOutExitTransitionImpl : IExitTransition
+internal record FadeOutExitTransitionImpl(
+    AnimationSpec AnimationSpec,
+    float TargetAlpha
+) : IExitTransition
 {
-    private readonly float _targetAlpha;
-    private readonly AnimationSpec _animationSpec;
-
-    public FadeOutExitTransitionImpl(AnimationSpec animationSpec, float targetAlpha)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
-        _targetAlpha = targetAlpha;
-        _animationSpec = animationSpec;
+        var progress = AnimationSpec.GetProgress(timeElapsed);
+        node.VisualElement().style.opacity = Mathf.LerpUnclamped(1, TargetAlpha, progress);
     }
 
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
-    {
-        var progress = _animationSpec.GetProgress(timeElapsed);
-        node.VisualElement().style.opacity = Mathf.LerpUnclamped(1, _targetAlpha, progress);
-    }
-
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         node.VisualElement().style.opacity = StyleKeyword.None;
     }
 
-    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
-
-    private bool Equals(FadeOutExitTransitionImpl other)
-    {
-        return _targetAlpha.Equals(other._targetAlpha) && _animationSpec.Equals(other._animationSpec);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((FadeOutExitTransitionImpl)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_targetAlpha, _animationSpec);
-    }
+    public TimeSpan TotalDuration => AnimationSpec.TotalDuration;
 }

@@ -17,7 +17,7 @@ internal class SlideOutHorizontalTransitionImpl : IExitTransition
         _animationSpec = animationSpec;
     }
 
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var progress = _animationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
@@ -26,7 +26,7 @@ internal class SlideOutHorizontalTransitionImpl : IExitTransition
         element.style.translate = new Vector2(targetOffset, 0f);
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         node.VisualElement().style.translate = StyleKeyword.None;
     }

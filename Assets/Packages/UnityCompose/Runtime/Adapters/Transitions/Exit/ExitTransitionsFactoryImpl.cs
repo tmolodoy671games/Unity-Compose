@@ -36,7 +36,6 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
 
     public IExitTransition ShrinkHorizontally(
         AnimationSpec animationSpec,
-        Alignment.Horizontal shrinkTowards,
         bool clip,
         Func<float, float> targetWidth
     )
@@ -46,7 +45,6 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
 
     public IExitTransition ShrinkVertically(
         AnimationSpec animationSpec,
-        Alignment.Vertical shrinkTowards,
         bool clip,
         Func<float, float> targetHeight
     )
@@ -56,7 +54,6 @@ internal class ExitTransitionsFactoryImpl : IExitTransitionsFactory
 
     public IExitTransition ShrinkOut(
         AnimationSpec animationSpec,
-        Alignment shrinkTowards,
         bool clip,
         Func<Size, Size> targetSize
     )

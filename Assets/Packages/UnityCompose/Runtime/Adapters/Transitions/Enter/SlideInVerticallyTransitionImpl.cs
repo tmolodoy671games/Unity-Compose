@@ -5,48 +5,24 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Transitions.Enter;
 
-internal class SlideInVerticallyTransitionImpl : IEnterTransition
+internal record SlideInVerticallyTransitionImpl(
+    AnimationSpec AnimationSpec,
+    Func<float, float> InitialOffsetY
+) : IEnterTransition
 {
-    private readonly Func<float, float> _initialOffsetY;
-    private readonly AnimationSpec _animationSpec;
-
-    public SlideInVerticallyTransitionImpl(AnimationSpec animationSpec, Func<float, float> initialOffsetY)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
-        _initialOffsetY = initialOffsetY;
-        _animationSpec = animationSpec;
-    }
-
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
-    {
-        var progress = _animationSpec.GetProgress(timeElapsed);
+        var progress = AnimationSpec.GetProgress(timeElapsed);
         var element = node.VisualElement();
-        var initialOffset = _initialOffsetY(element.LayoutCoordinates().Size.Height);
+        var initialOffset = InitialOffsetY(element.LayoutCoordinates().Size.Height);
         var offset = Mathf.LerpUnclamped(initialOffset, 0, progress);
         element.style.translate = new Vector2(0f, offset);
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         node.VisualElement().style.translate = StyleKeyword.None;
     }
 
-    public TimeSpan TotalDuration => _animationSpec.TotalDuration;
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((SlideInVerticallyTransitionImpl)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_initialOffsetY, _animationSpec);
-    }
-    
-    private bool Equals(SlideInVerticallyTransitionImpl other)
-    {
-        return _initialOffsetY.Equals(other._initialOffsetY) && _animationSpec.Equals(other._animationSpec);
-    }
+    public TimeSpan TotalDuration => AnimationSpec.TotalDuration;
 }

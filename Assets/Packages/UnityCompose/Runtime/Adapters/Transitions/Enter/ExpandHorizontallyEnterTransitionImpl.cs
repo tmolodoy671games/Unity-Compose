@@ -12,7 +12,7 @@ internal record ExpandHorizontallyEnterTransitionImpl(
     Func<float, float> InitialWidth
 ) : IEnterTransition
 {
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         var progress = AnimationSpec.GetProgress(timeElapsed);
@@ -29,7 +29,7 @@ internal record ExpandHorizontallyEnterTransitionImpl(
             element.Clip().Increment();
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         element.style.flexShrink = StyleKeyword.Null;

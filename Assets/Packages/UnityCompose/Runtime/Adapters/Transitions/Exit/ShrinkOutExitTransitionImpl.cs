@@ -12,7 +12,7 @@ internal record ShrinkOutExitTransitionImpl(
     Func<Size, Size> InitialSize
 ) : IExitTransition
 {
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         element.style.flexShrink = 0;
@@ -35,7 +35,7 @@ internal record ShrinkOutExitTransitionImpl(
         element.parent.style.maxHeight = ShrinkUtils.GetLength(heightProgress);
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         if (Clip)

@@ -12,7 +12,7 @@ internal record ExpandEnterTransitionImpl(
     Func<Size, Size> InitialSize
 ) : IEnterTransition
 {
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         element.style.flexShrink = 0;
@@ -35,7 +35,7 @@ internal record ExpandEnterTransitionImpl(
         element.parent.style.maxHeight = ShrinkUtils.GetLength(heightProgress);
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         if (Clip)

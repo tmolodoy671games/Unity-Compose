@@ -15,7 +15,7 @@ internal record ShrinkHorizontallyExitTransitionImpl(
 {
     public TimeSpan TotalDuration => AnimationSpec.TotalDuration;
 
-    public void Apply(TimeSpan timeElapsed, IReusableComposeNode node)
+    public void Apply(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         var progress = AnimationSpec.GetProgress(timeElapsed);
@@ -32,7 +32,7 @@ internal record ShrinkHorizontallyExitTransitionImpl(
             element.Clip().Increment();
     }
 
-    public void Revert(IReusableComposeNode node)
+    public void Revert(IReusableComposeNode node, TimeSpan timeElapsed)
     {
         var element = node.VisualElement();
         element.style.flexShrink = StyleKeyword.Null;
