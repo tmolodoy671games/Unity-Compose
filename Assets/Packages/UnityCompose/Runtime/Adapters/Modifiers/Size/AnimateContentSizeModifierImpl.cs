@@ -81,6 +81,7 @@ internal record AnimateContentSizeModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        contentContainer.style.flexShrink = 0;
         contentContainer.RegisterCallback(_callback);
     }
 
@@ -91,6 +92,7 @@ internal record AnimateContentSizeModifierImpl(
         IStableList<IModifier> newModifiers
     )
     {
+        contentContainer.style.flexShrink = 1;
         contentContainer.UnregisterCallback(_callback);
     }
 }

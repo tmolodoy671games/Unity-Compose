@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Compose.Net;
-using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Pointer.Input;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Input.Pointer;
 using UnityEngine.UIElements;
 
 namespace UnityCompose;

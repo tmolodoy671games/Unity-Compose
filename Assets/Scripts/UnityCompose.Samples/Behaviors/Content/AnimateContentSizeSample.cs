@@ -1,4 +1,5 @@
 ﻿using Compose.Net;
+using UnityEngine.UIElements;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -29,13 +30,14 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Padding(16.Dp())
                             .Background(Color.LightCoral)
                             .AnimateContentSize(Tween(3_000))
-                            .Clickable(() =>
-                            {
-                                Debug.Log("Click");
-                                isSwitched.Value = !isSwitched.Value;
-                            }),
+                            .Clickable(
+                                () => isSwitched.Value = !isSwitched.Value
+                            )
+                        ,
                         content: () => Text(
-                            text: isSwitched.Value ? "Short" : "Looooooooooooooooooooong\nLooooooooooooooooooooong\nLooooooooooooooooooooong",
+                            text: isSwitched.Value
+                                ? "Short"
+                                : "Looooooooooooooooooooong\nLooooooooooooooooooooong\nLooooooooooooooooooooong",
                             fontSize: 64.Sp(),
                             color: Color.White
                         )

@@ -2,9 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Compose.Net;
+using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Pointer.Input;
+namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers.Input.Pointer;
 
 internal sealed class AwaitPointerEventScopeImpl : IAwaitPointerEventScope
 {

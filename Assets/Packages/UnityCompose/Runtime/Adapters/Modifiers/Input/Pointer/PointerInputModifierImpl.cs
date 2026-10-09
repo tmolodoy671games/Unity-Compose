@@ -25,6 +25,7 @@ internal class PointerInputModifierImpl<T> : IModifier
     {
         var source = new CancellationTokenSource();
         var token = source.Token;
+        node.VisualElement().PickingMode().Increment();
         node.VisualElement().UserData()[new ReferenceKey(this)] = new CustomDisposable(() =>
         {
             source.Cancel();
@@ -36,6 +37,7 @@ internal class PointerInputModifierImpl<T> : IModifier
     public void Revert(IReusableComposeNode node, IStableList<IModifier> newModifiers)
     {
         var key = new ReferenceKey(this);
+        node.VisualElement().PickingMode().Decrement();
         var source = node.VisualElement().UserData().GetOrNull(key)
             ?.CastToOrNull<IDisposable>();
         source?.Dispose();
