@@ -34,11 +34,15 @@ internal record AnimateContentSizeModifierImpl(
             var targetWidth = content.resolvedStyle.width
                               + content.resolvedStyle.marginLeft
                               + content.resolvedStyle.marginRight
+                              + content.resolvedStyle.borderLeftWidth
+                              + content.resolvedStyle.borderRightWidth
                               + content.parent.resolvedStyle.paddingLeft
                               + content.parent.resolvedStyle.paddingRight;
             var targetHeight = content.resolvedStyle.height
                                + content.resolvedStyle.marginTop
                                + content.resolvedStyle.marginBottom
+                               + content.resolvedStyle.borderTopWidth
+                               + content.resolvedStyle.borderBottomWidth
                                + content.parent.resolvedStyle.paddingTop
                                + content.parent.resolvedStyle.paddingBottom;
             var targetSize = new Vector2(targetWidth, targetHeight);

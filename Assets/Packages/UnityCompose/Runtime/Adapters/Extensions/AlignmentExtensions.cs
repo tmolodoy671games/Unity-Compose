@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 
-internal static class AlignmentExtensions
+public static class AlignmentExtensions
 {
     private readonly record struct AlignAndJustify(
         Align Align,
