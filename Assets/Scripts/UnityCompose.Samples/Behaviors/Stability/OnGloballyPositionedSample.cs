@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                 contentAlignment: Alignment.Center,
                                 modifier: Modifier
                                     .Size(40.Dp())
-                                    .Background(Color.blue.ToSystemColor())
+                                    .Background(Color.BlueColor)
                                     .Offset(
                                         x: AnimateFloatAsState(
                                             targetValue: 500 * isSwitched.Value.ToInt(),
@@ -56,7 +56,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         {
                                             Spacer(
                                                 Modifier
-                                                    .Background(Color.green.ToSystemColor())
+                                                    .Background(Color.GreenColor)
                                                     .Size(20.Dp())
                                                     .OnGloballyPositioned(it => layout.Value = it.PositionInRoot())
                                             );
@@ -68,11 +68,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     );
                     Text(
                         modifier: Modifier
-                            .Background(Color.blue.ToSystemColor())
+                            .Background(Color.BlueColor)
                             .Padding(all: 32.Dp())
                             .Clip(RoundedCornerShape(32.Dp()))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value),
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         text: "Switch"
                     );
 
@@ -82,7 +82,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         Spacer(
                             modifier: Modifier
                                 .Size(10.Dp())
-                                .Background(Color.red.ToSystemColor())
+                                .Background(Color.RedColor)
                                 .Float()
                                 .Position(
                                     left: parentCoordinatesValue.RootToLocal(layout.Value.Value).X.Dp(),

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using Compose.Net;
-using UnityEngine.UIElements;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
 
@@ -22,18 +20,5 @@ internal record SolidColorBrushImpl(Color Color) : IBrush
             default:
                 throw new ArgumentOutOfRangeException(nameof(style));
         }
-    }
-}
-
-public static partial class SystemColorExtensions
-{
-    public static Color WithAlpha(this Color color, float alpha)
-    {
-        return Color.FromArgb(
-            (int)(color.A * alpha),
-            color.R,
-            color.G,
-            color.B
-        );
     }
 }

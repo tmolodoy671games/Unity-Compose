@@ -10,14 +10,14 @@ namespace UnityCompose;
 public static partial class UnityComposeFunctions
 {
     [Composable]
-    public static IState<Color> AnimateColorAsState(
-        Color targetValue,
+    public static IState<UnityEngine.Color> AnimateColorAsState(
+        UnityEngine.Color targetValue,
         Optional<AnimationSpec> animationSpec = default
     )
     {
         return AnimateValueAsState(
             targetValue: targetValue,
-            typeConverter: Color.LerpUnclamped,
+            typeConverter: UnityEngine.Color.LerpUnclamped,
             animationSpec: animationSpec
         );
     }

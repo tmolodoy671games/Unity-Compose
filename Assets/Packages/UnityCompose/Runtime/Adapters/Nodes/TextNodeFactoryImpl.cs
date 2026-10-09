@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Compose.Net;
+﻿using Compose.Net;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
 using UnityEngine.UIElements;
 

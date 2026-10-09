@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Compose.Net;
+﻿using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 

@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 {
                     style =
                     {
-                        backgroundColor = PerformanceUtils.GetColor(i),
+                        backgroundColor = PerformanceUtils.GetColor(i).ToUnityColor(),
                         width = 50,
                         height = 50,
                         position = Position.Absolute

@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 LocalTextStyle.Provides(
                     new TextStyle(
                         FontSize: 80.Sp(),
-                        Color: Color.white.ToSystemColor()
+                        Color: Color.White
                     )
                 ),
                 () =>

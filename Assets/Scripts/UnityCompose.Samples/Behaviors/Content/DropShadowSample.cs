@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                 horizontalAlignment: Alignment.CenterHorizontally,
                 modifier: Modifier
                     .FillMaxSize()
-                    .Background(Color.white.ToSystemColor()),
+                    .Background(Color.White),
                 content: () =>
                 {
                     var hasShadow = Remember(() => MutableStateOf(true));
@@ -29,14 +29,14 @@ namespace UnityCompose.Samples.Behaviors.Content
                     Spacer(
                         Modifier
                             .Size(100.Dp())
-                            .Background(Color.gray.ToSystemColor())
+                            .Background(Color.Gray)
                             .DropShadow(
                                 shape: RoundedCornerShape(0.Dp()),
                                 shadow: Shadow(
                                     radius: AnimateFloatAsState(32 * hasShadow.Value.ToInt(), tween).Value.Dp(),
                                     spread: 10.Dp(),
-                                    color: AnimateColorAsState(hasShadow.Value ? Color.black : new Color(), tween).Value
-                                        .ToSystemColor(),
+                                    color: AnimateColorAsState(hasShadow.Value ? Color.Black : new Color(), tween).Value
+                                        ,
                                     offset: new Offset()
                                 )
                             )
@@ -44,13 +44,13 @@ namespace UnityCompose.Samples.Behaviors.Content
                     Text(
                         text: "Switch",
                         fontSize: 32.Sp(),
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         modifier: Modifier
                             .Padding(top: 16.Dp())
                             .Padding(top: 16.Dp())
                             .Padding(top: 16.Dp())
                             .Padding(top: 16.Dp())
-                            .Background(Color.royalBlue.ToSystemColor())
+                            .Background(Color.RoyalBlue)
                             .Padding(16.Dp())
                             .Padding(top: 16.Dp())
                             .Padding(top: 16.Dp())

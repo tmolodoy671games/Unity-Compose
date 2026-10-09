@@ -73,7 +73,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         var coordinates = layoutCoordinates.Value.Value;
                         Spacer(
                             modifier: Modifier
-                                .Background(Color.red.ToSystemColor())
+                                .Background(Color.RedColor)
                                 .Size(16.Dp())
                                 .Clip(RoundedCornerShape(4.Dp()))
                                 .Float()
@@ -98,7 +98,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
             Box(
                 modifier: modifier.OrEmpty()
                     .Padding(horizontal: 2.Dp())
-                    .Background(Color.grey.ToSystemColor())
+                    .Background(Color.Gray)
                     .Padding(
                         vertical: 8.Dp(),
                         horizontal: AnimateFloatAsState(selected ? 160 : 20, animationSpec: animationSpec).Value.Dp()
@@ -108,10 +108,10 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 content: () =>
                 {
                     CompositionLocalProvider(
-                        LocalContentColor.Provides(Color.white.ToSystemColor()),
+                        LocalContentColor.Provides(Color.White),
                         LocalTextStyle.Provides(
                             new TextStyle(
-                                Color: Color.white.ToSystemColor(),
+                                Color: Color.White,
                                 FontSize: 32.Sp()
                             )
                         ),

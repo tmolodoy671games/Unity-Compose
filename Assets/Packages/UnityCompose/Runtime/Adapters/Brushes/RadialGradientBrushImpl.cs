@@ -5,7 +5,6 @@ using SharpExtensions;
 using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Color = System.Drawing.Color;
 using Rect = Compose.Net.Rect;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
@@ -58,7 +57,7 @@ internal record RadialGradientBrushImpl(
                     .ToArray(),
                 alphaKeys = Colors
                     .Select((color, index) => new GradientAlphaKey(
-                            color.A * alpha / 255f,
+                            color.Alpha * alpha,
                             Stops != null ? Stops[0] : index * 1f / Colors.Count
                         )
                     )

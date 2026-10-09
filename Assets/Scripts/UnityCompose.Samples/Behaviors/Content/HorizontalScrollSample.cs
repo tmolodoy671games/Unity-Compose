@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                         modifier: Modifier
                             .Width(700.Dp())
                             // .Height(700.Dp())
-                            .Background(Color.white.ToSystemColor())
+                            .Background(Color.White)
                             .HorizontalScroll(scrollState),
                         content: () =>
                         {

@@ -24,7 +24,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     Column(
                         modifier: Modifier
                             .Height(700.Dp())
-                            .Background(Color.white.ToSystemColor())
+                            .Background(Color.White)
                             .VerticalScroll(scrollState),
                         content: () =>
                         {

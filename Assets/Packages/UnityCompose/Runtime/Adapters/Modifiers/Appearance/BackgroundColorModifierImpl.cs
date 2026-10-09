@@ -1,7 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
-using System.Drawing;
 using Compose.Net;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;

@@ -21,7 +21,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
         {
             Layout();
         }
-        
+
         [Composable]
         public static void LaunchedEffect<TKey>(
             TKey key,
@@ -55,11 +55,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     var count = Remember(() => MutableStateOf(0));
                     Text(
                         text: count.Value.ToString(),
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 40.Sp(),
                         modifier: Modifier
                             .TestTag("test-label")
-                            .Background(Color.red.ToSystemColor())
+                            .Background(Color.RedColor)
                             .Padding(all: 10.Dp())
                     );
                     var isEffectRunning = Remember(() => MutableStateOf(false));
@@ -82,14 +82,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     var isHovered = Remember(() => MutableStateOf(false));
                     Text(
                         text: $"Launched Effect is {onOrOff}",
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 40.Sp(),
                         modifier: Modifier
                             .TestTag("test-button")
                             .Padding(top: 32.Dp())
-                            .Background(isHovered.Value
-                                ? Color.cyan.ToSystemColor()
-                                : Color.blue.ToSystemColor())
+                            .Background(isHovered.Value ? Color.Cyan : Color.BlueColor)
                             .Padding(vertical: 20.Dp())
                             .Padding(horizontal: isHovered.Value ? 40.Dp() : 20.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))

@@ -46,12 +46,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     var isHovered = Remember(() => MutableStateOf(false));
                     Text(
                         text: $"DisposableEffect is {onOrOff}",
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 40.Sp(),
                         modifier: Modifier
                             .TestTag("test-button")
                             .Padding(top: 32.Dp())
-                            .Background(isHovered.Value ? Color.cyan.ToSystemColor() : Color.blue.ToSystemColor())
+                            .Background(isHovered.Value ? Color.Cyan : Color.BlueColor)
                             .Padding(vertical: 20.Dp())
                             .Padding(horizontal: isHovered.Value ? 40.Dp() : 20.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))

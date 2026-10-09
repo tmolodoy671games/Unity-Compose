@@ -29,12 +29,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
 
                     Text(
                         text: "Switch",
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 62.Sp(),
                         modifier: Modifier
                             .Padding(top: 16.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .Background(Color.blue.ToSystemColor())
+                            .Background(Color.BlueColor)
                             .Padding(horizontal: 20.Dp(), vertical: 12.Dp())
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
                     );
@@ -48,7 +48,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
             Spacer(
                 Modifier
                     .Size(100.Dp())
-                    .Background(Color.green.ToSystemColor())
+                    .Background(Color.GreenColor)
             );
         }
 
@@ -60,12 +60,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 Spacer(
                     Modifier
                         .Size(100.Dp())
-                        .Background(Color.red.ToSystemColor())
+                        .Background(Color.RedColor)
                 );
                 Spacer(
                     Modifier
                         .Size(100.Dp())
-                        .Background(Color.red.ToSystemColor())
+                        .Background(Color.RedColor)
                 );
             });
         }

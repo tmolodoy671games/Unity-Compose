@@ -57,7 +57,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
             var baseModifier = Remember(currentI, () => Modifier
                 .Size(50.Dp())
                 .Background(
-                    PerformanceUtils.GetColor(currentI).ToSystemColor()
+                    PerformanceUtils.GetColor(currentI)
                 )
                 .Float()
             );

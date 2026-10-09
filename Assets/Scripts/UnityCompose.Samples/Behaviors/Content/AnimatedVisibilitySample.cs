@@ -39,7 +39,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                     Spacer(
                         Modifier
                             .Size(100.Dp(), 100.Dp())
-                            .Background(Color.forestGreen.ToSystemColor())
+                            .Background(Color.ForestGreen)
                             .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isVisible.Value = !isVisible.Value)
                     );
@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             fontSize: 64.Sp(),
                             modifier: Modifier
                                 .Padding(16.Dp())
-                                .Background(Color.lightBlue.ToSystemColor())
+                                .Background(Color.LightBlue)
                         )
                     );
                 }

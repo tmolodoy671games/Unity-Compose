@@ -27,13 +27,13 @@ namespace UnityCompose.Samples.Behaviors.Content
                         modifier: Modifier
                             .Clip(RoundedCornerShape(32.Dp()))
                             .Padding(16.Dp())
-                            .Background(Color.lightCoral.ToSystemColor())
+                            .Background(Color.LightCoral)
                             .AnimateContentSize(Tween(3_000))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value),
                         content: () => Text(
                             text: isSwitched.Value ? "Short" : "Looooooooooooooooooooong\nLooooooooooooooooooooong\nLooooooooooooooooooooong",
                             fontSize: 64.Sp(),
-                            color: Color.white.ToSystemColor()
+                            color: Color.White
                         )
                     );
                 }

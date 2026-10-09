@@ -12,14 +12,14 @@ public static class PerformanceUtils
 {
     private static readonly Color[] Colors =
     {
-        Color.red,
-        Color.green,
-        Color.blue,
-        Color.yellow,
-        Color.cyan,
-        Color.magenta,
-        Color.white,
-        Color.gray,
+        Color.RedColor,
+        Color.GreenColor,
+        Color.BlueColor,
+        Color.Yellow,
+        Color.Cyan,
+        Color.Magenta,
+        Color.White,
+        Color.Gray,
     };
 
     public static Color GetColor(int index) => Colors[index % Colors.Length];

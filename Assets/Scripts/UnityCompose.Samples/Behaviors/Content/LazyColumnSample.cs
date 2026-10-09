@@ -26,7 +26,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                         state: state,
                         modifier: Modifier
                             .Height(700.Dp())
-                            .Background(Color.white.ToSystemColor()),
+                            .Background(Color.White),
                         content: scope =>
                         {
                             // Scroll

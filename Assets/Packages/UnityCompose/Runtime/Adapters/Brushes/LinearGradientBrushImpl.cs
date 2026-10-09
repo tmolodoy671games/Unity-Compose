@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Compose.Net;
-using SharpExtensions;
 using StableCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Color = System.Drawing.Color;
 using Rect = Compose.Net.Rect;
 
 namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
@@ -56,7 +54,7 @@ internal record LinearGradientBrushImpl(
 
                 alphaKeys = Colors
                     .Select((color, index) => new GradientAlphaKey(
-                        color.A * alpha / 255f,
+                        color.Alpha * alpha,
                         Stops != null
                             ? Stops[index]
                             : (float)index / (Colors.Count - 1)

@@ -37,7 +37,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                 Spacer(
                                     Modifier
                                         .Size(100.Dp())
-                                        .Background(Color.green.ToSystemColor())
+                                        .Background(Color.GreenColor)
                                         .Offset(offset.Dp())
                                         .OnClick(() => isSwitched.Value = !isSwitched.Value)
                                 )
@@ -48,11 +48,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     var isHovered = Remember(() => MutableStateOf(false));
                     Text(
                         text: "Switch",
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 32.Sp(),
                         modifier: Modifier
                             .Padding(top: 32.Dp())
-                            .Background(Color.blue.ToSystemColor())
+                            .Background(Color.BlueColor)
                             .Padding(
                                 horizontal: 32.Dp() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Dp(),
                                 vertical: 16.Dp()

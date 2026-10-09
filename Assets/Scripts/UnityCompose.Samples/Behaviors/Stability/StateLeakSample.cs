@@ -25,7 +25,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                 LocalTextStyle.Provides(
                     new TextStyle(
                         FontSize: 40.Sp(),
-                        Color: Color.black.ToSystemColor()
+                        Color: Color.Black
                     )
                 ),
                 content: () =>
@@ -49,7 +49,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                             textAlign: TextAlign.MiddleCenter,
                                             modifier: Modifier
                                                 .FillMaxWidth()
-                                                .Background(Color.red.ToSystemColor())
+                                                .Background(Color.RedColor)
                                                 .Padding(all: 20.Dp())
                                                 .Clip(RoundedCornerShape(16.Dp()))
                                                 .OnClick(() => firstCount.Value++)
@@ -64,7 +64,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         modifier: Modifier
                                             .Padding(top: 16.Dp())
                                             .FillMaxWidth()
-                                            .Background(Color.green.ToSystemColor())
+                                            .Background(Color.GreenColor)
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
                                             .OnClick(() => secondCount.Value++)
@@ -76,7 +76,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         modifier: Modifier
                                             .Padding(top: 16.Dp())
                                             .FillMaxWidth()
-                                            .Background(Color.blue.ToSystemColor())
+                                            .Background(Color.BlueColor)
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
                                             .OnClick(() => showFirst.Value = !showFirst.Value)

@@ -2,10 +2,8 @@
 using Compose.Net;
 using SharpExtensions;
 using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Brushes;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Color = System.Drawing.Color;
 using Rect = Compose.Net.Rect;
 
 // ReSharper disable CheckNamespace
@@ -787,7 +785,7 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
 
     private void ApplyColor(Color color, float alpha, DrawStyle? style)
     {
-        color = color.WithAlpha(alpha);
+        color = color with { Alpha = alpha };
         var painter = _context.painter2D;
         switch (style ?? Fill)
         {

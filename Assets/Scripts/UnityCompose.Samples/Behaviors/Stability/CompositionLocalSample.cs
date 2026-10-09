@@ -39,11 +39,11 @@ namespace UnityCompose.Samples.Behaviors.Stability
 
                     Text(
                         text: "Switch",
-                        color: Color.white.ToSystemColor(),
+                        color: Color.White,
                         fontSize: 32.Sp(),
                         modifier: Modifier
                             .Padding(top: 80.Dp())
-                            .Background(Color.blue.ToSystemColor())
+                            .Background(Color.BlueColor)
                             .Padding(all: 32.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
                             .OnClick(() => isSwitched.Value = !isSwitched.Value)
@@ -63,7 +63,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         modifier: Modifier
                             .Background(
                                 AnimateColorAsState(
-                                    LocalIsSwitched.Current ? Color.green.ToSystemColor() : Color.red.ToSystemColor()
+                                    LocalIsSwitched.Current ? Color.GreenColor : Color.RedColor
                                 ).Value
                             )
                             .Padding(all: 100.Dp())
