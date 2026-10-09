@@ -22,6 +22,25 @@ internal static class StyleExtensions
         style.filter = newFilters;
     }
     
+    public static void AddFilters(this IStyle style, params FilterFunction[] filter)
+    {
+        if (style.filter.value == null)
+            style.filter = new List<FilterFunction>();
+        var newFilters = new List<FilterFunction>(style.filter.value);
+        newFilters.AddRange(filter);
+        style.filter = newFilters;
+    }
+
+    public static void RemoveFilters(this IStyle style, params FilterFunction[] filter)
+    {
+        if (style.filter.value == null)
+            style.filter = new List<FilterFunction>();
+        var newFilters = new List<FilterFunction>(style.filter.value);
+        foreach (var f in filter)
+            newFilters.Remove(f);
+        style.filter = newFilters;
+    }
+    
     public static void AddBackdropFilter(this IStyle style, FilterFunction filter)
     {
         if (style.backdropFilter.value == null)

@@ -769,6 +769,8 @@ internal class UnityDrawScope : IDrawScope<MeshGenerationContext>
     private void Draw(DrawStyle? style)
     {
         var painter = _context.painter2D;
+        if (painter == null)
+            return;
         switch (style ?? Fill)
         {
             case DrawStyle.Fill:
