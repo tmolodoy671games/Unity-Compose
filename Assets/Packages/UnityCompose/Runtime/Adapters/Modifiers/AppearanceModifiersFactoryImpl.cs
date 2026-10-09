@@ -7,7 +7,8 @@ namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Modifiers;
 internal class AppearanceModifiersFactoryImpl : IAppearanceModifiersFactory
 {
     public IModifier Alpha(float alpha) => new AlphaModifierImpl(alpha);
-    public IModifier Blur(float strength) => new BlurModifierImpl(strength);
+    public IModifier Blur(Dp radius) => new BlurModifierImpl(radius);
+    public IModifier BackdropBlur(Dp radius) => new BackdropBlurModifierImpl(radius);
 
     public IModifier Clip(Optional<Shape> shape)
     {

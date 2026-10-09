@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 
 namespace UnityCompose;
 
-internal record BlurModifierImpl(Dp Radius) : UnityModifier, IAppearanceModifier
+internal record BackdropBlurModifierImpl(Dp Radius) : UnityModifier, IAppearanceModifier
 {
     protected override void Apply(
         UnityReusableComposeNode node,
