@@ -22,16 +22,8 @@ public class UnityReusableComposeNode : IReusableComposeNode
     private DrawBehind? _drawBehindInstance;
     private DrawBehind? _drawBehind;
 
-    private Root? _rootInstance;
-    private Root? _root;
-
     private DrawOn? _drawOnInstance;
     private DrawOn? _drawOn;
-
-    private Shadow? _backgroundShadow;
-    private Shadow? _backgroundShadowInstance;
-    private IVisualElementScheduledItem? _syncBackgroundShadow;
-    private Offset _backgroundShadowOffset;
 
     private Shadow? _foregroundShadow;
     private Shadow? _foregroundShadowInstance;
@@ -41,7 +33,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
     }
 
     private VisualElement ContentContainer => _contentContainer ?? VisualElement;
-    public VisualElement Root => _root ?? VisualElement;
 
     public void Dispose()
     {
@@ -62,15 +53,17 @@ public class UnityReusableComposeNode : IReusableComposeNode
 
     public void Remove(IReusableComposeNode child)
     {
-        var childVisualElement = child.Root();
+        var childVisualElement = child.VisualElement();
         ContentContainer.Remove(childVisualElement);
     }
 
     public void FastRemove(int index, IReusableComposeNode child)
     {
-        var childVisualElement = child.Root();
+        var childVisualElement = child.VisualElement();
         if (childVisualElement.parent != VisualElement)
             return;
+        if (_drawBehind != null)
+            index++;
         if (ContentContainer.GetOrNull(index) == childVisualElement)
         {
             ContentContainer.RemoveAt(index);
@@ -82,12 +75,16 @@ public class UnityReusableComposeNode : IReusableComposeNode
 
     public void Insert(int index, IReusableComposeNode child)
     {
-        ContentContainer.Insert(index, child.Root());
+        if (_drawBehind != null)
+            index++;
+        ContentContainer.Insert(index, child.VisualElement());
     }
 
     public void Reinsert(int index, IReusableComposeNode child)
     {
-        var childVisualElement = child.Root();
+        if (_drawBehind != null)
+            index++;
+        var childVisualElement = child.VisualElement();
         var parent = ContentContainer;
         if (parent.GetOrNull(index) == childVisualElement)
             return;
@@ -171,39 +168,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
         _foregroundShadow = null;
     }
 
-    public VisualElement SetupRoot()
-    {
-        if (_root != null)
-            return _root;
-        _captureState = PointerCaptureState.Create(VisualElement);
-        _rootInstance ??= new Root { pickingMode = PickingMode.Ignore };
-        _root = _rootInstance;
-
-        var parent = VisualElement.parent;
-        var indexInParent = parent.IndexOf(VisualElement);
-        parent.RemoveAt(indexInParent);
-        _root.Add(VisualElement);
-        parent.Insert(indexInParent, _root);
-        _captureState.Restore(VisualElement);
-        _captureState = PointerCaptureState.Empty;
-        return _root;
-    }
-
-    public void RemoveRoot()
-    {
-        if (_root == null)
-            return;
-        _captureState = PointerCaptureState.Create(VisualElement);
-        var parent = _root.parent;
-        var indexInParent = parent.IndexOf(_root);
-        _root.Remove(VisualElement);
-        parent.RemoveAt(indexInParent);
-        parent.Insert(indexInParent, VisualElement);
-        _root = null;
-        _captureState.Restore(VisualElement);
-        _captureState = PointerCaptureState.Empty;
-    }
-
     public VisualElement SetupDrawBehind()
     {
         if (_drawBehind != null)
@@ -221,8 +185,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
             }
         };
         _drawBehind = _drawBehindInstance;
-        SetupRoot();
-        _root.NotNull().Insert(_root.NotNull().childCount - 1, _drawBehind);
+        ContentContainer.Insert(0, _drawBehind);
         return _drawBehind;
     }
 
@@ -230,53 +193,8 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_drawBehind == null)
             return;
-        SetupRoot();
-        _root.NotNull().Remove(_drawBehind);
-        if (_root.NotNull().childCount == 1)
-            RemoveRoot();
+        ContentContainer.Remove(_drawBehind);
         _drawBehind = null;
-    }
-
-    public VisualElement SetupBackgroundShadow()
-    {
-        if (_backgroundShadow != null)
-            return _backgroundShadow;
-        _backgroundShadowInstance ??= new Shadow
-        {
-            pickingMode = PickingMode.Ignore,
-            style =
-            {
-                position = Position.Absolute,
-                top = 0,
-                bottom = 0,
-                left = 0,
-                right = 0,
-            }
-        };
-        _backgroundShadow = _backgroundShadowInstance;
-        SetupRoot();
-        _root.NotNull().Insert(0, _backgroundShadow);
-        _syncBackgroundShadow?.Pause();
-        _syncBackgroundShadow = VisualElement.schedule.Execute(SyncBackgroundShadowStyle)
-            .Every(TimeUtils.Frametime);
-        return _backgroundShadow;
-    }
-
-    public void SyncBackgroundShadowOffset(Offset offset)
-    {
-        _backgroundShadowOffset = offset;
-    }
-
-    public void RemoveBackgroundShadow()
-    {
-        if (_backgroundShadow == null)
-            return;
-        _syncBackgroundShadow?.Pause();
-        SetupRoot();
-        _root.NotNull().Remove(_backgroundShadow);
-        if (_root.NotNull().childCount == 1)
-            RemoveRoot();
-        _backgroundShadow = null;
     }
 
     public VisualElement SetupContentContainer()
@@ -328,17 +246,6 @@ public class UnityReusableComposeNode : IReusableComposeNode
             index--;
         return index;
     }
-
-    private void SyncBackgroundShadowStyle()
-    {
-        if (_backgroundShadow == null)
-            return;
-        _backgroundShadow.style.scale = VisualElement.style.scale;
-        _backgroundShadow.style.rotate = VisualElement.style.rotate;
-        _backgroundShadow.style.translate =
-            _backgroundShadowOffset.ToVector2() * VisualElement.style.scale.ToVector2() +
-            VisualElement.style.translate.ToVector2();
-    }
 }
 
 public static class ReusableComposeNodeExtensions
@@ -346,11 +253,6 @@ public static class ReusableComposeNodeExtensions
     public static VisualElement VisualElement(this IReusableComposeNode node)
     {
         return node.CastTo<UnityReusableComposeNode>().VisualElement;
-    }
-
-    public static VisualElement Root(this IReusableComposeNode node)
-    {
-        return node.CastTo<UnityReusableComposeNode>().Root;
     }
 
     public static T VisualElement<T>(this IReusableComposeNode node) where T : VisualElement

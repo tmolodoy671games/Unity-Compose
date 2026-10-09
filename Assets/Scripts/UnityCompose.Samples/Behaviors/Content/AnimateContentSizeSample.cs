@@ -29,7 +29,11 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Padding(16.Dp())
                             .Background(Color.LightCoral)
                             .AnimateContentSize(Tween(3_000))
-                            .Clickable(() => isSwitched.Value = !isSwitched.Value),
+                            .Clickable(() =>
+                            {
+                                Debug.Log("Click");
+                                isSwitched.Value = !isSwitched.Value;
+                            }),
                         content: () => Text(
                             text: isSwitched.Value ? "Short" : "Looooooooooooooooooooong\nLooooooooooooooooooooong\nLooooooooooooooooooooong",
                             fontSize: 64.Sp(),

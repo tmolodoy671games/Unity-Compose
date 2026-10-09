@@ -25,7 +25,6 @@ internal record DropShadowModifierImpl(
         if (Shadow.Color.Alpha <= 0f)
             return;
         Init(element, Shadow);
-        node.SyncBackgroundShadowOffset(Shadow.Offset);
     }
 
     protected override void Revert(
