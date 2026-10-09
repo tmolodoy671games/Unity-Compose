@@ -79,7 +79,8 @@ namespace UnityCompose.Samples.Behaviors.Stability
                     }
 
                     var onOrOff = isEffectRunning.Value ? "On" : "Off";
-                    var isHovered = Remember(() => MutableStateOf(false));
+                    var interactionSource = Remember(MutableInteractionSource);
+                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
                     Text(
                         text: $"Launched Effect is {onOrOff}",
                         color: Color.White,
@@ -87,13 +88,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         modifier: Modifier
                             .TestTag("test-button")
                             .Padding(top: 32.Dp())
-                            .Background(isHovered.Value ? Color.Cyan : Color.BlueColor)
+                            .Background(hovered ? Color.Cyan : Color.BlueColor)
                             .Padding(vertical: 20.Dp())
-                            .Padding(horizontal: isHovered.Value ? 40.Dp() : 20.Dp())
+                            .Padding(horizontal: hovered ? 40.Dp() : 20.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .OnMouseEnter(() => isHovered.Value = true)
-                            .OnMouseLeave(() => isHovered.Value = false)
-                            .OnClick(() => isEffectRunning.Value = !isEffectRunning.Value)
+                            .Hoverable(interactionSource)
+                            .Clickable(() => isEffectRunning.Value = !isEffectRunning.Value)
                     );
                 }
             );

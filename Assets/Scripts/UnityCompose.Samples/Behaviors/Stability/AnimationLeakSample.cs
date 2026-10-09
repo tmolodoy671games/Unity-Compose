@@ -39,13 +39,14 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                         .Size(100.Dp())
                                         .Background(Color.GreenColor)
                                         .Offset(offset.Dp())
-                                        .OnClick(() => isSwitched.Value = !isSwitched.Value)
+                                        .Clickable(() => isSwitched.Value = !isSwitched.Value)
                                 )
                             )
                         );
                     }
 
-                    var isHovered = Remember(() => MutableStateOf(false));
+                    var interactionSource = Remember(MutableInteractionSource);
+                    var hovered = interactionSource.CollectIsHoveredAsState().Value;
                     Text(
                         text: "Switch",
                         color: Color.White,
@@ -54,13 +55,12 @@ namespace UnityCompose.Samples.Behaviors.Stability
                             .Padding(top: 32.Dp())
                             .Background(Color.BlueColor)
                             .Padding(
-                                horizontal: 32.Dp() + 32 * AnimateFloatAsState(isHovered.Value.ToInt()).Value.Dp(),
+                                horizontal: 32.Dp() + 32 * AnimateFloatAsState(hovered.ToInt()).Value.Dp(),
                                 vertical: 16.Dp()
                             )
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .OnClick(() => showMovingSquare.Value = !showMovingSquare.Value)
-                            .OnMouseEnter(() => isHovered.Value = true)
-                            .OnMouseLeave(() => isHovered.Value = false)
+                            .Clickable(() => showMovingSquare.Value = !showMovingSquare.Value)
+                            .Hoverable(interactionSource)
                     );
                 }
             );

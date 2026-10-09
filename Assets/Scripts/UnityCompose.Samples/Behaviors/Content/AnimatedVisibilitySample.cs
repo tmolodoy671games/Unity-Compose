@@ -41,7 +41,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Size(100.Dp(), 100.Dp())
                             .Background(Color.ForestGreen)
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .OnClick(() => isVisible.Value = !isVisible.Value)
+                            .Clickable(() => isVisible.Value = !isVisible.Value)
                     );
                     AnimatedVisibility(
                         visible: isVisible.Value,

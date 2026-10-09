@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                             .Clip(RoundedCornerShape(16.Dp()))
                             .Background(Color.BlueColor)
                             .Padding(horizontal: 20.Dp(), vertical: 12.Dp())
-                            .OnClick(() => isSwitched.Value = !isSwitched.Value)
+                            .Clickable(() => isSwitched.Value = !isSwitched.Value)
                     );
                 }
             );

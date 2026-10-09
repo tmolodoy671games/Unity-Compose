@@ -36,7 +36,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                                     $"Bla {it}",
                                     fontSize: 64.Sp(),
                                     modifier: Modifier
-                                        .OnClick(() => state.AnimateScrollToItem(it, CancellationToken.None))
+                                        .Clickable(() => state.AnimateScrollToItem(it, CancellationToken.None))
                                 );
                             });
                         }

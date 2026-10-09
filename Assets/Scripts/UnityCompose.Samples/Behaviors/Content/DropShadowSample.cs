@@ -57,7 +57,7 @@ namespace UnityCompose.Samples.Behaviors.Content
                             .Padding(top: 16.Dp())
                             .Padding(top: 16.Dp())
                             .Clip(RoundedCornerShape(16.Dp()))
-                            .OnClick(() => hasShadow.Value = !hasShadow.Value)
+                            .Clickable(() => hasShadow.Value = !hasShadow.Value)
                     );
                 }
             );

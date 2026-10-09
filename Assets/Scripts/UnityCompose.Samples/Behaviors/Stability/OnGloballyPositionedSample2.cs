@@ -39,28 +39,28 @@ namespace UnityCompose.Samples.Behaviors.Stability
                         Tab(
                             selected: selectionIndex.Value == 0,
                             modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 0)
+                                .Clickable(() => selectionIndex.Value = 0)
                                 .OnGloballyPositioned(it => positions[0] = it.PositionInRoot()),
                             content: () => Text(text: "First")
                         );
                         Tab(
                             selected: selectionIndex.Value == 1,
                             modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 1)
+                                .Clickable(() => selectionIndex.Value = 1)
                                 .OnGloballyPositioned(it => positions[1] = it.PositionInRoot()),
                             content: () => Text(text: "Second")
                         );
                         Tab(
                             selected: selectionIndex.Value == 2,
                             modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 2)
+                                .Clickable(() => selectionIndex.Value = 2)
                                 .OnGloballyPositioned(it => positions[2] = it.PositionInRoot()),
                             content: () => Text(text: "Third")
                         );
                         Tab(
                             selected: selectionIndex.Value == 3,
                             modifier: Modifier
-                                .OnClick(() => selectionIndex.Value = 3)
+                                .Clickable(() => selectionIndex.Value = 3)
                                 .OnGloballyPositioned(it => positions[3] = it.PositionInRoot()),
                             content: () => Text(text: "Fourth")
                         );

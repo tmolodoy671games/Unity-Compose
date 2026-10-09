@@ -52,7 +52,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                                 .Background(Color.RedColor)
                                                 .Padding(all: 20.Dp())
                                                 .Clip(RoundedCornerShape(16.Dp()))
-                                                .OnClick(() => firstCount.Value++)
+                                                .Clickable(() => firstCount.Value++)
                                                 .TestTag("first-button")
                                         );
                                     }
@@ -67,7 +67,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                             .Background(Color.GreenColor)
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
-                                            .OnClick(() => secondCount.Value++)
+                                            .Clickable(() => secondCount.Value++)
                                             .TestTag("second-button")
                                     );
                                     Text(
@@ -79,7 +79,7 @@ namespace UnityCompose.Samples.Behaviors.Stability
                                             .Background(Color.BlueColor)
                                             .Padding(all: 20.Dp())
                                             .Clip(RoundedCornerShape(16.Dp()))
-                                            .OnClick(() => showFirst.Value = !showFirst.Value)
+                                            .Clickable(() => showFirst.Value = !showFirst.Value)
                                             .TestTag("switch-button")
                                     );
                                 }
