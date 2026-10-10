@@ -1,7 +1,8 @@
 ﻿using Compose.Net;
 using UnityEngine.UIElements;
+// ReSharper disable CheckNamespace
 
-namespace UnityCompose.Packages.UnityCompose.Runtime.Adapters.Nodes;
+namespace UnityCompose;
 
 internal class WrapperNodeFactoryImpl : IWrapperNodeFactory
 {
@@ -16,8 +17,8 @@ internal class WrapperNodeFactoryImpl : IWrapperNodeFactory
     }
 }
 
-internal class Content : VisualElement
+public class Content : VisualElement
 {
 }
 
-internal class Item : VisualElement {}
+public class Item : VisualElement {}
