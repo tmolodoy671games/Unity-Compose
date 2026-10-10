@@ -39,11 +39,11 @@ namespace UnityCompose.Samples.Behaviors.Content
                     var coroutineScope = RememberCoroutineScope();
                     VerticalPager(
                         state: pagerState,
-                        pageSize: new PageSize.Fixed(400.Dp()),
+                        // pageSize: new PageSize.Fixed(400.Dp()),
                         contentPadding: PaddingValues(64.Dp()),
                         pageSpacing: 32.Dp(),
                         modifier: Modifier
-                            .FillMaxWidth()
+                            .FillMaxHeight()
                             .Weight(1f),
                         pageContent: it =>
                         {
