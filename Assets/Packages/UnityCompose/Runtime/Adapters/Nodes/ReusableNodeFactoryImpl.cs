@@ -13,4 +13,6 @@ internal class ReusableNodeFactoryImpl : IReusableNodeFactory
     public IAnimatedVisibilityNodeFactory AnimatedVisibility { get; } = new AnimatedVisibilityNodeFactoryImpl();
     public IAnimatedContentNodeFactory AnimatedContent { get; } = new AnimatedContentNodeFactoryImpl();
     public IWrapperNodeFactory Wrapper { get; } = new WrapperNodeFactoryImpl();
+    public IHorizontalPagerNodeFactory HorizontalPager { get; } = new HorizontalPagerNodeFactoryImpl();
+    public IVerticalPagerNodeFactory VerticalPager { get; } = new VerticalPagerNodeFactoryImpl();
 }

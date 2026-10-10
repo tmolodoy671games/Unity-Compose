@@ -1,15 +1,7 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Compose.Net;
-using SharpExtensions;
-using StableCollections;
-using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions;
-using UnityCompose.Samples.Behaviors.Content.Pager;
-using UnityEngine.UIElements;
-using static UnityCompose.Samples.Behaviors.Content.Pager.PagerComposeFunctions;
 
 namespace UnityCompose.Samples.Behaviors.Content
 {
