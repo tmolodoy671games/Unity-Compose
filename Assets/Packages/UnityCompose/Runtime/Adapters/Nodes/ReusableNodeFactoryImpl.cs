@@ -12,4 +12,5 @@ internal class ReusableNodeFactoryImpl : IReusableNodeFactory
     public ITextNodeFactory Text { get; } = new TextNodeFactoryImpl();
     public IAnimatedVisibilityNodeFactory AnimatedVisibility { get; } = new AnimatedVisibilityNodeFactoryImpl();
     public IAnimatedContentNodeFactory AnimatedContent { get; } = new AnimatedContentNodeFactoryImpl();
+    public IWrapperNodeFactory Wrapper { get; } = new WrapperNodeFactoryImpl();
 }

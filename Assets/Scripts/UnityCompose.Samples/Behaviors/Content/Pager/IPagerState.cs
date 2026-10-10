@@ -28,7 +28,6 @@ internal interface IMutablePagerState : IPagerState
     void SyncPageSize(float size);
     void SyncViewportSize(float size);
     void SyncPageSpacing(float pageSpacing);
-    void SyncContentPadding(float start, float end);
 }
 
 internal class MutablePagerStateImpl(
@@ -39,8 +38,6 @@ internal class MutablePagerStateImpl(
     private float _viewportSize = float.NaN;
     private float _pageSize = float.NaN;
     private float _pageSpacing = float.NaN;
-    private float _startPadding = float.NaN;
-    private float _endPadding = float.NaN;
 
     private readonly IMutableState<int> _currentPage = MutableStateOf(initialPage);
     private readonly IMutableState<float> _value = MutableStateOf(0f);
@@ -136,13 +133,6 @@ internal class MutablePagerStateImpl(
     public void SyncPageSpacing(float pageSpacing)
     {
         _pageSpacing = pageSpacing;
-        ExecutePendingScroll();
-    }
-
-    public void SyncContentPadding(float start, float end)
-    {
-        _startPadding = start;
-        _endPadding = end;
         ExecutePendingScroll();
     }
 

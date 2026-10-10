@@ -1,10 +1,6 @@
 ﻿// ReSharper disable ArrangeNamespaceBody
 
-using System;
 using Compose.Net;
-using SharpExtensions;
-using StableCollections;
-using UnityEngine.UIElements;
 
 namespace UnityCompose.Samples.Behaviors.Content
 {

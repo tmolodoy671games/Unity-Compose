@@ -5,6 +5,7 @@ using Compose.Net;
 using SharpExtensions;
 using StableCollections;
 using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Extensions.Values;
+using UnityCompose.Packages.UnityCompose.Runtime.Adapters.Nodes;
 using UnityEngine.UIElements;
 using TimeUtils = UnityCompose.Packages.UnityCompose.Runtime.Adapters.Utils.TimeUtils;
 
@@ -15,8 +16,8 @@ public class UnityReusableComposeNode : IReusableComposeNode
     public readonly VisualElement VisualElement;
     private AnchorManager? _anchorManager;
 
-    private ContentContainer? _contentContainerInstance;
-    private ContentContainer? _contentContainer;
+    private Content? _contentContainerInstance;
+    private Content? _contentContainer;
 
     private DrawBehind? _drawBehindInstance;
     private DrawBehind? _drawBehind;
@@ -200,7 +201,7 @@ public class UnityReusableComposeNode : IReusableComposeNode
     {
         if (_contentContainer != null)
             return _contentContainer;
-        _contentContainerInstance ??= new ContentContainer
+        _contentContainerInstance ??= new Content
         {
             pickingMode = UnityEngine.UIElements.PickingMode.Ignore,
         };
@@ -278,10 +279,6 @@ internal static class ReusableNodeVisualElementExtensions
     }
 }
 
-internal class Root : VisualElement
-{
-}
-
 internal class DrawOn : VisualElement
 {
 }
@@ -291,9 +288,5 @@ internal class DrawBehind : VisualElement
 }
 
 internal class Shadow : VisualElement
-{
-}
-
-internal class ContentContainer : VisualElement
 {
 }

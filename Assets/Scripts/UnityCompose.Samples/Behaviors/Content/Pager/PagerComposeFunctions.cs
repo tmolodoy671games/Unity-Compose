@@ -17,7 +17,7 @@ internal static partial class PagerComposeFunctions
         return Remember(() =>
         {
             var result = new MutablePagerStateImpl(pageCount, initialPage);
-            result.ScrollToPage(initialPage);
+            result.ScrollToPage(initialPage, initialPageOffsetFraction);
             return result;
         });
     }
@@ -29,7 +29,6 @@ internal static partial class PagerComposeFunctions
         PaddingValues contentPadding = default,
         Dp pageSpacing = default,
         PageSize? pageSize = null,
-        bool reverseLayout = false,
         IModifier? modifier = null
     )
     {
@@ -38,7 +37,6 @@ internal static partial class PagerComposeFunctions
         if (mutableState == null)
             return;
         mutableState.SyncPageSpacing(pageSpacing.Value);
-        mutableState.SyncContentPadding(contentPadding.Left.Value, contentPadding.Right.Value);
         if (pageSize is PageSize.Fixed fixedPageSize)
             mutableState.SyncPageSize(fixedPageSize.PageSize.Value - contentPadding.Left.Value -
                                       contentPadding.Right.Value);
@@ -86,10 +84,14 @@ internal static partial class PagerComposeFunctions
                                 : viewportSize.Value.Dp();
                             pageSizeValue -= contentPadding.Left;
                             pageSizeValue -= contentPadding.Right;
-                            PagerPage(
-                                page: i,
-                                pageContent: pageContent,
-                                pageSize: pageSizeValue
+
+                            var page = i;
+                            Box(
+                                contentAlignment: Alignment.Center,
+                                modifier: modifier.OrEmpty()
+                                    .FillMaxHeight()
+                                    .Width(pageSizeValue),
+                                content: () => pageContent(page)
                             );
 
                             if (i < pageCount - 1)
@@ -102,21 +104,87 @@ internal static partial class PagerComposeFunctions
             }
         );
     }
-
+    
     [Composable]
-    private static void PagerPage(
-        int page,
+    public static void VerticalPager(
+        IPagerState state,
         ComposableContent<int> pageContent,
-        Dp pageSize,
+        PaddingValues contentPadding = default,
+        Dp pageSpacing = default,
+        PageSize? pageSize = null,
         IModifier? modifier = null
     )
     {
+        var mutableState = state as IMutablePagerState;
+        pageSize ??= PageSize.Fill;
+        if (mutableState == null)
+            return;
+        mutableState.SyncPageSpacing(pageSpacing.Value);
+        if (pageSize is PageSize.Fixed fixedPageSize)
+            mutableState.SyncPageSize(fixedPageSize.PageSize.Value - contentPadding.Top.Value -
+                                      contentPadding.Bottom.Value);
+        var viewportSize = Remember(() => MutableStateOf(0f));
         Box(
-            contentAlignment: Alignment.Center,
+            contentAlignment: Alignment.TopCenter,
             modifier: modifier.OrEmpty()
-                .FillMaxHeight()
-                .Width(pageSize),
-            content: () => pageContent(page)
+                .OnSizeChanged(it =>
+                {
+                    mutableState.SyncViewportSize(it.Height);
+                    if (pageSize == PageSize.Fill)
+                        mutableState.SyncPageSize(it.Height - contentPadding.Top.Value - contentPadding.Bottom.Value);
+                    viewportSize.Value = it.Height;
+                }),
+            content: () =>
+            {
+                Column(
+                    modifier: Modifier
+                        .Custom(
+                            apply: it =>
+                            {
+                                it.VisualElement().style.flexShrink = 0;
+                                mutableState.SubscribeToValueChange(value =>
+                                    it.VisualElement().style.translate = new Translate(0, -value));
+                            },
+                            revert: it => { }
+                        )
+                        .FillMaxWidth()
+                        .Padding(
+                            left: contentPadding.Left,
+                            right: contentPadding.Right
+                        ),
+                    content: () =>
+                    {
+                        var pageCount = mutableState.PageCount;
+                        for (var i = 0; i < pageCount; i++)
+                        {
+                            if (i > 0)
+                            {
+                                Spacer(Modifier.Height(pageSpacing / 2));
+                            }
+
+                            var pageSizeValue = pageSize is PageSize.Fixed fixedSize
+                                ? fixedSize.PageSize
+                                : viewportSize.Value.Dp();
+                            pageSizeValue -= contentPadding.Top;
+                            pageSizeValue -= contentPadding.Bottom;
+
+                            var page = i;
+                            Box(
+                                contentAlignment: Alignment.Center,
+                                modifier: modifier.OrEmpty()
+                                    .FillMaxWidth()
+                                    .Height(pageSizeValue),
+                                content: () => pageContent(page)
+                            );
+
+                            if (i < pageCount - 1)
+                            {
+                                Spacer(Modifier.Height(pageSpacing / 2));
+                            }
+                        }
+                    }
+                );
+            }
         );
     }
 }
