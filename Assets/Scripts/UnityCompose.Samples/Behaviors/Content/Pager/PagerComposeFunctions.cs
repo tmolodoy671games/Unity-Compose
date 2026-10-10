@@ -37,10 +37,11 @@ internal static partial class PagerComposeFunctions
         pageSize ??= PageSize.Fill;
         if (mutableState == null)
             return;
-        mutableState.SyncContentPadding(contentPadding.Left.Value);
         mutableState.SyncPageSpacing(pageSpacing.Value);
+        mutableState.SyncContentPadding(contentPadding.Left.Value, contentPadding.Right.Value);
         if (pageSize is PageSize.Fixed fixedPageSize)
-            mutableState.SyncPageSize(fixedPageSize.PageSize.Value);
+            mutableState.SyncPageSize(fixedPageSize.PageSize.Value - contentPadding.Left.Value -
+                                      contentPadding.Right.Value);
         var viewportSize = Remember(() => MutableStateOf(0f));
         Box(
             contentAlignment: Alignment.CenterLeft,
@@ -49,7 +50,7 @@ internal static partial class PagerComposeFunctions
                 {
                     mutableState.SyncViewportSize(it.Width);
                     if (pageSize == PageSize.Fill)
-                        mutableState.SyncPageSize(it.Width);
+                        mutableState.SyncPageSize(it.Width - contentPadding.Left.Value - contentPadding.Right.Value);
                     viewportSize.Value = it.Width;
                 }),
             content: () =>
@@ -65,22 +66,36 @@ internal static partial class PagerComposeFunctions
                             },
                             revert: it => { }
                         )
-                        // .Offset(x: -mutableState.Value.Dp())
                         .FillMaxHeight()
-                        .Padding(contentPadding),
+                        .Padding(
+                            top: contentPadding.Top,
+                            bottom: contentPadding.Bottom
+                        ),
                     content: () =>
                     {
                         var pageCount = mutableState.PageCount;
                         for (var i = 0; i < pageCount; i++)
                         {
+                            if (i > 0)
+                            {
+                                Spacer(Modifier.Width(pageSpacing / 2));
+                            }
+
+                            var pageSizeValue = pageSize is PageSize.Fixed fixedSize
+                                ? fixedSize.PageSize
+                                : viewportSize.Value.Dp();
+                            pageSizeValue -= contentPadding.Left;
+                            pageSizeValue -= contentPadding.Right;
                             PagerPage(
                                 page: i,
-                                pageCount: pageCount,
-                                pageSpacing: pageSpacing,
                                 pageContent: pageContent,
-                                viewportSize: viewportSize.Value,
-                                pageSize: pageSize
+                                pageSize: pageSizeValue
                             );
+
+                            if (i < pageCount - 1)
+                            {
+                                Spacer(Modifier.Width(pageSpacing / 2));
+                            }
                         }
                     }
                 );
@@ -91,29 +106,16 @@ internal static partial class PagerComposeFunctions
     [Composable]
     private static void PagerPage(
         int page,
-        int pageCount,
         ComposableContent<int> pageContent,
-        Dp pageSpacing,
-        PageSize pageSize,
-        float viewportSize,
+        Dp pageSize,
         IModifier? modifier = null
     )
     {
-        var leftPadding = page > 0 ? pageSpacing / 2 : 0.Dp();
-        var rightPadding = page < pageCount - 1 ? pageSpacing / 2 : 0.Dp();
         Box(
             contentAlignment: Alignment.Center,
             modifier: modifier.OrEmpty()
-                .Padding(
-                    left: leftPadding,
-                    right: rightPadding
-                )
                 .FillMaxHeight()
-                .Then(
-                    pageSize is PageSize.Fixed fixedSize
-                        ? Modifier.Width(fixedSize.PageSize)
-                        : Modifier.Width(viewportSize.Dp() - leftPadding - rightPadding)
-                ),
+                .Width(pageSize),
             content: () => pageContent(page)
         );
     }

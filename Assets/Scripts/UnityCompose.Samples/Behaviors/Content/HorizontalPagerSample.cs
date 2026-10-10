@@ -40,8 +40,8 @@ namespace UnityCompose.Samples.Behaviors.Content
                     HorizontalPager(
                         state: pagerState,
                         // pageSize: new PageSize.Fixed(400.Dp()),
-                        // contentPadding: PaddingValues(16.Dp()),
-                        // pageSpacing: 60.Dp(),
+                        contentPadding: PaddingValues(64.Dp()),
+                        pageSpacing: 32.Dp(),
                         modifier: Modifier
                             .FillMaxWidth()
                             .Weight(1f),
@@ -86,7 +86,11 @@ namespace UnityCompose.Samples.Behaviors.Content
                                                 // pagerState.ScrollToPage(page);
                                                 coroutineScope.Launch(async scope =>
                                                 {
-                                                    await pagerState.AnimateScrollToPage(scope, page);
+                                                    await pagerState.AnimateScrollToPage(
+                                                        scope,
+                                                        page,
+                                                        animationSpec: Tween(1_000)
+                                                    );
                                                 });
                                             }
                                         ),

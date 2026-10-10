@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Compose.Net;
 using SharpExtensions;
-using StableCollections;
 
 namespace UnityCompose.Samples.Behaviors.Content.Pager;
 
@@ -24,11 +23,12 @@ public interface IPagerState
 internal interface IMutablePagerState : IPagerState
 {
     void SubscribeToValueChange(Action<float> onValueChanged);
+    void UnsubscribeToValueChange(Action<float> onValueChanged);
     float Value { get; }
     void SyncPageSize(float size);
     void SyncViewportSize(float size);
-    void SyncContentPadding(float padding);
     void SyncPageSpacing(float pageSpacing);
+    void SyncContentPadding(float start, float end);
 }
 
 internal class MutablePagerStateImpl(
@@ -38,24 +38,30 @@ internal class MutablePagerStateImpl(
 {
     private float _viewportSize = float.NaN;
     private float _pageSize = float.NaN;
-    private float _padding = float.NaN;
     private float _pageSpacing = float.NaN;
+    private float _startPadding = float.NaN;
+    private float _endPadding = float.NaN;
 
+    private readonly IMutableState<int> _currentPage = MutableStateOf(initialPage);
     private readonly IMutableState<float> _value = MutableStateOf(0f);
     private int _animationTarget = initialPage;
     private int _pendingPage = initialPage;
     private CancellationTokenSource _animateScrollTokenSource = new();
     private bool _isDisposed;
-    private Action<float> _onValueChanged = _ => { };
+    private Action<float>? _onValueChanged = _ => { };
 
-    public int CurrentPage { get; private set; }
+    public int CurrentPage
+    {
+        get => _currentPage.Value;
+        private set => _currentPage.Value = value;
+    }
+
     public int PageCount => pageCount();
 
     public void ScrollToPage(int page, float offsetFraction = 0)
     {
         CurrentPage = page;
-        var newValue = CalculateOffset(page);
-        Debug.Log(newValue);
+        var newValue = CalculateOffset(page, offsetFraction);
         if (float.IsNaN(newValue))
         {
             _pendingPage = page;
@@ -64,7 +70,7 @@ internal class MutablePagerStateImpl(
 
         _pendingPage = -1;
         _value.Value = newValue;
-        _onValueChanged(newValue);
+        _onValueChanged?.Invoke(newValue);
     }
 
     public async Task AnimateScrollToPage(
@@ -77,7 +83,7 @@ internal class MutablePagerStateImpl(
         if (_animationTarget == page)
             return;
         CurrentPage = page;
-        var newValue = CalculateOffset(page);
+        var newValue = CalculateOffset(page, offsetFraction);
         if (float.IsNaN(newValue))
         {
             _pendingPage = page;
@@ -88,9 +94,9 @@ internal class MutablePagerStateImpl(
         _pendingPage = -1;
         _animateScrollTokenSource.Cancel();
         _animateScrollTokenSource.Dispose();
-        _animateScrollTokenSource = CancellationTokenSource.CreateLinkedTokenSource(scope.CancellationToken);
+        _animateScrollTokenSource = CancellationTokenSource.CreateLinkedTokenSource(scope.Token);
         await Animate(
-            scope: scope,
+            token: _animateScrollTokenSource.Token,
             typeConverter: Mathf.LerpUnclamped,
             initialValue: _value.Value,
             targetValue: newValue,
@@ -98,14 +104,19 @@ internal class MutablePagerStateImpl(
             block: it =>
             {
                 _value.Value = it;
-                _onValueChanged(it);
+                _onValueChanged?.Invoke(it);
             }
         );
     }
 
     public void SubscribeToValueChange(Action<float> onValueChanged)
     {
-        _onValueChanged = onValueChanged;
+        _onValueChanged += onValueChanged;
+    }
+
+    public void UnsubscribeToValueChange(Action<float> onValueChanged)
+    {
+        _onValueChanged -= onValueChanged;
     }
 
     public float Value => _value.Value;
@@ -122,40 +133,36 @@ internal class MutablePagerStateImpl(
         ExecutePendingScroll();
     }
 
-    public void SyncContentPadding(float padding)
-    {
-        _padding = padding;
-        ExecutePendingScroll();
-    }
-
     public void SyncPageSpacing(float pageSpacing)
     {
         _pageSpacing = pageSpacing;
         ExecutePendingScroll();
     }
 
-    private float CalculateOffset(int page)
+    public void SyncContentPadding(float start, float end)
+    {
+        _startPadding = start;
+        _endPadding = end;
+        ExecutePendingScroll();
+    }
+
+    private float CalculateOffset(int page, float offsetFraction)
     {
         var result = 0f;
         if (Uninitialized(_pageSize))
             return float.NaN;
 
-        result += _pageSize * (page.ToFloat() + 0.5f);
-        
+        result += _pageSize * (page.ToFloat() + 0.5f + offsetFraction);
+
         if (Uninitialized(_pageSpacing))
             return float.NaN;
 
-        result += _pageSpacing * (page).Clamp(0, int.MaxValue);
-        
+        result += _pageSpacing * page.Clamp(0, int.MaxValue);
+
         if (Uninitialized(_viewportSize))
             return float.NaN;
 
         result -= _viewportSize / 2;
-
-        if (Uninitialized(_padding))
-            return float.NaN;
-
-        result += _padding;
 
         return result;
     }
